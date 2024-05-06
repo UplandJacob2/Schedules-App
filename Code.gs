@@ -105,6 +105,7 @@ function include(filename) {return HtmlService.createHtmlOutputFromFile(filename
 function update(email, token) {
   if (SchedulesSecure.verify(email, token)) {
     const file = DriveApp.getFilesByName(email+"'s Schedules").next();
+    //// TODO   remove call to second script
     const thing = UrlFetchApp.fetch(`https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbwUAVQUqztZmh4u4uMCaSJxbTGcX3svhL64GbWUz8LLhvFZUq_PmaUgJAdHsdwWx4NZ/exec?do=update&email=${email}&id=${file.getId()}`, {'method': 'get', 'muteHttpExceptions': true, 'redirect': 'follow'});
 
     console.log(thing.getContentText());
@@ -186,6 +187,7 @@ function getUserPage(email) {let toSpread, toReturn, doit;
 
   if (doit == 'show') {
     const signedInTxt = HtmlService.createTemplateFromFile('Index').getRawContent();
+    //  TODO       edit schedule on main website - no need for Google Sheet
     const userScheduleURL = "https://docs.google.com/spreadsheets/d/"+UrlFetchApp.fetch('https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbwUAVQUqztZmh4u4uMCaSJxbTGcX3svhL64GbWUz8LLhvFZUq_PmaUgJAdHsdwWx4NZ/exec?do=getUserSheet&email='+email, {'method': 'get', 'muteHttpExceptions': true, 'redirect': 'follow'}).getContentText().match(/(?<=<title>)(.){1,}(?=<\/title>)/g)[0]+"/edit";
     toReturn = signedInTxt.replace(/userScheduleURL/g, userScheduleURL) ;
   } else if (doit == 'askcreate') {
@@ -238,7 +240,7 @@ function _refreshSchedules() {
 }
 
 
-function getCurrentSchedule(email) { //email = "jacob.feil@stu.evsck12.com"
+function getCurrentSchedule(email) {
   //const sheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules").next()).getSheetByName('Backup Cache');
   //sheet.getRange(2, 2).setValue(JSON.stringify(SchedulesSecure.getSchedules()));  _refreshCache();
 
@@ -257,7 +259,7 @@ function getCurrentSchedule(email) { //email = "jacob.feil@stu.evsck12.com"
   return ['No Schedule Today']
 }
 
-function getSchedule(email, token) {// email = 'kodi.meissner@stu.evsck12.com'; token = '1F2XHu9mkxmf3tgBh93xCHcVAXjukXKS67UX2zfuEfi4AwEHVR5diATpIiwmwuXCE5lB4XexWGG5vCXdRdTxtOX05qE3SsC464n4CuKibzhJGEXVttF53M1dgPzFl4s71IBAhM2L5a9uDJE2YYV1VxAlI8UIkB9w6r6dBKweAZyTVpVdf6QfO6F77TsLS9l9sMvUw0mEcWiQf1TpiLCIXmTLh9BrCAtKvBkB55bk7ZfcfGKrcOsgT0VlTw';
+function getSchedule(email, token) {
   if (!SchedulesSecure.verify(email, token)) {err('Bad token.');}
 
   let scheduleRange = [['Last Updated:', DateUtils.getDateAsText(), '', '', '', '', '', '']]; 
