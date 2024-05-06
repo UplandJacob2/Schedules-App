@@ -1,0 +1,155 @@
+<div id="mainTable" style="width: 100%; height: 100%; top: 0px; left: 0px; position: absolute; padding: 0px; margin: 0px;">
+  <div class="mainTableR" style="position: fixed; height: 60px; width: 100%; top: 0px; left: 0px;">
+    <div id="top-table">
+      <div class="topBarSection">
+        <a class="top-link relative link reload active" style="top: 5px;" onclick="openMenu();">
+          <div style="position: relative; left: -5px; top: 0px; width: 25px; height: 25px;">
+            <ion-icon name="menu-outline"></ion-icon>
+          </div>
+        </a>
+      </div>
+      <div class="topBarSection">
+        <a style="flex-direction: left; top: 5px;" class="top-link relative link" onclick="toggleDisplay('signOut');">Sign Out</a>
+      </div>
+    </div>
+  </div>
+  <div class="mainTableR" style="position: fixed; height: calc(100% - 60px); width: 100%; top: 60px; left: 0px; display: flex;">
+    <div class="menu-cont" style="background: #859;">
+      <ul class="nav-menu">
+
+        <a class="top-link relative link nav-link" onclick="update()">Re-add Schedule</a>
+
+        <a class="top-link relative link nav-link" href=userScheduleURL target="_blank">Your Sheet</a>
+        <a class="top-link relative link nav-link" onclick="toggleDisplay('editPop'); toggleDisplay('grid');">Edit Schedule</a>
+
+        <a class="new-line nav-item">
+          <a class="link nav-link" onclick="toggleDisplay('helpPop');"><div class="popup">Help</div></a>
+          <a onclick="toggleDisplay('about');" class="link nav-link">About</a>
+          <a onclick="toggleDisplay('contact');" class="link nav-link">Contact</a>
+        </a>
+      </ul>
+    </div>
+    <!-- MAIN -->
+    <div style="position: relative; overflow: vertical-scroll; height: calc(100% - 60px); left: 0px; width: calc(100% - 130px); padding-top: 20px;">
+      <center><img id="img" style="width: 50px; top: 100px;" src="https://shortpixel.com/img/spinner2.gif"></center>
+
+      <!-- The Schedule -->
+      <table class='schedule'></table>
+
+    </div>
+  </div>
+</div>
+
+<!-- HELP -->
+<div class="item fullpopup fadeIn" id="helpPop" style="display: none;">
+  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+  <a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="toggleDisplay('helpPop');">
+    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div> </a>
+  
+  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Help</span></center>
+
+  <div class="tab" style="overflow: auto; width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
+    <!--all help text is in this div-->
+    <span class="bold">If you want to edit and update your schedule:</span>
+    <span class="tab">1. Edit your schedule as desired: <a href="userScheduleURL" target="_blank">Your Sheet</a></span>
+    <span class="tab">2. 2 options:</span>
+    <span class="tab2">a) On your schedule sheet, click the "⚙️ Schedule Tools" tab, then "Update".</span>
+    <span class="tab2">b) Come back here and click "Re-add Schedule"</span>
+    <span class="tab">3. You may need to wait up to 2 minutes.</span>
+
+    <span class="bold">If this page seems to be showing your schedule wrong:</span>
+    <!-- <span class="tab">Simply clicking "Update" may fix the problem. If that doesn't work:</span> -->
+    <span class="tab">1. Check that <a href="userScheduleURL" target="_blank">Your Sheet</a> is <a href="https://docs.google.com/spreadsheets/d/1KBB80Knf1YmfZBtR31tOAh7SP_3WDsHfXBuo0UeqJaE/edit#gid=2098641774" target="_blank">formatted correctly.</a></span>
+    <span class="tab">2. Click "Re-add Schedule" in the menu.</span>
+    <span class="tab">3. You may need to wait up to 2 minutes.</span>
+
+  </div>
+</div>
+
+<div class="item smallpopup fadeIn" id="updateSuccess" style="display: none;">
+  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+  <a class="top-link link reload" style="right: 35%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('updateSuccess');">
+    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div>   </a>
+  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Your schedule is being re-added</span></center>
+  <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
+
+    <span class="bold">Async process scheduled</span>
+    <span>It may take up to 2 minutes to update</span>
+
+  </div>
+  <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('updateSuccess');" class="top-link link">
+    <center>OK</center></a>
+</div>
+
+<div class="item smallpopup fadeIn" id="updateLoad" style="display: none;">
+  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+  <a class="top-link link reload" style="right: 35%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('updateLoad');">
+    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div>  </a>
+  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Your schedule is being re-added</span></center>
+
+  <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
+    <span class="bold">Async process is being scheduled</span>
+    <img style="position: fixed; left: 49%; width: 50px; top: 30%;" src="https://shortpixel.com/img/spinner2.gif">
+  </div>
+</div>
+
+<!-- SIGN OUT -->
+<div class="item smallpopup fadeIn" id="signOut" style="display: none;">
+  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+  <a class="top-link link reload" style="right: 35%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('signOut');">
+    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div></a>
+  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Sign out?</span></center>
+  <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
+    <span class="bold">Are you sure you want to sign out?</span>
+  </div>
+  <a style="position: fixed; right: 45%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="signOutBtn();" class="top-link link">
+    <center>Yes</center>
+  </a>
+  <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('signOut');" class="top-link link">
+    <center>No</center>
+  </a>
+</div>
+
+
+
+<!-- ERROR -->
+<div class="item smallpopup fadeIn" id="error" style="display: none;">
+  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+  <a class="top-link link reload" style="right: 35%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('error');">
+    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div></a>
+  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Error</span></center>
+  <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
+    <span id="errorWhen" class="bold"></span>
+    <span id="errorTxt"></span>
+  </div>
+  <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('error');" class="top-link link">
+    <center>OK</center>
+  </a>
+</div>
+
+<!-- SCHEDULE EDITOR -->
+<div class="item fullpopup fadeIn" id="editPop" style="display: none;">
+  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+  <a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="toggleDisplay('editPop'); toggleDisplay('grid')">
+    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div> </a>
+  
+  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Edit Schedule</span></center>
+
+  <div class="tab" style="overflow: auto; width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
+
+      <div id="testEditor" style="max-width: calc(80% - 100px;);"></div>
+      <textarea id='datatxt' style=""></textarea>
+
+  </div>
+  <div style="position: fixed; right: calc(10% + 5px); bottom: calc(9% + 5px); z-index: 22; font-size: 20px;">
+    <div style="display: flex; flex-direction: row; justify-content: flex-end;">
+      <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" class="link" id="addRow">Add Row</a>
+      <a style="width: auto; height: 25px; display: inline-block; padding: 10px; font-weight: bold; margin: 2px;" class="link" id="saveSch">Save</a>
+
+    </div>
+  </div>
+</div>
+
+<div id='grid' style="position: fixed; z-index: 101; left: calc(10% + 5px); top: calc(8% + 60px); width: calc(80% - 10px);"></div>
+
+
