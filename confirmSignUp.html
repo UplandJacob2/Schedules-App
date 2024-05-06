@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<base target="_top">
+	<style>
+		body {font-family: 'Calibri';}
+		span {display: block;}
+		.top-table {background: #aaac; width: 100%; top: 0px; height: 60px; left: 0px; position: fixed; z-index: 1;}
+		.top-link {position: fixed; top: 5px; height: 25px; display: inline-block; padding: 10px;}
+		.link {font-size: 20px; background: #ddd; border: 1px solid #444; border-radius: 4px; height: auto; color: black; text-decoration: none;}
+    .grayLink {font-size: 20px; background: #eee; border: 1px solid #aaa; border-radius: 4px; height: auto; color: gray; text-decoration: none; pointer-events: none;}
+		.reload {width: 20px; height: 25px; font-size: 25px; border-radius: 50%; padding-left: 15px;}
+		.link:hover {background: #888; cursor: pointer;}
+		.small-link {padding: 7px; font-size: 15px; text-decoration: none;}
+		.item {background-color: #222; padding: 0px; border-radius: 2px; border: 4px solid rgb(70, 70, 70); overflow: hidden; display: inline-block;}
+		.fullpopup {background: #ccc; position: fixed; left: 10%; top: 8%; width: 80%; height: 83%; z-index: 100; transition: all 0.5s;}
+		.smallpopup {background: #ccc; position: fixed; left: 35%; top: 15%; width: 30%; height: 30%; z-index: 200; transition: all 0.5s;}
+		.popup {position: relative; display: inline-block; cursor: pointer;}
+		.popup .popuptext {visibility: hidden; width: 160px; background-color: #555; color: #fff; text-align: center; border-radius: 6px; padding: 8px 0; position: relative; z-index: 1; bottom: 125%; left: 50%; margin-left: -80px;}
+
+		table, tr {font-size: 20px; border: 1px solid black; padding: 4px; border-collapse: collapse; vertical-align: center;}
+		th {text-align: center; background-color: #6fa8dc; font-size: 25px;}
+		tr, td {padding-left: 5px; padding-right: 5px;}
+		td, th {padding-top: 8px; padding-bottom: 1px;}
+		.c0 {width: 220px; border: 1px solid black;}
+		.c1, .c3, .c5, .c7 {width: 30px;}
+		.c2, .c4, .c6 {width: 4px;text-align: center;}
+		.c1, .c5 {text-align: right;}
+		.ra {background-color: #d9d9d9;}
+		.rb {background-color: #f3f3f3;}
+		.y {background-color: #ff0;}
+		.b, center {font-weight: bold;}
+		table {zoom: var(--size); -moz-transform: scale(var(--size)); -moz-transform-origin: 0 0; position: fixed; top: calc(80px / var(--size));}
+
+		.cancelbtn {width: auto; padding: 10px 18px; background-color: #f44336;}
+		.cancelbtn:hover {cursor: pointer;}
+		.imgcontainer {text-align: center; margin: 0px 0 0px 0; position: relative;}
+		img.avatar {width: 40%; border-radius: 50%;}
+		.container {display: new-line; padding: 16px;}
+		span.psw {float: right; padding-top: 16px;}
+		.modal {display: none; position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0, 0, 0); background-color: rgba(0, 0, 0, 0.4); padding-top: 10px; transition: all 0.3;}
+		.modal-content {background-color: #fefefe; margin: 50px auto -5% auto; border: 3px solid #888; width: clamp(400px, 30%, 600px); margin-bottom: 50px;}
+		.close {position: absolute; right: 25px; top: 0; color: #000; font-size: 35px; font-weight: bold;}
+		.close:hover, .close:focus {color: red; cursor: pointer;}
+		.modal .container label {display: block; font-size: 25px; margin-top: 10px; margin-bottom: 2px;}
+		.modal .container input {display: inline-block; border: 1px solid black; border-radius: 0px; font-size: 15px; padding: 5px; margin-bottom: 10px;}
+    .signUpStatusIcon {display: none; position: absolute; left: calc(var(--signInUpEdge20) + 220px); --ionicon-stroke-width: 65px;}
+
+		.new-line {display: block;}
+		.font-20 {font-size: 20px;}
+		.fadeIn {-webkit-animation: fadeIn 0.3s; animation: fadeIn 0.3s;}
+		.circle {border-radius: 50%;}
+		.tab {position: relative; left: 40px;}
+		.tab2 {position: relative; left: 80px;}
+		.bold {font-weight: bold;}
+		:root {
+      --size: 1.2;
+      --signInUpWidth: clamp(400px, 30%, 600px);
+      --signInUpEdge20: calc(calc(100% - var(--signInUpWidth)) / 2 + 20px)
+		}
+	</style>
+
+</head>
+
+<body>
+  <div id="things">
+
+	<div class="top-table">
+		<a class="top-link link reload" style="left: 5px; top: 5px;"
+			href="https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec">
+			<div style="position: relative; left: -5px; top: 0px; width: 25px; height: 25px;"> <ion-icon name="reload"></ion-icon> </div>
+		</a>
+		<a class="top-link grayLink" disabled style="left: 70px;" onclick="update()">Re-add Schedule</a>
+		<!--<a class="top-link link" style="left: 70px;" href="https://script.google.com/macros/s/AKfycbwcF7nS-ct-h69R0lwgodlboPHH9MZN037uOqaQ7TAWHPQz1ExeNP4s1_Bf4EvtAIyU/exec?do=update">Re-add Schedule</a>-->
+
+		<a style="left: 240px;" class="top-link grayLink" disabled href=userScheduleURL target="_blank">Your Sheet</a>
+
+		<a style="right: 200px;" class="top-link link" onclick="toggleDisplay('helpPop');">   <div class="popup">Help</div>   </a>
+		<a style="right: 10px;" class="top-link grayLink" disabled onclick="document.getElementById('signIn').style.display='block'">Sign In</a>
+
+	</div>
+
+	<div class="item fullpopup fadeIn" id="helpPop" style="display: none;">
+		<!-- help popup ---------------------------------------->
+		<filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+		<a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="toggleDisplay('helpPop');">
+			<div style="position: relative; width: 25px; height: 25px; top: -5px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div> </a>
+		<center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Help</span></center>
+
+		<div class="tab" style="overflow: auto; width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
+			<!--all help text is in this div-->
+
+			<span class="bold">If you want to edit and update your schedule:</span>
+			<span class="tab">1. Edit your schedule as desired: <a href=userScheduleURL target="_blank">Your Sheet</a></span>
+			<span class="tab">2. 2 options:</span>
+			<span class="tab2">a) On your schedule sheet, click the "⚙️ Schedule Tools" tab, then "Update".</span>
+			<span class="tab2">b) Come back here and click "Re-add Schedule"</span>
+			<span class="tab">3. You may need to wait up to 2 minutes.</span>
+
+			<span class="bold">If this page seems to be showing your schedule wrong:</span>
+			<!-- <span class="tab">Simply clicking "Update" may fix the problem. If that doesn't work:</span> -->
+			<span class="tab">1. Check that <a href=userScheduleURL target="_blank">Your Sheet</a> is <a href="https://docs.google.com/spreadsheets/d/1KBB80Knf1YmfZBtR31tOAh7SP_3WDsHfXBuo0UeqJaE/edit#gid=2098641774" target="_blank">formatted correctly.</a></span>
+			<span class="tab">2. Click "Re-add Schedule" in the top bar.</span>
+			<span class="tab">3. You may need to wait up to 2 minutes.</span>
+
+		</div>
+	</div>
+
+
+  <div>
+    
+    <center style="margin-top: 100px; position: relative; font-size: 50px;"><header>Account Created</header></center>
+    <center style="margin-top: 20px; position: relative; font-size: 30px;"><header><a class="link" href="https://script.google.com/macros/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec">Click Here</a> to create a schedule.</header></center>
+
+  </div>
+
+
+  <div class="item smallpopup fadeIn" id="error" style="display: none;">
+    <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+    <a class="top-link link reload" style="right: 35%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('error');">
+      <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;">&times;</div></a>
+    <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Error</span></center>
+    <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
+      <span id="errorWhen" class="bold"></span>
+      <span id="errorTxt"></span>
+    </div>
+    <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('error');" class="top-link link">
+      <center>OK</center>
+    </a>
+  </div>
+
+  </div><!-- end things -->
+
+
+  <script>
+    function toggleDisplay(elmStrIn) {
+      var thing = document.getElementById(elmStrIn);
+      if (thing.style.display === "none") {
+        thing.style.display = "block";
+      } else {
+        thing.style.display = "none";
+      }
+    }
+
+    function error(title, txt) {
+      toggleDisplay('error');
+      document.getElementById('errorWhen').innerHTML = title;
+      document.getElementById('errorTxt').innerHTML = txt;
+    }
+    
+  </script>
+
+
+  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>\
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</body>
+
+</html>
