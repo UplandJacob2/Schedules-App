@@ -1,0 +1,320 @@
+<script>
+
+function openMenu() {
+    document.querySelector('.nav-menu').classList.toggle("active");
+    document.querySelector('.nav-cont').classList.toggle("active");
+}
+
+function toggleDisplay(elmStrIn) { let elm = $('#'+elmStrIn);
+  if (elm.css('display') == "none") { elm.css('display', 'block'); }  else  { elm.css('display', 'none'); }
+}
+
+/*
+function update() {
+  google.script.run.withSuccessHandler(function() {
+    if (!(document.getElementById('updateLoad').style.display === "none")) {
+      toggleDisplay('updateLoad');
+    }
+    toggleDisplay('updateSuccess');
+  }).update(getEmail(), getToken());
+  toggleDisplay('updateLoad');
+}
+*/
+
+window.onload = function () {
+  // google.script.url.getLocation(function(location) {
+  //   alert(location.parameters);
+  // });
+
+  var events = ['keypress', 'keydown', 'keyup'];
+  var emailBoxes = ['emailSignUp', 'emailSignIn'];
+  //var passBoxes = ['passSignUp', 'passSignUpR', 'passSignIn'];
+
+  events.forEach((e) => { document.getElementById('signInC').addEventListener(e, function(){ checkSignInButton(); }); });
+  events.forEach((e) => { document.getElementById('passSignIn').addEventListener(e, function(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
+  events.forEach((e) => { document.getElementById('signUpC').addEventListener(e, function(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
+
+  emailBoxes.forEach((str) => { var elm = document.getElementById(str); events.forEach((e) => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
+
+  if (getToken()) {
+    toggleDisplay('signInLoad');
+    google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function(e){ if (e.message == 'invalid token'){ deleteSignInCookies(); }
+      if (document.getElementById('signInLoad').style.display == "block") { toggleDisplay('signInLoad'); }
+      toggleDisplay('error');
+      document.getElementById('errorWhen').innerHTML = 'Error when automatically signing in.'
+      document.getElementById('errorTxt').innerHTML = e.message;
+    }).signInWToken(getEmail(), getToken());
+  }
+
+  const signUpForm = document.getElementById("signUpForm");
+  signUpForm.addEventListener("submit", signUp);
+  const signInForm = document.getElementById('signInForm');
+  signInForm.addEventListener('submit', signInF);
+}
+
+
+function sheet() {
+  //const Grid = tui.Grid
+  const emptyRow = {
+    info: 's',
+    class: 'Some Class',
+    //strt: '',
+    //end: '',
+    b: false,
+    days: 'someth'
+  }
+
+  sheet = new Editor({
+    el: document.getElementById('testEditor'),
+    columns: [
+      { header: 'Info', name: 'info', width: 50, editor: { type: 'text', options: { attrs: { maxlength: '2' }, style: { width: '30px' } } } },
+      { header: 'Class', name: 'class', width: 200, editor: { type: 'text', options: { style: { width: 'auto' } } } },
+      //{ header: 'Start Time',name: 'strt', width: 100, editor: {type: TP, options: {format: 'hh:mm A'}} },
+      //{ header: 'End Time',  name: 'end',  width: 100, editor: {type: TP, options: {format: 'hh:mm A'}} },
+      { header: 'Bold', name: 'b', width: 30, editor: { type: 'checkbox', options: { checked: true, style: { "margin-left": "20px" } } } },
+      {
+        header: 'Days', name: 'days', width: 200, editor: {
+          type: 'checklist', options: {
+            listItems: [{ text: 'Sun', value: 'Sun' },
+            { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' },
+            { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' }]
+          }
+        }
+      }
+    ],
+    //data: [emptyRow]
+    data: [emptyRow, emptyRow, emptyRow, emptyRow]
+  })
+}
+
+/*
+function militaryToStandard(time) {
+  time = time.split(':'); // convert to array
+  var hours = Number(time[0]);
+  var minutes = Number(time[1]);
+  var timeValue;
+
+  if (hours > 0 && hours <= 12) {
+    timeValue = "" + hours;
+  } else if (hours > 12) {
+    timeValue = "" + (hours - 12);
+  } else if (hours == 0) {
+    timeValue = "12";
+  }
+
+  timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+  timeValue += (hours >= 12) ? " PM" : " AM";  // get AM/PM
+  return timeValue
+}
+*/
+class Editor {
+  constructor(options) {
+    this.el = options.el
+    this.options = options
+    this.columns = options.columns
+    this.data = options.data
+    this.rowBack = '#0f0'
+    this.headBack = '#f00'
+
+    this.render()
+  }
+
+  resetData(data) {
+    this.data = data
+    this.render()
+  }
+  getValueFromEditor(col, row) {
+    let type = this.columns[col].editor.type
+    if (type == 'text') {
+
+    }
+  }
+  createElm(row, col) {
+    let coli = this.columns.findIndex((c) => c.name === col)
+    let type = this.columns[coli].editor.type
+    let data = this.data[row][col]
+    let eT
+
+    if (type == 'a' || type == 'text' || type == 'checklist') {
+      eT = 'a'
+    } else if (type == 'checkbox') {
+      eT = 'input'
+    }
+    let el = document.createElement(eT)
+
+    if (type == 'a' || type == 'text' || type == 'checklist') {
+      el.innerHTML = data
+    } else if (type == 'checkbox') {
+      el.type = 'checkbox'
+      if (data) {
+        el.setAttribute('checked', data)
+      } else {
+        el.removeAttribute('checked')
+      }
+    }
+    return el
+  }
+
+  createEditorElm(row, col) {
+    let coli = this.columns.findIndex((c) => c.name === col)
+    let type = this.columns[coli].editor.type
+    let data = this.data[row][col]
+    let eTag
+    if (type == 'a') {
+      eTag = 'a'
+    } else if (type == 'checkbox' || type == 'text') {
+      eTag = 'input'
+    } else if (type == 'checklist') {
+      eTag = 'div'
+    }
+    let el = document.createElement(eTag)
+
+    if (type == 'text') {
+      el.value = data
+    } else if (type == 'a') {
+      el.innerHTML = data
+    } else if (type == 'checkbox') {
+      el.type = 'checkbox'
+      el.checked = data
+    } else if (type == 'checklist') {
+      el.classList.add('dropdown-check-list')
+      let a = document.createElement('span')
+      a.classList.add('anchor')
+      a.setAttribute('onclick', 'l(this);sheet.onCellClick(this.parentElement.parentElement, "close")')
+      a.style.setProperty('min-width', '30px')
+      a.style.setProperty('min-height', '15px')
+      a.innerHTML = this.data[row][col]
+      el.append(a)
+      let ul = document.createElement('ul')
+      ul.style.setProperty('position', 'fixed')
+      ul.style.setProperty('background', '#999')
+      ul.classList.add('items')
+      let options = this.columns[coli].editor.options.listItems
+      for (var op in options) {
+        let opt = document.createElement('li')
+        let inp = document.createElement('input')
+        inp.type = 'checkbox'
+        opt.innerHTML = options[op].text
+        opt.style.setProperty('list-style-type', 'none')
+        opt.style.setProperty('margin-left', '-40px')
+        opt.innerHTML = inp.outerHTML + opt.innerHTML
+        ul.append(opt)
+      }
+      el.append(ul)
+      el.setAttribute('customtype', 'checklist')
+    }
+    let { attrs, style } = this.columns[coli].editor.options
+    for (var attr in attrs) {
+      el.setAttribute(attr, attrs[attr])
+    }
+    for (var stl in style) {
+      el.style.setProperty(stl, style[stl])
+    }
+    return el
+  }
+
+
+  render() {
+    //alert('adsf')
+    let table = document.createElement('table')
+    let header = document.createElement('tr')
+    for (var col in this.columns) {
+      let el = document.createElement('td')
+      el.innerHTML = this.columns[col].header
+      el.style.setProperty('margin', "10px")
+      header.append(el)
+    }
+    header.style.setProperty('background', this.headBack)
+    table.style.setProperty('background', '#00f')
+    table.append(header)
+
+    for (var row in this.data) {
+      let rowEl = document.createElement('tr')
+      for (var col in this.data[row]) {
+        let colEl = document.createElement('td')
+        // if (this.data[row][col] == '') {
+        //   continue
+        // }
+        colEl.setAttribute('row', row)
+        colEl.setAttribute('col', col)
+
+        let coli = this.columns.findIndex((c) => c.name === col)
+        let type
+        if (this.columns[coli].editor.type) {
+          type = this.columns[coli].editor.type
+        } else {
+          type = 'a'
+        }
+        let el = this.createElm(row, col)
+        colEl.setAttribute('onclick', 'sheet.onCellClick(this)')
+        colEl.append(el)
+        //rowEl.append(colEl)
+        rowEl.innerHTML += colEl.outerHTML
+      }
+      rowEl.style.setProperty('background', this.rowBack)
+      table.append(rowEl)
+    }
+    this.el.innerHTML = table.outerHTML
+    document.getElementById('datatxt').value = JSON.stringify(this.data)
+  }
+  onCellClick(el, option) {
+    let row = el.getAttribute('row')
+    let col = el.getAttribute('col')
+    
+    let customtype
+    try { customtype = el.innerHTML.match(/(?<=customtype\=\")[a-z]+(?=\")/g)[0] } catch { customtype = null }
+    if (el.children[0].type == 'checkbox') {
+      if (sheet.data[row][col]) { el.children[0].checked = false } else { el.children[0].checked = true } this.data[row][col] = el.children[0].checked
+      this.render()
+    } else if (customtype == 'checklist') {
+      if (option == 'close') {
+        let options = this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems
+        let dat = ''
+        for (var i = 0; i < options.length; i++) {
+          l(el.children[0].children[1].children[i].children[0].checked)
+          if (el.children[0].children[1].children[i].children[0].checked) {
+            if (dat) { dat += ", " }
+            dat += this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems[i].value
+          }
+        }
+        this.data[row][col] = dat
+        el = this.createElm(row, col)
+        this.render()
+      }
+    } else {
+      if (el.classList.contains('editMode')) {
+        el.classList.remove('editMode')
+        el.innerHTML = sheet.createElm(row, col).outerHTML
+      } else {
+        el.classList.add('editMode')
+        el.innerHTML = sheet.createEditorElm(row, col).outerHTML
+        if (this.columns[this.columns.findIndex((c) => c.name === col)].editor.type == 'text') {
+          let box = el.children[0]
+          box.value = sheet.data[row][col]
+          box.select()
+          box.addEventListener('keypress', function (ev) {
+            if (ev.code == 'Enter') {
+              this.blur()
+            }
+          })
+          box.addEventListener('blur', function (ev) {
+            ev.preventDefault()
+            let row = this.parentElement.getAttribute('row')
+            let col = this.parentElement.getAttribute('col')
+            l(row, col)
+            sheet.data[row][col] = this.value
+            sheet.onCellClick(el)
+            sheet.render()
+          })
+          // box.addEventListener('change', function (ev) {
+          //   sheet.data[this.parentElement.getAttribute('row')][this.parentElement.getAttribute('col')] = this.value
+          // })
+        }
+      }
+    }
+  }
+}
+
+var l = console.log
+var w = console.warn
+</script>
