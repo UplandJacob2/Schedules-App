@@ -113,7 +113,7 @@ function update(email, token) {
 }
 
 
-function signUp (pass, passR, email) { //var pass = 'Jj12345!'; var passR = pass; var email = 'jacob.feil@stu.evsck12.com';
+function signUp (pass, passR, email) {
   console.log(pass+"   "+passR+"   "+email);
   if (!SchedulesSecure.isValidEmail(email)) {err("Invalid email. How do you get around client side checks?")}
 
@@ -143,8 +143,7 @@ function signUp (pass, passR, email) { //var pass = 'Jj12345!'; var passR = pass
   });
 }
 
-function signIn (email, pass, rm) { var rand; rm = true;
-  //email = 'jacob.feil@stu.evsck12.com'; pass = "eVF9qFYc3WBdECs!"
+function signIn (email, pass, rm) { var rand;
   const sheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules Accounts").next()).getActiveSheet();
   const emails = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues();
   let row = emails.findIndex((em) => em[0].toLowerCase() == email.toLowerCase()) + 1;
