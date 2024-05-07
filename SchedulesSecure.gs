@@ -1,5 +1,10 @@
 var SchedulesSecure = SchedulesSecure || {}
 
+function test () {
+  SchedulesSecure.verify('jacob.feil@stu.evsck12.com', 'Xk9Eu3IFZpyKGt0Jz3gvEzOBlh1UnBqpkh0eE89uH272m4kkaOZLpRnnWUQJkVhFeTk36FSkA3cGcZJsWL0je3rKohnnziguPwLm95GimTDPoSfSPxoEG5lhY8dxYTFmkMvzck3ndtR6fds2xfHqAMeThQYakK9ylZ6rmjNepQBNmHUat2NfrGErLHysKJgolz08bs1BL71to6fM3n3YTDg5WUUHaIZ48TqIPSGisbgNlWSJB8vMk6s9Rx')
+}
+
+
 SchedulesSecure.verify = function(email, token) {
   if (!email) {throw new Error('No email.');}
   if (!token) {throw new Error('No token.');}
@@ -41,7 +46,7 @@ SchedulesSecure.random250 = function() {
 }
 
 SchedulesSecure.isValidEmail = function(email) {
-  const re = /(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+  const re = /^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/
   console.log(re.test(email) && /^(.){3,320}$/.test(email))
   return (re.test(email) && /^(.){3,320}$/.test(email))
 }
@@ -222,7 +227,7 @@ class schedule {
     toRange.setNumberFormat('@');
 
     let aligns = new Array(8); aligns = ['left', 'right', 'center', 'left', 'center', 'right', 'center', 'left'];// horizontal alignments
-    let widths = new Array(8); widths = [220, 50, 25, 50, 25, 50, 25, 50]     // comlumn widths
+    let widths = new Array(8); widths = [220, 50, 25, 50, 25, 50, 25, 50]     // column widths
     for (let col = 1; col <= 8; col++) {     //   set them
       this.toSheet.getRange(this.toSRow+1, col, this.numRows-1, 1).setHorizontalAlignment(aligns[col-1]);
       this.toSheet.setColumnWidths(col, 1, widths[col-1]);
@@ -282,7 +287,7 @@ class scheduleGroup {
     this.toSheet = toSpread.getSheetByName(this.email);
   }
   addScheduleToGroup(schedule) {
-    this.schedules[this.schedules.length-1] = new Array(3);// find the open array in the last slot of the array to put the shedule
+    this.schedules[this.schedules.length-1] = new Array(3);// find the open array in the last slot of the array to put the schedule
     this.schedules[this.schedules.length-1][0] = schedule;// put it there
     this.schedules[this.schedules.length] = new Array(3);// create and empty array in the last slot to be ready for the next schedule
     return this
@@ -327,7 +332,7 @@ class scheduleGroup {
         this.schedules[i][0].up();
         return this
       } 
-    } // if there ire no schedule - still update date box:
+    } // if there is no schedule - still update date box:
     
     const dateTxt = DateUtils.getDateAsText();      console.log(dateTxt);
     this.toSheet.getRange(1, 2, 1, 7).merge().setValue(dateTxt); /////    date cell 
