@@ -113,8 +113,8 @@ class Editor {
     this.options = options
     this.columns = options.columns
     this.data = options.data
-    this.rowBack = '#0f0'
-    this.headBack = '#f00'
+    this.rowBack = '#efefef'
+    this.headBack = '#ddd'
 
     this.render()
   }
@@ -187,7 +187,8 @@ class Editor {
       el.append(a)
       let ul = document.createElement('ul')
       ul.style.setProperty('position', 'fixed')
-      ul.style.setProperty('background', '#999')
+      ul.style.setProperty('background', '#eeeeee')
+      ul.style.setProperty('margin-top', '4px')
       ul.classList.add('items')
       let options = this.columns[coli].editor.options.listItems
       for (var op in options) {
@@ -197,6 +198,7 @@ class Editor {
         opt.innerHTML = options[op].text
         opt.style.setProperty('list-style-type', 'none')
         opt.style.setProperty('margin-left', '-40px')
+        opt.onclick = ``
         opt.innerHTML = inp.outerHTML + opt.innerHTML
         ul.append(opt)
       }
@@ -225,7 +227,7 @@ class Editor {
       header.append(el)
     }
     header.style.setProperty('background', this.headBack)
-    table.style.setProperty('background', '#00f')
+    table.style.setProperty('background', '#666')
     table.append(header)
 
     for (var row in this.data) {
@@ -257,6 +259,7 @@ class Editor {
     this.el.innerHTML = table.outerHTML
     document.getElementById('datatxt').value = JSON.stringify(this.data)
   }
+
   onCellClick(el, option) {
     let row = el.getAttribute('row')
     let col = el.getAttribute('col')
@@ -306,9 +309,6 @@ class Editor {
             sheet.onCellClick(el)
             sheet.render()
           })
-          // box.addEventListener('change', function (ev) {
-          //   sheet.data[this.parentElement.getAttribute('row')][this.parentElement.getAttribute('col')] = this.value
-          // })
         }
       }
     }
