@@ -187,19 +187,23 @@ class Editor {
       el.append(a)
       let ul = document.createElement('ul')
       ul.style.setProperty('position', 'fixed')
-      ul.style.setProperty('background', '#eeeeee')
-      ul.style.setProperty('margin-top', '4px')
+      ul.style.setProperty('background', '#dddddd')
+      ul.style.setProperty('margin-top', '5px')
+      ul.style.setProperty('margin-left', '-6px')
+      ul.style.setProperty('padding-right', '3px')
+      ul.style.setProperty('text-align', 'left')
       ul.classList.add('items')
       let options = this.columns[coli].editor.options.listItems
       for (var op in options) {
         let opt = document.createElement('li')
         let inp = document.createElement('input')
+        let txt = document.createElement('a')
         inp.type = 'checkbox'
-        opt.innerHTML = options[op].text
+        txt.innerHTML = options[op].text
         opt.style.setProperty('list-style-type', 'none')
         opt.style.setProperty('margin-left', '-40px')
-        opt.onclick = ``
-        opt.innerHTML = inp.outerHTML + opt.innerHTML
+        txt.setAttribute('onclick', `this.parentElement.children[0].checked ^= 1`)
+        opt.innerHTML = inp.outerHTML + txt.outerHTML
         ul.append(opt)
       }
       el.append(ul)
@@ -224,10 +228,16 @@ class Editor {
       let el = document.createElement('td')
       el.innerHTML = this.columns[col].header
       el.style.setProperty('margin', "10px")
+      el.style.setProperty('padding', '5px')
+      el.style.setProperty('text-align', 'center')
+      el.style.setProperty('vertical-align', 'middle')
       header.append(el)
     }
     header.style.setProperty('background', this.headBack)
-    table.style.setProperty('background', '#666')
+    header.style.setProperty('font-weight', 'bold')
+    table.style.setProperty('background', '#999')
+    table.style.setProperty('font-size', '25px')
+    table.style.setProperty('zoom', '1.2')
     table.append(header)
 
     for (var row in this.data) {
@@ -249,10 +259,14 @@ class Editor {
         }
         let el = this.createElm(row, col)
         colEl.setAttribute('onclick', 'sheet.onCellClick(this)')
+        colEl.style.setProperty('padding', '5px')
+        colEl.style.setProperty('text-align', 'center')
+        colEl.style.setProperty('vertical-align', 'middle')
         colEl.append(el)
         //rowEl.append(colEl)
         rowEl.innerHTML += colEl.outerHTML
       }
+      rowEl.style.setProperty('font-size', '25px')
       rowEl.style.setProperty('background', this.rowBack)
       table.append(rowEl)
     }
