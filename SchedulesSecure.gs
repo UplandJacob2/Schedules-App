@@ -46,7 +46,7 @@ SchedulesSecure.random250 = function() {
 }
 
 SchedulesSecure.isValidEmail = function(email) {
-  const re = /^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/
+  const re = /^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/;
   console.log(re.test(email) && /^(.){3,320}$/.test(email))
   return (re.test(email) && /^(.){3,320}$/.test(email))
 }
@@ -227,7 +227,7 @@ class schedule {
     toRange.setNumberFormat('@');
 
     let aligns = new Array(8); aligns = ['left', 'right', 'center', 'left', 'center', 'right', 'center', 'left'];// horizontal alignments
-    let widths = new Array(8); widths = [220, 50, 25, 50, 25, 50, 25, 50]     // column widths
+    let widths = new Array(8); widths = [220, 50, 25, 50, 25, 50, 25, 50]     // comlumn widths
     for (let col = 1; col <= 8; col++) {     //   set them
       this.toSheet.getRange(this.toSRow+1, col, this.numRows-1, 1).setHorizontalAlignment(aligns[col-1]);
       this.toSheet.setColumnWidths(col, 1, widths[col-1]);
@@ -287,7 +287,7 @@ class scheduleGroup {
     this.toSheet = toSpread.getSheetByName(this.email);
   }
   addScheduleToGroup(schedule) {
-    this.schedules[this.schedules.length-1] = new Array(3);// find the open array in the last slot of the array to put the schedule
+    this.schedules[this.schedules.length-1] = new Array(3);// find the open array in the last slot of the array to put the shedule
     this.schedules[this.schedules.length-1][0] = schedule;// put it there
     this.schedules[this.schedules.length] = new Array(3);// create and empty array in the last slot to be ready for the next schedule
     return this
@@ -332,7 +332,7 @@ class scheduleGroup {
         this.schedules[i][0].up();
         return this
       } 
-    } // if there is no schedule - still update date box:
+    } // if there ire no schedule - still update date box:
     
     const dateTxt = DateUtils.getDateAsText();      console.log(dateTxt);
     this.toSheet.getRange(1, 2, 1, 7).merge().setValue(dateTxt); /////    date cell 
