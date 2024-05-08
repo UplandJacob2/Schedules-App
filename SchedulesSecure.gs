@@ -1,9 +1,5 @@
 var SchedulesSecure = SchedulesSecure || {}
 
-function test () {
-  SchedulesSecure.verify('jacob.feil@stu.evsck12.com', 'Xk9Eu3IFZpyKGt0Jz3gvEzOBlh1UnBqpkh0eE89uH272m4kkaOZLpRnnWUQJkVhFeTk36FSkA3cGcZJsWL0je3rKohnnziguPwLm95GimTDPoSfSPxoEG5lhY8dxYTFmkMvzck3ndtR6fds2xfHqAMeThQYakK9ylZ6rmjNepQBNmHUat2NfrGErLHysKJgolz08bs1BL71to6fM3n3YTDg5WUUHaIZ48TqIPSGisbgNlWSJB8vMk6s9Rx')
-}
-
 
 SchedulesSecure.verify = function(email, token) {
   if (!email) {throw new Error('No email.');}
