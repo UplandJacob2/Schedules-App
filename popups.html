@@ -1,0 +1,46 @@
+<!----------- Code used when signed in or out ----------->
+
+<!-- ERROR -->
+<div class="item smallpopup fadeIn" id="error" style="display: none;">
+  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+  <a class="top-link link reload" style="right: 35%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('error');">
+    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div></a>
+  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Error</span></center>
+  <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
+    <span id="errorWhen" class="bold"></span>
+    <span id="errorTxt"></span>
+  </div>
+  <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('error');" class="top-link link">
+    <center>OK</center>
+  </a>
+</div>
+
+<!-- HELP -->
+<div class="item fullpopup fadeIn" id="helpPop" style="display: none;">
+  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+  <a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="toggleDisplay('helpPop');">
+    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div> </a>
+  
+  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Help</span></center>
+
+  <div class="tab" style="overflow: auto; width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
+    <!--all help text is in this div-->
+    <span class="bold">If you want to edit and update your schedule:</span>
+    <span class="tab">1. Edit your schedule as desired: <a href="userScheduleURL" target="_blank">Your Sheet</a></span>
+    <span class="tab">2. 2 options:</span>
+    <span class="tab2">a) On your schedule sheet, click the "⚙️ Schedule Tools" tab, then "Update".</span>
+    <span class="tab2">b) Come back here and click "Re-add Schedule"</span>
+    <span class="tab">3. You may need to wait up to 2 minutes.</span>
+
+    <span class="bold">If this page seems to be showing your schedule wrong:</span>
+    <!-- <span class="tab">Simply clicking "Update" may fix the problem. If that doesn't work:</span> -->
+    <span class="tab">1. Check that <a href="userScheduleURL" target="_blank">Your Sheet</a> is <a href="https://docs.google.com/spreadsheets/d/1KBB80Knf1YmfZBtR31tOAh7SP_3WDsHfXBuo0UeqJaE/edit#gid=2098641774" target="_blank">formatted correctly.</a></span>
+    <span class="tab">2. Click "Re-add Schedule" in the menu.</span>
+    <span class="tab">3. You may need to wait up to 2 minutes.</span>
+
+  </div>
+</div>
+
+
+
+<!----------- END code used when signed in or out ----------->
