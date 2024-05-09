@@ -84,14 +84,12 @@ span.psw {float: right; padding-top: 16px;}
 .menu-cont {/* active */
   position: relative; 
   width: 130px; 
-  top: 0px; 
+  top: -1px; 
   left: 0px; 
   max-width: 140px;
 }
 .menu-cont.active {/* inactive */
-  left: -400px;
   width: 0px;
-  position: fixed;
 }
 
 .nav-menu { /* active */
@@ -100,9 +98,10 @@ span.psw {float: right; padding-top: 16px;}
   background-color: #6669; z-index: 10; display: flex; flex-flow: column; position: absolute;
 }
 .nav-menu.active { /* inactive */
+  position: fixed;
   left: -400px;
   width: 0px;
-  position: fixed;
+  max-width: 30px;
 }
 .nav-item {
   position: relative;
