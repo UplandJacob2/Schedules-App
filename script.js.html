@@ -2,7 +2,7 @@
 
 function openMenu() {
     document.querySelector('.nav-menu').classList.toggle("active");
-    document.querySelector('.nav-cont').classList.toggle("active");
+    document.querySelector('.menu-cont').classList.toggle("active");
 }
 
 function toggleDisplay(elmStrIn) { let elm = $('#'+elmStrIn);
@@ -27,18 +27,15 @@ window.onload = function () {
   // });
 
   var events = ['keypress', 'keydown', 'keyup'];
-  var emailBoxes = ['emailSignUp', 'emailSignIn'];
-  //var passBoxes = ['passSignUp', 'passSignUpR', 'passSignIn'];
 
   events.forEach((e) => { document.getElementById('signInC').addEventListener(e, function(){ checkSignInButton(); }); });
   events.forEach((e) => { document.getElementById('passSignIn').addEventListener(e, function(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
   events.forEach((e) => { document.getElementById('signUpC').addEventListener(e, function(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
-
-  emailBoxes.forEach((str) => { var elm = document.getElementById(str); events.forEach((e) => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
+  ['emailSignUp', 'emailSignIn'].forEach((str) => { var elm = document.getElementById(str); events.forEach((e) => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
 
   if (getToken()) {
     toggleDisplay('signInLoad');
-    google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function(e){ if (e.message == 'invalid token'){ deleteSignInCookies(); }
+    google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function(e){ if (e.message == 'Bad token.'){ deleteSignInCookies(); }
       if (document.getElementById('signInLoad').style.display == "block") { toggleDisplay('signInLoad'); }
       toggleDisplay('error');
       document.getElementById('errorWhen').innerHTML = 'Error when automatically signing in.'
