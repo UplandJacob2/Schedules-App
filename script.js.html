@@ -2,7 +2,7 @@
 
 function openMenu() {
     document.querySelector('.nav-menu').classList.toggle("active");
-    document.querySelector('.menu-cont').classList.toggle("active");
+    document.querySelector('.nav-cont').classList.toggle("active");
 }
 
 function toggleDisplay(elmStrIn) { let elm = $('#'+elmStrIn);
@@ -112,12 +112,14 @@ class Editor {
     this.data = options.data
     this.rowBack = '#efefef'
     this.headBack = '#ddd'
+    this.data = (JSON.parse(JSON.stringify(this.data)))
+    
 
     this.render()
   }
 
   resetData(data) {
-    this.data = data
+    this.data = (JSON.parse(JSON.stringify(data)))
     this.render()
   }
   getValueFromEditor(col, row) {
@@ -187,8 +189,6 @@ class Editor {
       ul.style.setProperty('background', '#dddddd')
       ul.style.setProperty('margin-top', '5px')
       ul.style.setProperty('margin-left', '-6px')
-      ul.style.setProperty('padding-right', '3px')
-      ul.style.setProperty('text-align', 'left')
       ul.classList.add('items')
       let options = this.columns[coli].editor.options.listItems
       for (var op in options) {
@@ -226,41 +226,26 @@ class Editor {
       el.innerHTML = this.columns[col].header
       el.style.setProperty('margin', "10px")
       el.style.setProperty('padding', '5px')
-      el.style.setProperty('text-align', 'center')
-      el.style.setProperty('vertical-align', 'middle')
       header.append(el)
     }
     header.style.setProperty('background', this.headBack)
     header.style.setProperty('font-weight', 'bold')
     table.style.setProperty('background', '#999')
     table.style.setProperty('font-size', '25px')
-    table.style.setProperty('zoom', '1.2')
     table.append(header)
 
     for (var row in this.data) {
       let rowEl = document.createElement('tr')
       for (var col in this.data[row]) {
         let colEl = document.createElement('td')
-        // if (this.data[row][col] == '') {
-        //   continue
-        // }
         colEl.setAttribute('row', row)
         colEl.setAttribute('col', col)
+        //let coli = this.columns.findIndex((c) => c.name === col)
 
-        let coli = this.columns.findIndex((c) => c.name === col)
-        let type
-        if (this.columns[coli].editor.type) {
-          type = this.columns[coli].editor.type
-        } else {
-          type = 'a'
-        }
         let el = this.createElm(row, col)
         colEl.setAttribute('onclick', 'sheet.onCellClick(this)')
         colEl.style.setProperty('padding', '5px')
-        colEl.style.setProperty('text-align', 'center')
-        colEl.style.setProperty('vertical-align', 'middle')
         colEl.append(el)
-        //rowEl.append(colEl)
         rowEl.innerHTML += colEl.outerHTML
       }
       rowEl.style.setProperty('font-size', '25px')
@@ -274,7 +259,7 @@ class Editor {
   onCellClick(el, option) {
     let row = el.getAttribute('row')
     let col = el.getAttribute('col')
-    
+
     let customtype
     try { customtype = el.innerHTML.match(/(?<=customtype\=\")[a-z]+(?=\")/g)[0] } catch { customtype = null }
     if (el.children[0].type == 'checkbox') {
@@ -315,15 +300,16 @@ class Editor {
             ev.preventDefault()
             let row = this.parentElement.getAttribute('row')
             let col = this.parentElement.getAttribute('col')
-            l(row, col)
+
             sheet.data[row][col] = this.value
-            sheet.onCellClick(el)
+
             sheet.render()
           })
         }
       }
     }
   }
+  
 }
 
 var l = console.log
