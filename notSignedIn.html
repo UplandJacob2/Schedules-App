@@ -4,8 +4,8 @@
 <head>
 	<base target="_top">
   <!-- <link rel="stylesheet" href="https://www.udrop.com/file/LA19/style.css"> -->
-  <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.min.css" />
-  <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.css" />
+  <!-- <link rel="stylesheet" href="https://uicdn.toast.com/grid/latest/tui-grid.min.css" /> -->
+  <!-- <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.css" /> -->
   <link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.css">
   <?!= include('style.css'); ?>
 
@@ -30,7 +30,7 @@
         </div>
 			</div>
 			<div class="mainTableR" style="position: fixed; height: calc(100% - 60px); width: 100%; top: 60px; left: 0px; display: flex">
-        <div class="menu-cont" style="background: #859;">
+        <div class="menu-cont">
 					<ul class="nav-menu">
 
 						<a class="grayLink relative nav-link" disabled onclick="update()" style="margin-top: 10px;">Re-add Schedule</a>
@@ -53,32 +53,6 @@
         </div>
 			</div>
 		</table>
-
-    <div class="item fullpopup fadeIn" id="helpPop" style="display: none;">
-      <!-- help popup ---------------------------------------->
-      <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
-      <a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="toggleDisplay('helpPop');">
-        <div style="position: relative; width: 25px; height: 25px; top: -5px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div> </a>
-      <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Help</span></center>
-
-      <div class="tab" style="overflow: auto; width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
-        <!--all help text is in this div-->
-
-        <span class="bold">If you want to edit and update your schedule:</span>
-        <span class="tab">1. Edit your schedule as desired: <a href=userScheduleURL target="_blank">Your Sheet</a></span>
-        <span class="tab">2. 2 options:</span>
-        <span class="tab2">a) On your schedule sheet, click the "⚙️ Schedule Tools" tab, then "Update".</span>
-        <span class="tab2">b) Come back here and click "Re-add Schedule"</span>
-        <span class="tab">3. You may need to wait up to 2 minutes.</span>
-
-        <span class="bold">If this page seems to be showing your schedule wrong:</span>
-        <!-- <span class="tab">Simply clicking "Update" may fix the problem. If that doesn't work:</span> -->
-        <span class="tab">1. Check that <a href=userScheduleURL target="_blank">Your Sheet</a> is <a href="https://docs.google.com/spreadsheets/d/1KBB80Knf1YmfZBtR31tOAh7SP_3WDsHfXBuo0UeqJaE/edit#gid=2098641774" target="_blank">formatted correctly.</a></span>
-        <span class="tab">2. Click "Re-add Schedule" in the top bar.</span>
-        <span class="tab">3. You may need to wait up to 2 minutes.</span>
-
-      </div>
-    </div>
 
     <!--         LOG IN         -->
     <div id="signIn" class="modal">
@@ -204,22 +178,10 @@
         <center>OK</center>
       </a>
     </div>
-    
-    <div class="item smallpopup fadeIn" id="error" style="display: none;">
-      <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
-      <a class="top-link link reload" style="right: 35%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('error');">
-        <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div></a>
-      <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Error</span></center>
-      <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
-        <span id="errorWhen" style="width: 90%" class="bold"></span>
-        <span id="errorTxt" style="width: 90%"></span>
-      </div>
-      <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('error');" class="top-link link">
-        <center>OK</center>
-      </a>
-    </div>
 
   </div><!-- end things -->
+
+  <?!= include('popups.html'); ?>
 
   <?!= include('script.js'); ?>
   <?!= include('signUtils.js'); ?>
@@ -228,8 +190,8 @@
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  <script src="https://uicdn.toast.com/grid/latest/tui-grid.min.js"></script>
-  <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script>
+  <!-- <script src="https://uicdn.toast.com/grid/latest/tui-grid.min.js"></script> -->
+  <!-- <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script> -->
   <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
 
 </body>
