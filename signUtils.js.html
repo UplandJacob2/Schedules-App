@@ -140,7 +140,7 @@ function signInSuccess(inp) {
   setInterval(function () {
     google.script.run.withSuccessHandler(function (schedule) { $('.schedule').html(schedule); $('#img').css('display', 'none'); }).getSchedule(getEmail(), getToken());
   }, 8000);
-  sheet()
+  try{loadSheet()} catch (e) {alert(e)}
 }
 function getToken() { let thing;
   try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } } catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
