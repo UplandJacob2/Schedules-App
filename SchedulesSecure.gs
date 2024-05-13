@@ -37,7 +37,7 @@ SchedulesSecure.testDoc = function(str) {
  * generate a 250 character using random.org
  */
 SchedulesSecure.random250 = function() {
-  let code = UrlFetchApp.fetch('https://www.random.org/strings/?num=10&len=25&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new').getContentText();
+  let code = UrlFetchApp.fetch('https://www.random.org/strings/?num=10&len=25&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new', {'muteHttpExceptions': true}).getContentText();
   return "".concat(code.match(/([a-zA-Z0-9]{25})/g)).replace(/,/g, "");
 }
 
