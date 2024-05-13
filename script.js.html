@@ -37,9 +37,7 @@ window.onload = function () {
     toggleDisplay('signInLoad');
     google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function(e){ if (e.message == 'Bad token.'){ deleteSignInCookies(); }
       if (document.getElementById('signInLoad').style.display == "block") { toggleDisplay('signInLoad'); }
-      toggleDisplay('error');
-      document.getElementById('errorWhen').innerHTML = 'Error when automatically signing in.'
-      document.getElementById('errorTxt').innerHTML = e.message;
+      error('Error when automatically signing in.', e.message)
     }).signInWToken(getEmail(), getToken());
   }
 
@@ -50,15 +48,22 @@ window.onload = function () {
 }
 
 
-function sheet() {
-  //const Grid = tui.Grid
-  const emptyRow = {
+function loadSheet() {
+  const firstRow = {
     info: 's',
     class: 'Some Class',
-    //strt: '',
-    //end: '',
+    strt: '',
+    end: '',
     b: false,
-    days: 'someth'
+    days: 'Mon, Wed, Fri'
+  }
+  const emptyRow = {
+    info: '',
+    class: 'Some Class',
+    strt: '',
+    end: '',
+    b: false,
+    days: ''
   }
 
   sheet = new Editor({
@@ -66,22 +71,23 @@ function sheet() {
     columns: [
       { header: 'Info', name: 'info', width: 50, editor: { type: 'text', options: { attrs: { maxlength: '2' }, style: { width: '30px' } } } },
       { header: 'Class', name: 'class', width: 200, editor: { type: 'text', options: { style: { width: 'auto' } } } },
-      //{ header: 'Start Time',name: 'strt', width: 100, editor: {type: TP, options: {format: 'hh:mm A'}} },
-      //{ header: 'End Time',  name: 'end',  width: 100, editor: {type: TP, options: {format: 'hh:mm A'}} },
+      { header: 'Start Time',name: 'strt', width: 100, editor: {type: 'time', options: {format: 'hh:mm A'}} },
+      { header: 'End Time',  name: 'end',  width: 100, editor: {type: 'time', options: {format: 'hh:mm A'}} },
       { header: 'Bold', name: 'b', width: 30, editor: { type: 'checkbox', options: { checked: true, style: { "margin-left": "20px" } } } },
-      {
-        header: 'Days', name: 'days', width: 200, editor: {
-          type: 'checklist', options: {
-            listItems: [{ text: 'Sun', value: 'Sun' },
+      { header: 'Days', name: 'days', width: 200, editor: {
+          type: 'checklist', options: { listItems: [{ text: 'Sun', value: 'Sun' },
             { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' },
             { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' }]
           }
         }
       }
     ],
-    //data: [emptyRow]
-    data: [emptyRow, emptyRow, emptyRow, emptyRow]
+    data: [firstRow, emptyRow, emptyRow]
   })
+  const addRowBt = document.getElementById('addRow')
+  addRowBt.addEventListener('click', function (ev) { sheet.data.push(emptyRow); sheet.resetData() })
+  const rmvRowBt = document.getElementById('removeRow')
+  rmvRowBt.addEventListener('click', function (ev) { sheet.data.pop(); sheet.resetData() })
 }
 
 /*
@@ -104,22 +110,25 @@ function militaryToStandard(time) {
   return timeValue
 }
 */
+
 class Editor {
   constructor(options) {
     this.el = options.el
     this.options = options
     this.columns = options.columns
-    this.data = options.data
+    this.data = JSON.parse(JSON.stringify(options.data))
     this.rowBack = '#efefef'
     this.headBack = '#ddd'
-    this.data = (JSON.parse(JSON.stringify(this.data)))
-    
 
     this.render()
   }
 
   resetData(data) {
-    this.data = (JSON.parse(JSON.stringify(data)))
+    if (data) {
+      this.data = JSON.parse(JSON.stringify(data))
+    } else {
+      this.data = JSON.parse(JSON.stringify(this.data))
+    }
     this.render()
   }
   getValueFromEditor(col, row) {
@@ -141,7 +150,7 @@ class Editor {
     }
     let el = document.createElement(eT)
 
-    if (type == 'a' || type == 'text' || type == 'checklist') {
+    if (type == 'a' || type == 'text' || type == 'checklist' || type == 'time') {
       el.innerHTML = data
     } else if (type == 'checkbox') {
       el.type = 'checkbox'
@@ -178,17 +187,19 @@ class Editor {
     } else if (type == 'checklist') {
       el.classList.add('dropdown-check-list')
       let a = document.createElement('span')
-      a.classList.add('anchor')
-      a.setAttribute('onclick', 'l(this);sheet.onCellClick(this.parentElement.parentElement, "close")')
+      //a.classList.add('anchor')
+      a.setAttribute('onclick', 'sheet.onCellClick(this.parentElement.parentElement, "close")')
       a.style.setProperty('min-width', '30px')
-      a.style.setProperty('min-height', '15px')
+      a.style.setProperty('min-height', '20px')
+      a.style.setProperty('margin', '-1px')
       a.innerHTML = this.data[row][col]
       el.append(a)
       let ul = document.createElement('ul')
-      ul.style.setProperty('position', 'fixed')
+      ul.style.setProperty('position', 'absolute')
       ul.style.setProperty('background', '#dddddd')
       ul.style.setProperty('margin-top', '5px')
       ul.style.setProperty('margin-left', '-6px')
+      ul.style.setProperty('text-align', 'left')
       ul.classList.add('items')
       let options = this.columns[coli].editor.options.listItems
       for (var op in options) {
@@ -196,6 +207,9 @@ class Editor {
         let inp = document.createElement('input')
         let txt = document.createElement('a')
         inp.type = 'checkbox'
+        if (this.data[row][col].includes(options[op].value)) {
+          inp.setAttribute('checked', true)
+        }
         txt.innerHTML = options[op].text
         opt.style.setProperty('list-style-type', 'none')
         opt.style.setProperty('margin-left', '-40px')
@@ -203,8 +217,37 @@ class Editor {
         opt.innerHTML = inp.outerHTML + txt.outerHTML
         ul.append(opt)
       }
+      el.addEventListener('keypress', function (ev) { if (ev.code == 'Enter') { alert(this); this.blur() } })
       el.append(ul)
       el.setAttribute('customtype', 'checklist')
+    } else if (type == 'date') {
+      let container = document.createElement('div')
+      let picker = new TP(container, {  })
+      // class TP {
+      //   constructor(props) {
+      //     var container = document.createElement('div')
+      //     var picker = new TimePicker(container, {
+
+      //     })
+      //     this.container = container
+      //     this.picker = picker
+      //     this.timeFormat = props.columnInfo.editor.options.format
+      //   }
+      //   getElement() { return this.container }
+      //   getValue() {
+      //     let toReturn
+      //     if (this.timeFormat == 'hh:mm A') {
+      //       toReturn = militaryToStandard(this.picker.getHour() + ":" + this.picker.getMinute())
+      //     } else if (this.timeFormat == 'hh:mm') {
+      //       let hr = this.picker.getHour()
+      //       let min = String(this.picker.getMinute())
+      //       if (min.length == 1) { min = "0" + min }
+      //       toReturn = hr + ":" + min
+      //     }
+      //     return toReturn
+      //   }
+      //   mounted() { this.el.select(); }
+      // }
     }
     let { attrs, style } = this.columns[coli].editor.options
     for (var attr in attrs) {
@@ -226,25 +269,39 @@ class Editor {
       el.innerHTML = this.columns[col].header
       el.style.setProperty('margin', "10px")
       el.style.setProperty('padding', '5px')
+      el.style.setProperty('text-align', 'center')
       header.append(el)
     }
     header.style.setProperty('background', this.headBack)
     header.style.setProperty('font-weight', 'bold')
     table.style.setProperty('background', '#999')
     table.style.setProperty('font-size', '25px')
+    table.style.setProperty('margin-bottom', '200px')
     table.append(header)
 
-    for (var row in this.data) {
+    for (let row in this.data) {
       let rowEl = document.createElement('tr')
-      for (var col in this.data[row]) {
+      for (let col in this.data[row]) {
         let colEl = document.createElement('td')
+        let coli = this.columns.findIndex((c) => c.name === col)
         colEl.setAttribute('row', row)
         colEl.setAttribute('col', col)
-        //let coli = this.columns.findIndex((c) => c.name === col)
+        if (this.columns[coli].editor.type == 'checklist') {
+          if (this.data[row]['info'] == 's') {
+            colEl.setAttribute('onclick', 'sheet.onCellClick(this)')
+          } else {
+            colEl.style.setProperty('background', '#ddd')
+            this.data[row][col] = ''
+          }
+        } else {
+          colEl.setAttribute('onclick', 'sheet.onCellClick(this)')
+        }
+
+
+        colEl.style.setProperty('padding', '5px')
+        colEl.style.setProperty('text-align', 'center')
 
         let el = this.createElm(row, col)
-        colEl.setAttribute('onclick', 'sheet.onCellClick(this)')
-        colEl.style.setProperty('padding', '5px')
         colEl.append(el)
         rowEl.innerHTML += colEl.outerHTML
       }
@@ -253,7 +310,7 @@ class Editor {
       table.append(rowEl)
     }
     this.el.innerHTML = table.outerHTML
-    document.getElementById('datatxt').value = JSON.stringify(this.data)
+    //document.getElementById('datatxt').value = JSON.stringify(this.data)
   }
 
   onCellClick(el, option) {
@@ -267,10 +324,11 @@ class Editor {
       this.render()
     } else if (customtype == 'checklist') {
       if (option == 'close') {
+        //alert('cloooooooooose')
         let options = this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems
         let dat = ''
         for (var i = 0; i < options.length; i++) {
-          l(el.children[0].children[1].children[i].children[0].checked)
+          //alert(el.children[0].children[1].children[i].children[0].checked)
           if (el.children[0].children[1].children[i].children[0].checked) {
             if (dat) { dat += ", " }
             dat += this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems[i].value
@@ -291,11 +349,7 @@ class Editor {
           let box = el.children[0]
           box.value = sheet.data[row][col]
           box.select()
-          box.addEventListener('keypress', function (ev) {
-            if (ev.code == 'Enter') {
-              this.blur()
-            }
-          })
+          box.addEventListener('keypress', function (ev) { if (ev.code == 'Enter') { this.blur() } })
           box.addEventListener('blur', function (ev) {
             ev.preventDefault()
             let row = this.parentElement.getAttribute('row')
@@ -309,9 +363,9 @@ class Editor {
       }
     }
   }
-  
-}
 
+}
+const TP = tui.TimePicker
 var l = console.log
 var w = console.warn
 </script>
