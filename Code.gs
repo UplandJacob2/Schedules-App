@@ -25,62 +25,43 @@ function doGet(q) {
 
     return HtmlService.createHtmlOutput(HtmlService.createTemplateFromFile('confirmSignUp').evaluate()).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
   } else if (doit == 'api') {
-    if (!q.parameter.item){ err("Item required."); }
-    let item = q.parameter.item
-    if (item == 'sch') {
-      if (!q.parameter.action) { err("Action required."); }
-      if (!q.parameter.email) { err("Email required."); }
-      if (!q.parameter.token) { err("Token required."); }
-      let {action, email, token} = q.parameter
-      try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)}
+    api(q.parameter)
+  }
+}
 
-      try {var file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()}
-      catch { w('no file for '+email); var file = null }
-      
-      if (action == 'delete'){
-        if (!file) { err('file not found') }
-        file.setTrashed(true)
-        return HtmlService.createHtmlOutput('done')
+function api (parameter) {
+  if (!parameter.item){ err("Item required."); }
+  let item = parameter.item
+  if (item == 'sch') {
+    if (!parameter.action) { err("Action required."); }
+    if (!parameter.email) { err("Email required."); }
+    if (!parameter.token) { err("Token required."); }
+    let {action, email, token} = parameter
+    try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)}
 
-      } else if (action == 'edit') {
-        if (!file) { err('file not found') }
-        if (!q.parameter.val){ err('val required')}
-        let {val} = q.parameter
-        let fileSets = {title: email+'.json', mimeType: 'application/json'};
-        let blob = Utilities.newBlob(val, "application/json");
-        Drive.Files.update(fileSets, file.getId(), blob)
-        return HtmlService.createHtmlOutput('done')
+    try {var file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()}
+    catch { w('no file for '+email); var file = null }
+    
+    if (action == 'delete'){
+      if (!file) { err('file not found') }
+      file.setTrashed(true)
+      return HtmlService.createHtmlOutput('done')
 
-      } else if (action == 'get') {
-        let data
-        try {data = file.getBlob().getDataAsString()}
-        catch { let onfail //////////////////   onfail
-          if (q.parameter.onfail) {onfail = q.parameter.onfail}
-          //////   if the file we are looking for is trashed
-          let files = DriveApp.getTrashedFiles()
-          let fileToRecover = null
-          while (files.hasNext()){
-            let f = files.next()
-            if (f.getName() == email+".json"){
-              fileToRecover = f
-            }
-          }
-          if (onfail == 'recover'){
-            fileToRecover.setTrashed(false)
-            try {var nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()}
-            catch { w('no file for '+email); var nfile = null }
-            return HtmlService.createHtmlOutput(nfile.getBlob().getDataAsString())
-          } else if (onfail == "new") {
-            DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').createFile(email+'.json', '{"info":"s","class":"Some Class","b":"","days":""}')
-            try {var nnfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()}
-            catch { w('no file for '+email); var nnfile = null }
-            return HtmlService.createHtmlOutput(nnfile.getBlob().getDataAsString())
-          } else if (onfail) {err('invalid onfail')
-          } else if (fileToRecover) {err('file is trashed')}
-        }
-        l(data)
-        return HtmlService.createHtmlOutput(data)
-      } else if (action == 'recover') {
+    } else if (action == 'edit') {
+      if (!file) { err('file not found') }
+      if (!parameter.val){ err('val required')}
+      let {val} = parameter
+      let fileSets = {title: email+'.json', mimeType: 'application/json'};
+      let blob = Utilities.newBlob(val, "application/json");
+      Drive.Files.update(fileSets, file.getId(), blob)
+      return HtmlService.createHtmlOutput('done')
+
+    } else if (action == 'get') {
+      let data
+      try {data = file.getBlob().getDataAsString()}
+      catch { let onfail //////////////////   onfail
+        if (parameter.onfail) {onfail = parameter.onfail}
+        //////   if the file we are looking for is trashed
         let files = DriveApp.getTrashedFiles()
         let fileToRecover = null
         while (files.hasNext()){
@@ -89,16 +70,41 @@ function doGet(q) {
             fileToRecover = f
           }
         }
-        if (fileToRecover) {
+        if (onfail == 'recover'){
           fileToRecover.setTrashed(false)
-          return HtmlService.createHtmlOutput('done').setTitle('done')
-        } else {
-          return HtmlService.createHtmlOutput('can\'t recover file').setTitle('error')
+          try {var nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()}
+          catch { w('no file for '+email); var nfile = null }
+          return HtmlService.createHtmlOutput(nfile.getBlob().getDataAsString())
+        } else if (onfail == "new") {
+          DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').createFile(email+'.json', '{"info":"s","class":"Some Class","b":"","days":""}')
+          try {var nnfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()}
+          catch { w('no file for '+email); var nnfile = null }
+          return HtmlService.createHtmlOutput(nnfile.getBlob().getDataAsString())
+        } else if (onfail) {err('invalid onfail')
+        } else if (fileToRecover) {err('file is trashed')}
+      }
+      l(data)
+      return HtmlService.createHtmlOutput(data)
+    } else if (action == 'recover') {
+      let files = DriveApp.getTrashedFiles()
+      let fileToRecover = null
+      while (files.hasNext()){
+        let f = files.next()
+        if (f.getName() == email+".json"){
+          fileToRecover = f
         }
+      }
+      if (fileToRecover) {
+        fileToRecover.setTrashed(false)
+        return HtmlService.createHtmlOutput('done').setTitle('done')
+      } else {
+        return HtmlService.createHtmlOutput('can\'t recover file').setTitle('error')
       }
     }
   }
 }
+
+
 // when html templates are evaluated, this function is called to add scripts, style, etc. to the html
 function include(filename) {return HtmlService.createHtmlOutputFromFile(filename).setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();}
 
