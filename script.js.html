@@ -2,7 +2,7 @@
 
 function openMenu() {
     document.querySelector('.nav-menu').classList.toggle("active");
-    document.querySelector('.nav-cont').classList.toggle("active");
+    document.querySelector('.menu-cont').classList.toggle("active");
 }
 
 function toggleDisplay(elmStrIn) { let elm = $('#'+elmStrIn);
@@ -65,7 +65,7 @@ function loadSheet() {
     b: false,
     days: ''
   }
-
+  getSchedules()
   sheet = new Editor({
     el: document.getElementById('testEditor'),
     columns: [
@@ -110,6 +110,26 @@ function militaryToStandard(time) {
   return timeValue
 }
 */
+function getSchedules() {
+  alert(`${getEmail()}   ${getToken()}`)
+  google.script.run.withSuccessHandler(schedulesGotten).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
+  // fetch(`https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbzv2UgZCex9zopPEJfTSYoK0gtrf7Yfszb1WO6UCSQy/dev?do=api&email=${getEmail()}token=${getToken()}&action=get&item=sch`)
+  // .then(response => response.json())
+  // .then(data => {
+  //   alert(data);
+  //   //console.log(data.title);
+  // });
+  // .catch(error => {
+  //   alert(error);
+  // });
+
+}
+
+// async function getSchedules() {
+//   const response = await fetch(`https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbzv2UgZCex9zopPEJfTSYoK0gtrf7Yfszb1WO6UCSQy/dev?do=api&email=${getEmail()}token=${getToken()}&action=get&item=sch`, { redirect: "follow" })
+//   const json = await response.json()
+//   alert(json)
+// }
 
 class Editor {
   constructor(options) {
