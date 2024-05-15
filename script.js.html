@@ -3,7 +3,7 @@ var sheet
 function openMenu() {
     document.querySelector('.nav-menu').classList.toggle("active");
     document.querySelector('.menu-cont').classList.toggle("active");
-    if (window.innerWidth < 668) {
+    if (window.innerWidth > 668) {
       alert('asdg')
       if (document.querySelector('.menu-cont').contains('active')) { // inactive menu
         document.getElementById('main').style.setProperty('width', '100%')
@@ -13,8 +13,8 @@ function openMenu() {
     } else {document.getElementById('main').style.setProperty('width', '100%')}
 }
 
-function toggleDisplay(elmStrIn) { let elm = $('#'+elmStrIn);
-  if (elm.css('display') == "none") { elm.css('display', 'block'); }  else  { elm.css('display', 'none'); }
+function toggleDisplay(elmStrIn) { let elm = $('#'+elmStrIn)
+  if (elm.css('display') == "none") { elm.css('display', 'block') }  else  { elm.css('display', 'none') }
 }
 
 /*
