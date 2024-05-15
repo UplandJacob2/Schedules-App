@@ -1,8 +1,16 @@
 <script>
-
+var sheet
 function openMenu() {
     document.querySelector('.nav-menu').classList.toggle("active");
     document.querySelector('.menu-cont').classList.toggle("active");
+    if (window.innerWidth < 668) {
+      alert('asdg')
+      if (document.querySelector('.menu-cont').contains('active')) { // inactive menu
+        document.getElementById('main').style.setProperty('width', '100%')
+      } else { // active menu
+        document.getElementById('main').style.setProperty('width', 'calc(100% - 130px)')
+      }
+    } else {document.getElementById('main').style.setProperty('width', '100%')}
 }
 
 function toggleDisplay(elmStrIn) { let elm = $('#'+elmStrIn);
@@ -46,26 +54,23 @@ window.onload = function () {
   const signInForm = document.getElementById('signInForm');
   signInForm.addEventListener('submit', signInF);
 }
-
-
+const firstRow = {
+  info: 's',
+  class: 'Some Class',
+  strt: '',
+  end: '',
+  b: false,
+  days: 'Mon, Wed, Fri'
+}
+const emptyRow = {
+  info: '',
+  class: 'Some Class',
+  strt: '',
+  end: '',
+  b: false,
+  days: ''
+}
 function loadSheet() {
-  const firstRow = {
-    info: 's',
-    class: 'Some Class',
-    strt: '',
-    end: '',
-    b: false,
-    days: 'Mon, Wed, Fri'
-  }
-  const emptyRow = {
-    info: '',
-    class: 'Some Class',
-    strt: '',
-    end: '',
-    b: false,
-    days: ''
-  }
-  getSchedules()
   sheet = new Editor({
     el: document.getElementById('testEditor'),
     columns: [
@@ -88,6 +93,10 @@ function loadSheet() {
   addRowBt.addEventListener('click', function (ev) { sheet.data.push(emptyRow); sheet.resetData() })
   const rmvRowBt = document.getElementById('removeRow')
   rmvRowBt.addEventListener('click', function (ev) { sheet.data.pop(); sheet.resetData() })
+  const saveBt = document.getElementById('saveSch')
+  saveBt.addEventListener('click', function (ev) { saveSchedules() })
+
+  getSchedules()
 }
 
 /*
@@ -111,25 +120,37 @@ function militaryToStandard(time) {
 }
 */
 function getSchedules() {
-  alert(`${getEmail()}   ${getToken()}`)
-  google.script.run.withSuccessHandler(schedulesGotten).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
-  // fetch(`https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbzv2UgZCex9zopPEJfTSYoK0gtrf7Yfszb1WO6UCSQy/dev?do=api&email=${getEmail()}token=${getToken()}&action=get&item=sch`)
-  // .then(response => response.json())
-  // .then(data => {
-  //   alert(data);
-  //   //console.log(data.title);
-  // });
-  // .catch(error => {
-  //   alert(error);
-  // });
-
+  google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
 }
-
-// async function getSchedules() {
-//   const response = await fetch(`https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbzv2UgZCex9zopPEJfTSYoK0gtrf7Yfszb1WO6UCSQy/dev?do=api&email=${getEmail()}token=${getToken()}&action=get&item=sch`, { redirect: "follow" })
-//   const json = await response.json()
-//   alert(json)
-// }
+function getSchedulesSuccess(response) {
+  sheet.data = JSON.parse(response)
+  if (sheet.data == []) {
+    sheet.data = [firstRow, emptyRow, emptyRow]
+  }
+  sheet.resetData()
+}
+function getSchedulesFail(err) {
+  alert(err)
+  error('error getting schedule for editing', err)
+}
+function saveSchedules() {
+  google.script.run.withSuccessHandler(saveSchedulesSuccess).withFailureHandler(saveSchedulesFail).api({ email: getEmail(), action: 'edit', token: getToken(), item: 'sch', val: JSON.stringify(sheet.data) })
+  document.getElementById('saveSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+}
+function saveSchedulesSuccess(response) {
+  document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"></ion-icon>'
+  setTimeout(function() {
+    document.getElementById('saveSch').innerHTML = 'Save'
+  }, 4000)
+}
+function saveSchedulesFail(err) {
+  document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
+  setTimeout(function() {
+    document.getElementById('saveSch').innerHTML = 'Save'
+  }, 4000)
+  alert(err)
+  error('error saving schedule for editing', err)
+}
 
 class Editor {
   constructor(options) {
@@ -142,21 +163,25 @@ class Editor {
 
     this.render()
   }
-
+  /**
+   * set data of sheet
+   * input JSON or nothing
+   * if nothing: reload data
+  **/
   resetData(data) {
     if (data) {
-      this.data = JSON.parse(JSON.stringify(data))
+      this.data = JSON.parse(data)
     } else {
       this.data = JSON.parse(JSON.stringify(this.data))
     }
     this.render()
   }
-  getValueFromEditor(col, row) {
-    let type = this.columns[col].editor.type
-    if (type == 'text') {
+  // getValueFromEditor(col, row) {
+  //   let type = this.columns[col].editor.type
+  //   if (type == 'text') {
 
-    }
-  }
+  //   }
+  // }
   createElm(row, col) {
     let coli = this.columns.findIndex((c) => c.name === col)
     let type = this.columns[coli].editor.type
@@ -279,7 +304,6 @@ class Editor {
     return el
   }
 
-
   render() {
     //alert('adsf')
     let table = document.createElement('table')
@@ -306,7 +330,8 @@ class Editor {
         let coli = this.columns.findIndex((c) => c.name === col)
         colEl.setAttribute('row', row)
         colEl.setAttribute('col', col)
-        if (this.columns[coli].editor.type == 'checklist') {
+
+        if (this.columns[coli].name == 'days') {
           if (this.data[row]['info'] == 's') {
             colEl.setAttribute('onclick', 'sheet.onCellClick(this)')
           } else {
@@ -315,6 +340,13 @@ class Editor {
           }
         } else {
           colEl.setAttribute('onclick', 'sheet.onCellClick(this)')
+        }
+        if (this.columns[coli].name == 'class') {
+          if (this.data[row]['b']) {
+            colEl.style.setProperty('font-weight', 'bold')
+          } else {
+            colEl.style.setProperty('font-weight', 'normal')
+          }
         }
 
 
