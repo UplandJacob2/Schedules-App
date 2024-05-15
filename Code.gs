@@ -25,14 +25,16 @@ function doGet(q) {
 
     return HtmlService.createHtmlOutput(HtmlService.createTemplateFromFile('confirmSignUp').evaluate()).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
   } else if (doit == 'api') {
-    api(q.parameter)
+    return HtmlService.createHtmlOutput(api(q.parameter))
   }
 }
 
 function api (parameter) {
+  l(parameter)
   if (!parameter.item){ err("Item required."); }
   let item = parameter.item
   if (item == 'sch') {
+    l('schedule data')
     if (!parameter.action) { err("Action required."); }
     if (!parameter.email) { err("Email required."); }
     if (!parameter.token) { err("Token required."); }
@@ -45,7 +47,7 @@ function api (parameter) {
     if (action == 'delete'){
       if (!file) { err('file not found') }
       file.setTrashed(true)
-      return HtmlService.createHtmlOutput('done')
+      return 'done'
 
     } else if (action == 'edit') {
       if (!file) { err('file not found') }
@@ -53,8 +55,9 @@ function api (parameter) {
       let {val} = parameter
       let fileSets = {title: email+'.json', mimeType: 'application/json'};
       let blob = Utilities.newBlob(val, "application/json");
+      l('edit to '+val)
       Drive.Files.update(fileSets, file.getId(), blob)
-      return HtmlService.createHtmlOutput('done')
+      return 'done'
 
     } else if (action == 'get') {
       let data
@@ -84,7 +87,7 @@ function api (parameter) {
         } else if (fileToRecover) {err('file is trashed')}
       }
       l(data)
-      return HtmlService.createHtmlOutput(data)
+      return data
     } else if (action == 'recover') {
       let files = DriveApp.getTrashedFiles()
       let fileToRecover = null
@@ -96,9 +99,9 @@ function api (parameter) {
       }
       if (fileToRecover) {
         fileToRecover.setTrashed(false)
-        return HtmlService.createHtmlOutput('done').setTitle('done')
+        return 'done'
       } else {
-        return HtmlService.createHtmlOutput('can\'t recover file').setTitle('error')
+        err('can\'t recover file')
       }
     }
   }
