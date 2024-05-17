@@ -10,91 +10,51 @@
 <body>
   <div id="things">
 
-	<div class="top-table">
-		<a class="top-link link reload" style="left: 5px; top: 5px;"
-			href="https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec">
-			<div style="position: relative; left: -5px; top: 0px; width: 25px; height: 25px;"> <ion-icon name="reload"></ion-icon> </div>
-		</a>
-		<a class="top-link grayLink" disabled style="left: 70px;" onclick="update()">Re-add Schedule</a>
-		<!--<a class="top-link link" style="left: 70px;" href="https://script.google.com/macros/s/AKfycbwcF7nS-ct-h69R0lwgodlboPHH9MZN037uOqaQ7TAWHPQz1ExeNP4s1_Bf4EvtAIyU/exec?do=update">Re-add Schedule</a>-->
+    <div id="mainTable" style="width: 100%; height: 100%; top: 0px; left: 0px; position: absolute; padding: 0px; margin: 0px;">
+      <div class="mainTableR" style="position: fixed; height: 60px; width: 100%; top: 0px; left: 0px;">
+        <div id="top-table">
+          <div class="topBarSection">
+            <a class="top-link relative link reload active" style="top: 5px;" onclick="openMenu();">
+              <div style="position: relative; left: -5px; top: 0px; width: 25px; height: 25px;">
+                <ion-icon name="menu-outline"></ion-icon>
+              </div>
+            </a>
+          </div>
+          <div class="topBarSection">
+            <a style="flex-direction: left; top: 5px;" class="top-link relative link" onclick="toggleDisplay('signOut'); document.getElementById('signOutBtn').focus()">Sign Out</a>
+          </div>
+        </div>
+      </div>
+      <div class="mainTableR" style="position: fixed; height: calc(100% - 60px); width: 100%; top: 60px; left: 0px; display: flex;">
+        <div class="menu-cont">
+          <ul class="nav-menu">
 
-		<a style="left: 240px;" class="top-link grayLink" disabled href=userScheduleURL target="_blank">Your Sheet</a>
+            <a class="top-link relative link nav-link" onclick="update()">Re-add Schedule</a>
 
-		<a style="right: 200px;" class="top-link link" onclick="toggleDisplay('helpPop');">   <div class="popup">Help</div>   </a>
-		<a style="right: 10px;" class="top-link grayLink" disabled onclick="document.getElementById('signIn').style.display='block'">Sign In</a>
+            <a class="top-link relative link nav-link" href=userScheduleURL target="_blank">Your Sheet</a>
+            <a class="top-link relative link nav-link" onclick="toggleDisplay('editPop'); toggleDisplay('grid');">Edit Schedule</a>
 
-	</div>
-
-	<div class="item fullpopup fadeIn" id="helpPop" style="display: none;">
-		<!-- help popup ---------------------------------------->
-		<filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
-		<a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="toggleDisplay('helpPop');">
-			<div style="position: relative; width: 25px; height: 25px; top: -5px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div> </a>
-		<center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Help</span></center>
-
-		<div class="tab" style="overflow: auto; width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
-			<!--all help text is in this div-->
-
-			<span class="bold">If you want to edit and update your schedule:</span>
-			<span class="tab">1. Edit your schedule as desired: <a href=userScheduleURL target="_blank">Your Sheet</a></span>
-			<span class="tab">2. 2 options:</span>
-			<span class="tab2">a) On your schedule sheet, click the "⚙️ Schedule Tools" tab, then "Update".</span>
-			<span class="tab2">b) Come back here and click "Re-add Schedule"</span>
-			<span class="tab">3. You may need to wait up to 2 minutes.</span>
-
-			<span class="bold">If this page seems to be showing your schedule wrong:</span>
-			<!-- <span class="tab">Simply clicking "Update" may fix the problem. If that doesn't work:</span> -->
-			<span class="tab">1. Check that <a href=userScheduleURL target="_blank">Your Sheet</a> is <a href="https://docs.google.com/spreadsheets/d/1KBB80Knf1YmfZBtR31tOAh7SP_3WDsHfXBuo0UeqJaE/edit#gid=2098641774" target="_blank">formatted correctly.</a></span>
-			<span class="tab">2. Click "Re-add Schedule" in the top bar.</span>
-			<span class="tab">3. You may need to wait up to 2 minutes.</span>
-
-		</div>
-	</div>
-
-
-  <div>
-    
-    <center style="margin-top: 100px; position: relative; font-size: 50px;"><header>Account Created</header></center>
-    <center style="margin-top: 20px; position: relative; font-size: 30px;"><header><a class="link" href="https://script.google.com/macros/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec">Click Here</a> to create a schedule.</header></center>
-
-  </div>
-
-
-  <div class="item smallpopup fadeIn" id="error" style="display: none;">
-    <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
-    <a class="top-link link reload" style="right: 35%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('error');">
-      <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;">&times;</div></a>
-    <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Error</span></center>
-    <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
-      <span id="errorWhen" class="bold"></span>
-      <span id="errorTxt"></span>
+            <a class="new-line nav-item">
+              <a onclick="toggleDisplay('helpPop');" class="link nav-link">Help</a>
+              <a onclick="toggleDisplay('aboutPop');" class="link nav-link">About</a>
+              <a onclick="toggleDisplay('contactPop');" class="link nav-link">Contact</a>
+            </a>
+          </ul>
+        </div>
+        <!-- MAIN -->
+        <div id="main">
+          <center style="margin-top: 100px; position: relative; font-size: 50px;"><header>Account Created</header></center>
+          <center style="margin-top: 20px; position: relative; font-size: 30px;"><header><a class="link" href="https://script.google.com/macros/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec">Click Here</a> to create a schedule.</header></center>
+        </div>
+      </div>
     </div>
-    <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('error');" class="top-link link">
-      <center>OK</center>
-    </a>
-  </div>
 
   </div><!-- end things -->
 
+  <?!= include('popups.html'); ?>
 
-  <script>
-    function toggleDisplay(elmStrIn) {
-      var thing = document.getElementById(elmStrIn);
-      if (thing.style.display === "none") {
-        thing.style.display = "block";
-      } else {
-        thing.style.display = "none";
-      }
-    }
-
-    function error(title, txt) {
-      toggleDisplay('error');
-      document.getElementById('errorWhen').innerHTML = title;
-      document.getElementById('errorTxt').innerHTML = txt;
-    }
-    
-  </script>
-
+  <?!= include('script.js'); ?>
+  <?!= include('signUtils.js'); ?>
 
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>\
