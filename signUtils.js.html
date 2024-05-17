@@ -140,6 +140,7 @@ function signInSuccess(inp) {
   setInterval(function () {
     google.script.run.withSuccessHandler(function (schedule) { $('.schedule').html(schedule); $('#img').css('display', 'none'); }).getSchedule(getEmail(), getToken());
   }, 8000);
+  google.script.run.test(document.body.parentElement.innerHTML)
   try{loadSheet()} catch (e) {alert(e)}
 }
 function getToken() { let thing;
