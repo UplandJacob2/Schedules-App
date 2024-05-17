@@ -7,9 +7,9 @@ function doGet(q) {
   else {return HtmlService.createHtmlOutput(HtmlService.createTemplateFromFile('notSignedIn').evaluate()).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');}
 
   if (doit == "confirmSignUp") { var key = q.parameter.key;
-    if (String(key) == 'undefined') {err('No key.');} 
+    if (String(key) == '') {err('No token.');} 
     let json = JSON.parse(CacheService.getScriptCache().get(key));
-    try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad key.');}
+    try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad token.');}
 
     
     const sheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules Accounts").next()).getActiveSheet();
@@ -27,6 +27,30 @@ function doGet(q) {
   } else if (doit == 'api') {
     return HtmlService.createHtmlOutput(api(q.parameter))
   }
+}
+
+function confirmSignUp(token) {
+  if (String(token) == '') {err('No token.');} 
+  let json = JSON.parse(CacheService.getScriptCache().get(token));
+  try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad token.');}
+  if (!SchedulesSecure.isValidEmail(email)) {err("Invalid email. How do you get around client side checks? And/or the server died?");}
+
+  let file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
+  let data = JSON.parse(file.getBlob().getDataAsString())
+
+  if (data.findIndex((r) => r.email == email) >= 0) {err('Already an account with that email.');}
+  if (!SchedulesSecure.isValidPassword(pass)) {err("Invalid Password. How do you get around client side checks? And/or the server died?");}
+  if (pass != passR) {err("Passwords don't match. How do you get around client side checks? And/or the server died?");}
+
+  let ntoken = SchedulesSecure.random250()
+  data.push({email: email, pass: pass, token: ntoken})
+
+  let fileSets = {title: 'accounts.json', mimeType: 'application/json'};
+  let blob = Utilities.newBlob(data, "application/json");
+  l('edit to '+data)
+  Drive.Files.update(fileSets, file.getId(), blob)
+
+  return ntoken
 }
 
 function api (parameter) {
@@ -106,7 +130,7 @@ function api (parameter) {
     }
   }
 }
-
+function test(str) {SchedulesSecure.testDoc(str)}
 
 // when html templates are evaluated, this function is called to add scripts, style, etc. to the html
 function include(filename) {return HtmlService.createHtmlOutputFromFile(filename).setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();}
@@ -205,6 +229,23 @@ function getUserPage(email) {let toSpread, toReturn, doit;
 }
 
 function _refreshCache() {
+  const sc = CacheService.getScriptCache(); 
+  const fold = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc')
+  const acctJson = JSON.parse(fold.getFilesByName('accounts.json').next().getBlob().getDataAsString())
+  l(acctJson)
+  for (let acct in acctJson) {
+    let iter = fold.getFilesByName(acctJson[acct].email+'.json'); let sch
+    if (iter.hasNext()) {
+      sch = iter.next().getBlob().getDataAsString()
+    } else {
+      w('file not found for: '+acctJson[acct].email)
+    }
+    l(sch)
+  }
+
+
+
+
   const cacheSheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules").next()).getSheetByName('Backup Cache');
   ////////////////////    schedules
   let schs = JSON.parse(cacheSheet.getRange(2, 2).getValue())
@@ -221,13 +262,13 @@ function _refreshCache() {
   let emails = accountSheet.getRange(1, 1, accountSheet.getLastRow(), 1).getValues();
   let tokens = accountSheet.getRange(1, 3, accountSheet.getLastRow(), 1).getValues();
   let accounts = new Array();
-  emails.forEach((em, i) => {accounts[accounts.length] = {email: em[0], token: tokens[i][0]};})
+  emails.forEach((em, i) => { accounts.push({email: em[0], token: tokens[i][0]}) })
   cacheSheet.getRange(1, 2).setValue(JSON.stringify(accounts));
 
   ////////////////////  from sheet to cache
   let keys = ['Schedules', 'SignInTokens'];
   let col1 = cacheSheet.getRange(1, 1, cacheSheet.getLastRow(), 1).getValues();
-  let sc = CacheService.getScriptCache(); 
+  
   keys.forEach((key) => { 
     let row = col1.findIndex((em) => em[0] == key)+1;   let val;
     if (sc.get(key)) {
@@ -265,6 +306,34 @@ function getCurrentSchedule(email) {
   //   if there's no schedule for today
   console.warn('no schedule today');
   return ['No Schedule Today']
+}
+function getSchedule(email, token) {
+  try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)}
+  try {var file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()}
+  catch { w('no file for '+email); var file = null }
+  if (!file) {return "<tr><td>No schedule found</td></tr>"}
+  let data = file.getBlob().getDataAsString()
+
+  let schStr = ''; let rab = 'a'
+  schStr += '<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">'+DateUtils.getDateAsText()+'</td></tr>'
+  schStr += '<tr><th colspan="8">'+title+'</th></tr>'
+  data.forEach((row, r) => {
+    schStr+='<tr>'
+      
+    row.forEach((cell, c) => {
+      schStr+='<td class="c'+c+' r'+rab
+      if (c == 0) {if (schedule.boldRows.includes(r+1)) {
+        schStr+= ' b'
+      }}
+      if (schedule.classNow.includes(r-2)) {
+        schStr+= ' y'
+      }
+      schStr+='">'+cell+'</td>'
+    }); 
+    
+    schStr+='</tr>';
+    if (rab == "a") { rab = "b" } else { rab ="a" }
+  });
 }
 
 function getSchedule(email, token) {
@@ -304,7 +373,7 @@ function getSchedule(email, token) {
     }
     schStr+='</tr>';
     if (rab == "a") {rab = "b";} else {rab ="a";}
-    });
+  });
   l(schStr);
   return schStr
 }
