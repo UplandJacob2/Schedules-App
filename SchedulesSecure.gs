@@ -13,8 +13,12 @@ SchedulesSecure.verify = function(email, token) {
   // if (sheet.getRange(row, 3).getValue() == token) {
   //   console.log('correct token'); return true
   // } else {return false}
-  const sc = CacheService.getScriptCache()
-  let accounts = JSON.parse(sc.get('SignInTokens'));
+
+  const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
+  const accounts = JSON.parse(file.getBlob().getDataAsString())
+
+  //const sc = CacheService.getScriptCache()
+  //let accounts = JSON.parse(sc.get('SignInTokens'));
   let i = accounts.findIndex((val) => val.email.toLowerCase() == email.toLowerCase())
   if (i < 0) {// if we can't find an account with email
     if (!SchedulesSecure.isValidEmail(email)) {throw new Error('Bad email.');} // check if email is valid
@@ -28,7 +32,6 @@ SchedulesSecure.verify = function(email, token) {
     }
   }
 }
-
 
 SchedulesSecure.testDoc = function(str) {
   DocumentApp.openById('1NUtowdsYBC1Kq00xtr0VYsxnbbZBt8ROt01P1-EXeXo').getBody().setText(str);
@@ -55,6 +58,7 @@ SchedulesSecure.isValidPassword = function(pass) {
     (pass.match(/(.){8,}/g))  // must be at least 8 characters
   )
 }
+// DEPRECATED
 /**
  * updates the values to tell the script what events are active
  * 
@@ -79,8 +83,7 @@ SchedulesSecure.updateCurrentClass = function(schedule) {let classNows = new Arr
     lastHr = eHr
   } schedule.classNow = classNows; return schedule
 }
-
-//   TODO   get schedules from json files in Google Drive instaed of Google Sheets
+// DEPRECATED
 SchedulesSecure.getSchedules = function() {
   try {var fromSpread = SpreadsheetApp.openById("1UQXkW-jN_6WR4UqQNXLcsjvpNvluj018ziRL2JV-8Fc");}
   catch (e) {console.error('fromSpread is sad, waiting to try to access again.'+e); try {Utilities.sleep(10000); console.warn('trying again');
@@ -148,8 +151,7 @@ SchedulesSecure.getSchedules = function() {
   } Logger.log('--  --  done');
   return allGroups
 }
-
-
+// DEPRECATED
 class schedule {
   constructor(sRow, sCol, numRows, numCols, fromSheet, toSRow, toSCol, toSheet, name) {
     this.sRow = sRow; this.sCol = sCol; this.numRows = numRows; this.numCols = numCols; this.toSRow = toSRow; this.toSCol = toSCol; this.toSheet = toSheet; this.name = name; this.boldRows = new Array(); this.fromValues = fromSheet.getRange(sRow, sCol, numRows, numCols).getValues();
@@ -274,6 +276,7 @@ try {var toSpread = SpreadsheetApp.openById("1Jp8EjZEzNERAp9OMr7NjM0Xl7epQLaE-P2
 catch (e) {console.error('toSpread is sad, waiting to try to access again.'+e); try {Utilities.sleep(10000); console.warn('trying again');
   var toSpread = SpreadsheetApp.openById("1Jp8EjZEzNERAp9OMr7NjM0Xl7epQLaE-P2xcLeDnl_U");}
 catch (e) {if (!(e instanceof Error)) {e = new Error(e);} console.error(e.message);throw new Error('can\'t access \'toSpread\'');}}
+// DEPRECATED
 class scheduleGroup {
   constructor(email) {
     this.schedules = new Array(1);
