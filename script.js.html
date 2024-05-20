@@ -54,42 +54,22 @@ window.onload = function () {
   signInForm.addEventListener('submit', signInF);
 }
 
-const firstRow = {
-  info: 's',
-  class: 'Some Class',
-  strt: '',
-  end: '',
-  b: false,
-  days: 'Mon, Wed, Fri',
-  name: 'Name'
-}
-const emptyRow = {
-  info: '',
-  class: 'Some Class',
-  strt: '',
-  end: '',
-  b: false,
-  days: '',
-  name: ''
-}
+const firstRow = { info: 's', class: 'Some Class', strt: '', end: '', b: false, days: 'Mon, Wed, Fri', name: 'Schedule Name' }
+const emptyRow = { info: '',  class: 'Some Class', strt: '', end: '', b: false, days: '', name: '' }
+
 function loadSheet() {
+  let militaryTime = true; let format = ''
+  if (militaryTime) {format = 'hh:mm'} else {format = 'hh:mm A'}
   sheet = new Editor({
     el: document.getElementById('testEditor'),
     columns: [
-      { header: 'Info', name: 'info', width: 50, editor: { type: 'text', options: { attrs: { maxlength: '2' }, style: { width: '30px' } } } },
-      { header: 'Class', name: 'class', width: 200, editor: { type: 'text', options: { style: { width: 'auto' } } } },
-      { header: 'Start Time',name: 'strt', width: 100, editor: {type: 'time', options: {format: 'hh:mm A'}} },
-      { header: 'End Time',  name: 'end',  width: 100, editor: {type: 'time', options: {format: 'hh:mm A'}} },
-      { header: 'Bold', name: 'b', width: 30, editor: { type: 'checkbox', options: { checked: true, style: { "margin-left": "20px" } } } },
-      { header: 'Days', name: 'days', width: 200, editor: {
-          active: { type: 'col', if: 'info', equalTo: 's' }, 
-          type: 'checklist', options: { listItems: [{ text: 'Sun', value: 'Sun' },
-            { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' },
-            { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' }]
-          }
-        }
-      },
-      { header: 'Name', name: 'name', width: 200, editor: { active: { type: 'col', if: 'info', equalTo: 's' }, type: 'text', options: { style: { width: '200px' } } } }
+      { header: 'Info',      name: 'info', width: 50,  editor: { type: 'text', options: { attrs: {maxlength: '2'}, style: {width: '30px'} } } },
+      { header: 'Class',     name: 'class',width: 200, editor: { type: 'text', options: { style: {width: 'auto'} } } },
+      { header: 'Start Time',name: 'strt', width: 100, editor: { type: 'time', options: { format: format }} },
+      { header: 'End Time',  name: 'end',  width: 100, editor: { type: 'time', options: { format: format }} },
+      { header: 'Bold',      name: 'b',    width: 30,  editor: { type: 'checkbox', options: { checked: true, style: { "margin-left": "20px" } } } },
+      { header: 'Days',      name: 'days', width: 200, editor: { type: 'checklist',options: { listItems: [  { text: 'Sun', value: 'Sun' }, { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' }, { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' }]}, active: { type: 'col', if: 'info', equalTo: 's' } } },
+      { header: 'Name',      name: 'name', width: 200, editor: { type: 'text', options: { style: {width: '200px'} }, active: { type: 'col', if: 'info', equalTo: 's' } } }
     ],
     data: [firstRow, emptyRow, emptyRow]
   })
@@ -103,11 +83,17 @@ function loadSheet() {
       { email: getEmail(), action: 'edit', token: getToken(), item: 'sch', val: JSON.stringify(sheet.data) })
     document.getElementById('saveSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
   })
+  const deleteBt = document.getElementById('deleteSch')
+  deleteBt.addEventListener('click', function (ev) {
+    google.script.run.withSuccessHandler(deleteSchedulesSuccess).withFailureHandler(deleteSchedulesFail).api(
+      { email: getEmail(), action: 'delete', token: getToken(), item: 'sch'})
+    document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+  })
 
   google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
 }
 
-/*
+
 function militaryToStandard(time) {
   time = time.split(':'); // convert to array
   var hours = Number(time[0]);
@@ -126,31 +112,30 @@ function militaryToStandard(time) {
   timeValue += (hours >= 12) ? " PM" : " AM";  // get AM/PM
   return timeValue
 }
-*/
+
 function getSchedulesSuccess(response) {
   sheet.data = JSON.parse(response)
-  if (sheet.data == []) {
-    sheet.data = [firstRow, emptyRow, emptyRow]
-  }
+  if (sheet.data == []) { sheet.data = [firstRow, emptyRow, emptyRow] }
+  let sB = document.getElementById('saveSch')
+  sB.disabled = false;  sB.classList.toggle('grayLink');  sB.classList.toggle('link')
   sheet.resetData()
 }
-function getSchedulesFail(err) {
-  alert(err)
-  error('error getting schedule for editing', err)
-}
-function saveSchedulesSuccess(response) {
+function getSchedulesFail(err) { alert(err); error('error getting schedule for editing', err) }
+function saveSchedulesSuccess() {
   document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"></ion-icon>'
-  setTimeout(function() {
-    document.getElementById('saveSch').innerHTML = 'Save'
-  }, 4000)
+  setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000)
 }
 function saveSchedulesFail(err) {
-  document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
-  setTimeout(function() {
-    document.getElementById('saveSch').innerHTML = 'Save'
-  }, 4000)
-  alert(err)
-  error('error saving schedule for editing', err)
+  document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
+  setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000);    alert(err);    error('error saving schedule for editing', err)
+}
+function deleteSchedulesSuccess() {
+  document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"></ion-icon>'
+  setTimeout(function() { document.getElementById('deleteSch').innerHTML = 'Delete' }, 4000)
+}
+function deleteSchedulesFail(err) {
+  document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
+  setTimeout(function() { document.getElementById('deleteSch').innerHTML = 'Delete' }, 4000);   alert(err);   error('error saving schedule for editing', err)
 }
 
 class Editor {
@@ -159,8 +144,13 @@ class Editor {
     this.options = options
     this.columns = options.columns
     this.data = JSON.parse(JSON.stringify(options.data))
+    this.timeSelectCache = null
+    // colors
+    this.tableBack = '#999'
     this.rowBack = '#efefef'
     this.headBack = '#ddd'
+    this.disabledBack = '#ddd'
+    this.dropBack = '#dddddd'
 
     this.render('load')
   }
@@ -196,8 +186,14 @@ class Editor {
     }
     let el = document.createElement(eT)
 
-    if (type == 'a' || type == 'text' || type == 'checklist' || type == 'time') {
+    if (type == 'a' || type == 'text' || type == 'checklist') {
       el.innerHTML = data
+    } else if (type == 'time') {
+      if (!'military') {
+        el.innerHTML = militaryToStandard(data)
+      } else {
+        el.innerHTML = data
+      }
     } else if (type == 'checkbox') {
       el.type = 'checkbox'
       if (data) {
@@ -235,7 +231,7 @@ class Editor {
       a.innerHTML = this.data[row][col]
       el.append(a)
       let ul = document.createElement('ul')
-      ul.style.setProperties({position: 'absolute', background: '#dddddd', 'margin-top': '5px', 'margin-left': '-6px', 'text-align': 'left' })
+      ul.style.setProperties({position: 'absolute', background: this.dropBack, 'margin-top': '5px', 'margin-left': '-6px', 'text-align': 'left' })
       ul.classList.add('items')
       let options = this.columns[coli].editor.options.listItems
       for (var op in options) {
@@ -256,7 +252,7 @@ class Editor {
       el.append(ul)
       el.setAttribute('customtype', 'checklist')
     } else if (type == 'date') {
-      let picker = new TP(el, { initialHour: 8, initialMinute: 0, inputType: 'selectbox', showMeridiem: true })// change 'showMeridiem' to false for 24hr format
+      this.timeSelectCache = new TP(el, { initialHour: 8, initialMinute: 0, inputType: 'selectbox', showMeridiem: true }) // 'showMeridiem' to false for 24hr format
       // class TP {
       //   constructor(props) {
       //     var container = document.createElement('div')
@@ -305,7 +301,7 @@ class Editor {
       header.append(el)
     }
     header.style.setProperties({background: this.headBack, 'font-weight': 'bold'})
-    table.style.setProperties({background: '#999', 'font-size': '25px', 'margin-bottom': '200px'})
+    table.style.setProperties({background: this.tableBack, 'font-size': '25px', 'margin-bottom': '200px'})
     table.append(header)
 
     for (let row in this.data) {
@@ -320,44 +316,26 @@ class Editor {
           let tru = null
           if (this.columns[coli].editor.active.type == 'col') {
             if (this.columns[coli].editor.active.equalTo) {
-              if (this.data[row][this.columns[coli].editor.active.if] == this.columns[coli].editor.active.equalTo) {
-                tru = true
-              } else { tru = false }
+              if (this.data[row][this.columns[coli].editor.active.if] == this.columns[coli].editor.active.equalTo) { tru = true } else { tru = false }
             } else if (this.columns[coli].editor.active.contains) {
-              if (this.data[row][this.columns[coli].editor.active.if].includes(this.columns[coli].editor.active.contains)) {
-                tru = true
-              } else { tru = false }
+              if (this.data[row][this.columns[coli].editor.active.if].includes(this.columns[coli].editor.active.contains)) { tru = true } else { tru = false }
             } else if (this.columns[coli].editor.active.hasVal) {
-              if (this.data[row][this.columns[coli].editor.active.if]) {
-                tru = true
-              } else { tru = false }
+              if (this.data[row][this.columns[coli].editor.active.if]) { tru = true } else { tru = false }
             }
           }
           if (tru) {
             colEl.setAttribute('onclick', 'sheet.onCellClick(this)')
           } else {
-            colEl.style.setProperty('background', '#ddd')
+            colEl.style.setProperty('background', this.disabledBack)
             this.data[row][col] = ''
           }
         } else {colEl.setAttribute('onclick', 'sheet.onCellClick(this)')}
+        if (this.columns[coli].name == 'class') {
+          if (this.data[row].b) {
+            colEl.style.setProperty('font-weight', 'bold')
+          } else { colEl.style.setProperty('font-weight', 'normal') }
+        }
 
-        // if (this.columns[coli].name == 'days' || this.columns[coli].name == 'name') {
-        //   if (this.data[row]['info'] == 's') {
-        //     colEl.setAttribute('onclick', 'sheet.onCellClick(this)')
-        //   } else {
-        //     colEl.style.setProperty('background', '#ddd')
-        //     this.data[row][col] = ''
-        //   }
-        // } else {
-        //   colEl.setAttribute('onclick', 'sheet.onCellClick(this)')
-        // }
-        // if (this.columns[coli].name == 'class') {
-        //   if (this.data[row]['b']) {
-        //     colEl.style.setProperty('font-weight', 'bold')
-        //   } else {
-        //     colEl.style.setProperty('font-weight', 'normal')
-        //   }
-        // }
         colEl.style.setProperties({padding: '5px', 'text-align': 'center'})
 
         let el = this.createElm(row, col)
@@ -383,11 +361,9 @@ class Editor {
       this.render()
     } else if (customtype == 'checklist') {
       if (option == 'close') {
-        //alert('cloooooooooose')
         let options = this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems
         let dat = ''
         for (var i = 0; i < options.length; i++) {
-          //alert(el.children[0].children[1].children[i].children[0].checked)
           if (el.children[0].children[1].children[i].children[0].checked) {
             if (dat) { dat += ", " }
             dat += this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems[i].value
