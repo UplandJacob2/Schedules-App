@@ -112,7 +112,7 @@ DateUtils.today = function () {
   return day.getMonth()+1+"/"+day.getDate()+"/"+day.getFullYear();
 }
 /**
- * Returns today formated: month/day/year
+ * Returns day of week as num: 0-6
  *
  * inputs: 
  * * {string} month (3 char)
@@ -131,6 +131,43 @@ DateUtils.monthToNum = function (str) {
   const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
   months.forEach((month, i) => {if (month == str) {ans = i + 1;}});
   return ans
+}
+/**
+ * Returns day of week as 3 letters: sun, mon, tue, wed, thu, fri, sat
+ *
+ * inputs: 
+ * * {int} day
+ * 
+ * returned: day as string
+ * {string} 
+ *   * ex: 'mon'
+ * 
+ * @param {int} day as int
+ * 
+ * @return {string} day as string
+ */
+DateUtils.numDayToStr = function (num) {
+  const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+  return days[num]
+}
+
+
+DateUtils.militaryToStandard = function(time) {
+  time = time.split(':'); // convert to array
+  var hours = Number(time[0]);
+  var minutes = Number(time[1]);
+  var timeValue;
+
+  if (hours > 0 && hours <= 12) {
+    timeValue = "" + hours;
+  } else if (hours > 12) {
+    timeValue = "" + (hours - 12);
+  } else if (hours == 0) {
+    timeValue = "12";
+  }
+  timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
+  //timeValue += (hours >= 12) ? " PM" : " AM";  // get AM/PM
+  return timeValue
 }
 
 /** 
