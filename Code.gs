@@ -11,7 +11,6 @@ function doGet(q) {
     let json = JSON.parse(CacheService.getScriptCache().get(key));
     try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad token.');}
 
-    
     const sheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules Accounts").next()).getActiveSheet();
     const row = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().findIndex((em) => em[0].toLowerCase() == email.toLowerCase()) + 1;
     if (row > 0) {err('Already an account with that email.');}
@@ -46,7 +45,7 @@ function confirmSignUp(token) {
   data.push({email: email, pass: pass, token: ntoken})
 
   let fileSets = {title: 'accounts.json', mimeType: 'application/json'};
-  let blob = Utilities.newBlob(data, "application/json");
+  let blob = Utilities.newBlob(JSON.stringify(data), "application/json");
   l('edit to '+data)
   Drive.Files.update(fileSets, file.getId(), blob)
 
@@ -130,11 +129,12 @@ function api (parameter) {
     }
   }
 }
-function test(str) {SchedulesSecure.testDoc(str)}
+//function test(str) {SchedulesSecure.testDoc(str)} // edit a Google Doc to whatever, can be called from the client for testing
 
 // when html templates are evaluated, this function is called to add scripts, style, etc. to the html
 function include(filename) {return HtmlService.createHtmlOutputFromFile(filename).setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();}
 
+//DEPRECATED
 function update(email, token) {
   if (SchedulesSecure.verify(email, token)) {
     const file = DriveApp.getFilesByName(email+"'s Schedules").next();
@@ -149,14 +149,16 @@ function update(email, token) {
 function signUp (pass, passR, email) {
   console.log(pass+"   "+passR+"   "+email);
   if (!SchedulesSecure.isValidEmail(email)) {err("Invalid email. How do you get around client side checks?")}
+  const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
+  const acctJson = JSON.parse(file.getBlob().getDataAsString())
+
+  let i = acctJson.findIndex((em) => em.email[0].toLowerCase() == email.toLowerCase());
+  if (i >= 0) {err('Already an account with that email.')}
 
   const sc = CacheService.getScriptCache()
 
-  const i = JSON.parse(sc.get('SignInTokens')).findIndex((val) => val.email.toLowerCase() == email.toLowerCase())
-  if (!(i < 0)) {err('Already an account with that email.')}
-  // const sheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules Accounts").next()).getActiveSheet();
-  // const row = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().findIndex((em) => em[0].toLowerCase() == email.toLowerCase()) + 1;
-  // if (row > 0) {err('Already an account with that email.');}
+  //const i = JSON.parse(sc.get('SignInTokens')).findIndex((val) => val.email.toLowerCase() == email.toLowerCase())
+  //if (!(i < 0)) {err('Already an account with that email.')}
 
   if (!SchedulesSecure.isValidPassword(pass)) {err("Invalid Password. How do you get around client side checks?")}
   if (pass != passR) {err("Passwords don't match. How do you get around client side checks?")}
@@ -176,35 +178,48 @@ function signUp (pass, passR, email) {
   });
 }
 
-function signIn (email, pass, rm) { var rand;
-  const sheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules Accounts").next()).getActiveSheet();
-  const emails = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues();
-  let row = emails.findIndex((em) => em[0].toLowerCase() == email.toLowerCase()) + 1;
-  if (row <= 0) {err('No account with that email.')}
+function signIn (email, pass, rm) { let rand;
+  const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
+  const acctJson = JSON.parse(file.getBlob().getDataAsString())
 
-  if (sheet.getRange(row, 2).getValue() == pass) {
+  let i = acctJson.findIndex((em) => em.email[0].toLowerCase() == email.toLowerCase());
+  if (i < 0) {err('No account with that email.')}
+
+  if (acctJson[i].pass == pass) {
     console.log('correct password');
     if (rm) {
       rand = SchedulesSecure.random250()
-      sheet.getRange(row, 3).setValue(rand);
+      acctJson[i].token = rand
+
+      let fileSets = {title: 'accounts.json', mimeType: 'application/json'};
+      let blob = Utilities.newBlob(acctJson, "application/json");
+      l('edit to '+acctJson)
+      Drive.Files.update(fileSets, file.getId(), blob)
     }
-    let toReturn = new Array(getUserPage(email), rand);
-    _refreshCache(); 
+    let toReturn = [getUserPage(email), rand];
+    //_refreshCache(); 
     return toReturn
   }
   else {err('Incorrect password.');}
 }
 function signInWToken(email, token) {
   if (!SchedulesSecure.verify(email, token)) {err('Bad token.');}
-  console.log('correct token');
-  const sheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules Accounts").next()).getActiveSheet();
-  let row = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().findIndex((em) => em[0].toLowerCase() == email.toLowerCase()) + 1;
-  
-  rand = SchedulesSecure.random250();
-  sheet.getRange(row, 3).setValue(rand);
+  const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
+  const acctJson = JSON.parse(file.getBlob().getDataAsString())
 
-  let toReturn = new Array(getUserPage(email), rand);
-  _refreshCache(); 
+  let i = acctJson.findIndex((acc) => acc.email.toLowerCase() == email.toLowerCase());
+  if (i < 0) {err('No account with that email.')}
+  
+  rand = SchedulesSecure.random250()
+  acctJson[i].token = rand
+
+  let fileSets = {title: 'accounts.json', mimeType: 'application/json'};
+  let blob = Utilities.newBlob(JSON.stringify(acctJson), "application/json");
+  l('edit to '+acctJson)
+  Drive.Files.update(fileSets, file.getId(), blob)
+
+  let toReturn = [getUserPage(email), rand];
+  //_refreshCache(); 
   return toReturn
 }
 
@@ -220,7 +235,7 @@ function getUserPage(email) {let toSpread, toReturn, doit;
   if (doit == 'show') {
     const signedInTxt = HtmlService.createTemplateFromFile('Index').getRawContent();
     //  TODO       edit schedule on main website - no need for Google Sheet
-    const userScheduleURL = "https://docs.google.com/spreadsheets/d/"+UrlFetchApp.fetch('https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbwUAVQUqztZmh4u4uMCaSJxbTGcX3svhL64GbWUz8LLhvFZUq_PmaUgJAdHsdwWx4NZ/exec?do=getUserSheet&email='+email, {'method': 'get', 'muteHttpExceptions': true, 'redirect': 'follow'}).getContentText().match(/(?<=<title>)(.){1,}(?=<\/title>)/g)[0]+"/edit";
+    const userScheduleURL = "";/////////////////////////////////////////////////
     toReturn = signedInTxt.replace(/userScheduleURL/g, userScheduleURL) ;
   } else if (doit == 'askcreate') {
     var redirect = `https://script.google.com/macros/s/AKfycbwcF7nS-ct-h69R0lwgodlboPHH9MZN037uOqaQ7TAWHPQz1ExeNP4s1_Bf4EvtAIyU/exec?do=create&email=${email}`;
@@ -233,6 +248,7 @@ function _refreshCache() {
   const fold = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc')
   const acctJson = JSON.parse(fold.getFilesByName('accounts.json').next().getBlob().getDataAsString())
   l(acctJson)
+  let schInfo = []
   for (let acct in acctJson) {
     let iter = fold.getFilesByName(acctJson[acct].email+'.json'); let sch
     if (iter.hasNext()) {
@@ -241,9 +257,8 @@ function _refreshCache() {
       w('file not found for: '+acctJson[acct].email)
     }
     l(sch)
+    schInfo.push(sch)
   }
-
-
 
 
   const cacheSheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules").next()).getSheetByName('Backup Cache');
@@ -288,44 +303,66 @@ function _refreshSchedules() {
   _refreshCache();
 }
 
-
-function getCurrentSchedule(email) {
-  //const sheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules").next()).getSheetByName('Backup Cache');
-  //sheet.getRange(2, 2).setValue(JSON.stringify(SchedulesSecure.getSchedules()));  _refreshCache();
-
-  let schs = JSON.parse(CacheService.getScriptCache().get('Schedules'));
-  let schedules = schs[schs.findIndex((sch) => sch.email.toLowerCase() == email)].schedules;
-
-  //l(schedules);
-  for (let i = 0; i<=schedules.length-1; i++) {
-    if (schedules[i][1][parseInt(new Date().getDay())]) {
-      return SchedulesSecure.updateCurrentClass(schedules[i][0])
-    }
-  }
-
-  //   if there's no schedule for today
-  console.warn('no schedule today');
-  return ['No Schedule Today']
-}
-function getSchedule(email, token) {
+function getSchedule(email, token, militaryTime) {
   try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)}
   try {var file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()}
   catch { w('no file for '+email); var file = null }
   if (!file) {return "<tr><td>No schedule found</td></tr>"}
-  let data = file.getBlob().getDataAsString()
+  let data = JSON.parse(file.getBlob().getDataAsString()); let schedule = []; let date = new Date()
+  // get schedule for today
+  for (let i in data) {
+    if (data[i].info == 's') {
+      if (data[i].days.toLowerCase().includes(DateUtils.numDayToStr(date.getDay()))) {
+        let rInfo = data[i].info; let r = i
+        while (rInfo != 'es') {
+          schedule.push(data[r])
+          r ++
+          try { rInfo = data[r].info } catch {err('no end \'es\'')}
+        }
+        schedule.push(data[r])
+      }
+    }
+  }
 
   let schStr = ''; let rab = 'a'
   schStr += '<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">'+DateUtils.getDateAsText()+'</td></tr>'
-  schStr += '<tr><th colspan="8">'+title+'</th></tr>'
-  data.forEach((row, r) => {
+  schStr += '<tr><th colspan="8">'+schedule[0].name+'</th></tr>'
+
+  let classNows = []; const minu = String(date.getMinutes())
+  if (minu.length == 1) { minu = '0'+minu }
+  const nowInt = parseInt(String(date.getHours())+minu)
+  let boldRows = []
+
+  schedule.forEach((row, r) => {
+    let strtTime = row.strt; let sHr = strtTime.split(':')[0]; let sMin = strtTime.split(':')[1]
+    let endTime = row.end;   let eHr =  endTime.split(':')[0]; let eMin =  endTime.split(':')[1]
+    const sInt = parseInt(sHr+sMin);  const eInt = parseInt(eHr+eMin)
+    if (nowInt >= sInt && nowInt <= eInt) {
+      classNows.push(row);
+    }
+    //if (!militaryTime) {strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime)}
+    if (row.b) {boldRows.push(r)}
+    schedule[r] = [row['class'], strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1]]
+  })
+  schedule.forEach((row, r) => {
     schStr+='<tr>'
-      
+    // let strtTime = row.strt
+    // let endTime = row.end
+    // let militaryTime = false //// USER SETTING LATER
+    // if (!militaryTime) {
+    //   l(strtTime, endTime)
+    //   strtTime = DateUtils.militaryToStandard(strtTime)
+    //   endTime = DateUtils.militaryToStandard(endTime)
+    // }
+    // rowDat = [row[1], strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1]]
+    l(row)
     row.forEach((cell, c) => {
       schStr+='<td class="c'+c+' r'+rab
-      if (c == 0) {if (schedule.boldRows.includes(r+1)) {
+      if (c == 0) {if (boldRows.includes(r)) {
         schStr+= ' b'
       }}
-      if (schedule.classNow.includes(r-2)) {
+      
+      if (classNows.includes(r-2)) {
         schStr+= ' y'
       }
       schStr+='">'+cell+'</td>'
@@ -334,49 +371,10 @@ function getSchedule(email, token) {
     schStr+='</tr>';
     if (rab == "a") { rab = "b" } else { rab ="a" }
   });
-}
-
-function getSchedule(email, token) {
-  if (!SchedulesSecure.verify(email, token)) {err('Bad token.');}
-
-  let scheduleRange = [['Last Updated:', DateUtils.getDateAsText(), '', '', '', '', '', '']]; 
-  let schedule = getCurrentSchedule(email);
-  schedule.fromValues.forEach((r) => {scheduleRange[scheduleRange.length] = r;})
-  // schedule.sHrs.forEach((sHr, i) => {scheduleRange[i+2][1] = sHr;});
-  schedule.sMins.forEach((sMn, i) => {scheduleRange[i+2][3] = sMn;});
-  // schedule.eHrs.forEach((eHr, i) => {scheduleRange[i+2][5] = eHr;});
-  schedule.eMins.forEach((eMn, i) => {scheduleRange[i+2][7] = eMn;});
-  l("range:    ", scheduleRange);
-
-  
-  var schStr = ''; var rab = 'a';
-  scheduleRange.forEach((row, r) => {
-    schStr+='<tr>'; 
-    if (r == 0) {
-      l(row[1])
-      var date = String(row[1])
-      schStr+='<td colspan="1">'+row[0]+'</td>'+'<td style="text-align: right;" colspan="7">'+date+' </td>';
-    } else if (r == 1) {
-      schStr+='<th colspan="8">'+row[0]+'</th>';
-    } else {
-      
-      row.forEach((cell, c) => {
-        schStr+='<td class="c'+c+' r'+rab;
-        if (c == 0) {if (schedule.boldRows.includes(r+1)) {
-          schStr+= ' b';
-        }}
-        if (schedule.classNow.includes(r-2)) {
-          schStr+= ' y';
-        }
-        schStr+='">'+cell+'</td>';
-      }); 
-    }
-    schStr+='</tr>';
-    if (rab == "a") {rab = "b";} else {rab ="a";}
-  });
-  l(schStr);
+  l(schStr)
   return schStr
 }
+
 
 
 var l = console.log
