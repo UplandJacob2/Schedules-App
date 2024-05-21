@@ -77,6 +77,7 @@ function loadSheet() {
   addRowBt.addEventListener('click', function (ev) { sheet.data.push(emptyRow); sheet.resetData() })
   const rmvRowBt = document.getElementById('removeRow')
   rmvRowBt.addEventListener('click', function (ev) { sheet.data.pop(); sheet.resetData() })
+
   const saveBt = document.getElementById('saveSch')
   saveBt.addEventListener('click', function (ev) {
     google.script.run.withSuccessHandler(saveSchedulesSuccess).withFailureHandler(saveSchedulesFail).api(
@@ -89,6 +90,7 @@ function loadSheet() {
       { email: getEmail(), action: 'delete', token: getToken(), item: 'sch'})
     document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
   })
+  
 
   google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
 }
@@ -114,28 +116,41 @@ function militaryToStandard(time) {
 }
 
 function getSchedulesSuccess(response) {
-  sheet.data = JSON.parse(response)
-  if (sheet.data == []) { sheet.data = [firstRow, emptyRow, emptyRow] }
   let sB = document.getElementById('saveSch')
-  sB.disabled = false;  sB.classList.toggle('grayLink');  sB.classList.toggle('link')
-  sheet.resetData()
+  sB.disabled = false;  sB.classList.remove('grayLink');  sB.classList.add('link')
+  let dB = document.getElementById('deleteSch')
+  dB.disabled = false;  dB.classList.remove('grayLink');  dB.classList.add('link')
+  sheet.resetData(response)
 }
-function getSchedulesFail(err) { alert(err); error('error getting schedule for editing', err) }
+function getSchedulesFail(err) { /*alert(err);*/ error('Error getting schedule for editing', err); sheet.render('none') }
 function saveSchedulesSuccess() {
   document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"></ion-icon>'
   setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000)
 }
 function saveSchedulesFail(err) {
   document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
-  setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000);    alert(err);    error('error saving schedule for editing', err)
+  setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000);      error('error saving schedule for editing', err)
 }
 function deleteSchedulesSuccess() {
   document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"></ion-icon>'
   setTimeout(function() { document.getElementById('deleteSch').innerHTML = 'Delete' }, 4000)
+  sheet.data = []; sheet.render('none')
+  let sB = document.getElementById('saveSch')
+  sB.disabled = true;  sB.classList.add('grayLink');  sB.classList.remove('link')
+  let dB = document.getElementById('deleteSch')
+  dB.disabled = true;  dB.classList.add('grayLink');  dB.classList.remove('link')
 }
 function deleteSchedulesFail(err) {
   document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
-  setTimeout(function() { document.getElementById('deleteSch').innerHTML = 'Delete' }, 4000);   alert(err);   error('error saving schedule for editing', err)
+  setTimeout(function() { document.getElementById('deleteSch').innerHTML = 'Delete' }, 4000);  error('error deleting schedule', err)
+}
+function recoverSchedulesFail(err) {
+  document.getElementById('recoverSch').innerHTML = 'Recover <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
+  setTimeout(function() { document.getElementById('recoverSch').innerHTML = 'Recover' }, 4000);error('error recovering schedule', err)
+}
+function newSchedulesFail(err) {
+  document.getElementById('recoverSch').innerHTML = 'New <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
+  setTimeout(function() { document.getElementById('newSch').innerHTML = 'New' }, 4000);        error('error creating schedule', err)
 }
 
 class Editor {
@@ -225,7 +240,6 @@ class Editor {
     } else if (type == 'checklist') {
       el.classList.add('dropdown-check-list')
       let a = document.createElement('span')
-      //a.classList.add('anchor')
       a.setAttribute('onclick', 'sheet.onCellClick(this.parentElement.parentElement, "close")')
       a.style.setProperties({'min-width': '30px', 'min-height': '20px', margin: '-1px'})
       a.innerHTML = this.data[row][col]
@@ -291,6 +305,26 @@ class Editor {
 
   render(mod) {
     if (mod == 'load') {this.el.innerHTML = '<center><img id="img" style="width: 50px; top: 100px;" src="https://shortpixel.com/img/spinner2.gif"></center>'; return}
+    else if (mod == 'none') { 
+      this.el.innerHTML = `<center> 
+        <header> No schedule found. What would you like to do?</header>
+        <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" class="link" id="recoverSch">Recover</a> 
+        <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" class="link" id="newSch">New</a> 
+      </center>`; 
+      const recoverBt = document.getElementById('recoverSch')
+      recoverBt.addEventListener('click', function (ev) {
+        google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(recoverSchedulesFail).api(
+          { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'recover'})
+        document.getElementById('recoverSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+      })
+      const newBt = document.getElementById('newSch')
+      newBt.addEventListener('click', function (ev) {
+        google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(newSchedulesFail).api(
+          { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'new'})
+        document.getElementById('newSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+      })
+      return 
+    }
     
     let table = document.createElement('table')
     let header = document.createElement('tr')
