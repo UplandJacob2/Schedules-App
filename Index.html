@@ -17,10 +17,9 @@
     <div class="menu-cont">
       <ul class="nav-menu">
 
-        <a class="top-link relative link nav-link" onclick="update()">Re-add Schedule</a>
-
-        <a class="top-link relative link nav-link" href=userScheduleURL target="_blank">Your Sheet</a>
-        <a class="top-link relative link nav-link" onclick="toggleDisplay('editPop'); toggleDisplay('grid');">Edit Schedule</a>
+        <!-- <a class="top-link relative link nav-link" onclick="update()">Re-add Schedule</a> -->
+        <!-- <a class="top-link relative link nav-link" href=userScheduleURL target="_blank">Your Sheet</a> -->
+        <a class="top-link relative link nav-link" onclick="toggleDisplay('editPop')">Edit Schedule</a>
 
         <a class="new-line nav-item">
           <a onclick="toggleDisplay('helpPop');" class="link nav-link">Help</a>
@@ -100,8 +99,7 @@
   </div>
   <div style="position: fixed; right: 10%; top: calc(8.5% + 53px); z-index: 22; font-size: 20px;">
     <div style="display: flex; flex-direction: row; justify-content: flex-end;">
-      <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" class="link" id="recoverSch">Recover</a>
-      <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" class="link" id="deleteSch">Delete</a>
+      <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" disabled='true' class="grayLink" id="deleteSch">Delete</a>
     </div>
   </div>
 
