@@ -28,30 +28,6 @@ function doGet(q) {
   }
 }
 
-function confirmSignUp(token) {
-  if (String(token) == '') {err('No token.');} 
-  let json = JSON.parse(CacheService.getScriptCache().get(token));
-  try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad token.');}
-  if (!SchedulesSecure.isValidEmail(email)) {err("Invalid email. How do you get around client side checks? And/or the server died?");}
-
-  let file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
-  let data = JSON.parse(file.getBlob().getDataAsString())
-
-  if (data.findIndex((r) => r.email == email) >= 0) {err('Already an account with that email.');}
-  if (!SchedulesSecure.isValidPassword(pass)) {err("Invalid Password. How do you get around client side checks? And/or the server died?");}
-  if (pass != passR) {err("Passwords don't match. How do you get around client side checks? And/or the server died?");}
-
-  let ntoken = SchedulesSecure.random250()
-  data.push({email: email, pass: pass, token: ntoken})
-
-  let fileSets = {title: 'accounts.json', mimeType: 'application/json'};
-  let blob = Utilities.newBlob(JSON.stringify(data), "application/json");
-  l('edit to '+data)
-  Drive.Files.update(fileSets, file.getId(), blob)
-
-  return ntoken
-}
-
 function api (parameter) {
   l(parameter)
   if (!parameter.item){ err("Item required."); }
@@ -139,18 +115,6 @@ function api (parameter) {
 // when html templates are evaluated, this function is called to add scripts, style, etc. to the html
 function include(filename) {return HtmlService.createHtmlOutputFromFile(filename).setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();}
 
-//DEPRECATED
-function update(email, token) {
-  if (SchedulesSecure.verify(email, token)) {
-    const file = DriveApp.getFilesByName(email+"'s Schedules").next();
-    //// TODO   remove call to second script
-    const thing = UrlFetchApp.fetch(`https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbwUAVQUqztZmh4u4uMCaSJxbTGcX3svhL64GbWUz8LLhvFZUq_PmaUgJAdHsdwWx4NZ/exec?do=update&email=${email}&id=${file.getId()}`, {'method': 'get', 'muteHttpExceptions': true, 'redirect': 'follow'});
-
-    console.log(thing.getContentText());
-  } else {err('Bad token.');}
-}
-
-
 function signUp (pass, passR, email) {
   console.log(pass+"   "+passR+"   "+email);
   if (!SchedulesSecure.isValidEmail(email)) {err("Invalid email. How do you get around client side checks?")}
@@ -182,7 +146,29 @@ function signUp (pass, passR, email) {
     htmlBody: htmlBody,
   });
 }
+function confirmSignUp(token) {
+  if (String(token) == '') {err('No token.');} 
+  let json = JSON.parse(CacheService.getScriptCache().get(token));
+  try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad token.');}
+  if (!SchedulesSecure.isValidEmail(email)) {err("Invalid email. How do you get around client side checks? And/or the server died?");}
 
+  let file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
+  let data = JSON.parse(file.getBlob().getDataAsString())
+
+  if (data.findIndex((r) => r.email == email) >= 0) {err('Already an account with that email.');}
+  if (!SchedulesSecure.isValidPassword(pass)) {err("Invalid Password. How do you get around client side checks? And/or the server died?");}
+  if (pass != passR) {err("Passwords don't match. How do you get around client side checks? And/or the server died?");}
+
+  let ntoken = SchedulesSecure.random250()
+  data.push({email: email, pass: pass, token: ntoken})
+
+  let fileSets = {title: 'accounts.json', mimeType: 'application/json'};
+  let blob = Utilities.newBlob(JSON.stringify(data), "application/json");
+  l('edit to '+data)
+  Drive.Files.update(fileSets, file.getId(), blob)
+
+  return ntoken
+}
 function signIn (email, pass, rm) { let rand;
   const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   const acctJson = JSON.parse(file.getBlob().getDataAsString())
@@ -201,7 +187,7 @@ function signIn (email, pass, rm) { let rand;
       l('edit to '+blob)
       Drive.Files.update(fileSets, file.getId(), blob)
     }
-    let toReturn = [getUserPage(email), rand];
+    let toReturn = [HtmlService.createTemplateFromFile('Index').getRawContent(), rand];
     //_refreshCache(); 
     return toReturn
   }
@@ -224,34 +210,12 @@ function signInWToken(email, token) {
   l('edit to '+blob)
   Drive.Files.update(fileSets, file.getId(), blob)
 
-  let toReturn = [getUserPage(email), rand];
+  let toReturn = [HtmlService.createTemplateFromFile('Index').getRawContent(), rand];
   //_refreshCache(); 
   return toReturn
 }
 
-
-function getUserPage(email) {let file, toReturn, doit;
-  // try {toSpread = SpreadsheetApp.openById("1Jp8EjZEzNERAp9OMr7NjM0Xl7epQLaE-P2xcLeDnl_U");}
-  // catch (e) {console.warn(e); try {toSpread = SpreadsheetApp.openById("1Jp8EjZEzNERAp9OMr7NjM0Xl7epQLaE-P2xcLeDnl_U");}
-  // catch (e) {if (!(e instanceof Error)) {e = new Error(e);} console.error(e.message);console.error('can\'t access \'toSpread\'');}}
-
-  //try {toSpread.getSheetByName(email); doit = 'show'} 
-  //catch {console.warn("no sheet for user"); doit = "askcreate";}   //ask the user to createNewSpread()}
-  //try { DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next(); doit = 'show' }
-  //catch { w('no file for email: ', email); doit = 'askcreate' }
-
-  //if (doit == 'show') {
-    toReturn = HtmlService.createTemplateFromFile('Index').getRawContent();
-    //  TODO       edit schedule on main website - no need for Google Sheet
-    //const userScheduleURL = "";/////////////////////////////////////////////////
-    //toReturn = signedInTxt  //.replace(/userScheduleURL/g, userScheduleURL) ;
-  //} else if (doit == 'askcreate') {
-    //var redirect = `https://script.google.com/macros/s/AKfycbwcF7nS-ct-h69R0lwgodlboPHH9MZN037uOqaQ7TAWHPQz1ExeNP4s1_Bf4EvtAIyU/exec?do=create&email=${email}`;
-    //toReturn = `<!DOCTYPE html><html><head><base target='_top'></head><body>  <style> body {font-family: 'Calibri';} header{font-size: 90px; padding: 40px;} a{font-size: 70px; background: #ddd; border: 1px solid #444; border-radius: 10px; padding: 30px; color: black; text-decoration: none;} a:hover{background: #999;}</style> <center><header>We couldn't find a schedule for you.</header></center>   <center><a href='${redirect}'>Create Schedule</a></center>    </body></html>`;
-  //} 
-  return toReturn
-}
-
+// NOT CURRENTLY USED may be reimplemented 
 function _refreshCache() {
   const sc = CacheService.getScriptCache(); 
   const fold = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc')
@@ -304,7 +268,7 @@ function _refreshCache() {
     sc.put(key, val);
   });
 }
-
+// NOT CURRENTLY USED may be reimplemented
 function _refreshSchedules() {
   const cacheSheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules").next()).getSheetByName('Backup Cache');
   var schs = SchedulesSecure.getSchedules();
@@ -355,15 +319,6 @@ function getSchedule(email, token, militaryTime) {
   })
   schedule.forEach((row, r) => {
     schStr+='<tr>'
-    // let strtTime = row.strt
-    // let endTime = row.end
-    // let militaryTime = false //// USER SETTING LATER
-    // if (!militaryTime) {
-    //   l(strtTime, endTime)
-    //   strtTime = DateUtils.militaryToStandard(strtTime)
-    //   endTime = DateUtils.militaryToStandard(endTime)
-    // }
-    // rowDat = [row[1], strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1]]
     l(row)
     row.forEach((cell, c) => {
       schStr+='<td class="c'+c+' r'+rab
@@ -383,7 +338,6 @@ function getSchedule(email, token, militaryTime) {
   l(schStr)
   return schStr
 }
-
 
 
 var l = console.log
