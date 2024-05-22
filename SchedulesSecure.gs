@@ -4,15 +4,6 @@ var SchedulesSecure = SchedulesSecure || {}
 SchedulesSecure.verify = function(email, token) {
   if (!email) {throw new Error('No email.');}
   if (!token) {throw new Error('No token.');}
-  
-  // const sheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules Accounts").next()).getActiveSheet();
-  // const emails = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues();
-  // let row = emails.findIndex((em) => em[0].toLowerCase() == email.toLowerCase()) + 1;
-  // if (row <= 0) {throw new Error('No account with that email.');}
-
-  // if (sheet.getRange(row, 3).getValue() == token) {
-  //   console.log('correct token'); return true
-  // } else {return false}
 
   const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   const accounts = JSON.parse(file.getBlob().getDataAsString())
