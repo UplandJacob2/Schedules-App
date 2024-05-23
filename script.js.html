@@ -81,6 +81,11 @@ function loadSheet() {
       { email: getEmail(), action: 'delete', token: getToken(), item: 'sch'})
     document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
   })
+  const reloadBt = document.getElementById('reloadSch')
+  reloadBt.addEventListener('click', function (ev) {
+    SHEET.render('load')
+    google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
+  })
   
 
   google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
