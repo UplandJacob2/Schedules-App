@@ -311,7 +311,7 @@ function getSchedule(email, token, militaryTime) {
     let endTime = row.end;   let eHr =  endTime.split(':')[0]; let eMin =  endTime.split(':')[1]
     const sInt = parseInt(sHr+sMin);  const eInt = parseInt(eHr+eMin)
     if (nowInt >= sInt && nowInt <= eInt) {
-      classNows.push(row);
+      classNows.push(r);
     }
     //if (!militaryTime) {strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime)}
     if (row.b) {boldRows.push(r)}
@@ -326,7 +326,7 @@ function getSchedule(email, token, militaryTime) {
         schStr+= ' b'
       }}
       
-      if (classNows.includes(r-2)) {
+      if (classNows.includes(r)) {
         schStr+= ' y'
       }
       schStr+='">'+cell+'</td>'
