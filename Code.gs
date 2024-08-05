@@ -313,6 +313,7 @@ function getSchedule(email, token, militaryTime) {
     if (nowInt >= sInt && nowInt <= eInt) {
       classNows.push(r);
     }
+    l(classNows, sInt, eInt, nowInt)
     //if (!militaryTime) {strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime)}
     if (row.b) {boldRows.push(r)}
     schedule[r] = [row['class'], strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1]]
@@ -322,13 +323,8 @@ function getSchedule(email, token, militaryTime) {
     l(row)
     row.forEach((cell, c) => {
       schStr+='<td class="c'+c+' r'+rab
-      if (c == 0) {if (boldRows.includes(r)) {
-        schStr+= ' b'
-      }}
-      
-      if (classNows.includes(r)) {
-        schStr+= ' y'
-      }
+      if (c == 0) {if (boldRows.includes(r)) { schStr+= ' b' }}
+      if (classNows.includes(r)) { schStr+= ' y' }
       schStr+='">'+cell+'</td>'
     }); 
     
