@@ -89,7 +89,7 @@ function loadSheet() {
   
 
   google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
-  $('input').keyup(resizeInput).each(resizeInput);
+  //$('input').keyup(resizeInput)//.each(resizeInput); 
 }
 
 
@@ -231,7 +231,7 @@ class Editor {
     }
     let el = document.createElement(eTag)
 
-    if (type === 'text') {     el.value = data; el.addEventListener('keydown', resizeInput);  resizeInput.call(el); $('input').keyup(resizeInput).each(resizeInput);
+    if (type === 'text') {     el.value = data; el.addEventListener('keydown', resizeInput);  /*resizeInput.call(el);*/ $('input').keyup(resizeInput)//.each(resizeInput);
     } else if (type === 'a') { el.innerHTML = data
     } else if (type === 'checkbox') { el.type = 'checkbox'; el.checked = data
     } else if (type === 'checklist') {
@@ -443,20 +443,29 @@ CSSStyleDeclaration.prototype.setProperties = function(properties) {
 };
 function resizeInput() {
   //this.style.width = this.value.length + "ch";
-  this.style.width = getWidthOfInput(this) + "px";
+  var elm = this
+  setTimeout(function() {
+    setTimeout(function() {alert(elm.outerHTML)})
+    //alert(elm.outerHTML)
+    elm.style.width = getWidthOfInput(elm) + "px";
+  }, 200 );
+  //alert(getWidthOfInput(this))
   //alert('resized')
+  //alert(this.style.width)
 }
-function resizeInp() {
-    $('body').append('<div class="new_width">'+$(this).val()+'</div>');
-    $(this).css('width', $('.new_width').width());
-    $('.new_width').remove()
-}
+// function resizeInp() {
+//     $('body').append('<div class="new_width">'+$(this).val()+'</div>');
+//     $(this).css('width', $('.new_width').width());
+//     $('.new_width').remove()
+// }
 function getWidthOfInput(inputEl) {
   var tmp = document.createElement("span");
   tmp.className = "input-element tmp-element";
   tmp.innerHTML = inputEl.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   document.body.appendChild(tmp);
-  var theWidth = tmp.getBoundingClientRect().width;
+  //var theWidth = tmp.getBoundingClientRect().width;
+  var theWidth = tmp.offsetWidth
+  //alert(theWidth)
   document.body.removeChild(tmp);
   return theWidth;
 }
