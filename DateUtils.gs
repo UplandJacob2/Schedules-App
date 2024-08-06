@@ -25,19 +25,26 @@ DateUtils.dayRange = function (fromD, toD, formated) {
   if (DateUtils.isLeapYear()) {var daysPerMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   } else {var daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];}
   let month, day, year, eMonth, eDay, eYear, found;
+  l('day range', fromD, toD, formated)
 
   if (formated) {
-    month = fromD.match(/^[0-9]{1,2}(?=\/)/g);   day = fromD.match(/(?<=\/)[0-9]{1,2}(?=\/)/g);   year = fromD.match(/(?<=\/)[0-9]{4}/g);
-    eMonth =  toD.match(/^[0-9]{1,2}(?=\/)/g);   eDay =  toD.match(/(?<=\/)[0-9]{1,2}(?=\/)/g);   eYear =  toD.match(/(?<=\/)[0-9]{4}/g);
+    month = parseInt(fromD.match(/^[0-9]{1,2}(?=\/)/g)[0]); day = parseInt(fromD.match(/(?<=\/)[0-9]{1,2}(?=\/)/g)[0]); year = parseInt(fromD.match(/(?<=\/)[0-9]{4}/g)[0]);
+    eMonth =parseInt(  toD.match(/^[0-9]{1,2}(?=\/)/g)[0]);eDay = parseInt(  toD.match(/(?<=\/)[0-9]{1,2}(?=\/)/g)[0]);eYear = parseInt(  toD.match(/(?<=\/)[0-9]{4}/g)[0]);
   } else {
     month = DateUtils.monthToNum(fromD.match(/(\D){3}(?= )/g)[0]);   day = fromD.match(/[0-9]{2}(?=, )/g)[0];   year = fromD.match(/[0-9]{4}/g)[0];
     eMonth =  DateUtils.monthToNum(toD.match(/(\D){3}(?= )/g)[0]);   eDay=parseInt(toD.match(/[0-9]{2}(?=, )/g)[0]);   eYear =  toD.match(/[0-9]{4}/g)[0];
+  }
+  l(year, eYear)
+  if (eYear < year) {
+    year = year - 1
   }
   let daysToReturn = new Array();  daysInMonth = daysPerMonth[month-1];
   //console.log(month+'/'+day+'/'+year);
   //console.log(eMonth+'/'+eDay+'/'+eYear);
 
   while (!found) {
+    l(month, day, year)
+    //month = parseInt(month); day = parseInt(day); year = parseInt(year)
     let daysInMonth = daysPerMonth[month-1];
     if (month <= 12) {
       //console.log(month+'/'+day+'/'+year);
@@ -69,6 +76,8 @@ DateUtils.dayRange = function (fromD, toD, formated) {
 DateUtils.iterateDays = function (fromD, num) {
   if (DateUtils.isLeapYear()) {var daysPerMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   } else {var daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];}
+  l('iterating through days')
+  //l("from date: ", fromD)
   
   const year = fromD.match(/[0-9]{4}/g)[0]; const month = DateUtils.monthToNum(fromD.match(/(\D){3}(?= )/g)[0]); var daysInMonth = daysPerMonth[month-1]; var day = fromD.match(/[0-9]{2}(?=, )/g); 
   if (num > 0 ) {
@@ -182,4 +191,73 @@ DateUtils.militaryToStandard = function(time) {
 DateUtils.getDateAsText = function () {
   return Utilities.formatDate(new Date(), "CST", "MM/dd/yyyy HH:mm:ss")
 }
+
+
+
+
+
+/**
+ * Returns list of days with no school in EVSC - formated: month/day/year
+ *
+ * inputs: 
+ * * {bool} returnListOfReasons
+ * 
+ * returned: 
+ * {string[]} list of days   
+ *   * if "returnListOfReasons" is true: list with list of days and list of reasons
+ * 
+ * @param {bool} 
+ * 
+ * @return {string[]} 
+ */
+function getDaysOff(returnListOfReasons) {
+  const feed = 'https://district.evscschools.com/syndication/rss.aspx?serverid=74688&userid=5&feed=portalcalendarevents&key=AldG6kAOC9I2Zqbatkslk0yAX9ddipkQPpCdFDbupJGi1SVEK7IS9vWmI53h058bbTRRdB8qA8cAq4FQMyjbVA%3d%3d&portal_id=74772&page_id=74794&calendar_context_id=82481&portlet_instance_id=12393&calendar_id=82482&v=2.0';
+
+  try  {var txt = UrlFetchApp.fetch(feed, {'muteHttpExceptions': true, 'redirect': 'follow'}).getContentText();}
+  catch{Utilities.sleep(1000); var txt = UrlFetchApp.fetch(feed, {'muteHttpExceptions': true, 'redirect': 'follow'}).getContentText();}
+  //l(txt);
+
+  let daysoff = new Array();   var lastDay, firstDay;   var items = new Array();
+
+  const itemElms = XmlService.parse(txt).getAllContent()[0].asElement().getChild('channel').getChildren('item');
+
+  itemElms.forEach((item) => {
+    if (item.getChildText('title').match(/No School/g)) {
+      items[items.length] = new Array(); 
+      items[items.length-1][0] = item.getChildText('title');
+      items[items.length-1][1] = item.getChildText('description').match(/(.){3} [0-9]{2}, [0-9]{4}/g);
+    } else if (item.getChildText('title').match(/End of 4th Grading Period\/2nd Semester/g)) {
+      lastDay = item.getChildText('description').match(/(.){3} [0-9]{2}, [0-9]{4}/g)[0];
+      l(item.getChildText('description'))
+    } else if (item.getChildText('title').match(/Students with Last Names A-J in Attendance/g)) {
+      firstDay = item.getChildText('description').match(/(.){3} [0-9]{2}, [0-9]{4}/g)[0];
+    }
+  });
+  var summer, eSummer;
+  if (firstDay && lastDay) {
+    summer = DateUtils.iterateDays(lastDay, 1);  eSummer = DateUtils.iterateDays(firstDay, -1);  // get first and last day of summer
+    console.log(summer+"     "+eSummer) ;
+    DateUtils.dayRange(summer, eSummer, true).forEach((item) => {daysoff[daysoff.length] = item}); // add all days of the summer to list
+  }
+  console.log(items);
+
+  
+  items.forEach((item) => {
+    if (item[1].length == 1) {
+      daysoff[daysoff.length] = DateUtils.monthToNum(item[1][0].match(/(\D){3}(?= )/g)[0])+"/"+parseInt(item[1][0].match(/[0-9]{2}(?=, )/g))+"/"+item[1][0].match(/[0-9]{4}/g)[0];
+    } else {
+      DateUtils.dayRange(item[1][0], item[1][1], false).forEach((item) => {daysoff[daysoff.length] = item})
+    }
+    
+
+  });
+  console.log(daysoff);
+
+  if (returnListOfReasons) {
+    console.warn('oop, need to do this...');
+    return 'oop, need to do this...'
+  }
+  return daysoff
+}
+
 
