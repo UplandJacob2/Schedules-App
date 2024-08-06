@@ -116,4 +116,24 @@
     
   </div>
 </div>
+
+<div class="item smallpopup fadeIn" id="confirmPop" style="display: none;">
+  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+  <a class="top-link link reload" style="right: 32%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('confirmPop');">
+    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div></a>
+  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Your schedule is being re-added</span></center>
+  <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
+    <span class="bold">Email sent</span>
+    <span>Check your email and click the link to confirm your account creation.</span>
+    <span>You can close this tab.</span>
+    <span>Request expires in 10 minutes.</span>
+  </div>
+  <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('confirmPop');" class="top-link link">
+    <center>NO</center>
+  </a>
+  <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('confirmPop');" class="top-link link">
+    <center>YES</center>
+  </a>
+</div>
+
 <!-------- END code used when signed in or out -------->
