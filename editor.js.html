@@ -1,1 +1,291 @@
+<script>
+class Editor {
+  constructor(options) {
+    this.el = options.el
+    this.options = options
+    this.columns = options.columns
+    this.data = JSON.parse(JSON.stringify(options.data))
+    this.timeSelectCache = null
+    // colors
+    this.tableBack = '#999'
+    this.rowBack = '#efefef'
+    this.headBack = '#ddd'
+    this.disabledBack = '#ddd'
+    this.dropBack = '#dddddd'
 
+    this.render('load')
+  }
+  /**
+   * set data of sheet
+   * input JSON or nothing
+   * if nothing: reload data
+  **/
+  resetData(data) {
+    if (data) {
+      this.data = JSON.parse(data)
+    } else {
+      this.data = JSON.parse(JSON.stringify(this.data))
+    }
+    this.render()
+  }
+  // getValueFromEditor(col, row) {
+  //   let type = this.columns[col].editor.type
+  //   if (type === 'text') {
+
+  //   }
+  // }
+  createElm(row, col) {
+    let coli = this.columns.findIndex((c) => c.name === col)
+    let type = this.columns[coli].editor.type
+    let data = this.data[row][col]
+    let eT
+
+    if (type === 'a' || type === 'text' || type === 'checklist') {
+      eT = 'a'
+    } else if (type === 'checkbox') {
+      eT = 'input'
+    }
+    let el = document.createElement(eT)
+
+    if (type === 'a' || type === 'text' || type === 'checklist') {
+      el.innerHTML = data
+    } else if (type === 'time') {
+      if (!USER_SETTINGS.militaryTime) {
+        el.innerHTML = DateUtils.militaryToStandard(data, true)
+      } else {
+        el.innerHTML = data
+      }
+    } else if (type === 'checkbox') {
+      el.type = 'checkbox'
+      if (data) {
+        el.setAttribute('checked', data)
+      } else {
+        el.removeAttribute('checked')
+      }
+    }
+    return el
+  }
+
+  createEditorElm(row, col) {
+    let coli = this.columns.findIndex((c) => c.name === col)
+    let type = this.columns[coli].editor.type
+    let data = this.data[row][col]
+    let eTag
+    if (type === 'a') {
+      eTag = 'a'
+    } else if (type === 'checkbox' || type === 'text') {
+      eTag = 'input'
+    } else if (type === 'checklist' || type === 'time') {
+      eTag = 'div'
+    }
+    let el = document.createElement(eTag)
+
+    if (type === 'text') {     el.value = data; el.addEventListener('keydown', resizeInput);  /*resizeInput.call(el);*/ $('input').keyup(resizeInput)//.each(resizeInput);
+    } else if (type === 'a') { el.innerHTML = data
+    } else if (type === 'checkbox') { el.type = 'checkbox'; el.checked = data
+    } else if (type === 'checklist') {
+      //el.classList.add('dropdown-check-list')
+      let a = document.createElement('span')
+      a.setAttribute('onclick', 'SHEET.onCellClick(this.parentElement.parentElement, "close")')
+      a.style.setProperties({'min-width': '30px', 'min-height': '20px', margin: '-1px'})
+      a.innerHTML = this.data[row][col]
+      el.append(a)
+      let ul = document.createElement('ul')
+      ul.style.setProperties({position: 'absolute', background: this.dropBack, 'margin-top': '5px', 'margin-left': '-6px', 'text-align': 'left' })
+      ul.classList.add('items')
+      let options = this.columns[coli].editor.options.listItems
+      for (var op in options) {
+        let opt = document.createElement('li')
+        let inp = document.createElement('input')
+        let txt = document.createElement('a')
+        inp.type = 'checkbox'
+        if (this.data[row][col].includes(options[op].value)) {
+          inp.setAttribute('checked', true)
+        }
+        txt.innerHTML = options[op].text
+        opt.style.setProperties({'list-style-type': 'none', 'margin-left': '-40px'})
+        txt.setAttribute('onclick', `this.parentElement.children[0].checked ^= 1`)
+        opt.innerHTML = inp.outerHTML + txt.outerHTML
+        ul.append(opt)
+      }
+      el.addEventListener('keypress', function (ev) { if (ev.code === 'Enter') { alert(this); this.blur() } })
+      el.append(ul)
+      el.setAttribute('customtype', 'checklist')
+    } else if (type === 'time') {
+      let container = document.createElement('div')
+      let a = document.createElement('a')
+      a.setAttribute('onclick', 'SHEET.onCellClick(this.parentElement.parentElement, "close")')
+      a.style.setProperties({'min-width': '30px', 'min-height': '20px', margin: '-1px'})
+      if (!USER_SETTINGS.militaryTime) { a.innerHTML = DateUtils.militaryToStandard(this.data[row][col], true)
+      } else { a.innerHTML = this.data[row][col] }
+      container.style.setProperty('position', 'absolute')
+      el.append(a)
+      el.append(container)
+      el.setAttribute('customtype', 'time')
+    }
+    let { attrs, style } = this.columns[coli].editor.options
+    for (var attr in attrs) { el.setAttribute(attr, attrs[attr]) }
+    for (var stl in style)  { el.style.setProperty(stl, style[stl]) }
+    return el
+  }
+
+  render(mod) {
+    if (mod === 'load') {this.el.innerHTML = '<center><img id="img" style="width: 50px; top: 100px;" src="https://shortpixel.com/img/spinner2.gif"></center>'; return}
+    else if (mod === 'none') { 
+      this.el.innerHTML = `<center> 
+        <header> No schedule found. What would you like to do?</header>
+        <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" class="link" id="recoverSch">Recover</a> 
+        <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" class="link" id="newSch">New</a> 
+      </center>`; 
+      const recoverBt = document.getElementById('recoverSch')
+      recoverBt.addEventListener('click', function (ev) {
+        google.script.run.withSuccessHandler(recoverSchedulesSuccess).withFailureHandler(recoverSchedulesFail).api(
+          { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'recover'})
+        document.getElementById('recoverSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+      })
+      const newBt = document.getElementById('newSch')
+      newBt.addEventListener('click', function (ev) {
+        google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(newSchedulesFail).api(
+          { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'new'})
+        document.getElementById('newSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+      })
+      return 
+    }
+    
+    let table = document.createElement('table')
+    let header = document.createElement('tr')
+    for (var col in this.columns) {
+      let el = document.createElement('td')
+      el.innerHTML = this.columns[col].header
+      el.style.setProperties({margin: '10px', padding: '5px', 'text-align': 'center'})
+      header.append(el)
+    }
+    header.style.setProperties({background: this.headBack, 'font-weight': 'bold'})
+    table.style.setProperties({background: this.tableBack, 'font-size': '25px', 'margin-bottom': '200px'})
+    table.append(header)
+
+    for (let row in this.data) {
+      let rowEl = document.createElement('tr')
+      for (let col in this.data[row]) {
+        let colEl = document.createElement('td')
+        let coli = this.columns.findIndex((c) => c.name === col)
+        colEl.setAttribute('row', row)
+        colEl.setAttribute('col', col)
+        // enable if
+        if (this.columns[coli].editor.active) {
+          let tru = null
+          if (this.columns[coli].editor.active.type === 'col') {
+            if (this.columns[coli].editor.active.equalTo) {
+              tru = (this.data[row][this.columns[coli].editor.active.if] === this.columns[coli].editor.active.equalTo)
+            } else if (this.columns[coli].editor.active.contains) {
+              tru = (this.data[row][this.columns[coli].editor.active.if].includes(this.columns[coli].editor.active.contains))
+            } else if (this.columns[coli].editor.active.hasVal) {
+              tru = (this.data[row][this.columns[coli].editor.active.if])
+            }
+          }
+          if (tru) {
+            colEl.setAttribute('onclick', 'SHEET.onCellClick(this)')
+          } else {
+            colEl.style.setProperty('background', this.disabledBack)
+            this.data[row][col] = ''
+          }
+        } else {colEl.setAttribute('onclick', 'SHEET.onCellClick(this)')}
+        if (this.columns[coli].name === 'class') {
+          if (this.data[row].b) {
+            colEl.style.setProperty('font-weight', 'bold')
+          } else { colEl.style.setProperty('font-weight', 'normal') }
+        }
+
+        colEl.style.setProperties({padding: '5px', 'text-align': 'center'})
+
+        let el = this.createElm(row, col)
+        colEl.append(el)
+        rowEl.innerHTML += colEl.outerHTML
+      }
+      rowEl.style.setProperty('font-size', '25px')
+      rowEl.style.setProperty('background', this.rowBack)
+      table.append(rowEl)
+    }
+    this.el.innerHTML = table.outerHTML
+    
+    //document.getElementById('datatxt').value = JSON.stringify(this.data)
+  }
+
+  onCellClick(el, option) {
+    let row = el.getAttribute('row')
+    let col = el.getAttribute('col')
+
+    let customtype
+    try { customtype = el.innerHTML.match(/(?<=customtype=")[a-z]+(?=")/g)[0] } catch { customtype = null }
+    if (el.children[0].type === 'checkbox') {
+      if (SHEET.data[row][col]) { el.children[0].checked = false } else { el.children[0].checked = true } this.data[row][col] = el.children[0].checked
+      this.render()
+    } else if (customtype === 'checklist') {
+      if (option === 'close') {
+        let options = this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems
+        let dat = ''
+        for (var i = 0; i < options.length; i++) {
+          if (el.children[0].children[1].children[i].children[0].checked) {
+            if (dat) { dat += ", " }
+            dat += this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems[i].value
+          }
+        }
+        this.data[row][col] = dat
+        el = this.createElm(row, col)
+        this.render()
+      }
+    } else if (customtype === 'time') {
+      if (option === 'close') {
+        let min = this.timeSelectCache.getMinute()
+        let dat = this.timeSelectCache.getHour()+':'+ ((String(min).length === 2) ? min : '0'+min)
+        this.data[row][col] = dat
+        el = this.createElm(row, col)
+        this.timeSelectCache.destroy()
+        this.timeSelectCache = null
+        this.render()
+      }
+    } else {
+      if (el.classList.contains('editMode')) {
+        el.classList.remove('editMode')
+        el.innerHTML = SHEET.createElm(row, col).outerHTML
+      } else {
+        el.classList.add('editMode')
+        el.innerHTML = SHEET.createEditorElm(row, col).outerHTML
+        if (this.columns[this.columns.findIndex((c) => c.name === col)].editor.type === 'time') {
+          //alert(this.timeSelectCache)
+          //let format = this.columns[coli].editor.options.format
+          let hr, min
+          try {hr = this.data[row][col].match(/[0-9]{1,2}(?=:)/g)[0]} catch {hr = 8}
+          try {min= this.data[row][col].match(/(?<=:)[0-9]{2}/g)[0]}  catch {min = 0}
+          
+          this.timeSelectCache = new tui.TimePicker(el.children[0].children[1], {
+            usageStatistics: false, language: 'en',
+            initialHour: parseInt(hr),
+            initialMinute: parseInt(min),
+            inputType: 'spinbox',
+            showMeridiem: !USER_SETTINGS.militaryTime,
+            input: {element: el.children[0].children[0]}
+          })  // 'showMeridiem' to false for 24hr format
+
+          
+
+        } else if (this.columns[this.columns.findIndex((c) => c.name === col)].editor.type === 'text') {
+          let box = el.children[0]
+          box.value = SHEET.data[row][col]
+          box.select()
+          box.addEventListener('keypress', function (ev) { if (ev.code === 'Enter') { this.blur() } })
+          box.addEventListener('blur', function (ev) {
+            ev.preventDefault()
+            let row = this.parentElement.getAttribute('row')
+            let col = this.parentElement.getAttribute('col')
+            SHEET.data[row][col] = this.value
+            SHEET.render()
+          })
+        }
+      }
+    }
+  }
+
+}
+
+</script>
