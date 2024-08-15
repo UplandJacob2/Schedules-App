@@ -1,5 +1,5 @@
 <script>
-var SHEET; var USER_SETTINGS = {militaryTime: false} 
+var SHEET, DATA; var USER_SETTINGS = {militaryTime: false} 
 
 function openMenu() {
     document.querySelector('.nav-menu').classList.toggle("active");
@@ -77,12 +77,21 @@ function loadSheet() {
   })
   const deleteBt = document.getElementById('deleteSch')
   deleteBt.addEventListener('click', function (ev) {
-    google.script.run.withSuccessHandler(deleteSchedulesSuccess).withFailureHandler(deleteSchedulesFail).api(
-      { email: getEmail(), action: 'delete', token: getToken(), item: 'sch'})
-    document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+    confirmPopup({
+      title: 'Confirm deletion', 
+      text: 'Are you sure you want to delete your schedules? (Can be recovered)', 
+      onYes: `
+        google.script.run.withSuccessHandler(deleteSchedulesSuccess).withFailureHandler(deleteSchedulesFail).api(
+          { email: getEmail(), action: 'delete', token: getToken(), item: 'sch'})
+        document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+      `
+    }
+  )
+    
   })
   const reloadBt = document.getElementById('reloadSch')
   reloadBt.addEventListener('click', function (ev) {
+    DATA = []
     SHEET.render('load')
     google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
   })
@@ -105,12 +114,15 @@ function getSchedulesSuccess(response, encoded) {
   let dR = document.getElementById('removeRow')
   dR.disabled = false;  dR.classList.remove('grayLink');  dR.classList.add('link')
   if (encoded) {response = Base64.decode(response)}
-  SHEET.resetData(response)
+  DATA = response
+  try {
+  SHEET.resetData(response)} catch (e) {error('Error handling response', e)}
 }
-function getSchedulesFail(err) { /*alert(err);*/ error('Error getting schedule for editing', err); SHEET.render('none') }
+function getSchedulesFail(err) { /*alert(err);*/ error('Error getting schedule for editing', err); DATA = []; SHEET.render('none') }
 function saveSchedulesSuccess() {
   document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"></ion-icon>'
   setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000)
+  DATA = SHEET.data
 }
 function saveSchedulesFail(err) {
   document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
@@ -119,7 +131,7 @@ function saveSchedulesFail(err) {
 function deleteSchedulesSuccess() {
   document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"></ion-icon>'
   setTimeout(function() { document.getElementById('deleteSch').innerHTML = 'Delete' }, 4000)
-  SHEET.data = []; SHEET.render('none')
+  DATA = []; SHEET.data = []; SHEET.render('none')
   let sB = document.getElementById('saveSch')
   sB.disabled = true;  sB.classList.add('grayLink');  sB.classList.remove('link')
   let dB = document.getElementById('deleteSch')
@@ -143,7 +155,7 @@ function recoverSchedulesSuccess(response) {
     for (var i = 0; i < options.length; i++) {
       html += `<div><button onclick="recoverSpecificSchedule('${Base64.encode(options[i][1])}', '${options[i][2]}');" class="link" style="padding: 10px; margin: 5px;" >Option ${i+1}</button> <a style="margin: 5px; margin-bottom: 20px;">${options[i]}</a></div>`
     }
-    
+    DATA = []
     SHEET.el.innerHTML = html
   }
   
@@ -151,6 +163,7 @@ function recoverSchedulesSuccess(response) {
 function recoverSpecificSchedule(data, recoverID) {
   google.script.run.withSuccessHandler(recoverSchedulesSuccess).withFailureHandler(recoverSchedulesFail).api(
     { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'recover', fileId: recoverID})
+  DATA = []
   SHEET.render('load')
 }
 
@@ -223,7 +236,7 @@ function getSchedule(query) {
     if (query.name) {scheduleName = query.name}
     if (query.index) {scheduleIndex = query.index}
   }
-  if (!data) { data = SHEET.data }
+  if (!data) { data = DATA }
   
   
   for (let i in data) {
