@@ -1,26 +1,55 @@
 <script>
-var l = console.log
-var w = console.warn
-var Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",encode:function(e){var t="";var n,r,i,s,o,u,a;var f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){var t="";var n,r,i;var s,o,u,a;var f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,"\n");var t="";for(var n=0;n<e.length;n++){var r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){var t="";var n=0;var r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
+const l = console.log
+const w = console.warn
+const Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
+  encode:function(e){
+    let t="";let n,r,i,s,o,u,a;let f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},
+  decode:function(e){
+    let t="";let n,r,i;let s,o,u,a;let f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},
+  _utf8_encode:function(e){
+    e=e.replace(/\r\n/g,"\n");let t="";for(let n=0;n<e.length;n++){let r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},
+  _utf8_decode:function(e){
+    let t="";let n=0;let r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}
+}
 
+function error(title, txt) {
+  toggleDisplay('error')
+  document.getElementById('errorWhen').innerHTML = title
+  document.getElementById('errorTxt').innerHTML = txt
+}
+/**
+ * Opens a popup to confirm
+ * 
+**/
+function confirmPopup(args) {let title,text,onYes,onNo,yesBtTxt,noBtTxt
+  title = args.title || 'Confirm'; text = args.text || 'Confirm?'; yesBtTxt = args.yesBtTxt || 'Yes'; noBtTxt = args.noBtTxt || 'No'
+  onYes = args.onYes || "toggleDisplay('confirmPop')"; onNo = args.onNo || "toggleDisplay('confirmPop')"
+  if(typeof args.onYes != 'undefined') {onYes+="\ntoggleDisplay('confirmPop')"}
+  if(typeof args.onNo  != 'undefined') {onNo +="\ntoggleDisplay('confirmPop')"}
 
-function confirmPopup(onYes) { //TODO
-  
+  toggleDisplay('confirmPop')
+  document.getElementById('confirmTitle' ).innerHTML = title
+  document.getElementById('confirmText'  ).innerHTML = text
+  document.getElementById('confirmYes'   ).onclick   = onYes
+  document.getElementById('confirmNo'    ).onclick   = onNo
+  document.getElementById('confirmYesTxt').innerHTML = yesBtTxt
+  document.getElementById('confirmNoTxt' ).innerHTML = noBtTxt
+
 }
 CSSStyleDeclaration.prototype.setProperties = function(properties) {
-  for (var property in properties) { this.setProperty(property, properties[property]); }
+  for (let property in properties) { this.setProperty(property, properties[property]); }
 };
 
 // sign in, sign up, etc
 function checkSignUpButton() {
-  var butt = document.getElementById('signUpButt');
+  let butt = document.getElementById('signUpButt');
   if (checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
     butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
   }
   else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
 }
 function checkSignInButton() {
-  var butt = document.getElementById('signInButt');
+  let butt = document.getElementById('signInButt');
   if (checkEmailBoxI('emailSignIn') && checkPassBoxI('passSignIn')) {
     butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
   }
@@ -28,11 +57,11 @@ function checkSignInButton() {
 }
 function checkEmailBox(inpStr) { setTimeout(function () { checkEmailBoxI(inpStr); }, 10); }
 function checkEmailBoxI(inpStr) {
-  var inp = document.getElementById(inpStr);
-  var email = inp.value;
+  let inp = document.getElementById(inpStr);
+  let email = inp.value;
   if (inpStr == "emailSignUp") {
-    var c = document.getElementById("emailSignUpC");
-    var x = document.getElementById("emailSignUpX");
+    let c = document.getElementById("emailSignUpC");
+    let x = document.getElementById("emailSignUpX");
     if (isValidEmail(email)) {
       c.style.setProperty('display', 'block'); x.style.setProperty('display', 'none');
       inp.style.setProperty('background-color', 'palegreen'); return true
@@ -48,7 +77,7 @@ function checkEmailBoxI(inpStr) {
 }
 function checkPassBox(inpStr) { setTimeout(function () { checkPassBoxI(inpStr); }, 10); }
 function checkPassBoxI(inpStr) {
-  var inp = document.getElementById(inpStr); var pass = inp.value; var good; //console.log(pass);
+  let inp = document.getElementById(inpStr); let pass = inp.value; let good; //console.log(pass);
   if (inpStr == "passSignUp") {
     if ((pass.match(/[a-z]/g) || []).length >= 1) {
       document.getElementById('lowR').style.setProperty('color', '#040');
@@ -68,14 +97,14 @@ function checkPassBoxI(inpStr) {
   }
   if (inpStr == "passSignUpR") {
     if (pass == document.getElementById('passSignUp').value) { good = true } else { good = false }
-    var pRT = document.getElementById('passRTxt')
+    let pRT = document.getElementById('passRTxt')
     if (good) { pRT.innerHTML = 'Passwords match.'; pRT.style.setProperty('color', '#040'); }
     else { pRT.innerHTML = 'Passwords do not match.'; pRT.style.setProperty('color', '#800'); }
   }
   else { good = isValidPassword(pass); }
 
   if (inpStr == "passSignUp" || inpStr == "passSignUpR") {
-    var c = document.getElementById(inpStr + "C"); var x = document.getElementById(inpStr + "X");
+    let c = document.getElementById(inpStr + "C"); let x = document.getElementById(inpStr + "X");
     if (good) {
       inp.style.setProperty('background-color', 'palegreen');
       c.style.setProperty('display', 'block'); x.style.setProperty('display', 'none');
@@ -87,7 +116,7 @@ function checkPassBoxI(inpStr) {
   return good
 }
 function showPassword(check, boxN) {
-  var box = document.getElementById(boxN);
+  let box = document.getElementById(boxN);
   if (document.getElementById(check).checked) {
     box.type = "text";
   } else {
@@ -95,7 +124,7 @@ function showPassword(check, boxN) {
   }
 }
 function isValidEmail(email) {
-  var re = /^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/
+  const re = /^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/
   //console.log(re.test(email) && /^(.){3,320}$/.test(email))
   return (re.test(email) && /^(.){3,320}$/.test(email))
 }
@@ -109,9 +138,9 @@ function isValidPassword(pass) {
   )
 }
 function signUp(event) {
-  var pass = document.getElementById('passSignUp').value;
-  var passR = document.getElementById('passSignUpR').value;
-  var email = document.getElementById('emailSignUp').value;
+  let pass = document.getElementById('passSignUp').value;
+  let passR = document.getElementById('passSignUpR').value;
+  let email = document.getElementById('emailSignUp').value;
   event.preventDefault();
   toggleDisplay('signUp');
   toggleDisplay('signUpLoad');
@@ -162,11 +191,7 @@ function getEmail() { let thing;
   try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } } catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
   try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } } catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
 }
-function error(title, txt) {
-  toggleDisplay('error')
-  document.getElementById('errorWhen').innerHTML = title
-  document.getElementById('errorTxt').innerHTML = txt
-}
+
 function signOutBtn() {
   toggleDisplay('signOut')
   deleteSignInCookies()
@@ -202,9 +227,9 @@ DateUtils.numDayToStr = function (num) {
 
 DateUtils.militaryToStandard = function(time, showMeridiem) {
   time = time.split(':'); // convert to array
-  var hours = Number(time[0]);
-  var minutes = Number(time[1]);
-  var timeValue;
+  let hours = Number(time[0]);
+  let minutes = Number(time[1]);
+  let timeValue;
 
   if (hours > 0 && hours <= 12) {
     timeValue = "" + hours;
