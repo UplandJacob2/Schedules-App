@@ -139,4 +139,41 @@ span.psw {float: right; padding-top: 16px;}
 }
 .tmp-element{ /*position: fixed; top: 100px; left: 100px; z-index: 1000;*/ visibility: hidden; white-space: pre;}
 
+.toggle {
+  position : relative ;
+  display : inline-block;
+  width : 60px;
+  height : 32px;
+  background-color: light-gray;
+  border-radius: 16px;
+  border: 2px solid gray;
+}
+.toggle:after {
+  content: '';
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: gray;
+  top: 1px; 
+  left: 1px;
+  transition: all 0.15s;
+}
+.toggle p {
+  margin-top: 9px;
+  font-size: 16px;
+  font-weight: bold;
+}
+.checkbox:checked + .toggle::after {
+  left: 29px; 
+}
+.checkbox:checked + .toggle {
+  background-color: #5ac8fa;
+  transition: all 0.3s;
+}
+.checkbox { 
+  display: none;
+}
+
+
 </style>
