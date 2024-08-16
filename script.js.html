@@ -71,42 +71,57 @@ function loadSheet() {
 
   const saveBt = document.getElementById('saveSch')
   saveBt.addEventListener('click', function (ev) {
-    google.script.run.withSuccessHandler(saveSchedulesSuccess).withFailureHandler(saveSchedulesFail).api(
-      { email: getEmail(), action: 'edit', token: getToken(), item: 'sch', val: JSON.stringify(SHEET.data) })
-    document.getElementById('saveSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+    saveSch()
   })
   const deleteBt = document.getElementById('deleteSch')
   deleteBt.addEventListener('click', function (ev) {
-    confirmPopup({
-      title: 'Confirm deletion', 
-      text: 'Are you sure you want to delete your schedules? (Can be recovered)', 
-      onYes: `
-        google.script.run.withSuccessHandler(deleteSchedulesSuccess).withFailureHandler(deleteSchedulesFail).api(
-          { email: getEmail(), action: 'delete', token: getToken(), item: 'sch'})
-        document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
-      `
-    }
-  )
-    
+    confirmPopup({ title: 'Confirm deletion', text: 'Are you sure you want to delete your schedules? (Can be recovered)', onYes: `deleteSch()`})
   })
   const reloadBt = document.getElementById('reloadSch')
   reloadBt.addEventListener('click', function (ev) {
-    DATA = []
-    SHEET.render('load')
-    google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
+    if (DATA != SHEET.data) {
+      confirmPopup({title: 'Changes not saved', text: 'Your changes aren\'t saved. Would you like to save before reloading?', onYes: 'saveSch()', onNo: 'reloadEdit()'})
+      return
+    }
+    reloadEdit()
+  })
+  document.body.addEventListener('keypress', function (ev) {
+    //alert(ev)
+    updateSaveBtn()
   })
   
 
   google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
   //$('input').keyup(resizeInput)//.each(resizeInput); 
 }
-
-
+function reloadEdit() {
+  DATA = []
+  SHEET.render('load')
+  google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
+}
+function updateSaveBtn() {
+  const saveBt = document.getElementById('saveSch')
+  if (DATA != SHEET.data) {
+    saveBt.disabled = false;saveBt.classList.remove('grayLink');  saveBt.classList.add('link')
+  } else {
+    saveBt.disabled = true; saveBt.classList.remove('link');  saveBt.classList.add('grayLink')
+  }
+}
+function saveSch() {
+  google.script.run.withSuccessHandler(saveSchedulesSuccess).withFailureHandler(saveSchedulesFail).api(
+    { email: getEmail(), action: 'edit', token: getToken(), item: 'sch', val: JSON.stringify(SHEET.data) })
+  document.getElementById('saveSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+}
+function deleteSch() {
+  google.script.run.withSuccessHandler(deleteSchedulesSuccess).withFailureHandler(deleteSchedulesFail).api(
+    { email: getEmail(), action: 'delete', token: getToken(), item: 'sch'})
+  document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+}
 
 
 function getSchedulesSuccess(response, encoded) {
-  let sB = document.getElementById('saveSch')
-  sB.disabled = false;  sB.classList.remove('grayLink');  sB.classList.add('link')
+  //let sB = document.getElementById('saveSch')
+  //sB.disabled = false;  sB.classList.remove('grayLink');  sB.classList.add('link')
   let dB = document.getElementById('deleteSch')
   dB.disabled = false;  dB.classList.remove('grayLink');  dB.classList.add('link')
   let aR = document.getElementById('addRow')
@@ -115,14 +130,14 @@ function getSchedulesSuccess(response, encoded) {
   dR.disabled = false;  dR.classList.remove('grayLink');  dR.classList.add('link')
   if (encoded) {response = Base64.decode(response)}
   DATA = response
-  try {
-  SHEET.resetData(response)} catch (e) {error('Error handling response', e)}
+  try { SHEET.resetData(response) } catch (e) {error('Error handling response', e)}
 }
 function getSchedulesFail(err) { /*alert(err);*/ error('Error getting schedule for editing', err); DATA = []; SHEET.render('none') }
 function saveSchedulesSuccess() {
   document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"></ion-icon>'
   setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000)
   DATA = SHEET.data
+  updateSaveBtn()
 }
 function saveSchedulesFail(err) {
   document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
@@ -131,9 +146,9 @@ function saveSchedulesFail(err) {
 function deleteSchedulesSuccess() {
   document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"></ion-icon>'
   setTimeout(function() { document.getElementById('deleteSch').innerHTML = 'Delete' }, 4000)
-  DATA = []; SHEET.data = []; SHEET.render('none')
-  let sB = document.getElementById('saveSch')
-  sB.disabled = true;  sB.classList.add('grayLink');  sB.classList.remove('link')
+  DATA = []; SHEET.data = []; SHEET.render('none'); updateSaveBtn()
+  // let sB = document.getElementById('saveSch')
+  // sB.disabled = true;  sB.classList.add('grayLink');  sB.classList.remove('link')
   let dB = document.getElementById('deleteSch')
   dB.disabled = true;  dB.classList.add('grayLink');  dB.classList.remove('link')
   let aR = document.getElementById('addRow')
