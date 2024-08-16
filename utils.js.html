@@ -30,11 +30,10 @@ function confirmPopup(args) {let title,text,onYes,onNo,yesBtTxt,noBtTxt
   toggleDisplay('confirmPop')
   document.getElementById('confirmTitle' ).innerHTML = title
   document.getElementById('confirmText'  ).innerHTML = text
-  document.getElementById('confirmYes'   ).onclick   = onYes
-  document.getElementById('confirmNo'    ).onclick   = onNo
+  document.getElementById('confirmYes').setAttribute('onclick', onYes)
+  document.getElementById('confirmNo' ).setAttribute('onclick', onNo)
   document.getElementById('confirmYesTxt').innerHTML = yesBtTxt
   document.getElementById('confirmNoTxt' ).innerHTML = noBtTxt
-
 }
 CSSStyleDeclaration.prototype.setProperties = function(properties) {
   for (let property in properties) { this.setProperty(property, properties[property]); }
@@ -193,7 +192,6 @@ function getEmail() { let thing;
 }
 
 function signOutBtn() {
-  toggleDisplay('signOut')
   deleteSignInCookies()
   window.top.location.href = "https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec";
 }
