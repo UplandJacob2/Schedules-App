@@ -9,7 +9,7 @@
         </a>
       </div>
       <div class="topBarSection">
-        <a style="flex-direction: left; top: 5px;" class="top-link relative link" onclick="toggleDisplay('signOut'); document.getElementById('signOutBtn').focus()">Sign Out</a>
+        <a style="flex-direction: left; top: 5px;" class="top-link relative link" onclick="confirmPopup({title: 'Confirm sign out', text: 'Are you sure you want to sign out?', onYes: 'signOutBtn()'})">Sign Out</a>
       </div>
     </div>
   </div>
@@ -68,28 +68,11 @@
   </div>
 </div>
 
-<!-- SIGN OUT -->
-<div class="item smallpopup fadeIn" id="signOut" style="display: none;">
-  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
-  <a class="top-link link reload" style="right: 35%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('signOut');">
-    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div></a>
-  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Sign out?</span></center>
-  <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
-    <span class="bold">Are you sure you want to sign out?</span>
-  </div>
-  <a style="position: fixed; right: 45%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="signOutBtn();" id="signOutBtn" class="top-link link">
-    <center>Yes</center>
-  </a>
-  <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('signOut');" class="top-link link">
-    <center>No</center>
-  </a>
-</div>
-
 
 <!-- SCHEDULE EDITOR -->
 <div class="item fullpopup fadeIn" id="editPop" style="display: none;">
   <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
-  <a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="toggleDisplay('editPop')">
+  <a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="confirmPopup(title: 'Save?', text: 'Do you want to save your changes?', onYes: 'saveSch()', onNo: 'toggleDisplay(\'editPop\')')">
     <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div> </a>
   <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Edit Schedule</span></center>
 
@@ -123,8 +106,19 @@
   <a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="toggleDisplay('settingsPop')">
     <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div> </a>
   <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Settings</span></center>
+  <div class="tab new-line" style="font-size: 25;">
 
-  
-  
+    <h3 class="new-line">Military time</h3>
+    <input type="checkbox" id="militaryTimeSwitch" class="checkbox" />
+    <label for="militaryTimeSwitch" class="toggle">   <p>&nbsp;&nbsp;On&nbsp;&nbsp;Off</p>   </label>
+
+    <h3 class="new-line">Debug mode (Not yet implemented)</h3>
+    <input type="checkbox" id="debugModeSwitch" class="checkbox" />
+    <label for="debugModeSwitch" class="toggle">   <p>&nbsp;&nbsp;On&nbsp;&nbsp;Off</p>   </label>
+
+    <a class="new-line"></a>
+    <a style="width: auto; height: 25px; display: inline-block; padding: 10px; font-weight: bold; margin: 2px;" class="grayLink new-line" id="saveSet">Save</a>
+
+  </div>
 </div>
 
