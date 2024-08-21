@@ -29,14 +29,16 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-        
-      - uses: actions/setup-node@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
           node-version: 20
-          
-      - run: npm ci # or yarn install
-      
-      - uses: sibiraj-s/action-eslint@v3
+      - name: Setup npm
+        run: npm ci # or yarn install
+
+      - name: esLint
+        uses: sibiraj-s/action-eslint@v3
         with:
           #token: ${{ secrets.GITHUB_TOKEN }} # optional
           #eslint-args: '--ignore-path=.gitignore --quiet'
