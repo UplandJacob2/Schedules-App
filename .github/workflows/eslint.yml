@@ -37,8 +37,8 @@ jobs:
       - run: npm init -y
       - run: npm cache clean --force
       - run: npm install
-      - run: npm i --package-lock
-      - run: npm ci # or yarn install
+      #- run: npm i --package-lock
+      #- run: npm ci # or yarn install
 
       - name: esLint
         uses: sibiraj-s/action-eslint@v3
