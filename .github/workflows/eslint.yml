@@ -41,7 +41,7 @@ jobs:
       - run: npm i --package-lock-only
       #- run: npm ci # or yarn install
 
-      - run: /opt/hostedtoolcache/node/20.16.0/x64/bin/node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint . --ext=.js --ext=.jsx --ext=.ts --ext=.tsx
+      - run: /opt/hostedtoolcache/node/20.16.0/x64/bin/node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint .
       
       # - name: esLint
       #   uses: sibiraj-s/action-eslint@v3
