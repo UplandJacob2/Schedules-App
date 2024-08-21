@@ -40,9 +40,9 @@ jobs:
       - run: npm install eslint
       - run: npm i --package-lock-only
       #- run: npm ci # or yarn install
-
-      - run: /opt/hostedtoolcache/node/20.16.0/x64/bin/node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint .
-      
+      - run: node --loader ts-node/esm --experimental-specifier-resolution=node index.ts
+      - run: node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint .
+      #/opt/hostedtoolcache/node/20.16.0/x64/bin/node
       # - name: esLint
       #   uses: sibiraj-s/action-eslint@v3
       #   with:
