@@ -36,10 +36,9 @@ jobs:
           node-version: 20
       #- run: npm init -y
       #- run: npm cache clean --force
-      #- run: npm install
-      - run: npm ci
+      - run: npm install
       #- run: npm install eslint
-      #- run: npm i --package-lock
+      - run: npm i --package-lock-only
       #- run: npm ci # or yarn install
 
       - name: esLint
