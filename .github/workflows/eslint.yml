@@ -37,7 +37,7 @@ jobs:
       - run: npm init -y
       #- run: npm cache clean --force
       - run: npm install
-      - run: npm install eslint
+      - run: npm install eslint ts-node
       - run: npm i --package-lock-only
       #- run: npm ci # or yarn install
       - run: node --loader ts-node/esm --experimental-specifier-resolution=node index.ts
