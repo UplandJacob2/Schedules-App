@@ -35,7 +35,8 @@ jobs:
         with:
           node-version: 20
       - run: npm init
-      #- run: npm i --package-lock
+      - run: npm install
+      - run: npm i --package-lock
       - run: npm ci # or yarn install
 
       - name: esLint
