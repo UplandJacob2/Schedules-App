@@ -40,7 +40,8 @@ jobs:
       - run: npm install eslint ts-node
       - run: npm i --package-lock-only
       #- run: npm ci # or yarn install
-      - run: node --loader ts-node/esm --experimental-specifier-resolution=node eslint.config.js
+      - run: npm install --save esm
+      - run: node -r esm eslint.config.js
       - run: node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint .
       #/opt/hostedtoolcache/node/20.16.0/x64/bin/node
       # - name: esLint
