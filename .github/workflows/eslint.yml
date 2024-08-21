@@ -35,6 +35,7 @@ jobs:
         with:
           node-version: 20
       - run: npm init -y
+      - run: npm cache clean --force
       - run: npm install
       - run: npm i --package-lock
       - run: npm ci # or yarn install
