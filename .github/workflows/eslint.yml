@@ -45,8 +45,9 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }} # optional
           #eslint-args: '--ignore-path=.gitignore --quiet'
           ignore-path: .eslintignore
-          extensions: 'js,jsx,ts,tsx'
+          extensions: 'js,jsx,ts,tsx,gs' 
           annotations: true
+          all-files: true
      
 
       - name: Upload analysis results to GitHub
