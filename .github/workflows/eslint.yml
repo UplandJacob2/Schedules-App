@@ -34,9 +34,10 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: npm init -y
-      - run: npm cache clean --force
-      - run: npm install
+      #- run: npm init -y
+      #- run: npm cache clean --force
+      #- run: npm install
+      - run: npm ci
       #- run: npm install eslint
       #- run: npm i --package-lock
       #- run: npm ci # or yarn install
