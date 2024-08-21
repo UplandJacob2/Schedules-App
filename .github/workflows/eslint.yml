@@ -41,15 +41,17 @@ jobs:
       - run: npm i --package-lock-only
       #- run: npm ci # or yarn install
 
-      - name: esLint
-        uses: sibiraj-s/action-eslint@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }} # optional
-          #eslint-args: '--ignore-path=.gitignore --quiet'
-          #ignore-path: .eslintignore
-          extensions: 'js,jsx,ts,tsx' 
-          annotations: true
-          all-files: true
+      - run: eslint . 
+      
+      # - name: esLint
+      #   uses: sibiraj-s/action-eslint@v3
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }} # optional
+      #     #eslint-args: '--ignore-path=.gitignore --quiet'
+      #     #ignore-path: .eslintignore
+      #     extensions: 'js,jsx,ts,tsx' 
+      #     annotations: true
+      #     all-files: true
      
 
       - name: Upload analysis results to GitHub
