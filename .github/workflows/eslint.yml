@@ -41,17 +41,17 @@ jobs:
       - run: npm i --package-lock-only
       #- run: npm ci # or yarn install
 
-      # - run: /opt/hostedtoolcache/node/20.16.0/x64/bin/node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint . --c=.js --c=.jsx --c=.ts --c=.tsx
+      - run: /opt/hostedtoolcache/node/20.16.0/x64/bin/node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint . --c=.js --c=.jsx --c=.ts --c=.tsx
       
-      - name: esLint
-        uses: sibiraj-s/action-eslint@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }} # optional
-          #eslint-args: '--ignore-path=.gitignore --quiet'
-          #ignore-path: .eslintignore
-          extensions: 'js,jsx,ts,tsx' 
-          annotations: true
-          all-files: true
+      # - name: esLint
+      #   uses: sibiraj-s/action-eslint@v3
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }} # optional
+      #     #eslint-args: '--ignore-path=.gitignore --quiet'
+      #     #ignore-path: .eslintignore
+      #     extensions: 'js,jsx,ts,tsx' 
+      #     annotations: true
+      #     all-files: true
      
 
       - name: Upload analysis results to GitHub
