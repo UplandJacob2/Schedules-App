@@ -42,7 +42,7 @@ jobs:
       - name: esLint
         uses: sibiraj-s/action-eslint@v3
         with:
-          #token: ${{ secrets.GITHUB_TOKEN }} # optional
+          token: ${{ secrets.GITHUB_TOKEN }} # optional
           #eslint-args: '--ignore-path=.gitignore --quiet'
           ignore-path: .eslintignore
           extensions: 'js,jsx,ts,tsx'
