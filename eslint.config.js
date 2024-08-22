@@ -22,8 +22,6 @@ module.exports = [
     ...html.configs["flat/recommended"],
     rules: {
       ...html.configs["flat/recommended"].rules,
-      semi: "off",
-      quotes: ["warn", "single"],
       "@html-eslint/indent": ["warn", 2],
       "@html-eslint/element-newline": "warn",
       "@html-eslint/attrs-newline": "off",
