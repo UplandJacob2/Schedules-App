@@ -43,10 +43,14 @@ module.exports = [
         Drive: "readonly",
         Utilities: "readonly",
         MailApp: "readonly",
-        console: "readonly",
-        SchedulesSecure: "writable",
         UrlFetchApp: "readonly",
         XmlService: "readonly",
+        DocumentApp, "readonly",
+
+        SchedulesSecure: "writable",
+        
+        console: "readonly",
+        
         l: "writable",
       },
     },
