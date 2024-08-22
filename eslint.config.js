@@ -25,17 +25,31 @@ module.exports = [
       semi: "off",
       quotes: ["error", "single"],
       "@html-eslint/indent": ["warn", 2],
+      "@html-eslint/element-newline": "warn",
+      "@html-eslint/attrs-newline": "off",
+      "@html-eslint/no-obsolete-tags": "warn",
 
     },
   },
   {
     files: ["**.gs"],
     ignores: [".github/**"],
+    globals: {
+      "HtmlService",
+      "CacheService",
+      "SpreadsheetApp",
+      "DriveApp",
+      "Drive",
+      "Utilities",
+      "MailApp",
+      "console",
+      "SchedulesSecure",
+    },
 
     rules: {
       semi: "off",
       quotes: ["error", "single"],
-      //indent: [2, "warn"],
+      indent: ["warn", 2],
     },
 
 
