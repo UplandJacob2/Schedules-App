@@ -5,6 +5,9 @@
 	<base target="_top">
   <!-- <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.css" /> -->
   <link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
   <?!= include('style.css'); ?>
 
 </head>
@@ -36,7 +39,6 @@
             <a class="new-line nav-item">
               <a onclick="toggleDisplay('helpPop');" class="link nav-link">Help</a>
               <a onclick="toggleDisplay('aboutPop');" class="link nav-link">About</a>
-              <a onclick="toggleDisplay('contactPop');" class="link nav-link">Contact</a>
             </a>
             <a class="new-line nav-item">
               <a onclick="toggleDisplay('settingsPop');" disabled class="grayLink nav-link">Settings</a>
@@ -147,7 +149,7 @@
       <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Your account is being requested</span></center>
       <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
         <span class="bold">You will soon get an email.</span>
-        <img style="position: fixed; left: 49%; width: 50px; top: 30%;" src="https://shortpixel.com/img/spinner2.gif">
+        <img style="position: fixed; left: 49%; width: 50px; top: 30%;" alt="loading..." src="https://shortpixel.com/img/spinner2.gif">
       </div>
     </div>
 
@@ -158,7 +160,7 @@
       <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Signing In</span></center>
       <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
         <span class="bold">Signing In...</span>
-        <img style="position: fixed; left: 49%; width: 50px; top: 30%;" src="https://shortpixel.com/img/spinner2.gif">
+        <img style="position: fixed; left: 49%; width: 50px; top: 30%;" alt="loading..." src="https://shortpixel.com/img/spinner2.gif">
       </div>
     </div>
 
@@ -184,16 +186,22 @@
 
   <?!= include('popups.html'); ?>
 
-  <?!= include('script.js'); ?>
   <?!= include('utils.js'); ?>
+  <?!= include('script.js'); ?>
   <?!= include('editor.js'); ?>
-
+  <?!= include('Datejs.js'); ?>
+  <!-- <script>
+    alert('sdgshsrthsth')
+    console.re.log('remote log test')
+    
+  </script> -->
 
   <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
   <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <!-- <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script> -->
-  <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script>
+  <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script> 
+  <!-- <script src="https://console.re/connector.js" data-channel="schedules-app" id="consolerescript"></script> -->
 
 </body>
 
