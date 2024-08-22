@@ -24,39 +24,12 @@
 
   <div class="tab" style="overflow: auto; width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
     <!--all 'help' text is in this div-->
-    <span class="bold">If you want to edit and update your schedule:</span>
-    <span class="tab">1. Edit your schedule as desired: <a href="userScheduleURL" target="_blank">Your Sheet</a></span>
-    <span class="tab">2. 2 options:</span>
-    <span class="tab2">a) On your schedule sheet, click the "⚙️ Schedule Tools" tab, then "Update".</span>
-    <span class="tab2">b) Come back here and click "Re-add Schedule"</span>
-    <span class="tab">3. You may need to wait up to 2 minutes.</span>
-
-    <span class="bold">If this page seems to be showing your schedule wrong:</span>
-    <!-- <span class="tab">Simply clicking "Update" may fix the problem. If that doesn't work:</span> -->
-    <span class="tab">1. Check that <a href="userScheduleURL" target="_blank">Your Sheet</a> is <a href="https://docs.google.com/spreadsheets/d/1KBB80Knf1YmfZBtR31tOAh7SP_3WDsHfXBuo0UeqJaE/edit#gid=2098641774" target="_blank">formatted correctly.</a></span>
-    <span class="tab">2. Click "Re-add Schedule" in the menu.</span>
-    <span class="tab">3. You may need to wait up to 2 minutes.</span>
+    <span class="bold">I don't have any FAQs right now. <a href="https://github.com/UplandJacob2/Schedules-App/discussions/new?category=q-a">Let me know of any questions you have.</a></span>
+    
 
   </div>
 </div>
 
-<!-- CONTACT -->
-<div class="item fullpopup fadeIn" id="contactPop" style="display: none;">
-  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
-  <a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="toggleDisplay('contactPop');">
-    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div> </a>
-  
-  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Contact</span></center>
-
-  <div class="tab" style="overflow: auto; width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
-    <!--all 'contact' text is in this div-->
-    <a class="new-line"><a style="display: inline-block">For immediate problems and questions, you can email me at&nbsp;</a><a href="mailto:jacob.feil@stu.evsck12.com">jacob.feil@stu.evsck12.com</a><a>.</a></a>
-
-    <a class="new-line"><a style="display: inline-block">Most issues and questions should be made on&nbsp;</a><a href="https://github.com/UplandJacob2/Schedules-App">Github</a><a>.</a></a>
-    <span class="new-line tab">Make sure you have an account.</span>
-
-  </div>
-</div>
 
 <!-- ABOUT -->
 <div class="item fullpopup fadeIn" id="aboutPop" style="display: none;">
@@ -70,12 +43,23 @@
     <!--all 'about' text is in this div-->
     <a class="new-line">Project started Sept 25, 2023</a>
     <a class="new-line">Now has almost 2,000 lines of code, a lot of old code has been deleted.</a>
-    <a class="new-line">The old project is no longer in use and had over 1,000 lines. </a>
+    <a class="new-line">The old script is no longer in use and had over 1,000 lines. </a>
     <a class="new-line"><a style="display: inline-block"> </a></a>
     <a class="new-line"><a style="display: inline-block">All code is available in&nbsp;</a><a href="https://github.com/UplandJacob2/Schedules-App">Github</a><a>.</a></a>
     <a class="new-line">Feel free to leave suggestions and issues there. </a>
     <a class="new-line"><a style="display: inline-block"> </a></a>
     <a class="new-line"><a class="top-link relative link" onclick="toggleDisplay('privacyTermsPop')">Pricacy, Terms, and License</a></a>
+
+    <a class="new-line"></a>
+    <a class="new-line"></a>
+    <h3>Contact</h3>
+
+    <div style="border: none; font-size: 20px;">
+      <!--all 'contact' text is in this div-->
+      <a class="new-line"><a style="display: inline-block">For immediate problems and questions, you can email me at&nbsp;</a><a href="mailto:jacob.feil@stu.evsck12.com">jacob.feil@stu.evsck12.com</a><a>.</a></a>
+      <a class="new-line"><a style="display: inline-block">Most issues and questions should be made on&nbsp;</a><a href="https://github.com/UplandJacob2/Schedules-App">Github</a><a>.</a></a>
+      <span class="new-line tab">Make sure you have an account.</span>
+    </div>
 
   </div>
 </div>
@@ -130,5 +114,14 @@
     <center id="confirmNoTxt">NO</center>
   </a>
 </div>
+
+<div class="item smallpopup fadeIn" id="debugPop" style="display: none;">
+  <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
+  <a class="top-link link reload" style="right: 32%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('debugPop');">
+    <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div></a>
+  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Debug log</span></center>
+  <textarea id="debugTxt" readonly='true'></textarea>
+</div>
+
 
 <!-------- END popups.html -------->
