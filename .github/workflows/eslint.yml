@@ -34,7 +34,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-      - run: apt-get install python3-full
+      - run: sudo apt-get install python3-full
       - run: python3 -m pip install sarif-tools
       - run: npm init -y
       #- run: npm cache clean --force
