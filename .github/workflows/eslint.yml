@@ -42,8 +42,8 @@ jobs:
       #- run: npm ci # or yarn install
       #- run: npm install --save esm
       #- run: node -r esm eslint.config.js
-      - run: node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint . --format sarif --output-file eslint-results.sarif || exit 0
-      - run: cat eslint-results.sarif
+      - run: node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint . --format stylish --output-file eslint-results.txt || exit 0
+      - run: cat eslint-results.txt
       #/opt/hostedtoolcache/node/20.16.0/x64/bin/node
       # - name: esLint
       #   uses: sibiraj-s/action-eslint@v3
