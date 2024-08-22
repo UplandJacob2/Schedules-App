@@ -39,12 +39,12 @@ jobs:
       - run: npm init -y
       #- run: npm cache clean --force
       - run: npm install
-      - run: npm install eslint @html-eslint/parser @html-eslint/eslint-plugin
+      - run: npm install eslint @html-eslint/parser @html-eslint/eslint-plugin @microsoft/eslint-formatter-sarif
       - run: npm i --package-lock-only
       #- run: npm ci # or yarn install
       #- run: npm install --save esm
       #- run: node -r esm eslint.config.js
-      - run: node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint . --output-file eslint-results.sarif || exit 0
+      - run: node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint . --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif || exit 0
       - run: cat eslint-results.sarif
       - run: /home/runner/.local/bin/sarif summary eslint-results.sarif
       #/opt/hostedtoolcache/node/20.16.0/x64/bin/node
