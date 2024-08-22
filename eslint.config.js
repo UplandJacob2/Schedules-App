@@ -2,7 +2,7 @@
 const eslintPlugin = require("@typescript-eslint/eslint-plugin");
 
 //export default 
-modules.exports [
+modules.exports = [
   {
     files: ["**.gs", "**.html"],
     ignores: [".github/**"],
