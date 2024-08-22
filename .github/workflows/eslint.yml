@@ -46,6 +46,7 @@ jobs:
       #- run: node -r esm eslint.config.js
       - run: node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint . --output-file eslint-results.sarif || exit 0
       - run: cat eslint-results.sarif
+      - run: ls /home
       - run: python3 -m serif summary eslint-results.sarif
       #/opt/hostedtoolcache/node/20.16.0/x64/bin/node
       # - name: esLint
