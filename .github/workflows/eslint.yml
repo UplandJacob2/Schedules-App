@@ -34,6 +34,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+      - run: apt-get install python3-full
+      - run: python3 -m pip install sarif-tools
       - run: npm init -y
       #- run: npm cache clean --force
       - run: npm install
@@ -44,6 +46,7 @@ jobs:
       #- run: node -r esm eslint.config.js
       - run: node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint . --output-file eslint-results.sarif || exit 0
       - run: cat eslint-results.sarif
+      - run: serif summary eslint-results.sarif
       #/opt/hostedtoolcache/node/20.16.0/x64/bin/node
       # - name: esLint
       #   uses: sibiraj-s/action-eslint@v3
