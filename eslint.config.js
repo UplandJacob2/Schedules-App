@@ -45,7 +45,7 @@ module.exports = [
         MailApp: "readonly",
         UrlFetchApp: "readonly",
         XmlService: "readonly",
-        DocumentApp, "readonly",
+        DocumentApp: "readonly",
 
         SchedulesSecure: "writable",
         
