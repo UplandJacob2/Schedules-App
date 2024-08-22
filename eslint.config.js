@@ -9,7 +9,7 @@ const htmlParser = require("@html-eslint/parser");
 module.exports = [
   js.configs.recommended,
   {
-    files: ["**.gs", "**.html"],
+    files: ["**.html"],
     ignores: [".github/**"],
     plugins: { /*eslintPlugin*/ },
 
@@ -24,9 +24,20 @@ module.exports = [
       ...html.configs["flat/recommended"].rules,
       semi: "off",
       quotes: ["error", "single"],
-      "@html-eslint/indent": "warn",
+      "@html-eslint/indent": [2, "warn"},
 
     },
+  },
+  {
+    files: ["**.gs"],
+    ignores: [".github/**"],
+
+    rules: {
+      semi: "off",
+      quotes: ["error", "single"],
+    },
+
+
   },
 
 ];
