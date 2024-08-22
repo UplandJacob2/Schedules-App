@@ -24,7 +24,7 @@ module.exports = [
       ...html.configs["flat/recommended"].rules,
       semi: "off",
       quotes: ["error", "single"],
-      "@html-eslint/indent": [2, "warn"],
+      "@html-eslint/indent": ["warn", 2],
 
     },
   },
