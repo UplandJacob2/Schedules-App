@@ -34,16 +34,18 @@ module.exports = [
   {
     files: ["**.gs"],
     ignores: [".github/**"],
-    globals: {
-      "HtmlService",
-      "CacheService",
-      "SpreadsheetApp",
-      "DriveApp",
-      "Drive",
-      "Utilities",
-      "MailApp",
-      "console",
-      "SchedulesSecure",
+    languageOptions: {
+      globals: {
+        HtmlService: "readonly",
+        CacheService: "readonly",
+        SpreadsheetApp: "readonly",
+        DriveApp: "readonly",
+        Drive: "readonly",
+        Utilities: "readonly",
+        MailApp: "readonly",
+        console: "readonly",
+        SchedulesSecure: "writable",
+      },
     },
 
     rules: {
