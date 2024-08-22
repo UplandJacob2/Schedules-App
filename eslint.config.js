@@ -10,7 +10,7 @@ module.exports = [
   js.configs.recommended,
   {
     files: ["**.html"],
-    ignores: [".github/**"],
+    ignores: [".github/**", "DateTEST.js.html", "Datejs.js.html"],
     plugins: { /*eslintPlugin*/ },
 
     languageOptions: {
