@@ -1,4 +1,5 @@
-import eslintPlugin from '@typescript-eslint/eslint-plugin'
+//import eslintPlugin from '@typescript-eslint/eslint-plugin'
+const eslintPlugin = require("@typescript-eslint/eslint-plugin");
 
 export default [
   {
