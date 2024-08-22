@@ -1,5 +1,7 @@
 //import eslintPlugin from '@typescript-eslint/eslint-plugin'
+import js from "@eslint/js";
 const eslintPlugin = require("@typescript-eslint/eslint-plugin");
+const js = require("@eslint/js");
 
 //export default 
 modules.exports = [
