@@ -18,7 +18,7 @@ module.exports = [
     },*/
 
     rules: {
-      semi: "none",
+      semi: "off",
       quotes: ["error", "single"],
 
     },
