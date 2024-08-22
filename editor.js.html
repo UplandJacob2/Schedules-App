@@ -4,7 +4,7 @@ class Editor {
     this.el = options.el
     this.options = options
     this.columns = options.columns
-    this.data = JSON.parse(JSON.stringify(options.data))
+    this.dataArray = JSON.parse(JSON.stringify(options.data))
     this.timeSelectCache = null
     // colors
     this.tableBack = '#999'
@@ -12,6 +12,24 @@ class Editor {
     this.headBack = '#ddd'
     this.disabledBack = '#ddd'
     this.dropBack = '#dddddd'
+
+    this.onDataChange = options.onDataChange
+
+    this.data = new Proxy(this.dataArray, {
+      deleteProperty: function(target, property) {
+        delete target[property];
+        console.log("Deleted %s", property);
+        eval(this.onDataChange)
+        return true;
+      },
+      set: function(target, property, value, receiver) {      
+        target[property] = value;
+        console.log("Set %s to %o", property, value);
+        alert('changed')
+        eval(this.onDataChange)
+        return true;
+      }
+    });
 
     this.render('load')
   }
