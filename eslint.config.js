@@ -1,7 +1,8 @@
 //import eslintPlugin from '@typescript-eslint/eslint-plugin'
 const eslintPlugin = require("@typescript-eslint/eslint-plugin");
 
-export default [
+//export default 
+modules.exports [
   {
     files: ["**.gs", "**.html"],
     ignores: [".github/**"],
