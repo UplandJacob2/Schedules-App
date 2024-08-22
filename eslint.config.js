@@ -4,8 +4,7 @@
 const js = require("@eslint/js");
 
 //export default 
-modules.exports = 
-export default [
+modules.exports = [
   js.configs.recommended,
   {
     files: ["**.gs", "**.html"],
