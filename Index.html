@@ -22,7 +22,6 @@
         <a class="new-line nav-item">
           <a onclick="toggleDisplay('helpPop');" class="link nav-link">Help</a>
           <a onclick="toggleDisplay('aboutPop');" class="link nav-link">About</a>
-          <a onclick="toggleDisplay('contactPop');" class="link nav-link">Contact</a>
         </a>
         <a class="new-line nav-item">
           <a onclick="toggleDisplay('settingsPop');" class="link nav-link">Settings</a>
@@ -31,7 +30,7 @@
     </div>
     <!-- MAIN -->
     <div id="main">
-      <center><img id="img" style="width: 50px; top: 100px;" src="https://shortpixel.com/img/spinner2.gif"></center>
+      <center><img id="img" style="width: 50px; top: 100px;" alt="loading..." src="https://shortpixel.com/img/spinner2.gif"></center>
 
       <!-- The Schedule -->
       <table class='schedule'></table>
@@ -64,7 +63,7 @@
 
   <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
     <span class="bold">Async process is being scheduled</span>
-    <img style="position: fixed; left: 49%; width: 50px; top: 30%;" src="https://shortpixel.com/img/spinner2.gif">
+    <img style="position: fixed; left: 49%; width: 50px; top: 30%;" alt="loading..." src="https://shortpixel.com/img/spinner2.gif">
   </div>
 </div>
 
@@ -72,7 +71,7 @@
 <!-- SCHEDULE EDITOR -->
 <div class="item fullpopup fadeIn" id="editPop" style="display: none;">
   <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
-  <a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="confirmPopup(title: 'Save?', text: 'Do you want to save your changes?', onYes: 'saveSch()', onNo: 'toggleDisplay(\'editPop\')')">
+  <a class="top-link link reload" style="right: 10%; top: 8.6%; font-size: 35px; z-index: 11" onclick="editPopClose()">
     <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div> </a>
   <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Edit Schedule</span></center>
 
@@ -110,12 +109,13 @@
 
     <h3 class="new-line">Military time</h3>
     <input type="checkbox" id="militaryTimeSwitch" class="checkbox" />
-    <label for="militaryTimeSwitch" class="toggle">   <p>&nbsp;&nbsp;On&nbsp;&nbsp;Off</p>   </label>
+    <label for="militaryTimeSwitch" class="toggle" onclick="updateSettingsNotSaved()">   <p>&nbsp;&nbsp;On&nbsp;&nbsp;Off</p>   </label>
 
     <h3 class="new-line">Debug mode (Not yet implemented)</h3>
     <input type="checkbox" id="debugModeSwitch" class="checkbox" />
-    <label for="debugModeSwitch" class="toggle">   <p>&nbsp;&nbsp;On&nbsp;&nbsp;Off</p>   </label>
+    <label for="debugModeSwitch" class="toggle" onclick="updateSettingsNotSaved()">   <p>&nbsp;&nbsp;On&nbsp;&nbsp;Off</p>   </label>
 
+    <a class="new-line">&nbsp;</a>
     <a class="new-line"></a>
     <a style="width: auto; height: 25px; display: inline-block; padding: 10px; font-weight: bold; margin: 2px;" class="grayLink new-line" id="saveSet">Save</a>
 
