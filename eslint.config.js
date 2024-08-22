@@ -23,7 +23,7 @@ module.exports = [
     rules: {
       ...html.configs["flat/recommended"].rules,
       semi: "off",
-      quotes: ["error", "single"],
+      quotes: ["warn", "single"],
       "@html-eslint/indent": ["warn", 2],
       "@html-eslint/element-newline": "warn",
       "@html-eslint/attrs-newline": "off",
@@ -53,7 +53,7 @@ module.exports = [
 
     rules: {
       semi: "off",
-      quotes: ["error", "single"],
+      quotes: ["warn", "double"],
       indent: ["warn", 2],
     },
 
