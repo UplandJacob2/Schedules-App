@@ -38,18 +38,19 @@ module.exports = [
     ignores: [".github/**"],
     languageOptions: {
       globals: {
+        Utilities: "readonly",
+        XmlService: "readonly",
         HtmlService: "readonly",
         CacheService: "readonly",
+        MailApp: "readonly",
+        UrlFetchApp: "readonly",
+        DocumentApp: "readonly",
         SpreadsheetApp: "readonly",
         DriveApp: "readonly",
         Drive: "readonly",
-        Utilities: "readonly",
-        MailApp: "readonly",
-        UrlFetchApp: "readonly",
-        XmlService: "readonly",
-        DocumentApp: "readonly",
 
         SchedulesSecure: "writable",
+        DateUtils: "writable",
         
         console: "readonly",
         
