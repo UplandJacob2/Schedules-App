@@ -77,7 +77,7 @@ DateUtils.iterateDays = function (fromD, num) { let daysPerMonth
   if (DateUtils.isLeapYear()) {daysPerMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
   } else {daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];}
   l('iterating through days')
-  //l("from date: ", fromD)
+  //l('from date: ', fromD)
   
   let year = fromD.match(/[0-9]{4}/g)[0]; let month = DateUtils.monthToNum(fromD.match(/(\D){3}(?= )/g)[0]); let daysInMonth = daysPerMonth[month-1]; let day = fromD.match(/[0-9]{2}(?=, )/g); 
   if (num > 0 ) {
@@ -168,14 +168,14 @@ DateUtils.militaryToStandard = function(time) {
   var timeValue;
 
   if (hours > 0 && hours <= 12) {
-    timeValue = "" + hours;
+    timeValue = '' + hours;
   } else if (hours > 12) {
-    timeValue = "" + (hours - 12);
+    timeValue = '' + (hours - 12);
   } else if (hours == 0) {
-    timeValue = "12";
+    timeValue = '12';
   }
-  timeValue += (minutes < 10) ? ":0" + minutes : ":" + minutes;  // get minutes
-  //timeValue += (hours >= 12) ? " PM" : " AM";  // get AM/PM
+  timeValue += (minutes < 10) ? ':0' + minutes : ':' + minutes;  // get minutes
+  //timeValue += (hours >= 12) ? ' PM' : ' AM';  // get AM/PM
   return timeValue
 }
 
@@ -204,7 +204,7 @@ DateUtils.getDateAsText = function () {
  * 
  * returned: 
  * {string[]} list of days   
- *   * if "returnListOfReasons" is true: list with list of days and list of reasons
+ *   * if 'returnListOfReasons' is true: list with list of days and list of reasons
  * 
  * @param {bool} 
  * 
@@ -236,7 +236,7 @@ function getDaysOff(returnListOfReasons) {
   var summer, eSummer;
   if (firstDay && lastDay) {
     summer = DateUtils.iterateDays(lastDay, 1);  eSummer = DateUtils.iterateDays(firstDay, -1);  // get first and last day of summer
-    console.log(summer+"     "+eSummer) ;
+    console.log(summer+'     '+eSummer) ;
     DateUtils.dayRange(summer, eSummer, true).forEach((item) => {daysoff[daysoff.length] = item}); // add all days of the summer to list
   }
   console.log(items);
