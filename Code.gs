@@ -3,21 +3,21 @@ function doGet(q) {
   
   let doit;
   
-  if (String(q.parameter.do) != "undefined") {doit = q.parameter.do;}
+  if (String(q.parameter.do) != 'undefined') {doit = q.parameter.do;}
   else {return HtmlService.createHtmlOutput(HtmlService.createTemplateFromFile('notSignedIn').evaluate()).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');}
 
-  if (doit == "confirmSignUp") { var key = q.parameter.key;
+  if (doit == 'confirmSignUp') { var key = q.parameter.key;
     if (String(key) == '') {err('No token.');} 
     let json = JSON.parse(CacheService.getScriptCache().get(key));
     try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad token.');}
 
-    const sheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules Accounts").next()).getActiveSheet();
+    const sheet = SpreadsheetApp.open(DriveApp.getFilesByName('Schedules Accounts').next()).getActiveSheet();
     const row = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().findIndex((em) => em[0].toLowerCase() == email.toLowerCase()) + 1;
     if (row > 0) {err('Already an account with that email.');}
 
-    if (!SchedulesSecure.isValidEmail(email)) {err("Invalid email. How do you get around client side checks? And/or the server died?");}
-    if (!SchedulesSecure.isValidPassword(pass)) {err("Invalid Password. How do you get around client side checks? And/or the server died?");}
-    if (pass != passR) {err("Passwords don't match. How do you get around client side checks? And/or the server died?");}
+    if (!SchedulesSecure.isValidEmail(email)) {err('Invalid email. How do you get around client side checks? And/or the server died?');}
+    if (!SchedulesSecure.isValidPassword(pass)) {err('Invalid Password. How do you get around client side checks? And/or the server died?');}
+    if (pass != passR) {err('Passwords don\'t match. How do you get around client side checks? And/or the server died?');}
 
     sheet.getRange(sheet.getLastRow()+1, 1).setValue(email);
     sheet.getRange(sheet.getLastRow(), 2).setValue(pass);
@@ -48,7 +48,7 @@ function api (parameter) {
       if (!parameter.val){ err('val required')}
       let {val} = parameter
       let fileSets = {title: email+'.json', mimeType: 'application/json'};
-      let blob = Utilities.newBlob(val, "application/json");
+      let blob = Utilities.newBlob(val, 'application/json');
       l('edit to '+val)
       Drive.Files.update(fileSets, file.getId(), blob)
       return 'done'
@@ -63,7 +63,7 @@ function api (parameter) {
         let filesToRecover = []
         while (files.hasNext()){
           let f = files.next()
-          if (f.getName() == email+".json"){ //&& f.getParents().next().getId() == '1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc'){
+          if (f.getName() == email+'.json'){ //&& f.getParents().next().getId() == '1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc'){
             filesToRecover[filesToRecover.length] = f
           }
         }
@@ -72,13 +72,13 @@ function api (parameter) {
           l('# of files that can be recovered:', filesToRecover.length)
           if (parameter.fileId) {
             DriveApp.getFileById(parameter.fileId).setTrashed(false)
-            let nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()
+            let nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()
             return JSON.stringify(['File recovered', [[nfile.getLastUpdated(), nfile.getBlob().getDataAsString(), nfile.getId()]]])
           }
           if (filesToRecover.length == 1) {
             l(filesToRecover[0])
             filesToRecover[0].setTrashed(false)
-            let nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()
+            let nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()
             return JSON.stringify(['File recovered', [[nfile.getLastUpdated(), nfile.getBlob().getDataAsString(), nfile.getId()]]])
           } else if (filesToRecover.length > 1) {
             l('test')
@@ -88,11 +88,11 @@ function api (parameter) {
           } else {
             err('No file to recover')
           }
-        } else if (onfail == "new") {
+        } else if (onfail == 'new') {
           const firstRow = { info: 's', class: 'Some Class', strt: '', end: '', b: false, days: 'Mon, Wed, Fri', name: 'Schedule Name' }
           const emptyRow = { info: '',  class: 'Some Class', strt: '', end: '', b: false, days: '', name: '' }
           DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').createFile(email+'.json', JSON.stringify([firstRow, emptyRow, emptyRow]))
-          let nnfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()
+          let nnfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()
           return nnfile.getBlob().getDataAsString()
 
         } else if (onfail) {err('invalid onfail')
@@ -106,7 +106,7 @@ function api (parameter) {
     //   let filesToRecover = []
     //   while (files.hasNext()){
     //     let f = files.next()
-    //     if (f.getName() == email+".json"){ //&& f.getParents().next().getId() == '1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc'){
+    //     if (f.getName() == email+'.json'){ //&& f.getParents().next().getId() == '1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc'){
     //       filesToRecover[filesToRecover.length] = f
     //     }
     //   }
@@ -121,7 +121,7 @@ function api (parameter) {
     // }
   } else if (item == 'settings') { /////////////////////////////////////////
     l('user settings')
-    if (!parameter.action) { err("Action required."); } if (!parameter.email) { err("Email required."); } if (!parameter.token) { err("Token required."); } let {action, email, token} = parameter
+    if (!parameter.action) { err('Action required.'); } if (!parameter.email) { err('Email required.'); } if (!parameter.token) { err('Token required.'); } let {action, email, token} = parameter
     try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)} let file
     try {file = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+'.json').next()} catch { w('no file for '+email); file = null }
 
@@ -135,7 +135,7 @@ function api (parameter) {
       if (!parameter.val){ err('val required')}
       let {val} = parameter
       let fileSets = {title: email+'.json', mimeType: 'application/json'};
-      let blob = Utilities.newBlob(val, "application/json");
+      let blob = Utilities.newBlob(val, 'application/json');
       l('edit to '+val)
       Drive.Files.update(fileSets, file.getId(), blob)
       return 'done'
@@ -150,7 +150,7 @@ function api (parameter) {
         let filesToRecover = []
         while (files.hasNext()){
           let f = files.next()
-          if (f.getName() == email+".json"  ){ //&& f.getParents().next().getId() == '1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR'){
+          if (f.getName() == email+'.json'  ){ //&& f.getParents().next().getId() == '1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR'){
             l(f.getParents().next().getId())
             filesToRecover[filesToRecover.length] = f
           }
@@ -159,17 +159,17 @@ function api (parameter) {
         if (onfail == 'recover'){
           if (filesToRecover.length == 1) {
             filesToRecover[0].setTrashed(false)
-            let nfile = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+".json").next()
+            let nfile = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+'.json').next()
             return nfile.getBlob().getDataAsString()
           } else if (filesToRecover.length > 1) {
             return ['More than one file can be recovered', filesToRecover.map(fl => [fl.getLastUpdated(), fl.getBlob().getDataAsString()])]
           } else {
             err('No file to recover')
           }
-        } else if (onfail == "new") {
+        } else if (onfail == 'new') {
           const settingsBlank = { militaryTime: false, darkMode: false }
           DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').createFile(email+'.json', JSON.stringify([settingsBlank]))
-          let nnfile = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+".json").next()
+          let nnfile = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+'.json').next()
           return nnfile.getBlob().getDataAsString()
 
         } else if (onfail) {err('invalid onfail')
@@ -182,7 +182,7 @@ function api (parameter) {
       let filesToRecover = []
       while (files.hasNext()){
         let f = files.next()
-        if (f.getName() == email+".json"){ //&& f.getParents().next().getId() == '1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR'){
+        if (f.getName() == email+'.json'){ //&& f.getParents().next().getId() == '1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR'){
           filesToRecover[filesToRecover.length] = f
         }
       }
@@ -204,8 +204,8 @@ function api (parameter) {
 function include(filename) {return HtmlService.createHtmlOutputFromFile(filename).setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent();}
 
 function signUp (pass, passR, email) {
-  console.log(pass+"   "+passR+"   "+email);
-  if (!SchedulesSecure.isValidEmail(email)) {err("Invalid email. How do you get around client side checks?")}
+  console.log(pass+'   '+passR+'   '+email);
+  if (!SchedulesSecure.isValidEmail(email)) {err('Invalid email. How do you get around client side checks?')}
   const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   const acctJson = JSON.parse(file.getBlob().getDataAsString())
 
@@ -217,8 +217,8 @@ function signUp (pass, passR, email) {
   //const i = JSON.parse(sc.get('SignInTokens')).findIndex((val) => val.email.toLowerCase() == email.toLowerCase())
   //if (!(i < 0)) {err('Already an account with that email.')}
 
-  if (!SchedulesSecure.isValidPassword(pass)) {err("Invalid Password. How do you get around client side checks?")}
-  if (pass != passR) {err("Passwords don't match. How do you get around client side checks?")}
+  if (!SchedulesSecure.isValidPassword(pass)) {err('Invalid Password. How do you get around client side checks?')}
+  if (pass != passR) {err('Passwords don\'t match. How do you get around client side checks?')}
   const str = SchedulesSecure.random250();
   console.log(str);
   sc.put(str, JSON.stringify({pass: pass, email: email, passR: passR}));
@@ -229,8 +229,8 @@ function signUp (pass, passR, email) {
 
   MailApp.sendEmail({
     to: email,
-    subject: "Confirm your 'Schedules' account creation.",
-    name: "Schedules App",
+    subject: 'Confirm your \'Schedules\' account creation.',
+    name: 'Schedules App',
     htmlBody: htmlBody,
   });
 }
@@ -238,7 +238,7 @@ function confirmSignUp(token) {
   if (String(token) == '') {err('No token.');} 
   let json = JSON.parse(CacheService.getScriptCache().get(token));
   try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad token.');}
-  if (!SchedulesSecure.isValidEmail(email)) {err("Invalid email. How do you get around client side checks? And/or the server died?");}
+  if (!SchedulesSecure.isValidEmail(email)) {err('Invalid email. How do you get around client side checks? And/or the server died?');}
 
   let file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   let data = JSON.parse(file.getBlob().getDataAsString())
@@ -251,7 +251,7 @@ function confirmSignUp(token) {
   data.push({email: email, pass: pass, token: ntoken})
 
   let fileSets = {title: 'accounts.json', mimeType: 'application/json'};
-  let blob = Utilities.newBlob(JSON.stringify(data), "application/json");
+  let blob = Utilities.newBlob(JSON.stringify(data), 'application/json');
   l('edit to '+data)
   Drive.Files.update(fileSets, file.getId(), blob)
 
@@ -271,7 +271,7 @@ function signIn (email, pass, rm) { let rand;
       acctJson[i].token = rand
 
       let fileSets = {title: 'accounts.json', mimeType: 'application/json'};
-      let blob = Utilities.newBlob(JSON.stringify(acctJson), "application/json");
+      let blob = Utilities.newBlob(JSON.stringify(acctJson), 'application/json');
       l('edit to '+blob)
       Drive.Files.update(fileSets, file.getId(), blob)
     }
@@ -294,7 +294,7 @@ function signInWToken(email, token) {
   acctJson[i].token = rand
 
   let fileSets = {title: 'accounts.json', mimeType: 'application/json'};
-  let blob = Utilities.newBlob(JSON.stringify(acctJson), "application/json");
+  let blob = Utilities.newBlob(JSON.stringify(acctJson), 'application/json');
   l('edit to '+blob)
   Drive.Files.update(fileSets, file.getId(), blob)
 
