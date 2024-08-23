@@ -8,7 +8,7 @@ const htmlParser = require("@html-eslint/parser");
 
 //export default 
 module.exports = [
-  js.configs.recommended,
+  //js.configs.recommended,
   {
     files: ["**.html"],
     ignores: [".github/**", "DateTEST.js.html", "Datejs.js.html"],
@@ -59,6 +59,7 @@ module.exports = [
     },
 
     rules: {
+      ...js.configs.recommended.rules,
       semi: "off",
       quotes: ["warn", "double"],
       indent: ["warn", 2],
