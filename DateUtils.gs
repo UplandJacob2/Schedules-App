@@ -45,10 +45,10 @@ DateUtils.dayRange = function (fromD, toD, formated) {let daysPerMonth
   while (!found) {
     l(month, day, year)
     //month = parseInt(month); day = parseInt(day); year = parseInt(year)
-    let daysInMonth = daysPerMonth[month-1];
+    daysInMonth = daysPerMonth[month-1];
     if (month <= 12) {
       //console.log(month+'/'+day+'/'+year);
-      daysToReturn[daysToReturn.length] = month+"/"+day+"/"+year;
+      daysToReturn[daysToReturn.length] = month+'/'+day+'/'+year;
       if (month+'/'+day+'/'+year == eMonth+'/'+eDay+'/'+eYear) {
         return daysToReturn
       }
@@ -87,7 +87,7 @@ DateUtils.iterateDays = function (fromD, num) { let daysPerMonth
         if (day < daysInMonth) {  day++;  } else {  day = 1; month ++;  } 
       } else {  year ++; month = 1;  }
     }
-    return month+"/"+day+"/"+year;
+    return month+'/'+day+'/'+year;
   } else if (num < 0) {
     for (var i=0; i > num; i--) {
       daysInMonth = daysPerMonth[month-1];
@@ -95,8 +95,8 @@ DateUtils.iterateDays = function (fromD, num) { let daysPerMonth
         if (day < daysInMonth) {  day--;  } else {  day = 1; month --;  } 
       } else {  year --; month = 1;  }
     }
-    return month+"/"+day+"/"+year;
-  } else {return month+"/"+day+"/"+year;}
+    return month+'/'+day+'/'+year;
+  } else {return month+'/'+day+'/'+year;}
 }
 /**
  * Returns true if this year is a leap year
@@ -118,7 +118,7 @@ DateUtils.isLeapYear = function () { const d = new Date().getFullYear(); /*d = 2
  */
 DateUtils.today = function () {
   const day = new Date();
-  return day.getMonth()+1+"/"+day.getDate()+"/"+day.getFullYear();
+  return day.getMonth()+1+'/'+day.getDate()+'/'+day.getFullYear();
 }
 /**
  * Returns day of week as num: 0-6
@@ -189,7 +189,7 @@ DateUtils.militaryToStandard = function(time) {
  * @return {string} current date and time
 */
 DateUtils.getDateAsText = function () {
-  return Utilities.formatDate(new Date(), "CST", "MM/dd/yyyy HH:mm:ss")
+  return Utilities.formatDate(new Date(), 'CST', 'MM/dd/yyyy HH:mm:ss')
 }
 
 
@@ -244,7 +244,7 @@ function getDaysOff(returnListOfReasons) {
   
   items.forEach((item) => {
     if (item[1].length == 1) {
-      daysoff[daysoff.length] = DateUtils.monthToNum(item[1][0].match(/(\D){3}(?= )/g)[0])+"/"+parseInt(item[1][0].match(/[0-9]{2}(?=, )/g))+"/"+item[1][0].match(/[0-9]{4}/g)[0];
+      daysoff[daysoff.length] = DateUtils.monthToNum(item[1][0].match(/(\D){3}(?= )/g)[0])+'/'+parseInt(item[1][0].match(/[0-9]{2}(?=, )/g))+'/'+item[1][0].match(/[0-9]{4}/g)[0];
     } else {
       DateUtils.dayRange(item[1][0], item[1][1], false).forEach((item) => {daysoff[daysoff.length] = item})
     }
