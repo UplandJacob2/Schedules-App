@@ -122,8 +122,8 @@ function api (parameter) {
   } else if (item == 'settings') { /////////////////////////////////////////
     l('user settings')
     if (!parameter.action) { err("Action required."); } if (!parameter.email) { err("Email required."); } if (!parameter.token) { err("Token required."); } let {action, email, token} = parameter
-    try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)}
-    try {var file = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+".json").next()} catch { w('no file for '+email); var file = null }
+    try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)} let file
+    try {file = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+".json").next()} catch { w('no file for '+email); file = null }
 
     if (action == 'delete'){
       if (!file) { err('file not found') }
@@ -290,7 +290,7 @@ function signInWToken(email, token) {
   l(i)
   if (i < 0) {err('No account with that email.')}
   
-  rand = SchedulesSecure.random250()
+  let rand = SchedulesSecure.random250()
   acctJson[i].token = rand
 
   let fileSets = {title: 'accounts.json', mimeType: 'application/json'};
@@ -364,10 +364,10 @@ function _refreshSchedules() {
   _refreshCache();
 }
 
-function getSchedule(email, token, militaryTime) {
+function getSchedule(email, token, militaryTime) { let file
   try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)}
-  try {var file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()}
-  catch { w('no file for '+email); var file = null }
+  try {file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()}
+  catch { w('no file for '+email); file = null }
   if (!file) {return `<center><header style='font-size: 40px; margin: 30px;'>We couldn't find a schedule for you.</header></center>   <center><a onclick="toggleDisplay('editPop')" class='link' style='font-size: 25px; padding: 10px; margin-top: -30px;'>Create Schedule</a></center>`}
   let data = JSON.parse(file.getBlob().getDataAsString()); let schedule = []; let date = new Date()
   // get schedule for today
