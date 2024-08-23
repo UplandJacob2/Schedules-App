@@ -1,8 +1,9 @@
 //import eslintPlugin from '@typescript-eslint/eslint-plugin'
 //import js from "@eslint/js";
-//const eslintPlugin = require("@typescript-eslint/eslint-plugin");
+
 const js = require("@eslint/js");
-const html = require("@html-eslint/eslint-plugin");
+const htmlLint = require("@html-eslint/eslint-plugin");
+const html = require("eslint-plugin-html")
 const htmlParser = require("@html-eslint/parser");
 
 //export default 
@@ -11,7 +12,10 @@ module.exports = [
   {
     files: ["**.html"],
     ignores: [".github/**", "DateTEST.js.html", "Datejs.js.html"],
-    plugins: { /*eslintPlugin*/ },
+    plugins: { html },
+    settings: {
+      "html/indent": "+2",
+    },
 
     languageOptions: {
       //ecmaVersion: "latest",
@@ -19,9 +23,9 @@ module.exports = [
       //parser: "eslintPlugin/parser",
       parser: htmlParser,
     },
-    ...html.configs["flat/recommended"],
+    ...htmlLint.configs["flat/recommended"],
     rules: {
-      ...html.configs["flat/recommended"].rules,
+      ...htmlLint.configs["flat/recommended"].rules,
       "@html-eslint/indent": ["warn", 2],
       "@html-eslint/element-newline": "warn",
       "@html-eslint/attrs-newline": "off",
