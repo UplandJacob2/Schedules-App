@@ -1,7 +1,3 @@
-# This workflow uses actions that are not certified by GitHub.
-# They are provided by a third-party and are governed by
-# separate terms of service, privacy policy, and support
-# documentation.
 # ESLint is a tool for identifying and reporting on patterns
 # found in ECMAScript/JavaScript code.
 # More details at https://github.com/eslint/eslint
@@ -39,7 +35,7 @@ jobs:
       - run: npm init -y
       #- run: npm cache clean --force
       - run: npm install
-      - run: npm install eslint @html-eslint/parser @html-eslint/eslint-plugin @microsoft/eslint-formatter-sarif
+      - run: npm install eslint @html-eslint/parser @html-eslint/eslint-plugin @microsoft/eslint-formatter-sarif eslint-plugin-html
       - run: npm i --package-lock-only
       #- run: npm ci # or yarn install
       #- run: npm install --save esm
