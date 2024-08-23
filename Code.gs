@@ -123,7 +123,7 @@ function api (parameter) {
     l('user settings')
     if (!parameter.action) { err("Action required."); } if (!parameter.email) { err("Email required."); } if (!parameter.token) { err("Token required."); } let {action, email, token} = parameter
     try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)} let file
-    try {file = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+".json").next()} catch { w('no file for '+email); file = null }
+    try {file = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+'.json').next()} catch { w('no file for '+email); file = null }
 
     if (action == 'delete'){
       if (!file) { err('file not found') }
@@ -244,8 +244,8 @@ function confirmSignUp(token) {
   let data = JSON.parse(file.getBlob().getDataAsString())
 
   if (data.findIndex((r) => r.email == email) >= 0) {err('Already an account with that email.');}
-  if (!SchedulesSecure.isValidPassword(pass)) {err("Invalid Password. How do you get around client side checks? And/or the server died?");}
-  if (pass != passR) {err("Passwords don't match. How do you get around client side checks? And/or the server died?");}
+  if (!SchedulesSecure.isValidPassword(pass)) {err('Invalid Password. How do you get around client side checks? And/or the server died?');}
+  if (pass != passR) {err('Passwords don\'t match. How do you get around client side checks? And/or the server died?');}
 
   let ntoken = SchedulesSecure.random250()
   data.push({email: email, pass: pass, token: ntoken})
@@ -322,7 +322,7 @@ function _refreshCache() {
   }
 
 
-  const cacheSheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules").next()).getSheetByName('Backup Cache');
+  const cacheSheet = SpreadsheetApp.open(DriveApp.getFilesByName('Schedules').next()).getSheetByName('Backup Cache');
   ////////////////////    schedules
   let schs = JSON.parse(cacheSheet.getRange(2, 2).getValue())
   l(schs)
@@ -358,7 +358,7 @@ function _refreshCache() {
 }
 // NOT CURRENTLY USED may be reimplemented
 function _refreshSchedules() {
-  const cacheSheet = SpreadsheetApp.open(DriveApp.getFilesByName("Schedules").next()).getSheetByName('Backup Cache');
+  const cacheSheet = SpreadsheetApp.open(DriveApp.getFilesByName('Schedules').next()).getSheetByName('Backup Cache');
   var schs = SchedulesSecure.getSchedules();
   cacheSheet.getRange(2, 2).setValue(JSON.stringify(schs));
   _refreshCache();
@@ -366,7 +366,7 @@ function _refreshSchedules() {
 
 function getSchedule(email, token, militaryTime) { let file
   try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)}
-  try {file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()}
+  try {file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()}
   catch { w('no file for '+email); file = null }
   if (!file) {return `<center><header style='font-size: 40px; margin: 30px;'>We couldn't find a schedule for you.</header></center>   <center><a onclick="toggleDisplay('editPop')" class='link' style='font-size: 25px; padding: 10px; margin-top: -30px;'>Create Schedule</a></center>`}
   let data = JSON.parse(file.getBlob().getDataAsString()); let schedule = []; let date = new Date()
@@ -417,7 +417,7 @@ function getSchedule(email, token, militaryTime) { let file
     }); 
     
     schStr+='</tr>';
-    if (rab == "a") { rab = "b" } else { rab ="a" }
+    if (rab == 'a') { rab = 'b' } else { rab ='a' }
   });
   l(schStr)
   return schStr
