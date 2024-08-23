@@ -30,13 +30,13 @@ function doGet(q) {
 
 function api (parameter) {
   l(parameter)
-  if (!parameter.item){ err("Item required."); }
+  if (!parameter.item){ err('Item required.'); }
   let item = parameter.item
   if (item == 'sch') {
     l('schedule data')
-    if (!parameter.action) { err("Action required."); } if (!parameter.email) { err("Email required."); } if (!parameter.token) { err("Token required."); } let {action, email, token} = parameter
+    if (!parameter.action) { err('Action required.'); } if (!parameter.email) { err('Email required.'); } if (!parameter.token) { err('Token required.'); } let {action, email, token} = parameter
     try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)}
-    try {var file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+".json").next()} catch { w('no file for '+email); var file = null }
+    try {var file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()} catch { w('no file for '+email); var file = null }
     
     if (action == 'delete'){
       if (!file) { err('file not found') }
