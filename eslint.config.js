@@ -61,7 +61,7 @@ module.exports = [
     rules: {
       ...js.configs.recommended.rules,
       semi: "off",
-      quotes: ["warn", "double"],
+      quotes: ["warn", "single"],
       indent: ["warn", 2],
     },
 
