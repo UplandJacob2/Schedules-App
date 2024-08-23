@@ -26,8 +26,8 @@ module.exports = [
     ...htmlLint.configs["flat/recommended"],
     rules: {
       ...htmlLint.configs["flat/recommended"].rules,
-      "@html-eslint/indent": ["warn", 2],
-      "@html-eslint/element-newline": "warn",
+      "@html-eslint/indent": "off",
+      "@html-eslint/element-newline": "off",
       "@html-eslint/attrs-newline": "off",
       "@html-eslint/no-obsolete-tags": "warn",
 
