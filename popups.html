@@ -5,14 +5,12 @@
   <a class="top-link link reload" style="right: 35%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('error');">
     <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div>
   </a>
-  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Error</span></center>
+  <span class="center" style="font-size: 30px; position: relative; top: -45px; color: white;">Error</span>
   <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
     <span id="errorWhen" class="bold"></span>
     <span id="errorTxt"></span>
   </div>
-  <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('error');" class="top-link link">
-    <center>OK</center>
-  </a>
+  <a style="position: fixed; right: 35%; top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="toggleDisplay('error');" class="top-link link center">OK</a>
 </div>
 
 <!-- HELP -->
@@ -22,7 +20,7 @@
     <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div>
   </a>
   
-  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Help</span></center>
+  <span class="center" style="font-size: 30px; position: relative; top: -45px; color: white;">Help</span>
 
   <div class="tab" style="overflow: auto; width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
     <!--all 'help' text is in this div-->
@@ -40,7 +38,7 @@
     <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div>
   </a>
   
-  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">About</span></center>
+  <span class="center" style="font-size: 30px; position: relative; top: -45px; color: white;">About</span>
 
   <div class="tab" style="overflow: auto; width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
     <!--all 'about' text is in this div-->
@@ -74,7 +72,7 @@
     <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div>
   </a>
   
-  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Pricacy, Terms, and License</span></center>
+  <span class="center" style="font-size: 30px; position: relative; top: -45px; color: white;">Pricacy, Terms, and License</span>
 
   <div class="tab" style="overflow: auto; width: calc(100% - 50px); height: calc(93% - 50px); border: none; top: -25px; font-size: 20px; padding: 5px;">
     <!--all text is in this div-->
@@ -104,13 +102,13 @@
     
   </div>
 </div>
-
+<!-- CONFIRM POPUP -->
 <div class="item smallpopup fadeIn" id="confirmPop" style="display: none;">
   <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
   <a class="top-link link reload" style="right: 32%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('confirmPop');">
     <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div>
   </a>
-  <center><span id="confirmTitle" style="font-size: 30px; position: relative; top: -45px; color: white;"></span></center>
+  <span id="confirmTitle" class="center" style="font-size: 30px; position: relative; top: -45px; color: white;"></span>
   <div id="confirmText" class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;"></div>
   <a id="confirmYes" style="position: fixed; right: calc(35% + 150px); top: 38%; z-index: 22; font-size: 20px; width: 100px" onclick="" class="top-link link">
     <center id="confirmYesTxt">YES</center>
@@ -119,13 +117,13 @@
     <center id="confirmNoTxt">NO</center>
   </a>
 </div>
-
+<!-- DEBUG POPUP -->
 <div class="item smallpopup fadeIn" id="debugPop" style="display: none;">
   <filler style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></filler>
   <a class="top-link link reload" style="right: 32%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('debugPop');">
     <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div>
   </a>
-  <center><span style="font-size: 30px; position: relative; top: -45px; color: white;">Debug log</span></center>
+  <span class="center" style="font-size: 30px; position: relative; top: -45px; color: white;">Debug log</span>
   <textarea id="debugTxt" readonly="true"></textarea>
 </div>
 
