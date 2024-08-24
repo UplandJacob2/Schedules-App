@@ -30,7 +30,8 @@ module.exports = [
       "@html-eslint/element-newline": "off",
       "@html-eslint/attrs-newline": "off",
       "@html-eslint/no-obsolete-tags": "warn",
-      "@html-eslint/require-closing-tags": "warn",
+      "@html-eslint/require-closing-tags": ["warn", {"selfClosing": "always"}],
+
 
     },
   },
