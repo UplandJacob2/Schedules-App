@@ -194,7 +194,7 @@ function signInSuccess(inp) {
   // }, 8000);
 
   //google.script.run.test(document.body.parentElement.innerHTML)
-  try{loadSheet()} catch (e) {alert(e)}
+  try{loadSheet()} catch (e) {alert(e.stack.split("\n").join('\n"'))}
 }
 function getToken() { let thing;
   try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } } catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
