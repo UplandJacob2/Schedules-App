@@ -3,8 +3,9 @@
 
 const js = require("@eslint/js");
 const htmlLint = require("@html-eslint/eslint-plugin");
-const html = require("eslint-plugin-html")
+const htmlPlug = require("eslint-plugin-html")
 const htmlParser = require("@html-eslint/parser");
+const globals = require("globals");
 
 //export default 
 module.exports = [
@@ -12,9 +13,10 @@ module.exports = [
   {
     files: ["**.html"],
     ignores: [".github/**", "DateTEST.js.html", "Datejs.js.html"],
-    plugins: { html },
+    plugins: { html: htmlPlug },
     settings: {
       "html/indent": "+2",
+      "html/report-bad-indent": "warn"
     },
 
     languageOptions: {
@@ -22,6 +24,10 @@ module.exports = [
       //sourceType: "module",
       //parser: "eslintPlugin/parser",
       parser: htmlParser,
+      globals: {
+        ...globals.browser,
+        ...globals.jquery,
+      },
     },
     ...htmlLint.configs["flat/recommended"],
     rules: {
