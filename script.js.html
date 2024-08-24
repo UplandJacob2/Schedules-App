@@ -154,7 +154,7 @@ function firstGetSchedulesSuccess(response) {
   getSchedulesSuccess(response)
 
   try {$('.schedule').html(getSchedule()); $('#img').css('display', 'none');
-  } catch (err) {alert(err)}
+  } catch (err) {alert(err.stack.split("\n")/*.splice(0, 2)*/.join('\n"'))}
 
   setInterval(function () {
     //google.script.run.withSuccessHandler(function (schedule) { $('.schedule').html(schedule); $('#img').css('display', 'none'); }).getSchedule(getEmail(), getToken());
@@ -301,21 +301,22 @@ function getSchedule(query) {
   
   let scheduleName, scheduleIndex, data, date; let schedule = []
   if (query) {
-    data = (typeof query.data != 'undefined') ? query.data : null
+    data = (typeof query.data != 'undefined') ? query.data : DATA
     scheduleName = (typeof query.name != 'undefined') ? query.name : null
     scheduleIndex = (typeof query.index != 'undefined') ? query.index : null
     date = (typeof query.dateTime != 'undefined') ? query.dateTime : new Date()
+  } else { 
+    date = new Date()
+    data = DATA
   }
-  if (!data) { data = DATA }
   if (data == []) {
-    return `<center><header style='font-size: 40px; margin: 30px;'>We couldn't find a schedule for you.</header></center>   <center><a onclick="toggleDisplay('editPop')" class='link' style='font-size: 25px; padding: 10px; margin-top: -30px;'>Create Schedule</a></center>`
+    return `<header class="center" style='font-size: 40px; margin: 30px;'>We couldn't find a schedule for you.</header>   <a onclick="toggleDisplay('editPop')" class='link center' style='font-size: 25px; padding: 10px; margin-top: -30px;'>Create Schedule</a>`
   }
-  
   let schIndex = -1
   for (let i in data) {
     if (data[i].info == 's') {
       schIndex ++
-      if ( (scheduleName && data[i].name == scheduleName) || (scheduleIndex && schIndex == scheduleIndex) || (!scheduleName && !scheduleIndex && data[i].days.toLowerCase().includes(DateUtils.numDayToStr(date.getDay()))) ) {
+      if ( (scheduleName && data[i].name == scheduleName) || (scheduleIndex && schIndex == scheduleIndex) || (!scheduleName && !scheduleIndex && data[i].days.includes(date.toString('ddd'))) ) {
         let rInfo = data[i].info; let r = i
         while (rInfo != 'es') {
           schedule.push(data[r])
