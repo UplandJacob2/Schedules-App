@@ -35,8 +35,8 @@ function api (parameter) {
   if (item == 'sch') {
     l('schedule data')
     if (!parameter.action) { err('Action required.'); } if (!parameter.email) { err('Email required.'); } if (!parameter.token) { err('Token required.'); } let {action, email, token} = parameter
-    try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)}
-    try {var file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()} catch { w('no file for '+email); var file = null }
+    try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)} let file
+    try {file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()} catch { w('no file for '+email); file = null }
     
     if (action == 'delete'){
       if (!file) { err('file not found') }
@@ -364,7 +364,7 @@ function _refreshSchedules() {
   _refreshCache();
 }
 
-function getSchedule(email, token, militaryTime) { let file
+function getSchedule(email, token) { let file
   try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)}
   try {file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()}
   catch { w('no file for '+email); file = null }
