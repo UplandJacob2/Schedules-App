@@ -51,7 +51,7 @@ module.exports = [
     plugins: { googleappsscript },
     languageOptions: {
       globals: {
-        ...googleappsscript.globals,
+        ...googleappsscript.environments.googleappsscript.globals,
         /*Utilities: "readonly",
         XmlService: "readonly",
         HtmlService: "readonly",
