@@ -75,7 +75,6 @@ module.exports = [
     },
 
     rules: {
-      ...googleappsscript.configs.recommended.rules,
       ...js.configs.recommended.rules,
       semi: "off",
       quotes: ["warn", "single"],
