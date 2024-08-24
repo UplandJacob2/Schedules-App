@@ -38,7 +38,7 @@ jobs:
       - name: Node and ESLint setup
         run: npm init -y
       - run: npm install
-      - run: npm install eslint @html-eslint/parser @html-eslint/eslint-plugin @microsoft/eslint-formatter-sarif eslint-plugin-html
+      - run: npm install eslint @html-eslint/parser @html-eslint/eslint-plugin @microsoft/eslint-formatter-sarif eslint-plugin-html globals 
       - run: npm i --package-lock-only
       #- run: npm ci # or yarn install
       #- run: npm install --save esm
