@@ -6,6 +6,7 @@ const htmlLint = require("@html-eslint/eslint-plugin");
 const htmlPlug = require("eslint-plugin-html")
 const htmlParser = require("@html-eslint/parser");
 const globals = require("globals");
+const googleappsscript = require("eslint-plugin-googleappsscript")
 
 //export default 
 module.exports = [
@@ -47,9 +48,11 @@ module.exports = [
   {
     files: ["**.gs"],
     ignores: [".github/**"],
+    plugins: { googleappsscript },
     languageOptions: {
       globals: {
-        Utilities: "readonly",
+        ...googleappsscript.configs.recommended.globals
+        /*Utilities: "readonly",
         XmlService: "readonly",
         HtmlService: "readonly",
         CacheService: "readonly",
@@ -57,7 +60,7 @@ module.exports = [
         UrlFetchApp: "readonly",
         DocumentApp: "readonly",
         SpreadsheetApp: "readonly",
-        DriveApp: "readonly",
+        DriveApp: "readonly",*/
         Drive: "readonly",
 
         SchedulesSecure: "writable",
@@ -66,10 +69,13 @@ module.exports = [
         console: "readonly",
         
         l: "writable",
+        w: "writable",
+        e: "writable",
       },
     },
 
     rules: {
+      ...googleappsscript.configs.recommended.rules,
       ...js.configs.recommended.rules,
       semi: "off",
       quotes: ["warn", "single"],
