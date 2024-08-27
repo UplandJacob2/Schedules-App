@@ -7,14 +7,14 @@ function err(e) {throw new Error(e)}
 
 function doGet(q) {
   console.log(q);
-  
+
   let doit;
-  
+
   if (String(q.parameter.do) !== 'undefined') {doit = q.parameter.do;}
   else {return HtmlService.createHtmlOutput(HtmlService.createTemplateFromFile('notSignedIn').evaluate()).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');}
 
   if (doit === 'confirmSignUp') { let key = q.parameter.key;
-    if (String(key) === '') {err('No token.');} 
+    if (String(key) === '') {err('No token.');}
     let json = JSON.parse(CacheService.getScriptCache().get(key));
     try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad token.');}
 
@@ -43,8 +43,8 @@ function api (parameter) {
     l('schedule data')
     if (!parameter.action) { err('Action required.'); } if (!parameter.email) { err('Email required.'); } if (!parameter.token) { err('Token required.'); } let {action, email, token} = parameter
     try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)} let file
-    try {file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${email}.json`).next()} catch { w('no file for '+email); file = null }
-    
+    try {file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${email}.json`).next()} catch { w(`no file for ${email}`); file = null }
+
     if (action === 'delete'){
       if (!file) { err('file not found') }
       file.setTrashed(true)
@@ -107,7 +107,7 @@ function api (parameter) {
       }
       l(data)
       return data
-    } 
+    }
     // else if (action === 'recover') {
     //   let files = DriveApp.getTrashedFiles()
     //   let filesToRecover = []
@@ -130,7 +130,7 @@ function api (parameter) {
     l('user settings')
     if (!parameter.action) { err('Action required.'); } if (!parameter.email) { err('Email required.'); } if (!parameter.token) { err('Token required.'); } let {action, email, token} = parameter
     try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)} let file
-    try {file = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(`${email}_settings.json`).next()} catch { w('no file for '+email); file = null }
+    try {file = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(`${email}_settings.json`).next()} catch { w(`no file for ${email}`); file = null }
 
     if (action === 'delete'){
       if (!file) { err('file not found') }
@@ -285,7 +285,7 @@ function signIn (email, pass, rm) { let rand;
       Drive.Files.update(fileSets, file.getId(), blob)
     }
     let toReturn = [HtmlService.createTemplateFromFile('Index').getRawContent(), rand];
-    //_refreshCache(); 
+    //_refreshCache();
     return toReturn
   }
   else {err('Incorrect password.');}
@@ -298,7 +298,7 @@ function signInWToken(email, token) {
   let i = acctJson.findIndex((acc) => acc.email.toLowerCase() === email.toLowerCase())
   l(i)
   if (i < 0) {err('No account with that email.')}
-  
+
   let rand = SchedulesSecure.random250()
   acctJson[i].token = rand
 
@@ -308,13 +308,13 @@ function signInWToken(email, token) {
   Drive.Files.update(fileSets, file.getId(), blob)
 
   let toReturn = [HtmlService.createTemplateFromFile('Index').getRawContent(), rand];
-  //_refreshCache(); 
+  //_refreshCache();
   return toReturn
 }
 
-// NOT CURRENTLY USED may be reimplemented 
+// NOT CURRENTLY USED may be reimplemented
 function _refreshCache() {
-  const sc = CacheService.getScriptCache(); 
+  const sc = CacheService.getScriptCache();
   const fold = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc')
   const acctJson = JSON.parse(fold.getFilesByName('accounts.json').next().getBlob().getDataAsString())
   l(acctJson)
@@ -353,8 +353,8 @@ function _refreshCache() {
   ////////////////////  from sheet to cache
   let keys = ['Schedules', 'SignInTokens'];
   let col1 = cacheSheet.getRange(1, 1, cacheSheet.getLastRow(), 1).getValues();
-  
-  keys.forEach((key) => { 
+
+  keys.forEach((key) => {
     let row = col1.findIndex((em) => em[0] === key)+1;   let val;
     if (sc.get(key)) {
       sc.remove(key);
@@ -423,8 +423,8 @@ function getSchedule(email, token) { let file
       if (c === 0) {if (boldRows.includes(r)) { schStr+= ' b' }}
       if (classNows.includes(r)) { schStr+= ' y' }
       schStr+='">'+cell+'</td>'
-    }); 
-    
+    });
+
     schStr+='</tr>';
     if (rab === 'a') { rab = 'b' } else { rab ='a' }
   });
