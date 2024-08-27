@@ -19,13 +19,13 @@ class Editor {
 
     this.render('load')
   }
-  onDataChangeFunc() { alert('change')
+  onDataChangeFunc() { //alert('change');    alert(this.onDataChange)
     try {
     if (typeof this.onDataChange != 'undefined') {
-      setTimeout(function(){
-        this.onDataChange
-      }, 10)
-      // this.onDataChange
+      // setTimeout(function(){
+      //   this.onDataChange()
+      // }, 10)
+      this.onDataChange()
     }  } catch (e) {alert(e.stack.split("\n").join('\n"'))}
   }
   /**
