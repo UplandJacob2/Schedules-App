@@ -1,7 +1,7 @@
-var _ = Underscore.load()
-var l = console.log
-var w = console.warn
-var e = console.error
+const _ = Underscore.load()
+const l = console.log
+const w = console.warn
+const e = console.error
 function err(e) {throw new Error(e)}
 
 
@@ -13,7 +13,7 @@ function doGet(q) {
   if (String(q.parameter.do) !== 'undefined') {doit = q.parameter.do;}
   else {return HtmlService.createHtmlOutput(HtmlService.createTemplateFromFile('notSignedIn').evaluate()).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');}
 
-  if (doit === 'confirmSignUp') { var key = q.parameter.key;
+  if (doit === 'confirmSignUp') { let key = q.parameter.key;
     if (String(key) === '') {err('No token.');} 
     let json = JSON.parse(CacheService.getScriptCache().get(key));
     try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad token.');}
@@ -245,7 +245,7 @@ function confirmSignUp(token) {
   if (String(token) === '') {err('No token.');}  let json
   try {json = JSON.parse(CacheService.getScriptCache().get(token));} catch {err('Bad token.');}
 
-  var [email, pass, passR] = [json.email, json.pass, json.passR];
+  let [email, pass, passR] = [json.email, json.pass, json.passR];
   if (!SchedulesSecure.isValidEmail(email)) {err('Invalid email. How do you get around client side checks? And/or the server died?');}
 
 
@@ -368,7 +368,7 @@ function _refreshCache() {
 // NOT CURRENTLY USED may be reimplemented
 function _refreshSchedules() {
   const cacheSheet = SpreadsheetApp.open(DriveApp.getFilesByName('Schedules').next()).getSheetByName('Backup Cache');
-  var schs = SchedulesSecure.getSchedules();
+  let schs = SchedulesSecure.getSchedules();
   cacheSheet.getRange(2, 2).setValue(JSON.stringify(schs));
   _refreshCache();
 }
