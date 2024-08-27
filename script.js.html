@@ -52,57 +52,6 @@ window.onload = function () {
 const firstRow = { info: 's', class: 'Some Class', strt: '8:00', end: '9:00', b: false, days: 'Mon, Wed, Fri', name: 'Schedule Name' }
 const emptyRow = { info: '',  class: 'Some Class', strt: '8:00', end: '9:00', b: false, days: '', name: '' }
 
-function loadSheet() {
-
-  //let format = ''
-  //if (USER_SETTINGS.militaryTime) {format = 'hh:mm'} else {format = 'hh:mm A'}
-  let format = (USER_SETTINGS.militaryTime) ? 'hh:mm' : 'hh:mm A'
-  SHEET = new Editor({
-    el: document.getElementById('testEditor'),
-    columns: [
-      { header: 'Info',      name: 'info', width: 50,  editor: { type: 'text', options: { attrs: {maxlength: '2'}, style: {width: '30px'} } } },
-      { header: 'Class',     name: 'class',width: 200, editor: { type: 'text', options: { style: {width: 'auto'} } } },
-      { header: 'Start Time',name: 'strt', width: 100, editor: { type: 'time', options: { format: format }} },
-      { header: 'End Time',  name: 'end',  width: 100, editor: { type: 'time', options: { format: format }} },
-      { header: 'Bold',      name: 'b',    width: 30,  editor: { type: 'checkbox', options: { checked: true, style: { "margin-left": "20px" } } } },
-      { header: 'Days',      name: 'days', width: 200, editor: { type: 'checklist',options: { listItems: [  { text: 'Sun', value: 'Sun' }, { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' }, { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' }]}, active: { type: 'col', if: 'info', equalTo: 's' } } },
-      { header: 'Name',      name: 'name', width: 200, editor: { type: 'text', options: { style: {width: '200px'} }, active: { type: 'col', if: 'info', equalTo: 's' } } }
-    ],
-    data: [firstRow, emptyRow, emptyRow],
-    onDataChange: function() {updateSaveBtn()}
-  })
-  //_.observe(SHEET.data, updateSaveBtn)
-
-  const addRowBt = document.getElementById('addRow')
-  addRowBt.addEventListener('click', function (ev) { SHEET.data.push(emptyRow); SHEET.resetData() })
-  const rmvRowBt = document.getElementById('removeRow')
-  rmvRowBt.addEventListener('click', function (ev) { SHEET.data.pop(); SHEET.resetData() })
-
-  const saveBt = document.getElementById('saveSch')
-  saveBt.addEventListener('click', function (ev) {
-    saveSch()
-  })
-  const deleteBt = document.getElementById('deleteSch')
-  deleteBt.addEventListener('click', function (ev) {
-    confirmPopup({ title: 'Confirm deletion', text: 'Are you sure you want to delete your schedules? (Can be recovered)', onYes: `deleteSch()`})
-  })
-  const reloadBt = document.getElementById('reloadSch')
-  reloadBt.addEventListener('click', function (ev) {
-    if (DATA != SHEET.data) {
-      confirmPopup({title: 'Changes not saved', text: 'Your changes aren\'t saved. Would you like to save before reloading?', onYes: 'saveSch()', onNo: 'reloadEdit()'})
-      return
-    }
-    reloadEdit()
-  })
-  // document.body.addEventListener('keypress', function (ev) {
-  //   updateSaveBtn()
-  // })
-  
-  
-  google.script.run.withSuccessHandler(firstGetSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
-  google.script.run.withSuccessHandler(getSettingsSuccess).withFailureHandler(getSettingsFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'settings', onfail: 'new' })
-  //$('input').keyup(resizeInput)//.each(resizeInput); 
-}
 
 
 
@@ -113,7 +62,7 @@ function reloadEdit() {
 }
 function updateSaveBtn() {
   const saveBt = document.getElementById('saveSch')
-  alert('CHANGE\n'+JSON.stringify(DATA)+"\n"+JSON.stringify(SHEET.data))
+  //alert('CHANGE\n'+JSON.stringify(DATA)+"\n"+JSON.stringify(SHEET.data))
   if (JSON.stringify(DATA) != JSON.stringify(SHEET.data)) {
     saveBt.disabled = false;saveBt.classList.remove('grayLink');  saveBt.classList.add('link'); return true
   } else {
@@ -153,16 +102,16 @@ function updateSettingsNotSaved() {
   }, 1)
 }
 function saveSettings() {
-  google.script.run.withSuccessHandler(saveSettingsSuccess).withFailureHandler(saveSettingsFail).api({ email: getEmail(), action: 'edit', token: getToken(), item: 'settings', onfail: 'new', val: JSON.stringify(USER_SETTINGS) })
+  google.script.run.withSuccessHandler(saveSettingsSuccess).withFailureHandler(saveSettingsFail).api({ email: getEmail(), action: 'edit', token: getToken(), item: 'settings', onfail: 'new', val: JSON.stringify(USER_SETTINGS_NOT_SAVED) })
   document.getElementById('saveSet').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 function getSettingsSuccess(response) {
-  let arr = JSON.parse(response) 
-  for (let i = 0; i < arr.length; i++) {
+  let obj = JSON.parse(response) 
+  Object.keys(obj).forEach((k, i) => {
     if(SETTINGS_INFO.types[i] == 'check') {
-      document.getElementById(SETTINGS_INFO.elIDs[i]).checked = arr[i]
+      document.getElementById(SETTINGS_INFO.elIDs[i]).checked = obj[k]
     }
-  }
+  })
 }
 function getSettingsFail(err) { error('Error getting user settings', err) }
 function saveSettingsSuccess() {
@@ -391,6 +340,60 @@ function getSchedule(query) {
   });
   l(schStr)
   return schStr
+}
+
+
+
+function loadSheet() {
+
+  //let format = ''
+  //if (USER_SETTINGS.militaryTime) {format = 'hh:mm'} else {format = 'hh:mm A'}
+  let format = (USER_SETTINGS.militaryTime) ? 'hh:mm' : 'hh:mm A'
+  SHEET = new Editor({
+    el: document.getElementById('testEditor'),
+    columns: [
+      { header: 'Info',      name: 'info', width: 50,  editor: { type: 'text', options: { attrs: {maxlength: '2'}, style: {width: '30px'} } } },
+      { header: 'Class',     name: 'class',width: 200, editor: { type: 'text', options: { style: {width: 'auto'} } } },
+      { header: 'Start Time',name: 'strt', width: 100, editor: { type: 'time', options: { format: format }} },
+      { header: 'End Time',  name: 'end',  width: 100, editor: { type: 'time', options: { format: format }} },
+      { header: 'Bold',      name: 'b',    width: 30,  editor: { type: 'checkbox', options: { checked: true, style: { "margin-left": "20px" } } } },
+      { header: 'Days',      name: 'days', width: 200, editor: { type: 'checklist',options: { listItems: [  { text: 'Sun', value: 'Sun' }, { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' }, { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' }]}, active: { type: 'col', if: 'info', equalTo: 's' } } },
+      { header: 'Name',      name: 'name', width: 200, editor: { type: 'text', options: { style: {width: '200px'} }, active: { type: 'col', if: 'info', equalTo: 's' } } }
+    ],
+    data: [firstRow, emptyRow, emptyRow],
+    onDataChange: updateSaveBtn
+  })
+  //_.observe(SHEET.data, updateSaveBtn)
+
+  const addRowBt = document.getElementById('addRow')
+  addRowBt.addEventListener('click', function (ev) { SHEET.data.push(emptyRow); SHEET.resetData() })
+  const rmvRowBt = document.getElementById('removeRow')
+  rmvRowBt.addEventListener('click', function (ev) { SHEET.data.pop(); SHEET.resetData() })
+
+  const saveBt = document.getElementById('saveSch')
+  saveBt.addEventListener('click', function (ev) {
+    saveSch()
+  })
+  const deleteBt = document.getElementById('deleteSch')
+  deleteBt.addEventListener('click', function (ev) {
+    confirmPopup({ title: 'Confirm deletion', text: 'Are you sure you want to delete your schedules? (Can be recovered)', onYes: `deleteSch()`})
+  })
+  const reloadBt = document.getElementById('reloadSch')
+  reloadBt.addEventListener('click', function (ev) {
+    if (DATA != SHEET.data) {
+      confirmPopup({title: 'Changes not saved', text: 'Your changes aren\'t saved. Would you like to save before reloading?', onYes: 'saveSch()', onNo: 'reloadEdit()'})
+      return
+    }
+    reloadEdit()
+  })
+  // document.body.addEventListener('keypress', function (ev) {
+  //   updateSaveBtn()
+  // })
+  
+  
+  google.script.run.withSuccessHandler(firstGetSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
+  google.script.run.withSuccessHandler(getSettingsSuccess).withFailureHandler(getSettingsFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'settings', onfail: 'new' })
+  //$('input').keyup(resizeInput)//.each(resizeInput); 
 }
 
 
