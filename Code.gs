@@ -1,3 +1,10 @@
+var _ = Underscore.load()
+var l = console.log
+var w = console.warn
+var e = console.error
+function err(e) {throw new Error(e)}
+
+
 function doGet(q) {
   console.log(q);
   
@@ -235,10 +242,11 @@ function signUp (pass, passR, email) {
   });
 }
 function confirmSignUp(token) {
-  if (String(token) == '') {err('No token.');} 
-  let json = JSON.parse(CacheService.getScriptCache().get(token));
-  try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad token.');}
+  if (String(token) == '') {err('No token.');}  let json
+  try {json = JSON.parse(CacheService.getScriptCache().get(token));} catch {err('Bad token.');}
   if (!SchedulesSecure.isValidEmail(email)) {err('Invalid email. How do you get around client side checks? And/or the server died?');}
+
+  var [email, pass, passR] = [json.email, json.pass, json.passR];
 
   let file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   let data = JSON.parse(file.getBlob().getDataAsString())
@@ -423,8 +431,4 @@ function getSchedule(email, token) { let file
   return schStr
 }
 
-var _ = Underscore.load()
-var l = console.log
-var w = console.warn
-var e = console.error
-function err(e) {throw new Error(e)}
+
