@@ -1,5 +1,10 @@
 <script>
 var SHEET, DATA; var USER_SETTINGS = {militaryTime: false, debugMode: false}; var USER_SETTINGS_NOT_SAVED = jsonReparse(USER_SETTINGS)
+const SETTINGS_INFO = {
+  settingsNames: ['militaryTime', 'debugMode'],
+  elIDs: ['militaryTimeSwitch', 'debugModeSwitch'],
+  types: ['check', 'check']
+}
 
 function openMenu() {
     document.querySelector('.nav-menu').classList.toggle("active");
@@ -63,8 +68,10 @@ function loadSheet() {
       { header: 'Name',      name: 'name', width: 200, editor: { type: 'text', options: { style: {width: '200px'} }, active: { type: 'col', if: 'info', equalTo: 's' } } }
     ],
     data: [firstRow, emptyRow, emptyRow],
-    onDataChange: function() {updateSaveBtn()}
+    onDataChange: updateSaveBtn()
   })
+  //_.observe(SHEET.data, updateSaveBtn)
+
   const addRowBt = document.getElementById('addRow')
   addRowBt.addEventListener('click', function (ev) { SHEET.data.push(emptyRow); SHEET.resetData() })
   const rmvRowBt = document.getElementById('removeRow')
@@ -86,13 +93,13 @@ function loadSheet() {
     }
     reloadEdit()
   })
-  document.body.addEventListener('keypress', function (ev) {
-    updateSaveBtn()
-  })
+  // document.body.addEventListener('keypress', function (ev) {
+  //   updateSaveBtn()
+  // })
   
   
   google.script.run.withSuccessHandler(firstGetSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
-  google.script.run.withSuccessHandler(getSettingsSuccess).withFailureHandler(getSettingsFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'settings' })
+  google.script.run.withSuccessHandler(getSettingsSuccess).withFailureHandler(getSettingsFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'settings', onfail: 'new' })
   //$('input').keyup(resizeInput)//.each(resizeInput); 
 }
 
@@ -105,28 +112,14 @@ function reloadEdit() {
 }
 function updateSaveBtn() {
   const saveBt = document.getElementById('saveSch')
-  //alert(JSON.stringify(DATA)+"\n"+JSON.stringify(SHEET.data))
+  alert('CHANGE\n'+JSON.stringify(DATA)+"\n"+JSON.stringify(SHEET.data))
   if (JSON.stringify(DATA) != JSON.stringify(SHEET.data)) {
     saveBt.disabled = false;saveBt.classList.remove('grayLink');  saveBt.classList.add('link'); return true
   } else {
     saveBt.disabled = true; saveBt.classList.remove('link');  saveBt.classList.add('grayLink'); return false
   }
 }
-function updateSettingsNotSaved() {
-  setTimeout(function() {
-    const ids = ['militaryTimeSwitch', 'debugModeSwitch']
-    const settingsNames = ['militaryTime', 'debugMode']
-    const types = ['check', 'check']
-    for (let idi = 0; idi < ids.length; idi++) {
-      if (types[idi] == 'check') {
-        USER_SETTINGS_NOT_SAVED[settingsNames[idi]] = document.getElementById(ids[idi]).checked
-      }
-    }
-    sB = document.getElementById('saveSet')
-    if (JSON.stringify(USER_SETTINGS) != JSON.stringify(USER_SETTINGS_NOT_SAVED)) {sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink')
-    } else {sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link')}
-  }, 1)
-}
+
 function saveSch() {
   google.script.run.withSuccessHandler(saveSchedulesSuccess).withFailureHandler(saveSchedulesFail).api(
     { email: getEmail(), action: 'edit', token: getToken(), item: 'sch', val: JSON.stringify(SHEET.data) })
@@ -145,10 +138,36 @@ function editPopClose () {
   }
 }
 
-function getSettingsSuccess(response) {
 
+function updateSettingsNotSaved() {
+  setTimeout(function() {
+    for (let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
+      if (SETTINGS_INFO.types[seti] == 'check') {
+        USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
+      }
+    }
+    sB = document.getElementById('saveSet')
+    if (JSON.stringify(USER_SETTINGS) != JSON.stringify(USER_SETTINGS_NOT_SAVED)) {sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink')
+    } else {sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link')}
+  }, 1)
+}
+function saveSettings() {
+  google.script.run.withSuccessHandler(saveSettingsSuccess).withFailureHandler(saveSettingsFail).api({ email: getEmail(), action: 'edit', token: getToken(), item: 'settings', onfail: 'new', val: JSON.stringify(USER_SETTINGS) })
+}
+function getSettingsSuccess(response) {
+  let arr = JSON.parse(response) 
+  for (let i = 0; i < arr.length; i++) {
+    if(SETTINGS_INFO.types[i] == 'check') {
+      document.getElementById(SETTINGS_INFO.elIDs[i]).checked = arr[i]
+    }
+  }
 }
 function getSettingsFail(err) { error('Error getting user settings', err) }
+function saveSettingsSuccess() {
+  USER_SETTINGS = jsonReparse(USER_SETTINGS_NOT_SAVED)
+}
+function saveSettingsFail(err) { error('Error saving user settings', err) }
+
 
 function firstGetSchedulesSuccess(response) {
   getSchedulesSuccess(response)
@@ -162,7 +181,7 @@ function firstGetSchedulesSuccess(response) {
       $('.schedule').html(getSchedule()); $('#img').css('display', 'none');
     } catch(e) { console.error(e) }
     
-  }, 8000);
+  }, 1000);
   
 }
 function getSchedulesSuccess(response, encoded) {
