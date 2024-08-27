@@ -81,6 +81,12 @@ module.exports = [
       semi: "off",
       quotes: ["warn", "single"],
       indent: ["warn", 2],
+      "no-trailing-spaces": "warn",
+      eqeqeq: "warn",
+      "no-var": "warn",
+      "no-use-before-define": "error",
+      "block-scoped-var",
+      "prefer-template", "warn",
     },
 
 
