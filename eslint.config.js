@@ -86,7 +86,7 @@ module.exports = [
       "no-var": "warn",
       "no-use-before-define": "error",
       "block-scoped-var": "error",
-      "prefer-template", "warn",
+      "prefer-template": "warn",
     },
 
 
