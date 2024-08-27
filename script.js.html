@@ -54,8 +54,9 @@ const emptyRow = { info: '',  class: 'Some Class', strt: '8:00', end: '9:00', b:
 
 function loadSheet() {
 
-  let format = ''
-  if (USER_SETTINGS.militaryTime) {format = 'hh:mm'} else {format = 'hh:mm A'}
+  //let format = ''
+  //if (USER_SETTINGS.militaryTime) {format = 'hh:mm'} else {format = 'hh:mm A'}
+  let format = (USER_SETTINGS.militaryTime) ? 'hh:mm' : 'hh:mm A'
   SHEET = new Editor({
     el: document.getElementById('testEditor'),
     columns: [
@@ -68,7 +69,7 @@ function loadSheet() {
       { header: 'Name',      name: 'name', width: 200, editor: { type: 'text', options: { style: {width: '200px'} }, active: { type: 'col', if: 'info', equalTo: 's' } } }
     ],
     data: [firstRow, emptyRow, emptyRow],
-    onDataChange: updateSaveBtn()
+    onDataChange: function() {updateSaveBtn()}
   })
   //_.observe(SHEET.data, updateSaveBtn)
 
@@ -123,12 +124,12 @@ function updateSaveBtn() {
 function saveSch() {
   google.script.run.withSuccessHandler(saveSchedulesSuccess).withFailureHandler(saveSchedulesFail).api(
     { email: getEmail(), action: 'edit', token: getToken(), item: 'sch', val: JSON.stringify(SHEET.data) })
-  document.getElementById('saveSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+  document.getElementById('saveSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>' 
 }
 function deleteSch() {
   google.script.run.withSuccessHandler(deleteSchedulesSuccess).withFailureHandler(deleteSchedulesFail).api(
     { email: getEmail(), action: 'delete', token: getToken(), item: 'sch'})
-  document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+  document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>' 
 }
 function editPopClose () {
   if (updateSaveBtn()) {
@@ -153,6 +154,7 @@ function updateSettingsNotSaved() {
 }
 function saveSettings() {
   google.script.run.withSuccessHandler(saveSettingsSuccess).withFailureHandler(saveSettingsFail).api({ email: getEmail(), action: 'edit', token: getToken(), item: 'settings', onfail: 'new', val: JSON.stringify(USER_SETTINGS) })
+  document.getElementById('saveSet').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 function getSettingsSuccess(response) {
   let arr = JSON.parse(response) 
@@ -164,9 +166,15 @@ function getSettingsSuccess(response) {
 }
 function getSettingsFail(err) { error('Error getting user settings', err) }
 function saveSettingsSuccess() {
+  document.getElementById('saveSet').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
+  setTimeout(function() { document.getElementById('saveSet').innerHTML = 'Save' }, 4000)
   USER_SETTINGS = jsonReparse(USER_SETTINGS_NOT_SAVED)
 }
-function saveSettingsFail(err) { error('Error saving user settings', err) }
+function saveSettingsFail(err) {
+  document.getElementById('saveSet').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
+  setTimeout(function() { document.getElementById('saveSet').innerHTML = 'Save' }, 4000)
+  error('Error saving user settings', err)
+}
 
 
 function firstGetSchedulesSuccess(response) {
@@ -197,17 +205,17 @@ function getSchedulesSuccess(response, encoded) {
 }
 function getSchedulesFail(err) { error('Error getting schedule for editing', err); DATA = []; SHEET.render('none') }
 function saveSchedulesSuccess() {
-  document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"></ion-icon>'
+  document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
   setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000)
   DATA = jsonReparse(SHEET.data)
   updateSaveBtn()
 }
 function saveSchedulesFail(err) {
-  document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
+  document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
   setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000);      error('error saving schedule for editing', err)
 }
 function deleteSchedulesSuccess() {
-  document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"></ion-icon>'
+  document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
   setTimeout(function() { document.getElementById('deleteSch').innerHTML = 'Delete' }, 4000)
   DATA = []; SHEET.data = []; SHEET.render('none'); updateSaveBtn()
 
@@ -219,7 +227,7 @@ function deleteSchedulesSuccess() {
   dR.disabled = true;  dR.classList.add('grayLink');  dR.classList.remove('link')
 }
 function deleteSchedulesFail(err) {
-  document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
+  document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
   setTimeout(function() { document.getElementById('deleteSch').innerHTML = 'Delete' }, 4000);  error('error deleting schedule', err)
 }
 function recoverSchedulesSuccess(response) {
@@ -245,11 +253,11 @@ function recoverSpecificSchedule(data, recoverID) {
 }
 
 function recoverSchedulesFail(err) {
-  document.getElementById('recoverSch').innerHTML = 'Recover <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
+  document.getElementById('recoverSch').innerHTML = 'Recover <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
   setTimeout(function() { document.getElementById('recoverSch').innerHTML = 'Recover' }, 4000);error('error recovering schedule', err)
 }
 function newSchedulesFail(err) {
-  document.getElementById('recoverSch').innerHTML = 'New <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"></ion-icon>'
+  document.getElementById('recoverSch').innerHTML = 'New <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
   setTimeout(function() { document.getElementById('newSch').innerHTML = 'New' }, 4000);        error('error creating schedule', err)
 }
 
