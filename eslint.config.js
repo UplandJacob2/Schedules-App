@@ -63,6 +63,8 @@ module.exports = [
         DriveApp: "readonly",*/
         Drive: "readonly",
 
+        Underscore: "writable",
+
         SchedulesSecure: "writable",
         DateUtils: "writable",
         
