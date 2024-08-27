@@ -12,6 +12,11 @@ DebugLog.log = function(inp) {
   let txtArea = document.getElementById('debugTxt')
   txtArea.text = txtArea.text+'\nLOG: '+inp
 }
+DebugLog.warn = function(inp) {
+  console.warn(inp)
+  let txtArea = document.getElementById('debugTxt')
+  txtArea.text = txtArea.text+'\WARN: '+inp
+}
 
 const Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
   encode:function(e){
