@@ -49,7 +49,7 @@ DateUtils.dayRange = function (fromD, toD, formated) {let daysPerMonth
     if (month <= 12) {
       //console.log(month+'/'+day+'/'+year);
       daysToReturn[daysToReturn.length] = month+'/'+day+'/'+year;
-      if (month+'/'+day+'/'+year == eMonth+'/'+eDay+'/'+eYear) {
+      if (month+'/'+day+'/'+year === eMonth+'/'+eDay+'/'+eYear) {
         return daysToReturn
       }
       if (day < daysInMonth) {  day++;
@@ -106,7 +106,7 @@ DateUtils.iterateDays = function (fromD, num) { let daysPerMonth
  * 
  * @return {bool} is leap year
  */
-DateUtils.isLeapYear = function () { const d = new Date().getFullYear(); /*d = 2100; */  return ((d % 4 == 0) && ((d / 100 != 0) || (d / 400 == 0)))}
+DateUtils.isLeapYear = function () { const d = new Date().getFullYear(); /*d = 2100; */  return ((d % 4 === 0) && ((d / 100 !== 0) || (d / 400 === 0)))}
 /**
  * Returns today formated: month/day/year
  *  * ex: 1/5/2024
@@ -138,7 +138,7 @@ DateUtils.today = function () {
 DateUtils.monthToNum = function (str) {
   str = str.toLowerCase(); var ans;
   const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-  months.forEach((month, i) => {if (month == str) {ans = i + 1;}});
+  months.forEach((month, i) => {if (month === str) {ans = i + 1;}});
   return ans
 }
 /**
@@ -171,7 +171,7 @@ DateUtils.militaryToStandard = function(time) {
     timeValue = '' + hours;
   } else if (hours > 12) {
     timeValue = '' + (hours - 12);
-  } else if (hours == 0) {
+  } else if (hours === 0) {
     timeValue = '12';
   }
   timeValue += (minutes < 10) ? ':0' + minutes : ':' + minutes;  // get minutes
@@ -243,7 +243,7 @@ function getDaysOff(returnListOfReasons) {
 
   
   items.forEach((item) => {
-    if (item[1].length == 1) {
+    if (item[1].length === 1) {
       daysoff[daysoff.length] = DateUtils.monthToNum(item[1][0].match(/(\D){3}(?= )/g)[0])+'/'+parseInt(item[1][0].match(/[0-9]{2}(?=, )/g))+'/'+item[1][0].match(/[0-9]{4}/g)[0];
     } else {
       DateUtils.dayRange(item[1][0], item[1][1], false).forEach((item) => {daysoff[daysoff.length] = item})
