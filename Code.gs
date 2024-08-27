@@ -43,7 +43,7 @@ function api (parameter) {
     l('schedule data')
     if (!parameter.action) { err('Action required.'); } if (!parameter.email) { err('Email required.'); } if (!parameter.token) { err('Token required.'); } let {action, email, token} = parameter
     try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)} let file
-    try {file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()} catch { w('no file for '+email); file = null }
+    try {file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${email}.json`).next()} catch { w('no file for '+email); file = null }
     
     if (action === 'delete'){
       if (!file) { err('file not found') }
@@ -54,7 +54,7 @@ function api (parameter) {
       if (!file) { err('file not found') }
       if (!parameter.val){ err('val required')}
       let {val} = parameter
-      let fileSets = {title: email+'.json', mimeType: 'application/json'};
+      let fileSets = {title: `${email}.json`, mimeType: 'application/json'};
       let blob = Utilities.newBlob(val, 'application/json');
       l('edit to '+val)
       Drive.Files.update(fileSets, file.getId(), blob)
@@ -70,7 +70,7 @@ function api (parameter) {
         let filesToRecover = []
         while (files.hasNext()){
           let f = files.next()
-          if (f.getName() === email+'.json'){ //&& f.getParents().next().getId() === '1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc'){
+          if (f.getName() === `${email}.json`){ //&& f.getParents().next().getId() === '1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc'){
             filesToRecover[filesToRecover.length] = f
           }
         }
@@ -79,13 +79,13 @@ function api (parameter) {
           l('# of files that can be recovered:', filesToRecover.length)
           if (parameter.fileId) {
             DriveApp.getFileById(parameter.fileId).setTrashed(false)
-            let nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()
+            let nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${email}.json`).next()
             return JSON.stringify(['File recovered', [[nfile.getLastUpdated(), nfile.getBlob().getDataAsString(), nfile.getId()]]])
           }
           if (filesToRecover.length === 1) {
             l(filesToRecover[0])
             filesToRecover[0].setTrashed(false)
-            let nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()
+            let nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${email}.json`).next()
             return JSON.stringify(['File recovered', [[nfile.getLastUpdated(), nfile.getBlob().getDataAsString(), nfile.getId()]]])
           } else if (filesToRecover.length > 1) {
             l('test')
@@ -98,8 +98,8 @@ function api (parameter) {
         } else if (onfail === 'new') {
           const firstRow = { info: 's', class: 'Some Class', strt: '', end: '', b: false, days: 'Mon, Wed, Fri', name: 'Schedule Name' }
           const emptyRow = { info: '',  class: 'Some Class', strt: '', end: '', b: false, days: '', name: '' }
-          DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').createFile(email+'.json', JSON.stringify([firstRow, emptyRow, emptyRow]))
-          let nnfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()
+          DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').createFile(`${email}.json`, JSON.stringify([firstRow, emptyRow, emptyRow]))
+          let nnfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${email}.json`).next()
           return nnfile.getBlob().getDataAsString()
 
         } else if (onfail) {err('invalid onfail')
@@ -113,7 +113,7 @@ function api (parameter) {
     //   let filesToRecover = []
     //   while (files.hasNext()){
     //     let f = files.next()
-    //     if (f.getName() === email+'.json'){ //&& f.getParents().next().getId() === '1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc'){
+    //     if (f.getName() === `${email}.json`){ //&& f.getParents().next().getId() === '1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc'){
     //       filesToRecover[filesToRecover.length] = f
     //     }
     //   }
@@ -130,7 +130,7 @@ function api (parameter) {
     l('user settings')
     if (!parameter.action) { err('Action required.'); } if (!parameter.email) { err('Email required.'); } if (!parameter.token) { err('Token required.'); } let {action, email, token} = parameter
     try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)} let file
-    try {file = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+'_settings.json').next()} catch { w('no file for '+email); file = null }
+    try {file = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(`${email}_settings.json`).next()} catch { w('no file for '+email); file = null }
 
     if (action === 'delete'){
       if (!file) { err('file not found') }
@@ -141,7 +141,7 @@ function api (parameter) {
       if (!file) { err('file not found') }
       if (!parameter.val){ err('val required')}
       let {val} = parameter
-      let fileSets = {title: email+'_settings.json', mimeType: 'application/json'};
+      let fileSets = {title: `${email}_settings.json`, mimeType: 'application/json'};
       let blob = Utilities.newBlob(val, 'application/json');
       l('edit to '+val)
       Drive.Files.update(fileSets, file.getId(), blob)
@@ -157,7 +157,7 @@ function api (parameter) {
         let filesToRecover = []
         while (files.hasNext()){
           let f = files.next()
-          if (f.getName() === email+'_settings.json'  ){ //&& f.getParents().next().getId() === '1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR'){
+          if (f.getName() === `${email}_settings.json`  ){ //&& f.getParents().next().getId() === '1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR'){
             l(f.getParents().next().getId())
             filesToRecover[filesToRecover.length] = f
           }
@@ -166,7 +166,7 @@ function api (parameter) {
         if (onfail === 'recover'){
           if (filesToRecover.length === 1) {
             filesToRecover[0].setTrashed(false)
-            let nfile = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+'_settings.json').next()
+            let nfile = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(`${email}_settings.json`).next()
             return nfile.getBlob().getDataAsString()
           } else if (filesToRecover.length > 1) {
             return ['More than one file can be recovered', filesToRecover.map(fl => [fl.getLastUpdated(), fl.getBlob().getDataAsString()])]
@@ -175,8 +175,8 @@ function api (parameter) {
           }
         } else if (onfail === 'new') {
           const settingsBlank = { militaryTime: false, darkMode: false }
-          DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').createFile(email+'_settings.json', JSON.stringify(settingsBlank))
-          let nnfile = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(email+'_settings.json').next()
+          DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').createFile(`${email}_settings.json`, JSON.stringify(settingsBlank))
+          let nnfile = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(`${email}_settings.json`).next()
           return nnfile.getBlob().getDataAsString()
 
         } else if (onfail) {err('invalid onfail')
@@ -189,7 +189,7 @@ function api (parameter) {
       let filesToRecover = []
       while (files.hasNext()){
         let f = files.next()
-        if (f.getName() === email+'_settings.json'){ //&& f.getParents().next().getId() === '1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR'){
+        if (f.getName() === `${email}_settings.json`){ //&& f.getParents().next().getId() === '1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR'){
           filesToRecover[filesToRecover.length] = f
         }
       }
@@ -375,7 +375,7 @@ function _refreshSchedules() {
 
 function getSchedule(email, token) { let file
   try {if (!SchedulesSecure.verify(email, token)) {err('invalid token')}} catch(e) {err(e.message)}
-  try {file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(email+'.json').next()}
+  try {file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${email}.json`).next()}
   catch { w('no file for '+email); file = null }
   if (!file) {return `<center><header style='font-size: 40px; margin: 30px;'>We couldn't find a schedule for you.</header></center>   <center><a onclick="toggleDisplay('editPop')" class='link' style='font-size: 25px; padding: 10px; margin-top: -30px;'>Create Schedule</a></center>`}
   let data = JSON.parse(file.getBlob().getDataAsString()); let schedule = []; let date = new Date()
