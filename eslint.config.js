@@ -85,7 +85,7 @@ module.exports = [
       eqeqeq: "warn",
       "no-var": "warn",
       "no-use-before-define": "error",
-      "block-scoped-var",
+      "block-scoped-var": "error",
       "prefer-template", "warn",
     },
 
