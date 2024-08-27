@@ -15,9 +15,18 @@ class Editor {
 
     this.onDataChange = options.onDataChange
 
-    _.observe(this.data, this.onDataChange)
+    
 
     this.render('load')
+  }
+  onDataChangeFunc() { alert('change')
+    try {
+    if (typeof this.onDataChange != 'undefined') {
+      setTimeout(function(){
+        this.onDataChange
+      }, 10)
+      // this.onDataChange
+    }  } catch (e) {alert(e.stack.split("\n").join('\n"'))}
   }
   /**
    * set data of sheet
@@ -27,10 +36,15 @@ class Editor {
   resetData(data) {
     if (data) {
       this.data = JSON.parse(data)
+      this.onDataChangeFunc()
     } else {
       this.data = jsonReparse(this.data)
     }
     this.render()
+  }
+  setDataRowCol(r, c, d) {
+    this.data[r][c] = d
+    this.onDataChangeFunc()
   }
   // getValueFromEditor(col, row) {
   //   let type = this.columns[col].editor.type
@@ -191,7 +205,7 @@ class Editor {
             colEl.setAttribute('onclick', 'SHEET.onCellClick(this)')
           } else {
             colEl.style.setProperty('background', this.disabledBack)
-            this.data[row][col] = ''
+            this.setDataRowCol(row, col, '')
           }
         } else {colEl.setAttribute('onclick', 'SHEET.onCellClick(this)')}
         if (this.columns[coli].name === 'class') {
@@ -234,7 +248,7 @@ class Editor {
             dat += this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems[i].value
           }
         }
-        this.data[row][col] = dat
+        setDataRowCol(row, col, data)
         el = this.createElm(row, col)
         this.render()
       }
@@ -242,7 +256,7 @@ class Editor {
       if (option === 'close') {
         let min = this.timeSelectCache.getMinute()
         let dat = this.timeSelectCache.getHour()+':'+ ((String(min).length === 2) ? min : '0'+min)
-        this.data[row][col] = dat
+        setDataRowCol(row, col, dat)
         el = this.createElm(row, col)
         this.timeSelectCache.destroy()
         this.timeSelectCache = null
