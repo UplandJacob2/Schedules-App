@@ -85,8 +85,31 @@ module.exports = [
       eqeqeq: "warn",
       "no-var": "warn",
       "no-use-before-define": "error",
-      "block-scoped-var": "error",
+      
       "prefer-template": "warn",
+      "no-useless-concat": "warn",
+      
+      "array-bracket-newline": ["warn", "consistant", {
+        "multiline": true
+      }],
+      "array-bracket-spacing": ["warn", "always", { 
+        "singleValue": false 
+      }],
+      "array-element-newline": ["warn", {
+        "multiline": true
+      }],
+      "arrow-body-style": ["warn", "as-needed"],
+      "arrow-parens": ["error", "as-needed"],
+      "arrow-spacing": ["warn", { 
+        "before": false, 
+        "after": true 
+      }],
+      "block-scoped-var": "error",
+      "block-spacing": "warn",
+      "brace-style": ["error", "1tbs", { 
+        "allowSingleLine": true 
+      }],
+      
     },
 
 
