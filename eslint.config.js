@@ -89,7 +89,7 @@ module.exports = [
       "prefer-template": "warn",
       "no-useless-concat": "warn",
       
-      "array-bracket-newline": ["warn", "consistant", {
+      "array-bracket-newline": ["warn", {
         "multiline": true
       }],
       "array-bracket-spacing": ["warn", "always", { 
