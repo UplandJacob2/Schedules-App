@@ -61,14 +61,14 @@ module.exports = [
         DocumentApp: "readonly",
         SpreadsheetApp: "readonly",
         DriveApp: "readonly",*/
-        Drive: "readonly",
+        //Drive: "readonly",
 
         Underscore: "writable",
 
         SchedulesSecure: "writable",
         DateUtils: "writable",
         
-        console: "readonly",
+        //console: "readonly",
         
         l: "writable",
         w: "writable",
