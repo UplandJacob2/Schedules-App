@@ -13,7 +13,7 @@ module.exports = [
   //js.configs.recommended,
   {
     files: ["**.html"],
-    ignores: [".github/**", "DateTEST.js.html", "Datejs.js.html", "Date.js.html"],
+    ignores: [".github/**", "DateTEST.js.html", "Datejs.js.html"],
     plugins: { html: htmlPlug },
     settings: {
       "html/indent": "+2",
@@ -61,14 +61,15 @@ module.exports = [
         DocumentApp: "readonly",
         SpreadsheetApp: "readonly",
         DriveApp: "readonly",*/
-        //Drive: "readonly",
+        Drive: "readonly",
 
         Underscore: "writable",
+        _: "writable",
 
         SchedulesSecure: "writable",
         DateUtils: "writable",
         
-        //console: "readonly",
+        console: "readonly",
         
         l: "writable",
         w: "writable",
