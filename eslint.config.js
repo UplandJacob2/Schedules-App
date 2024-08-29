@@ -13,7 +13,7 @@ module.exports = [
   //js.configs.recommended,
   {
     files: ["**.html"],
-    ignores: [".github/**", "DateTEST.js.html", "Datejs.js.html"],
+    ignores: [".github/**", "DateTEST.js.html", "Datejs.js.html", "Date.js.html"],
     plugins: { html: htmlPlug },
     settings: {
       "html/indent": "+2",
