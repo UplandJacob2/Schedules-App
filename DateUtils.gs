@@ -89,7 +89,7 @@ DateUtils.iterateDays = function (fromD, num) { let daysPerMonth
     }
     return month+'/'+day+'/'+year;
   } else if (num < 0) {
-    for (var i=0; i > num; i--) {
+    for (let i=0; i > num; i--) {
       daysInMonth = daysPerMonth[month-1];
       if (month <= 12) {
         if (day < daysInMonth) {  day--;  } else {  day = 1; month --;  }
@@ -136,7 +136,7 @@ DateUtils.today = function () {
  * @return {string} number for month
  */
 DateUtils.monthToNum = function (str) {
-  str = str.toLowerCase(); var ans;
+  str = str.toLowerCase(); let ans;
   const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
   months.forEach((month, i)=> {if (month === str) {ans = i + 1;}});
   return ans
@@ -163,9 +163,9 @@ DateUtils.numDayToStr = function (num) {
 
 DateUtils.militaryToStandard = function(time) {
   time = time.split(':'); // convert to array
-  var hours = Number(time[0]);
-  var minutes = Number(time[1]);
-  var timeValue;
+  let hours = Number(time[0]);
+  let minutes = Number(time[1]);
+  let timeValue;
 
   if (hours > 0 && hours <= 12) {
     timeValue = '' + hours;
@@ -217,7 +217,7 @@ function getDaysOff(returnListOfReasons) {
   catch{Utilities.sleep(1000); txt = UrlFetchApp.fetch(feed, {'muteHttpExceptions': true, 'redirect': 'follow'}).getContentText();}
   //l(txt);
 
-  let daysoff = new Array();   var lastDay, firstDay;   var items = new Array();
+  let daysoff = new Array();   let lastDay, firstDay;   let items = new Array();
 
   const itemElms = XmlService.parse(txt).getAllContent()[0].asElement().getChild('channel').getChildren('item');
 
@@ -233,7 +233,7 @@ function getDaysOff(returnListOfReasons) {
       firstDay = item.getChildText('description').match(/(.){3} [0-9]{2}, [0-9]{4}/g)[0];
     }
   });
-  var summer, eSummer;
+  let summer, eSummer;
   if (firstDay && lastDay) {
     summer = DateUtils.iterateDays(lastDay, 1);  eSummer = DateUtils.iterateDays(firstDay, -1);  // get first and last day of summer
     console.log(summer+'     '+eSummer) ;
