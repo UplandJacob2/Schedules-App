@@ -11,15 +11,19 @@ function doGet(q) {
   let doit;
 
   if (String(q.parameter.do) !== 'undefined') {doit = q.parameter.do;}
-  else {return HtmlService.createHtmlOutput(HtmlService.createTemplateFromFile('notSignedIn').evaluate()).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');}
+  else { return HtmlService.createHtmlOutput(
+    HtmlService.createTemplateFromFile('notSignedIn').evaluate())
+    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+    .setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
+  }
 
   if (doit === 'confirmSignUp') { let key = q.parameter.key;
     if (String(key) === '') {err('No token.');}
-    let json = JSON.parse(CacheService.getScriptCache().get(key));
-    try {var [email, pass, passR] = [json.email, json.pass, json.passR];} catch {err('Bad token.');}
+    let json = JSON.parse(CacheService.getScriptCache().get(key)); let email, pass, passR
+    try { [email, pass, passR] = [json.email, json.pass, json.passR]; } catch {err('Bad token.');}
 
     const sheet = SpreadsheetApp.open(DriveApp.getFilesByName('Schedules Accounts').next()).getActiveSheet();
-    const row = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().findIndex(em=> em[0].toLowerCase() === email.toLowerCase()) + 1;
+    const row = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().findIndex((em) => em[0].toLowerCase() === email.toLowerCase()) + 1;
     if (row > 0) {err('Already an account with that email.');}
 
     if (!SchedulesSecure.isValidEmail(email)) {err('Invalid email. How do you get around client side checks? And/or the server died?');}
