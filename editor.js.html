@@ -237,9 +237,7 @@ class Editor {
       this.render()
     } else if (customtype === 'checklist') {
       if (option === 'close') {
-        alert('sjjdfg')
         let options = this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems
-        alert(options)
         let dat = ''
         for (var i = 0; i < options.length; i++) {
           if (el.children[0].children[1].children[i].children[0].checked) {
@@ -247,14 +245,9 @@ class Editor {
             dat += this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems[i].value
           }
         }
-        alert(dat)
-        try {
-          alert(this.data)
-          this.setDataRowCol(row, col, dat)
-          alert(this.data)
-          el = this.createElm(row, col)
-          this.render()
-        } catch (e) {error("error", DebugLog.getStacktraceFromErr(e))}
+        this.setDataRowCol(row, col, dat)
+        el = this.createElm(row, col)
+        this.render()
       }
     } else if (customtype === 'time') {
       if (option === 'close') {
