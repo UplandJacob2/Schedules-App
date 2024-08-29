@@ -112,6 +112,7 @@ function getSettingsSuccess(response) {
       document.getElementById(SETTINGS_INFO.elIDs[i]).checked = obj[k]
     }
   })
+  USER_SETTINGS = jsonReparse(obj)
 }
 function getSettingsFail(err) { error('Error getting user settings', err) }
 function saveSettingsSuccess() {
