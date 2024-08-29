@@ -109,6 +109,7 @@ module.exports = [
       "brace-style": ["error", "1tbs", { 
         "allowSingleLine": true 
       }],
+      curly: ["warn", "multi-line"]
       
     },
 
