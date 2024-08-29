@@ -118,7 +118,7 @@ function getSettingsFail(err) { error('Error getting user settings', err) }
 function saveSettingsSuccess() {
   document.getElementById('saveSet').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
   setTimeout(function() { document.getElementById('saveSet').innerHTML = 'Save' }, 4000)
-  USER_SETTINGS = jsonReparse(USER_SETTINGS_NOT_SAVED)
+  USER_SETTINGS = jsonReparse(USER_SETTINGS_NOT_SAVED); updateSettingsNotSaved()
 }
 function saveSettingsFail(err) {
   document.getElementById('saveSet').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
@@ -131,7 +131,7 @@ function firstGetSchedulesSuccess(response) {
   getSchedulesSuccess(response)
 
   try {$('.schedule').html(getSchedule()); $('#img').css('display', 'none');
-  } catch (err) {alert(err.stack.split("\n")/*.splice(0, 2)*/.join('\n"'))}
+  } catch (err) {alert(DebugLog.getStacktraceFromErr(err)/*.splice(0, 2)*/.join('\n"'))}
 
   setInterval(function () {
     //google.script.run.withSuccessHandler(function (schedule) { $('.schedule').html(schedule); $('#img').css('display', 'none'); }).getSchedule(getEmail(), getToken());
@@ -150,8 +150,8 @@ function getSchedulesSuccess(response, encoded) {
   let dR = document.getElementById('removeRow')
   dR.disabled = false;  dR.classList.remove('grayLink');  dR.classList.add('link')
   if (encoded) {response = Base64.decode(response)}
-  try { SHEET.resetData(response) } catch (e) {error('Error handling response', e)}
-  DATA = jsonReparse(SHEET.data)
+  try { SHEET.resetData(response) } catch (e) {error('Error handling response', DebugLog.getStacktraceFromErr(e))}
+  DATA = jsonReparse(SHEET.data); updateSaveBtn()
 }
 function getSchedulesFail(err) { error('Error getting schedule for editing', err); DATA = []; SHEET.render('none') }
 function saveSchedulesSuccess() {
