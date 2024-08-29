@@ -2,20 +2,20 @@ var DateUtils = DateUtils || {};
 /**
  * Returns all formated (month/day/year) days ranging from one input to the other
  *
- * inputs: 
+ * inputs:
  * * {string} first date
- * 
+ *
  * * {string} second date
- * 
- * * {bool} is formated - 
- *   * false: Month(3 char) day(2 dig), year(4 dig) 
+ *
+ * * {bool} is formated -
+ *   * false: Month(3 char) day(2 dig), year(4 dig)
  *     * ex: 'Feb 19, 2024'
- *   * true: month(1 or 2 dig)/day(1 or 2 dig)/year(4 dig) 
+ *   * true: month(1 or 2 dig)/day(1 or 2 dig)/year(4 dig)
  *     * ex: '2/19/2024'
- * 
- * returned: 
+ *
+ * returned:
  * {string[]} list of dates formated as month/day/year
- * 
+ *
  * @param {string} first date
  * @param {string} second date
  * @param {bool} is formated
@@ -23,7 +23,7 @@ var DateUtils = DateUtils || {};
  */
 DateUtils.dayRange = function (fromD, toD, formated) {let daysPerMonth
   if (DateUtils.isLeapYear()) {daysPerMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  } else {daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];}
+  } else { daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; }
   let month, day, year, eMonth, eDay, eYear, found;
   l('day range', fromD, toD, formated)
 
@@ -53,7 +53,7 @@ DateUtils.dayRange = function (fromD, toD, formated) {let daysPerMonth
         return daysToReturn
       }
       if (day < daysInMonth) {  day++;
-      } else {  day = 1; month ++;  } 
+      } else {  day = 1; month ++;  }
     } else {  year ++; month = 1;
     }
   }
@@ -61,14 +61,14 @@ DateUtils.dayRange = function (fromD, toD, formated) {let daysPerMonth
 /**
  * Returns 1 formated (month/day/year) date offset the inputed # of days from the input
  *
- * inputs: 
+ * inputs:
  * * {string} first date
- * 
+ *
  * * {number} # of days to be offset - can be negative
- * 
- * returned: 
+ *
+ * returned:
  * {string} date formated as month/day/year
- * 
+ *
  * @param {string} first date
  * @param {number} offset
  * @return {string} date formated as month/day/year
@@ -78,13 +78,13 @@ DateUtils.iterateDays = function (fromD, num) { let daysPerMonth
   } else {daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];}
   l('iterating through days')
   //l('from date: ', fromD)
-  
-  let year = fromD.match(/[0-9]{4}/g)[0]; let month = DateUtils.monthToNum(fromD.match(/(\D){3}(?= )/g)[0]); let daysInMonth = daysPerMonth[month-1]; let day = fromD.match(/[0-9]{2}(?=, )/g); 
+
+  let year = fromD.match(/[0-9]{4}/g)[0]; let month = DateUtils.monthToNum(fromD.match(/(\D){3}(?= )/g)[0]); let daysInMonth = daysPerMonth[month-1]; let day = fromD.match(/[0-9]{2}(?=, )/g);
   if (num > 0 ) {
     for (let i=0; i < num; i++) {
       daysInMonth = daysPerMonth[month-1];
       if (month <= 12) {
-        if (day < daysInMonth) {  day++;  } else {  day = 1; month ++;  } 
+        if (day < daysInMonth) {  day++;  } else {  day = 1; month ++;  }
       } else {  year ++; month = 1;  }
     }
     return month+'/'+day+'/'+year;
@@ -92,7 +92,7 @@ DateUtils.iterateDays = function (fromD, num) { let daysPerMonth
     for (var i=0; i > num; i--) {
       daysInMonth = daysPerMonth[month-1];
       if (month <= 12) {
-        if (day < daysInMonth) {  day--;  } else {  day = 1; month --;  } 
+        if (day < daysInMonth) {  day--;  } else {  day = 1; month --;  }
       } else {  year --; month = 1;  }
     }
     return month+'/'+day+'/'+year;
@@ -101,9 +101,9 @@ DateUtils.iterateDays = function (fromD, num) { let daysPerMonth
 /**
  * Returns true if this year is a leap year
  *
- * returned: 
+ * returned:
  * {bool} is leap year
- * 
+ *
  * @return {bool} is leap year
  */
 DateUtils.isLeapYear = function () { const d = new Date().getFullYear(); /*d = 2100; */  return ((d % 4 === 0) && ((d / 100 !== 0) || (d / 400 === 0)))}
@@ -111,9 +111,9 @@ DateUtils.isLeapYear = function () { const d = new Date().getFullYear(); /*d = 2
  * Returns today formated: month/day/year
  *  * ex: 1/5/2024
  *
- * returned: 
+ * returned:
  * {string} today's date
- * 
+ *
  * @return {string} today's date
  */
 DateUtils.today = function () {
@@ -123,16 +123,16 @@ DateUtils.today = function () {
 /**
  * Returns day of week as num: 0-6
  *
- * inputs: 
+ * inputs:
  * * {string} month (3 char)
  *   * ex 'feb'
- * 
- * returned: 
+ *
+ * returned:
  * {string} number for month
  *   * ex: 2
- * 
+ *
  * @param {string} month
- * 
+ *
  * @return {string} number for month
  */
 DateUtils.monthToNum = function (str) {
@@ -144,15 +144,15 @@ DateUtils.monthToNum = function (str) {
 /**
  * Returns day of week as 3 letters: sun, mon, tue, wed, thu, fri, sat
  *
- * inputs: 
+ * inputs:
  * * {int} day
- * 
+ *
  * returned: day as string
- * {string} 
+ * {string}
  *   * ex: 'mon'
- * 
+ *
  * @param {int} day as int
- * 
+ *
  * @return {string} day as string
  */
 DateUtils.numDayToStr = function (num) {
@@ -179,13 +179,13 @@ DateUtils.militaryToStandard = function(time) {
   return timeValue
 }
 
-/** 
+/**
  * Returnes current date and time as a string
- * 
- * Returned: 
+ *
+ * Returned:
  * {string} current date and time as a string formatted: month/day/year hr:min:sec
  *  * ex: 02/10/2024 18:10:54
- * 
+ *
  * @return {string} current date and time
 */
 DateUtils.getDateAsText = function () {
@@ -199,16 +199,16 @@ DateUtils.getDateAsText = function () {
 /**
  * Returns list of days with no school in EVSC - formated: month/day/year
  *
- * inputs: 
+ * inputs:
  * * {bool} returnListOfReasons
- * 
- * returned: 
- * {string[]} list of days   
+ *
+ * returned:
+ * {string[]} list of days
  *   * if 'returnListOfReasons' is true: list with list of days and list of reasons
- * 
- * @param {bool} 
- * 
- * @return {string[]} 
+ *
+ * @param {bool}
+ *
+ * @return {string[]}
  */
 function getDaysOff(returnListOfReasons) {
   const feed = 'https://district.evscschools.com/syndication/rss.aspx?serverid=74688&userid=5&feed=portalcalendarevents&key=AldG6kAOC9I2Zqbatkslk0yAX9ddipkQPpCdFDbupJGi1SVEK7IS9vWmI53h058bbTRRdB8qA8cAq4FQMyjbVA%3d%3d&portal_id=74772&page_id=74794&calendar_context_id=82481&portlet_instance_id=12393&calendar_id=82482&v=2.0'; let txt
@@ -223,7 +223,7 @@ function getDaysOff(returnListOfReasons) {
 
   itemElms.forEach(item=> {
     if (item.getChildText('title').match(/No School/g)) {
-      items[items.length] = new Array(); 
+      items[items.length] = new Array();
       items[items.length-1][0] = item.getChildText('title');
       items[items.length-1][1] = item.getChildText('description').match(/(.){3} [0-9]{2}, [0-9]{4}/g);
     } else if (item.getChildText('title').match(/End of 4th Grading Period\/2nd Semester/g)) {
@@ -241,14 +241,14 @@ function getDaysOff(returnListOfReasons) {
   }
   console.log(items);
 
-  
+
   items.forEach(item=> {
     if (item[1].length === 1) {
       daysoff[daysoff.length] = DateUtils.monthToNum(item[1][0].match(/(\D){3}(?= )/g)[0])+'/'+parseInt(item[1][0].match(/[0-9]{2}(?=, )/g))+'/'+item[1][0].match(/[0-9]{4}/g)[0];
     } else {
       DateUtils.dayRange(item[1][0], item[1][1], false).forEach(item=> {daysoff[daysoff.length] = item})
     }
-    
+
 
   });
   console.log(daysoff);
