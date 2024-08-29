@@ -48,14 +48,13 @@ DateUtils.dayRange = function (fromD, toD, formated) { let daysPerMonth
     daysInMonth = daysPerMonth[month-1];
     if (month <= 12) {
       //console.log(month+'/'+day+'/'+year);
-      daysToReturn[daysToReturn.length] = month+'/'+day+'/'+year;
-      if (month+'/'+day+'/'+year === eMonth+'/'+eDay+'/'+eYear) {
+      daysToReturn[daysToReturn.length] = `${month}/${day}/${year}`;
+      if (`${month}/${day}/${year}` === `${eMonth}/${eDay}/${eYear}`) {
         return daysToReturn
       }
       if (day < daysInMonth) {  day++;
-      } else {  day = 1; month ++;  }
-    } else {  year ++; month = 1;
-    }
+      } else { day = 1; month ++; }
+    } else { year ++; month = 1; }
   }
 }
 /**
@@ -84,19 +83,19 @@ DateUtils.iterateDays = function (fromD, num) { let daysPerMonth
     for (let i=0; i < num; i++) {
       daysInMonth = daysPerMonth[month-1];
       if (month <= 12) {
-        if (day < daysInMonth) {  day++;  } else {  day = 1; month ++;  }
-      } else {  year ++; month = 1;  }
+        if (day < daysInMonth) { day++; } else { day = 1; month ++; }
+      } else { year ++; month = 1; }
     }
-    return month+'/'+day+'/'+year;
+    return `${month}/${day}/${year}`
   } else if (num < 0) {
     for (let i=0; i > num; i--) {
       daysInMonth = daysPerMonth[month-1];
       if (month <= 12) {
-        if (day < daysInMonth) {  day--;  } else {  day = 1; month --;  }
-      } else {  year --; month = 1;  }
+        if (day < daysInMonth) { day--; } else { day = 1; month --; }
+      } else { year --; month = 1; }
     }
-    return month+'/'+day+'/'+year;
-  } else {return month+'/'+day+'/'+year;}
+    return `${month}/${day}/${year}`;
+  } else { return `${month}/${day}/${year}`; }
 }
 /**
  * Returns true if this year is a leap year
@@ -118,7 +117,7 @@ DateUtils.isLeapYear = function () { const d = new Date().getFullYear(); /*d = 2
  */
 DateUtils.today = function () {
   const day = new Date();
-  return day.getMonth()+1+'/'+day.getDate()+'/'+day.getFullYear();
+  return `${day.getMonth()+1}/${day.getDate()}/${day.getFullYear()}`;
 }
 /**
  * Returns day of week as num: 0-6
