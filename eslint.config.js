@@ -49,14 +49,18 @@ module.exports = [
         
         _: "readonly",
         google: "readonly",
+        tui: "readonly",
+
+        DateUtils: "writable",
+        Base64: "writable",
         
         loadSheet: "writable",
         toggleDisplay: "writable",
         SHEET: "writable",
+        USER_SETTINGS: "writable",
         error: "writable",
         getToken: "writable",
         getEmail: "writable",
-        Base64: "writable",
         jsonReparse: "writable",
         DebugLog: "writable",
         confirmPopup: "writable",
@@ -67,6 +71,12 @@ module.exports = [
         checkSignInButton: "writable",
         checkEmailBox: "writable",
         checkPassBox: "writable",
+        resizeInput: "writable",
+
+        newSchedulesFail: "writable",
+        getSchedulesSuccess: "writable",
+        recoverSchedulesFail: "writable",
+        recoverSchedulesSuccess: "writable",
         
       },
     },
