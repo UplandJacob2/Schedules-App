@@ -277,9 +277,9 @@ DateUtils.getDateAsText = function (query) {
   let dateTime = (typeof query.dateTime != 'undefined') ? query.dateTime : new Date()
 
   if (miltime) {
-    return new Date().toString("M/d/yyyy H:mm:ss ")
+    return dateTime.toString("M/d/yyyy H:mm:ss ")
   }
-  return new Date().toString("M/d/yyyy h:mm:ss tt")
+  return dateTime.toString("M/d/yyyy h:mm:ss tt")
 }
 
 </script>
