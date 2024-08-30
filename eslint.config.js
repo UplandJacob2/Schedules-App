@@ -12,23 +12,23 @@ const googleappsscript = require("eslint-plugin-googleappsscript")
 module.exports = [
   //js.configs.recommended,
   {
-    files: ["**.html"],
-    ignores: [".github/**", "DateTEST.js.html", "Datejs.js.html"],
-    plugins: { html: htmlPlug },
-    settings: {
-      "html/indent": "+2",
-      "html/report-bad-indent": "warn"
-    },
+    files: ["src/**.html"],
+    ignores: ["**.js.html"],
+    // plugins: { html: htmlPlug },
+    // settings: {
+    //   "html/indent": "+2",
+    //   "html/report-bad-indent": "warn"
+    // },
 
     languageOptions: {
       //ecmaVersion: "latest",
       //sourceType: "module",
       //parser: "eslintPlugin/parser",
       parser: htmlParser,
-      globals: {
-        ...globals.browser,
-        ...globals.jquery,
-      },
+      // globals: {
+      //   ...globals.browser,
+      //   ...globals.jquery,
+      // },
     },
     ...htmlLint.configs["flat/recommended"],
     rules: {
@@ -46,7 +46,26 @@ module.exports = [
     },
   },
   {
-    files: ["**.gs"],
+    files: ["src/**.js.html.js"],
+    ignores: ["src/Date.js.html.js", "src/Datejs.js.html.js"],
+    languageOptions : {
+      globals: {
+        ...globals.browser,
+        ...globals.jquery,
+        
+        _: "readonly",
+      },
+    },
+    rules: {
+      ...js.configs.recommended.rules,
+      semi: "off",
+
+
+    },
+
+  },
+  {
+    files: ["src/**.gs"],
     ignores: [".github/**"],
     plugins: { googleappsscript },
     languageOptions: {
