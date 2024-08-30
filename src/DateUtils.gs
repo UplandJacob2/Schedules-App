@@ -167,13 +167,13 @@ DateUtils.militaryToStandard = function(time) {
   let timeValue;
 
   if (hours > 0 && hours <= 12) {
-    timeValue = '' + hours;
+    timeValue = String(hours)
   } else if (hours > 12) {
-    timeValue = '' + (hours - 12);
+    timeValue = String(hours - 12);
   } else if (hours === 0) {
     timeValue = '12';
   }
-  timeValue += (minutes < 10) ? ':0' + minutes : ':' + minutes;  // get minutes
+  timeValue += (minutes < 10) ? `:0${minutes}` : `:${minutes}`;  // get minutes
   //timeValue += (hours >= 12) ? ' PM' : ' AM';  // get AM/PM
   return timeValue
 }
@@ -235,7 +235,7 @@ function getDaysOff(returnListOfReasons) {
   let summer, eSummer;
   if (firstDay && lastDay) {
     summer = DateUtils.iterateDays(lastDay, 1);  eSummer = DateUtils.iterateDays(firstDay, -1);  // get first and last day of summer
-    console.log(summer+'     '+eSummer) ;
+    console.log(`${summer}'     '${eSummer}`) ;
     DateUtils.dayRange(summer, eSummer, true).forEach(item=> { daysoff[daysoff.length] = item }); // add all days of the summer to list
   }
   console.log(items);
@@ -243,7 +243,7 @@ function getDaysOff(returnListOfReasons) {
 
   items.forEach(item=> {
     if (item[1].length === 1) {
-      daysoff[daysoff.length] = DateUtils.monthToNum(item[1][0].match(/(\D){3}(?= )/g)[0])+'/'+parseInt(item[1][0].match(/[0-9]{2}(?=, )/g))+'/'+item[1][0].match(/[0-9]{4}/g)[0];
+      daysoff[daysoff.length] = `${DateUtils.monthToNum(item[1][0].match(/(\D){3}(?= )/g)[0])}/${parseInt(item[1][0].match(/[0-9]{2}(?=, )/g))}/${item[1][0].match(/[0-9]{4}/g)[0]}`;
     } else {
       DateUtils.dayRange(item[1][0], item[1][1], false).forEach(item=> { daysoff[daysoff.length] = item })
     }
