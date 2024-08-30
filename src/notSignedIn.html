@@ -2,14 +2,14 @@
 <html lang="en">
 
 <head>
-	<base target="_top">
+	<base target="_top" />
   <!-- <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.css" /> -->
   <?!= Underscore.include(output); ?>
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.7/underscore-esm-min.js" type="text/javascript"></script> -->
-  <link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet" />
   <?!= include('style.css'); ?>
 
 </head>
@@ -22,7 +22,7 @@
           <div class="topBarSection">
             <a class="top-link relative link reload active" style="top: 5px;" onclick="openMenu();">
               <div style="position: relative; left: -5px; top: 0px; width: 25px; height: 25px;">
-                <ion-icon name="menu-outline"></ion-icon>
+                <ion-icon name="menu-outline" />
               </div>
             </a>
           </div>
@@ -61,20 +61,20 @@
     <div id="signIn" class="modal">
       <form id="signInForm" class="modal-content fadeIn">
         <a class="top-link link reload" style="right: var(--signInUpEdge20); top: 80px;" onclick="document.getElementById('signIn').style.display='none'">
-          <div style="position: relative; width: 25px; height: 25px; top: -3px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div> </a>
+          <div style="position: relative; width: 25px; height: 25px; top: -3px; left: -7px;"><ion-icon style="font-size: 30px;" name="close" /></div> </a>
 
         <div id="signInC" class="container" style="height: 400px;">
-          <img src="https://i.postimg.cc/4ywRhN0z/img-avatar2.png" alt="Avatar" style="display: inline-block; width: 50px; margin-top: -30px; margin-bottom: -10px; border-radius: 50%; padding-right: 5px;">
+          <img src="https://i.postimg.cc/4ywRhN0z/img-avatar2.png" alt="Avatar" style="display: inline-block; width: 50px; margin-top: -30px; margin-bottom: -10px; border-radius: 50%; padding-right: 5px;" />
           <h1 style="display: inline-block; font-size: 50px;">Sign In</h1>
 
           <label style="position: absolute; left: var(--signInUpEdge20); top: 190px;" for="email"><b>Email</b></label>
           <input style="position: absolute; left: var(--signInUpEdge20); top: 230px; width: 200px;" type="text" placeholder="Enter Email" name="email" autocomplete="on" maxlength="320" id="emailSignIn" required>
-          <ion-icon style="position: absolute; left: calc(var(--signInUpEdge20) + 190px); top: 237px;" name="mail"></ion-icon>
+          <ion-icon style="position: absolute; left: calc(var(--signInUpEdge20) + 190px); top: 237px;" name="mail" />
 
           <label style="position: absolute; left: var(--signInUpEdge20); top: 260px;" for="psw"><b>Password</b></label>
           <input style="position: absolute; left: var(--signInUpEdge20); top: 300px; width: 200px;" type="password" placeholder="Enter Password" name="psw" autocomplete="current-password" maxlength="320" id="passSignIn" required>  
           <a style="position: absolute; left: calc(var(--signInUpEdge20) + 220px); top: 305px;"><input id="signInPassChe" type="checkbox" onclick="showPassword('signInPassChe', 'passSignIn')">Show Password</a>
-          <ion-icon style="position: absolute; left: calc(var(--signInUpEdge20) + 190px); top: 307px;" name="lock-closed"></ion-icon>
+          <ion-icon style="position: absolute; left: calc(var(--signInUpEdge20) + 190px); top: 307px;" name="lock-closed" />
 
           <label style="position: absolute; left: var(--signInUpEdge20); top: 340px; font-size: 20px;">  <input id="rmSignIn" type="checkbox" checked="checked" name="remember" style="margin-bottom:15px"> Remember me</label>
           <div style="position: absolute; left: var(--signInUpEdge20); top: 390px;" class="clearfix">
@@ -94,27 +94,27 @@
     <div id="signUp" class="modal">
       <form id="signUpForm" class="modal-content fadeIn">
       <a class="top-link link reload" style="right: var(--signInUpEdge20); top: 80px;" onclick="document.getElementById('signUp').style.display='none'">
-          <div style="position: relative; width: 25px; height: 25px; top: -3px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div> </a>
+          <div style="position: relative; width: 25px; height: 25px; top: -3px; left: -7px;"><ion-icon style="font-size: 30px;" name="close" /></div> </a>
 
         <div id="signUpC" class="container" style="height: 470px;">
           <div style="padding: 0px; height: 80px;">
-            <img src="https://i.postimg.cc/4ywRhN0z/img-avatar2.png" alt="Avatar" style="display: inline-block; width: 50px; margin-top: -30px; margin-bottom: -15px; border-radius: 50%; padding-right: 5px;">
+            <img src="https://i.postimg.cc/4ywRhN0z/img-avatar2.png" alt="Avatar" style="display: inline-block; width: 50px; margin-top: -30px; margin-bottom: -15px; border-radius: 50%; padding-right: 5px;" />
             <h1 style="display: inline-block; font-size: 50px; vertical-align: middle;">Sign Up</h1>
           </div>
           <p style="padding: 0px;">Please fill in this form to create an account.</p>
           
           <label style="position: absolute; left: var(--signInUpEdge20); top: 190px;" for="email"><b>Email</b></label>
           <input style="position: absolute; left: var(--signInUpEdge20); top: 230px; width: 200px;" type="text" placeholder="Enter Email" name="email" autocomplete="on" maxlength="320" id="emailSignUp" required>
-          <ion-icon style="position: absolute; left: calc(var(--signInUpEdge20) + 190px); top: 237px;" name="mail"></ion-icon>
-          <ion-icon id="emailSignUpX" style="top: 235px; color: red;" class="font-20 bold signUpStatusIcon" name="alert"></ion-icon>
-          <ion-icon id="emailSignUpC" style="top: 235px; color: green;" class="font-20 bold signUpStatusIcon" name="checkmark"></ion-icon>
+          <ion-icon style="position: absolute; left: calc(var(--signInUpEdge20) + 190px); top: 237px;" name="mail" />
+          <ion-icon id="emailSignUpX" style="top: 235px; color: red;" class="font-20 bold signUpStatusIcon" name="alert" />
+          <ion-icon id="emailSignUpC" style="top: 235px; color: green;" class="font-20 bold signUpStatusIcon" name="checkmark" />
 
           <label style="position: absolute; left: var(--signInUpEdge20); top: 260px;" for="psw"><b>Password</b></label>
           <input style="position: absolute; left: var(--signInUpEdge20); top: 300px; width: 200px;" type="password" placeholder="Enter Password" name="psw" autocomplete="new-password" maxlength="320" id="passSignUp" required>
           <a style="position: absolute; left: calc(var(--signInUpEdge20) + 240px); top: 305px;"><input id="signUpPassChe" type="checkbox" onclick="showPassword('signUpPassChe', 'passSignUp')">Show Password</a>
-          <ion-icon style="position: absolute; left: calc(var(--signInUpEdge20) + 190px); top: 307px;" name="lock-closed"></ion-icon>
-          <ion-icon id="passSignUpX" style="top: 305px; color: red;" class="font-20 bold signUpStatusIcon" name="alert"></ion-icon>
-          <ion-icon id="passSignUpC" style="top: 305px; color: green;" class="font-20 bold signUpStatusIcon" name="checkmark"></ion-icon>
+          <ion-icon style="position: absolute; left: calc(var(--signInUpEdge20) + 190px); top: 307px;" name="lock-closed" />
+          <ion-icon id="passSignUpX" style="top: 305px; color: red;" class="font-20 bold signUpStatusIcon" name="alert" />
+          <ion-icon id="passSignUpC" style="top: 305px; color: green;" class="font-20 bold signUpStatusIcon" name="checkmark" />
 
           <div style="position: absolute; left: var(--signInUpEdge20); top: 340px; width: calc(clamp(400px, 30%, 600px) - 40px)">
             <a>Password must have </a><a id="lowR">1 lowercase letter</a><a>, </a><a id="upR">1 uppercase letter</a><a>, </a><a id="numR">1 number</a><a>, </a><a id="chR">1 special character</a><a>, and must be </a><a id="lR">at least 8 characters long</a><a>.</a>
@@ -123,9 +123,9 @@
           <label style="position: absolute; left: var(--signInUpEdge20); top: 370px;" for="psw-repeat"><b>Repeat Password</b></label>
           <input style="position: absolute; left: var(--signInUpEdge20); top: 410px; width: 200px;" type="password" placeholder="Repeat Password" name="psw-repeat" autocomplete="new-password" maxlength="320" id="passSignUpR" required>
           <a style="position: absolute; left: calc(var(--signInUpEdge20) + 240px); top: 415px;"><input id="signUpPassCheR" type="checkbox" onclick="showPassword('signUpPassCheR', 'passSignUpR')">Show Password</a>
-          <ion-icon style="position: absolute; left: calc(var(--signInUpEdge20) + 190px); top: 417px;" name="lock-closed"></ion-icon>
-          <ion-icon id="passSignUpRX" style="top: 415px; color: red;" class="font-20 bold signUpStatusIcon" name="alert"></ion-icon>
-          <ion-icon id="passSignUpRC" style="top: 415px; color: green;" class="font-20 bold signUpStatusIcon" name="checkmark"></ion-icon>
+          <ion-icon style="position: absolute; left: calc(var(--signInUpEdge20) + 190px); top: 417px;" name="lock-closed" />
+          <ion-icon id="passSignUpRX" style="top: 415px; color: red;" class="font-20 bold signUpStatusIcon" name="alert" />
+          <ion-icon id="passSignUpRC" style="top: 415px; color: green;" class="font-20 bold signUpStatusIcon" name="checkmark" />
           
           <a style="position: absolute; left: var(--signInUpEdge20); top: 450px; width: calc(clamp(400px, 30%, 600px) - 40px)" id="passRTxt"></a>
 
@@ -147,29 +147,29 @@
     <div class="item smallpopup fadeIn" id="signUpLoad" style="display: none;">
       <a style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></a>
       <a class="top-link link reload" style="right: 32%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('signUpLoad');">
-        <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div></a>
+        <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close" /></div></div></a>
       <span class="center" style="font-size: 30px; position: relative; top: -45px; color: white;">Your account is being requested</span>
       <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
         <span class="bold">You will soon get an email.</span>
-        <img style="position: fixed; left: 49%; width: 50px; top: 30%;" alt="loading..." src="https://shortpixel.com/img/spinner2.gif">
+        <img style="position: fixed; left: 49%; width: 50px; top: 30%;" alt="loading..." src="https://shortpixel.com/img/spinner2.gif" />
       </div>
     </div>
 
     <div class="item smallpopup fadeIn" id="signInLoad" style="display: none;">
       <a style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></a>
       <a class="top-link link reload" style="right: 32%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('signInLoad');">
-        <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div></a>
+        <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close" /></div></div></a>
       <span class="center" style="font-size: 30px; position: relative; top: -45px; color: white;">Signing In</span>
       <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
         <span class="bold">Signing In...</span>
-        <img style="position: fixed; left: 49%; width: 50px; top: 30%;" alt="loading..." src="https://shortpixel.com/img/spinner2.gif">
+        <img style="position: fixed; left: 49%; width: 50px; top: 30%;" alt="loading..." src="https://shortpixel.com/img/spinner2.gif" />
       </div>
     </div>
 
     <div class="item smallpopup fadeIn" id="signUpEmailSent" style="display: none;">
       <a style="display: block; width: 100%; border: none; background: #666; position: relative; top: 0px; left: 0px; height: 50px;"></a>
       <a class="top-link link reload" style="right: 32%; top: 15.6%; font-size: 35px; z-index: 21" onclick="toggleDisplay('signUpEmailSent');">
-        <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close"></div></div></a>
+        <div style="position: relative; width: 25px; height: 25px; top: -10px; left: -1px;"><div style="position: relative; width: 25px; height: 25px; top: 8px; left: -7px;"><ion-icon style="font-size: 30px;" name="close" /></div></div></a>
       <span class="center" style="font-size: 30px; position: relative; top: -45px; color: white;">Your schedule is being re-added</span>
       <div class="tab" style="width: 100%; height: 94%; border: none; top: 1%; font-size: 20px;">
         <span class="bold">Email sent</span>
