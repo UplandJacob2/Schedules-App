@@ -57,7 +57,8 @@ module.exports = [
         getToken: "writable",
         getEmail: "writable",
         Base64: "writable",
-        JsonReparse: "writable",
+        jsonReparse: "writable",
+        DebugLog: "writable",
         
       },
     },
