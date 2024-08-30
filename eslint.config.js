@@ -84,7 +84,9 @@ module.exports = [
       ...js.configs.recommended.rules,
       semi: "off",
 
-
+      "no-unused-vars": ["error", { 
+        "varsIgnorePattern": ".+_$" 
+      }],
     },
 
   },
@@ -152,7 +154,12 @@ module.exports = [
       "brace-style": ["error", "1tbs", { 
         "allowSingleLine": true 
       }],
-      curly: ["warn", "multi-line"]
+      curly: ["warn", "multi-line"],
+
+
+      "no-unused-vars": ["error", { 
+        "varsIgnorePattern": ".+_$" 
+      }],
       
     },
 
