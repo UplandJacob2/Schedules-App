@@ -13,7 +13,7 @@ module.exports = [
   //js.configs.recommended,
   {
     files: ["src/**.html"],
-    ignores: ["**.js.html"],
+    excludedFiles: ["src/**/*.js.html"],
     // plugins: { html: htmlPlug },
     // settings: {
     //   "html/indent": "+2",
@@ -47,7 +47,7 @@ module.exports = [
   },
   {
     files: ["src/**.js.html.js"],
-    ignores: ["src/Date.js.html.js", "src/Datejs.js.html.js"],
+    excludedFiles: ["src/Date.js.html.js", "src/Datejs.js.html.js"],
     languageOptions : {
       globals: {
         ...globals.browser,
@@ -66,7 +66,6 @@ module.exports = [
   },
   {
     files: ["src/**.gs"],
-    ignores: [".github/**"],
     plugins: { googleappsscript },
     languageOptions: {
       globals: {
