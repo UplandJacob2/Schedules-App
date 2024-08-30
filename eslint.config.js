@@ -7,6 +7,41 @@ const htmlParser = require("@html-eslint/parser");
 const globals = require("globals");
 const googleappsscript = require("eslint-plugin-googleappsscript")
 
+const globalsUsed = {
+  DateUtils: "writable",
+  Base64: "writable",
+  
+  loadSheet: "writable",
+  toggleDisplay: "writable",
+  SHEET: "writable",
+  USER_SETTINGS: "writable",
+  error: "writable",
+  getToken: "writable",
+  getEmail: "writable",
+  jsonReparse: "writable",
+  DebugLog: "writable",
+  confirmPopup: "writable",
+  signInF: "writable",
+  signUp: "writable",
+  signInSuccess: "writable",
+  checkSignUpButton: "writable",
+  checkSignInButton: "writable",
+  checkEmailBox: "writable",
+  checkPassBox: "writable",
+  resizeInput: "writable",
+
+  newSchedulesFail: "writable",
+  getSchedulesSuccess: "writable",
+  recoverSchedulesFail: "writable",
+  recoverSchedulesSuccess: "writable",
+}
+const globalsUsedKeys = Object.keys(globalsUsed)
+let regexStr = "(.+_$)"
+for (let k = 0; k < globalsUsedKeys; k++) {
+  regexStr += "|"+globalsUsedKeys[k]
+}
+
+
 //export default 
 module.exports = [
   //js.configs.recommended,
@@ -33,7 +68,7 @@ module.exports = [
       "@html-eslint/no-obsolete-tags": "warn",
       "@html-eslint/require-closing-tags": ["warn", {
         "selfClosing": "always", 
-        "selfClosingCustomPatterns": ["ion-icon"]
+        //"selfClosingCustomPatterns": ["ion-icon"],
       }],
 
 
@@ -51,33 +86,7 @@ module.exports = [
         google: "readonly",
         tui: "readonly",
 
-        DateUtils: "writable",
-        Base64: "writable",
-        
-        loadSheet: "writable",
-        toggleDisplay: "writable",
-        SHEET: "writable",
-        USER_SETTINGS: "writable",
-        error: "writable",
-        getToken: "writable",
-        getEmail: "writable",
-        jsonReparse: "writable",
-        DebugLog: "writable",
-        confirmPopup: "writable",
-        signInF: "writable",
-        signUp: "writable",
-        signInSuccess: "writable",
-        checkSignUpButton: "writable",
-        checkSignInButton: "writable",
-        checkEmailBox: "writable",
-        checkPassBox: "writable",
-        resizeInput: "writable",
-
-        newSchedulesFail: "writable",
-        getSchedulesSuccess: "writable",
-        recoverSchedulesFail: "writable",
-        recoverSchedulesSuccess: "writable",
-        
+        ...globalsUsed,        
       },
     },
     rules: {
@@ -158,7 +167,7 @@ module.exports = [
 
 
       "no-unused-vars": ["error", { 
-        "varsIgnorePattern": ".+_$" 
+        "varsIgnorePattern": regexStr 
       }],
       
     },
