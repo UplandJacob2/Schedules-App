@@ -220,12 +220,12 @@ function signUp (pass, passR, email) {
   const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   const acctJson = JSON.parse(file.getBlob().getDataAsString())
 
-  let i = acctJson.findIndex(em=> em.email[0].toLowerCase() === email.toLowerCase());
+  let i = acctJson.findIndex(em => em.email[0].toLowerCase() === email.toLowerCase());
   if (i >= 0) { err('Already an account with that email.') }
 
   const sc = CacheService.getScriptCache()
 
-  //const i = JSON.parse(sc.get('SignInTokens')).findIndex(val=> val.email.toLowerCase() === email.toLowerCase())
+  //const i = JSON.parse(sc.get('SignInTokens')).findIndex(val => val.email.toLowerCase() === email.toLowerCase())
   //if (!(i < 0)) { err('Already an account with that email.') }
 
   if (!SchedulesSecure.isValidPassword(pass)) { err('Invalid Password. How do you get around client side checks?') }
@@ -256,7 +256,7 @@ function confirmSignUp(token) {
   let file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   let data = JSON.parse(file.getBlob().getDataAsString())
 
-  if (data.findIndex(r=> r.email === email) >= 0) { err('Already an account with that email.'); }
+  if (data.findIndex(r => r.email === email) >= 0) { err('Already an account with that email.'); }
   if (!SchedulesSecure.isValidPassword(pass)) { err('Invalid Password. How do you get around client side checks? And/or the server died?'); }
   if (pass !== passR) { err('Passwords don\'t match. How do you get around client side checks? And/or the server died?'); }
 
@@ -274,7 +274,7 @@ function signIn (email, pass, rm) { let rand;
   const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   const acctJson = JSON.parse(file.getBlob().getDataAsString())
 
-  let i = acctJson.findIndex(acc=> acc.email.toLowerCase() === email.toLowerCase())
+  let i = acctJson.findIndex(acc => acc.email.toLowerCase() === email.toLowerCase())
   if (i < 0) { err('No account with that email.') }
 
   if (acctJson[i].pass === pass) {
@@ -299,7 +299,7 @@ function signInWToken(email, token) {
   const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   const acctJson = JSON.parse(file.getBlob().getDataAsString())
 
-  let i = acctJson.findIndex(acc=> acc.email.toLowerCase() === email.toLowerCase())
+  let i = acctJson.findIndex(acc => acc.email.toLowerCase() === email.toLowerCase())
   l(i)
   if (i < 0) { err('No account with that email.') }
 
@@ -339,8 +339,8 @@ function refreshCache_() {
   ////////////////////    schedules
   let schs = JSON.parse(cacheSheet.getRange(2, 2).getValue())
   l(schs)
-  schs.forEach((gr, gri)=> {
-    gr.schedules.forEach((sc, sci)=> {
+  schs.forEach((gr, gri) => {
+    gr.schedules.forEach((sc, sci) => {
       if (sci < gr.schedules.length-1) { schs[gri].schedules[sci][0] = SchedulesSecure.updateCurrentClass(sc[0]); }
     });
   });
@@ -351,15 +351,15 @@ function refreshCache_() {
   let emails = accountSheet.getRange(1, 1, accountSheet.getLastRow(), 1).getValues();
   let tokens = accountSheet.getRange(1, 3, accountSheet.getLastRow(), 1).getValues();
   let accounts = new Array();
-  emails.forEach((em, i)=> { accounts.push({ email: em[0], token: tokens[i][0] }) })
+  emails.forEach((em, i) => { accounts.push({ email: em[0], token: tokens[i][0] }) })
   cacheSheet.getRange(1, 2).setValue(JSON.stringify(accounts));
 
   ////////////////////  from sheet to cache
   let keys = [ 'Schedules', 'SignInTokens' ];
   let col1 = cacheSheet.getRange(1, 1, cacheSheet.getLastRow(), 1).getValues();
 
-  keys.forEach(key=> {
-    let row = col1.findIndex(em=> em[0] === key)+1;   let val;
+  keys.forEach(key => {
+    let row = col1.findIndex(em => em[0] === key)+1;   let val;
     if (sc.get(key)) {
       sc.remove(key);
     } else {
@@ -407,7 +407,7 @@ function getSchedule(email, token) { let file
   const nowInt = parseInt(String(date.getHours())+minu)
   let boldRows = []
 
-  schedule.forEach((row, r)=> {
+  schedule.forEach((row, r) => {
     let strtTime = row.strt; let sHr = strtTime.split(':')[0]; let sMin = strtTime.split(':')[1]
     let endTime = row.end;   let eHr =  endTime.split(':')[0]; let eMin =  endTime.split(':')[1]
     const sInt = parseInt(sHr+sMin);  const eInt = parseInt(eHr+eMin)
@@ -419,10 +419,10 @@ function getSchedule(email, token) { let file
     if (row.b) { boldRows.push(r) }
     schedule[r] = [ row['class'], strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1] ]
   })
-  schedule.forEach((row, r)=> {
+  schedule.forEach((row, r) => {
     schStr+='<tr>'
     l(row)
-    row.forEach((cell, c)=> {
+    row.forEach((cell, c) => {
       schStr+='<td class="c'+c+' r'+rab
       if (c === 0) { if (boldRows.includes(r)) { schStr+= ' b' } }
       if (classNows.includes(r)) { schStr+= ' y' }
