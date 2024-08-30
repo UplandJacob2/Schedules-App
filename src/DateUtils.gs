@@ -212,8 +212,8 @@ DateUtils.getDateAsText = function () {
 function getDaysOff(returnListOfReasons) {
   const feed = 'https://district.evscschools.com/syndication/rss.aspx?serverid=74688&userid=5&feed=portalcalendarevents&key=AldG6kAOC9I2Zqbatkslk0yAX9ddipkQPpCdFDbupJGi1SVEK7IS9vWmI53h058bbTRRdB8qA8cAq4FQMyjbVA%3d%3d&portal_id=74772&page_id=74794&calendar_context_id=82481&portlet_instance_id=12393&calendar_id=82482&v=2.0'; let txt
 
-  try  { txt = UrlFetchApp.fetch(feed, { 'muteHttpExceptions': true, 'redirect': 'follow' }).getContentText(); }
-  catch{ Utilities.sleep(1000); txt = UrlFetchApp.fetch(feed, { 'muteHttpExceptions': true, 'redirect': 'follow' }).getContentText(); }
+  try { txt = UrlFetchApp.fetch(feed, { 'muteHttpExceptions': true, 'redirect': 'follow' }).getContentText(); 
+  } catch { Utilities.sleep(1000); txt = UrlFetchApp.fetch(feed, { 'muteHttpExceptions': true, 'redirect': 'follow' }).getContentText(); }
   //l(txt);
 
   let daysoff = new Array();   let lastDay, firstDay;   let items = new Array();
