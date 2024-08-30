@@ -20,7 +20,7 @@ function doGet(q) {
   if (doit === 'confirmSignUp') { let key = q.parameter.key;
     if (String(key) === '') { err('No token.'); }
     let json = JSON.parse(CacheService.getScriptCache().get(key)); let email, pass, passR
-    try { [email, pass, passR] = [json.email, json.pass, json.passR]; } catch { err('Bad token.'); }
+    try { [ email, pass, passR ] = [ json.email, json.pass, json.passR ]; } catch { err('Bad token.'); }
 
     const sheet = SpreadsheetApp.open(DriveApp.getFilesByName('Schedules Accounts').next()).getActiveSheet();
     const row = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().findIndex(em => em[0].toLowerCase() === email.toLowerCase()) + 1;
@@ -84,16 +84,16 @@ function api (parameter) {
           if (parameter.fileId) {
             DriveApp.getFileById(parameter.fileId).setTrashed(false)
             let nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${ email }.json`).next()
-            return JSON.stringify(['File recovered', [[nfile.getLastUpdated(), nfile.getBlob().getDataAsString(), nfile.getId()]]])
+            return JSON.stringify([ 'File recovered', [[ nfile.getLastUpdated(), nfile.getBlob().getDataAsString(), nfile.getId() ]] ])
           }
           if (filesToRecover.length === 1) {
             l(filesToRecover[0])
             filesToRecover[0].setTrashed(false)
             let nfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${ email }.json`).next()
-            return JSON.stringify(['File recovered', [[nfile.getLastUpdated(), nfile.getBlob().getDataAsString(), nfile.getId()]]])
+            return JSON.stringify([ 'File recovered', [[ nfile.getLastUpdated(), nfile.getBlob().getDataAsString(), nfile.getId() ]] ])
           } else if (filesToRecover.length > 1) {
             l('test')
-            let a = ['More than one file can be recovered', filesToRecover.map(fl => [fl.getLastUpdated(), fl.getBlob().getDataAsString(), fl.getId()])]
+            let a = [ 'More than one file can be recovered', filesToRecover.map(fl => [ fl.getLastUpdated(), fl.getBlob().getDataAsString(), fl.getId() ]) ]
             l(a)
             return JSON.stringify(a)
           } else {
