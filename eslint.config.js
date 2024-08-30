@@ -63,6 +63,10 @@ module.exports = [
         signInF: "writable",
         signUp: "writable",
         signInSuccess: "writable",
+        checkSignUpButton: "writable",
+        checkSignInButton: "writable",
+        checkEmailBox: "writable",
+        checkPassBox: "writable",
         
       },
     },
