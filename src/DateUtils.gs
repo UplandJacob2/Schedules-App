@@ -73,8 +73,8 @@ DateUtils.dayRange = function (fromD, toD, formated) { let daysPerMonth
  * @return {string} date formated as month/day/year
  */
 DateUtils.iterateDays = function (fromD, num) { let daysPerMonth
-  if (DateUtils.isLeapYear()) { daysPerMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  } else { daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];}
+  if (DateUtils.isLeapYear()) { daysPerMonth = [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+  } else { daysPerMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]; }
   l('iterating through days')
   //l('from date: ', fromD)
 
@@ -105,7 +105,7 @@ DateUtils.iterateDays = function (fromD, num) { let daysPerMonth
  *
  * @return {bool} is leap year
  */
-DateUtils.isLeapYear = function () { const d = new Date().getFullYear(); /*d = 2100; */  return ((d % 4 === 0) && ((d / 100 !== 0) || (d / 400 === 0)))}
+DateUtils.isLeapYear = function () { const d = new Date().getFullYear(); /*d = 2100; */  return ((d % 4 === 0) && ((d / 100 !== 0) || (d / 400 === 0))) }
 /**
  * Returns today formated: month/day/year
  *  * ex: 1/5/2024
@@ -136,8 +136,8 @@ DateUtils.today = function () {
  */
 DateUtils.monthToNum = function (str) {
   str = str.toLowerCase(); let ans;
-  const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-  months.forEach((month, i)=> {if (month === str) {ans = i + 1;}});
+  const months = [ 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec' ];
+  months.forEach((month, i)=> { if (month === str) { ans = i + 1; } });
   return ans
 }
 /**
@@ -155,7 +155,7 @@ DateUtils.monthToNum = function (str) {
  * @return {string} day as string
  */
 DateUtils.numDayToStr = function (num) {
-  const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
+  const days = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ]
   return days[num]
 }
 
@@ -212,8 +212,8 @@ DateUtils.getDateAsText = function () {
 function getDaysOff(returnListOfReasons) {
   const feed = 'https://district.evscschools.com/syndication/rss.aspx?serverid=74688&userid=5&feed=portalcalendarevents&key=AldG6kAOC9I2Zqbatkslk0yAX9ddipkQPpCdFDbupJGi1SVEK7IS9vWmI53h058bbTRRdB8qA8cAq4FQMyjbVA%3d%3d&portal_id=74772&page_id=74794&calendar_context_id=82481&portlet_instance_id=12393&calendar_id=82482&v=2.0'; let txt
 
-  try  {txt = UrlFetchApp.fetch(feed, {'muteHttpExceptions': true, 'redirect': 'follow'}).getContentText();}
-  catch{Utilities.sleep(1000); txt = UrlFetchApp.fetch(feed, {'muteHttpExceptions': true, 'redirect': 'follow'}).getContentText();}
+  try  { txt = UrlFetchApp.fetch(feed, { 'muteHttpExceptions': true, 'redirect': 'follow' }).getContentText(); }
+  catch{ Utilities.sleep(1000); txt = UrlFetchApp.fetch(feed, { 'muteHttpExceptions': true, 'redirect': 'follow' }).getContentText(); }
   //l(txt);
 
   let daysoff = new Array();   let lastDay, firstDay;   let items = new Array();
@@ -236,7 +236,7 @@ function getDaysOff(returnListOfReasons) {
   if (firstDay && lastDay) {
     summer = DateUtils.iterateDays(lastDay, 1);  eSummer = DateUtils.iterateDays(firstDay, -1);  // get first and last day of summer
     console.log(summer+'     '+eSummer) ;
-    DateUtils.dayRange(summer, eSummer, true).forEach(item=> {daysoff[daysoff.length] = item}); // add all days of the summer to list
+    DateUtils.dayRange(summer, eSummer, true).forEach(item=> { daysoff[daysoff.length] = item }); // add all days of the summer to list
   }
   console.log(items);
 
@@ -245,7 +245,7 @@ function getDaysOff(returnListOfReasons) {
     if (item[1].length === 1) {
       daysoff[daysoff.length] = DateUtils.monthToNum(item[1][0].match(/(\D){3}(?= )/g)[0])+'/'+parseInt(item[1][0].match(/[0-9]{2}(?=, )/g))+'/'+item[1][0].match(/[0-9]{4}/g)[0];
     } else {
-      DateUtils.dayRange(item[1][0], item[1][1], false).forEach(item=> {daysoff[daysoff.length] = item})
+      DateUtils.dayRange(item[1][0], item[1][1], false).forEach(item=> { daysoff[daysoff.length] = item })
     }
 
 
