@@ -12,7 +12,7 @@ const googleappsscript = require("eslint-plugin-googleappsscript")
 module.exports = [
   //js.configs.recommended,
   {
-    files: ["src/**.html"],
+    files: ["src/**/*.html"],
     excludedFiles: ["src/**/*.js.html"],
     // plugins: { html: htmlPlug },
     // settings: {
@@ -46,7 +46,7 @@ module.exports = [
     },
   },
   {
-    files: ["src/**.js.html.js"],
+    files: ["src/**/*.js.html.js"],
     excludedFiles: ["src/Date.js.html.js", "src/Datejs.js.html.js"],
     languageOptions : {
       globals: {
@@ -65,7 +65,7 @@ module.exports = [
 
   },
   {
-    files: ["src/**.gs"],
+    files: ["src/**/*.gs"],
     plugins: { googleappsscript },
     languageOptions: {
       globals: {
