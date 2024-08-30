@@ -13,7 +13,7 @@ module.exports = [
   //js.configs.recommended,
   {
     files: ["src/**/*.html"],
-    ignore: ["src/**/*.js.html"],
+    ignores: ["src/**/*.js.html"],
     // plugins: { html: htmlPlug },
     // settings: {
     //   "html/indent": "+2",
@@ -47,7 +47,7 @@ module.exports = [
   },
   {
     files: ["src/**/*.js.html.js"],
-    ignore: ["src/Date.js.html.js", "src/Datejs.js.html.js"],
+    ignores: ["src/Date.js.html.js", "src/Datejs.js.html.js"],
     languageOptions : {
       globals: {
         ...globals.browser,
