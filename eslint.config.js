@@ -82,7 +82,7 @@ module.exports = [
   },
   {
     files: ["src/**/*.js.html.js"],
-    ignores: ["src/Date.js.html.js", "src/Datejs.js.html.js"],
+    ignores: ["**/Date.js.html.js", "**/Datejs.js.html.js", "**/underscore-observe.js.html.js"],
     languageOptions : {
       globals: {
         ...globals.browser,
