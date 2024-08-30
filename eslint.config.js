@@ -59,6 +59,10 @@ module.exports = [
         Base64: "writable",
         jsonReparse: "writable",
         DebugLog: "writable",
+        confirmPopup: "writable",
+        signInF: "writable",
+        signUp: "writable",
+        signInSuccess: "writable",
         
       },
     },
