@@ -53,6 +53,9 @@ module.exports = [
         loadSheet: "writable",
         toggleDisplay: "writable",
         SHEET: "writable",
+        error: "writable",
+        getToken: "writable",
+        getEmail: "writable",
         
       },
     },
