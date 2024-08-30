@@ -153,13 +153,13 @@ class Editor {
         <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" class="link" id="newSch">New</a> 
       </center>`; 
       const recoverBt = document.getElementById('recoverSch')
-      recoverBt.addEventListener('click', function (ev) {
+      recoverBt.addEventListener('click', function () {
         google.script.run.withSuccessHandler(recoverSchedulesSuccess).withFailureHandler(recoverSchedulesFail).api(
           { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'recover'})
         document.getElementById('recoverSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
       })
       const newBt = document.getElementById('newSch')
-      newBt.addEventListener('click', function (ev) {
+      newBt.addEventListener('click', function () {
         google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(newSchedulesFail).api(
           { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'new'})
         document.getElementById('newSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
