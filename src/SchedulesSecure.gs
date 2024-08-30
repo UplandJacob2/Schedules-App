@@ -2,8 +2,8 @@ var SchedulesSecure = SchedulesSecure || {}
 
 
 SchedulesSecure.verify = function(email, token) {
-  if (!email) {throw new Error('No email.');}
-  if (!token) {throw new Error('No token.');}
+  if (!email) { throw new Error('No email.'); }
+  if (!token) { throw new Error('No token.'); }
 
   const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   const accounts = JSON.parse(file.getBlob().getDataAsString())
@@ -12,13 +12,13 @@ SchedulesSecure.verify = function(email, token) {
   //let accounts = JSON.parse(sc.get('SignInTokens'));
   let i = accounts.findIndex(val=> val.email.toLowerCase() === email.toLowerCase())
   if (i < 0) {// if we can't find an account with email
-    if (!SchedulesSecure.isValidEmail(email)) {throw new Error('Bad email.');} // check if email is valid
+    if (!SchedulesSecure.isValidEmail(email)) { throw new Error('Bad email.'); } // check if email is valid
     throw new Error('No account with that email.'); // if it is valid, but no account
   } else {
     if (accounts[i].token === token) {
       console.log('correct token'); return true
-    } else {// if the token doesn't match
-      if (!token || !token.match(/[a-zA-Z0-9]{250}/g)) {throw new Error('Bad token.');} // check if token is valid
+    } else { // if the token doesn't match
+      if (!token || !token.match(/[a-zA-Z0-9]{250}/g)) { throw new Error('Bad token.'); } // check if token is valid
       return false // is good token, but still wrong
     }
   }
