@@ -120,7 +120,7 @@ module.exports = [
       "arrow-body-style": ["warn", "as-needed"],
       "arrow-parens": ["error", "as-needed"],
       "arrow-spacing": ["warn", { 
-        "before": false, 
+        "before": true, 
         "after": true 
       }],
       "block-scoped-var": "error",
