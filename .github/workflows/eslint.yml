@@ -46,7 +46,7 @@ jobs:
         run: node scripts/prepare-js-files.js
         
       - name: Run ESLint
-        run: node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint /src --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif || exit 0
+        run: node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint ./src --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif || exit 0
       - run: cat eslint-results.sarif
       - run: /home/runner/.local/bin/sarif summary eslint-results.sarif
       #/opt/hostedtoolcache/node/20.16.0/x64/bin/node
