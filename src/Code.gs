@@ -102,7 +102,7 @@ function api (parameter) {
         } else if (onfail === 'new') {
           const firstRow = { info: 's', class: 'Some Class', strt: '', end: '', b: false, days: 'Mon, Wed, Fri', name: 'Schedule Name' }
           const emptyRow = { info: '',  class: 'Some Class', strt: '', end: '', b: false, days: '', name: '' }
-          DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').createFile(`${ email }.json`, JSON.stringify([firstRow, emptyRow, emptyRow]))
+          DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').createFile(`${ email }.json`, JSON.stringify([ firstRow, emptyRow, emptyRow ]))
           let nnfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${ email }.json`).next()
           return nnfile.getBlob().getDataAsString()
 
@@ -125,7 +125,7 @@ function api (parameter) {
     //     filesToRecover.setTrashed(false)
     //     return 'done'
     //   } else if (filesToRecover.length > 1) {
-    //     return ['More than one file can be recovered', filesToRecover.map(fl => [fl.getLastUpdated(), fl.getBlob().getDataAsString()])]
+    //     return [ 'More than one file can be recovered', filesToRecover.map(fl => [ fl.getLastUpdated(), fl.getBlob().getDataAsString() ]) ]
     //   } else {
     //     err('can\'t recover file')
     //   }
@@ -173,7 +173,7 @@ function api (parameter) {
             let nfile = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(`${ email }_settings.json`).next()
             return nfile.getBlob().getDataAsString()
           } else if (filesToRecover.length > 1) {
-            return ['More than one file can be recovered', filesToRecover.map(fl => [fl.getLastUpdated(), fl.getBlob().getDataAsString()])]
+            return [ 'More than one file can be recovered', filesToRecover.map(fl => [ fl.getLastUpdated(), fl.getBlob().getDataAsString() ]) ]
           } else {
             err('No file to recover')
           }
@@ -201,7 +201,7 @@ function api (parameter) {
         filesToRecover.setTrashed(false)
         return 'done'
       } else if (filesToRecover.length > 1) {
-        return ['More than one file can be recovered', filesToRecover.map(fl => [fl.getLastUpdated(), fl.getBlob().getDataAsString()])]
+        return [ 'More than one file can be recovered', filesToRecover.map(fl => [ fl.getLastUpdated(), fl.getBlob().getDataAsString() ]) ]
       } else {
         err('can\'t recover file')
       }
@@ -249,7 +249,7 @@ function confirmSignUp(token) {
   if (String(token) === '') { err('No token.'); }  let json
   try { json = JSON.parse(CacheService.getScriptCache().get(token)); } catch { err('Bad token.'); }
 
-  let [email, pass, passR] = [json.email, json.pass, json.passR];
+  let [ email, pass, passR ] = [ json.email, json.pass, json.passR ];
   if (!SchedulesSecure.isValidEmail(email)) { err('Invalid email. How do you get around client side checks? And/or the server died?'); }
 
 
@@ -288,7 +288,7 @@ function signIn (email, pass, rm) { let rand;
       l('edit to '+blob)
       Drive.Files.update(fileSets, file.getId(), blob)
     }
-    let toReturn = [HtmlService.createTemplateFromFile('Index').getRawContent(), rand];
+    let toReturn = [ HtmlService.createTemplateFromFile('Index').getRawContent(), rand ];
     //refreshCache_();
     return toReturn
   }
@@ -311,7 +311,7 @@ function signInWToken(email, token) {
   l('edit to '+blob)
   Drive.Files.update(fileSets, file.getId(), blob)
 
-  let toReturn = [HtmlService.createTemplateFromFile('Index').getRawContent(), rand];
+  let toReturn = [ HtmlService.createTemplateFromFile('Index').getRawContent(), rand ];
   //refreshCache_();
   return toReturn
 }
@@ -355,7 +355,7 @@ function refreshCache_() {
   cacheSheet.getRange(1, 2).setValue(JSON.stringify(accounts));
 
   ////////////////////  from sheet to cache
-  let keys = ['Schedules', 'SignInTokens'];
+  let keys = [ 'Schedules', 'SignInTokens' ];
   let col1 = cacheSheet.getRange(1, 1, cacheSheet.getLastRow(), 1).getValues();
 
   keys.forEach(key=> {
@@ -417,7 +417,7 @@ function getSchedule(email, token) { let file
     l(classNows, sInt, eInt, nowInt)
     //if (!militaryTime) { strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime) }
     if (row.b) { boldRows.push(r) }
-    schedule[r] = [row['class'], strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1]]
+    schedule[r] = [ row['class'], strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1] ]
   })
   schedule.forEach((row, r)=> {
     schStr+='<tr>'
