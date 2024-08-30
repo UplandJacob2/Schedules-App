@@ -43,7 +43,7 @@ jobs:
       #- run: npm install --save esm
       #- run: node -r esm eslint.config.js
       - name: Prepare js files
-        run: node prepare-js-files.js
+        run: node scripts/prepare-js-files.js
         
       - name: Run ESLint
         run: node /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint /src --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif || exit 0
