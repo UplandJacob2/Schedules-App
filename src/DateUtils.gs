@@ -137,7 +137,7 @@ DateUtils.today = function () {
 DateUtils.monthToNum = function (str) {
   str = str.toLowerCase(); let ans;
   const months = [ 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec' ];
-  months.forEach((month, i)=> { if (month === str) { ans = i + 1; } });
+  months.forEach((month, i) => { if (month === str) { ans = i + 1; } });
   return ans
 }
 /**
@@ -220,7 +220,7 @@ function getDaysOff(returnListOfReasons) {
 
   const itemElms = XmlService.parse(txt).getAllContent()[0].asElement().getChild('channel').getChildren('item');
 
-  itemElms.forEach(item=> {
+  itemElms.forEach(item => {
     if (item.getChildText('title').match(/No School/g)) {
       items[items.length] = new Array();
       items[items.length-1][0] = item.getChildText('title');
@@ -236,16 +236,16 @@ function getDaysOff(returnListOfReasons) {
   if (firstDay && lastDay) {
     summer = DateUtils.iterateDays(lastDay, 1);  eSummer = DateUtils.iterateDays(firstDay, -1);  // get first and last day of summer
     console.log(`${summer}'     '${eSummer}`) ;
-    DateUtils.dayRange(summer, eSummer, true).forEach(item=> { daysoff[daysoff.length] = item }); // add all days of the summer to list
+    DateUtils.dayRange(summer, eSummer, true).forEach(item => { daysoff[daysoff.length] = item }); // add all days of the summer to list
   }
   console.log(items);
 
 
-  items.forEach(item=> {
+  items.forEach(item => {
     if (item[1].length === 1) {
       daysoff[daysoff.length] = `${DateUtils.monthToNum(item[1][0].match(/(\D){3}(?= )/g)[0])}/${parseInt(item[1][0].match(/[0-9]{2}(?=, )/g))}/${item[1][0].match(/[0-9]{4}/g)[0]}`;
     } else {
-      DateUtils.dayRange(item[1][0], item[1][1], false).forEach(item=> { daysoff[daysoff.length] = item })
+      DateUtils.dayRange(item[1][0], item[1][1], false).forEach(item => { daysoff[daysoff.length] = item })
     }
 
 
