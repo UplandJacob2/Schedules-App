@@ -10,7 +10,7 @@ SchedulesSecure.verify = function(email, token) {
 
   //const sc = CacheService.getScriptCache()
   //let accounts = JSON.parse(sc.get('SignInTokens'));
-  let i = accounts.findIndex(val=> val.email.toLowerCase() === email.toLowerCase())
+  let i = accounts.findIndex(val => val.email.toLowerCase() === email.toLowerCase())
   if (i < 0) { // if we can't find an account with email
     if (!SchedulesSecure.isValidEmail(email)) { throw new Error('Bad email.'); } // check if email is valid
     throw new Error('No account with that email.'); // if it is valid, but no account
