@@ -289,7 +289,7 @@ function signIn (email, pass, rm) { let rand;
       Drive.Files.update(fileSets, file.getId(), blob)
     }
     let toReturn = [HtmlService.createTemplateFromFile('Index').getRawContent(), rand];
-    //_refreshCache();
+    //refreshCache_();
     return toReturn
   }
   else { err('Incorrect password.'); }
@@ -312,12 +312,12 @@ function signInWToken(email, token) {
   Drive.Files.update(fileSets, file.getId(), blob)
 
   let toReturn = [HtmlService.createTemplateFromFile('Index').getRawContent(), rand];
-  //_refreshCache();
+  //refreshCache_();
   return toReturn
 }
 
 // NOT CURRENTLY USED may be reimplemented
-function _refreshCache() {
+function refreshCache_() {
   const sc = CacheService.getScriptCache();
   const fold = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc')
   const acctJson = JSON.parse(fold.getFilesByName('accounts.json').next().getBlob().getDataAsString())
@@ -370,11 +370,11 @@ function _refreshCache() {
   });
 }
 // NOT CURRENTLY USED may be reimplemented
-function _refreshSchedules() {
+function refreshSchedules_() {
   const cacheSheet = SpreadsheetApp.open(DriveApp.getFilesByName('Schedules').next()).getSheetByName('Backup Cache');
   let schs = SchedulesSecure.getSchedules();
   cacheSheet.getRange(2, 2).setValue(JSON.stringify(schs));
-  _refreshCache();
+  refreshCache_();
 }
 
 function getSchedule(email, token) { let file
