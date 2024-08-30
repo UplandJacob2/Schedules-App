@@ -1,8 +1,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const sourceDir = '../src';
-const destinationDir = '../src';
+const sourceDir = '/home/runner/work/Schedules-App/src';
+const destinationDir = '/home/runner/work/Schedules-App/src';
 
 fs.readdirSync(sourceDir).forEach(file => {
   if (file.endsWith('.js.html')) {
