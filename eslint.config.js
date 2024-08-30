@@ -54,6 +54,11 @@ module.exports = [
         ...globals.jquery,
         
         _: "readonly",
+        google: "readonly",
+        
+        loadSheet: "writable",
+        toggleDisplay: "writable",
+        
       },
     },
     rules: {
