@@ -96,7 +96,7 @@ function updateSettingsNotSaved() {
         USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
       }
     }
-    sB = document.getElementById('saveSet')
+    let sB = document.getElementById('saveSet')
     if (JSON.stringify(USER_SETTINGS) != JSON.stringify(USER_SETTINGS_NOT_SAVED)) {sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink')
     } else {sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link')}
   }, 1)
