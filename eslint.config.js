@@ -3,7 +3,6 @@
 
 const js = require("@eslint/js");
 const htmlLint = require("@html-eslint/eslint-plugin");
-const htmlPlug = require("eslint-plugin-html")
 const htmlParser = require("@html-eslint/parser");
 const globals = require("globals");
 const googleappsscript = require("eslint-plugin-googleappsscript")
@@ -14,11 +13,6 @@ module.exports = [
   {
     files: ["src/**/*.html"],
     ignores: ["src/**/*.js.html"],
-    // plugins: { html: htmlPlug },
-    // settings: {
-    //   "html/indent": "+2",
-    //   "html/report-bad-indent": "warn"
-    // },
 
     languageOptions: {
       //ecmaVersion: "latest",
