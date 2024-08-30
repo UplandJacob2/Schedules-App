@@ -60,7 +60,7 @@ function api (parameter) {
       let { val } = parameter
       let fileSets = { title: `${ email }.json`, mimeType: 'application/json' };
       let blob = Utilities.newBlob(val, 'application/json');
-      l('edit to '+val)
+      l(`edit to ${val}`)
       Drive.Files.update(fileSets, file.getId(), blob)
       return 'done'
 
@@ -147,7 +147,7 @@ function api (parameter) {
       let { val } = parameter
       let fileSets = { title: `${ email }_settings.json`, mimeType: 'application/json' };
       let blob = Utilities.newBlob(val, 'application/json');
-      l('edit to '+val)
+      l(`edit to ${val}`)
       Drive.Files.update(fileSets, file.getId(), blob)
       return 'done'
 
@@ -215,7 +215,7 @@ function api (parameter) {
 function include(filename) { return HtmlService.createHtmlOutputFromFile(filename).setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent(); }
 
 function signUp (pass, passR, email) {
-  console.log(pass+'   '+passR+'   '+email);
+  console.log(`${pass}   ${passR}   ${email}`);
   if (!SchedulesSecure.isValidEmail(email)) { err('Invalid email. How do you get around client side checks?') }
   const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   const acctJson = JSON.parse(file.getBlob().getDataAsString())
@@ -235,7 +235,7 @@ function signUp (pass, passR, email) {
   sc.put(str, JSON.stringify({ pass: pass, email: email, passR: passR }));
 
   let htmlBody = HtmlService.createHtmlOutputFromFile('confirmSignUpEmail').getContent();
-  const link = 'https://script.google.com/macros/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec?do=confirmSignUp&key='+str;
+  const link = `https://script.google.com/macros/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec?do=confirmSignUp&key=${str}`;
   htmlBody = htmlBody.replace(/LINK/g, link);
 
   MailApp.sendEmail({
