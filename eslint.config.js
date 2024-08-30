@@ -10,6 +10,8 @@ const googleappsscript = require("eslint-plugin-googleappsscript")
 const globalsUsed = {
   DateUtils: "writable",
   Base64: "writable",
+  Editor: "writable",
+  DebugLog: "writable",
   
   loadSheet: "writable",
   toggleDisplay: "writable",
@@ -18,8 +20,8 @@ const globalsUsed = {
   error: "writable",
   getToken: "writable",
   getEmail: "writable",
+  deleteSignInCookies: "writable",
   jsonReparse: "writable",
-  DebugLog: "writable",
   confirmPopup: "writable",
   signInF: "writable",
   signUp: "writable",
@@ -34,11 +36,15 @@ const globalsUsed = {
   getSchedulesSuccess: "writable",
   recoverSchedulesFail: "writable",
   recoverSchedulesSuccess: "writable",
+
+  l: "writable",
+  w: "writable",
+  e: "writable",
 }
 const globalsUsedKeys = Object.keys(globalsUsed)
 let regexStr = "(.+_$)"
 for (let k = 0; k < globalsUsedKeys; k++) {
-  regexStr += "|"+globalsUsedKeys[k]
+  regexStr += "|(^"+globalsUsedKeys[k]+"$)"
 }
 
 
