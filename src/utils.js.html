@@ -220,7 +220,7 @@ function signOutBtn() {
 function deleteSignInCookies() { document.cookie = 'signin={"token":"", "email":""}; SameSite=none; secure'; }
 function setCookie(cookie, value) { document.cookie = `${cookie}=${value}; SameSite=none; secure`; }
 function getCookie(cookie) { let thing;
-  try { if (document.cookie) { thing = document.cookie.match(eval("/(?<="+cookie+"=)\{.+\}/g")); } else { return null } } catch (e) { w('Cookie Error:', e.message); return null }
+  try { if (document.cookie) { thing = document.cookie.match(new RegExp("(?<="+cookie+"=)\{.+\}" , 'g')); } else { return null } } catch (e) { w('Cookie Error:', e.message); return null }
   try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } } catch (e) { w('Cookie Error: ' + e.message); return null }
 }
 
@@ -273,8 +273,8 @@ DateUtils.militaryToStandard = function(time, showMeridiem) {
  * 
 **/ 
 DateUtils.getDateAsText = function (query) {
-  miltime = (typeof query.militaryTime != 'undefined') ? query.militaryTime : false
-  dateTime = (typeof query.dateTime != 'undefined') ? query.dateTime : new Date()
+  let miltime = (typeof query.militaryTime != 'undefined') ? query.militaryTime : false
+  let dateTime = (typeof query.dateTime != 'undefined') ? query.dateTime : new Date()
 
   if (miltime) {
     return new Date().toString("M/d/yyyy H:mm:ss ")
