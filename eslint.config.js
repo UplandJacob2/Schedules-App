@@ -18,18 +18,24 @@ const globalsUsed = {
   SHEET: "writable",
   USER_SETTINGS: "writable",
   error: "writable",
+  
   getToken: "writable",
   getEmail: "writable",
+  setCookie: "writable",
   deleteSignInCookies: "writable",
+  
   jsonReparse: "writable",
   confirmPopup: "writable",
   signInF: "writable",
   signUp: "writable",
   signInSuccess: "writable",
+  signOutBtn: "writable",
+  
   checkSignUpButton: "writable",
   checkSignInButton: "writable",
   checkEmailBox: "writable",
   checkPassBox: "writable",
+  
   resizeInput: "writable",
 
   newSchedulesFail: "writable",
