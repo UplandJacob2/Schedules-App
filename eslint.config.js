@@ -8,6 +8,12 @@ const globals = require("globals");
 const googleappsscript = require("eslint-plugin-googleappsscript")
 
 const globalsUsed = {
+  getSchedule: "writable",
+  getDaysOff: "writable",
+  confirmSignUp: "writable",
+  signIn: "writable",
+  include: "writable",
+  
   DateUtils: "writable",
   Base64: "writable",
   Editor: "writable",
