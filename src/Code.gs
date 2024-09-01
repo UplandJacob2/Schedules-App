@@ -403,7 +403,7 @@ function getSchedule(email, token) { let file
   schStr += `<tr><th colspan="8">${schedule[0].name}</th></tr>`
 
   let classNows = []; let minu = String(date.getMinutes())
-if (minu.length === 1) { minu =`0${minu}` }
+  if (minu.length === 1) { minu =`0${minu}` }
   const nowInt = parseInt(String(date.getHours())+minu)
   let boldRows = []
 
