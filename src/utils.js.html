@@ -5,17 +5,23 @@ CSSStyleDeclaration.prototype.setProperties = function(properties) {
 
 const l = console.log
 const w = console.warn
+const e = console.error
 
 var DebugLog = DebugLog || {}
 DebugLog.log = function(inp) {
-  console.log(inp)
+  l(inp)
   let txtArea = document.getElementById('debugTxt')
-  txtArea.text = txtArea.text+'\nLOG: '+inp
+  txtArea.text = `${txtArea.text}\nLOG: ${inp}`
 }
 DebugLog.warn = function(inp) {
-  console.warn(inp)
+  w(inp)
   let txtArea = document.getElementById('debugTxt')
-  txtArea.text = txtArea.text+'\WARN: '+inp
+  txtArea.text = `${txtArea.text}\nWARN: ${inp}`
+}
+DebugLog.error = function(inp) {
+  e(inp)
+  let txtArea = document.getElementById('debugTxt')
+  txtArea.text = `${txtArea.text}\nERROR: ${inp}`
 }
 DebugLog.getStacktraceFromErr = function(err) {
   return err.stack.split("\n").join('\n"')
