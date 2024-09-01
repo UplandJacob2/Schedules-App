@@ -43,7 +43,7 @@ const globalsUsed = {
 }
 const globalsUsedKeys = Object.keys(globalsUsed)
 let regexStr = "(.+_$)"
-for (let k = 0; k < globalsUsedKeys; k++) {
+for (let k = 0; k < globalsUsedKeys.length; k++) {
   regexStr += "|(^"+globalsUsedKeys[k]+"$)"
 }
 
