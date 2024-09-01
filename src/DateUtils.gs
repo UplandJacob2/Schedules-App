@@ -22,8 +22,8 @@ var DateUtils = DateUtils || {};
  * @return {string[]} list of dates formated as month/day/year
  */
 DateUtils.dayRange = function (fromD, toD, formated) { let daysPerMonth
-  if (DateUtils.isLeapYear()) { daysPerMonth = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-  } else { daysPerMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]; }
+  if (DateUtils.isLeapYear()) { daysPerMonth = [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+  } else { daysPerMonth = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]; }
   let month, day, year, eMonth, eDay, eYear, found;
   l('day range', fromD, toD, formated)
 
