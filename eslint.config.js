@@ -12,7 +12,9 @@ const globalsUsed = {
   getDaysOff: "writable",
   confirmSignUp: "writable",
   signIn: "writable",
+  doGet: "writable",
   include: "writable",
+  _: "writable",
   
   DateUtils: "writable",
   Base64: "writable",
@@ -21,6 +23,7 @@ const globalsUsed = {
   
   loadSheet: "writable",
   saveSettings: "writable",
+  openMenu: "writable",
   
   SHEET: "writable",
   USER_SETTINGS: "writable",
