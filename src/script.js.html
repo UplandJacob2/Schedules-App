@@ -58,7 +58,7 @@ const emptyRow = { info: '',  class: 'Some Class', strt: '8:00', end: '9:00', b:
 function reloadEdit() {
   DATA = []
   SHEET.render('load')
-  google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
+  google.script.run.withSuccessHandler(firstGetSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
 }
 function updateSaveBtn() {
   const saveBt = document.getElementById('saveSch')
@@ -159,6 +159,7 @@ function saveSchedulesSuccess() {
   setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000)
   DATA = jsonReparse(SHEET.data)
   updateSaveBtn()
+  firstGetSchedulesSuccess()
 }
 function saveSchedulesFail(err) {
   document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
