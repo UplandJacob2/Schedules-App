@@ -265,7 +265,7 @@ function confirmSignUp(token) {
 
   let fileSets = { title: 'accounts.json', mimeType: 'application/json' };
   let blob = Utilities.newBlob(JSON.stringify(data), 'application/json');
-  l('edit to '+data)
+  l(`edit to ${data}`)
   Drive.Files.update(fileSets, file.getId(), blob)
 
   return ntoken
@@ -285,7 +285,7 @@ function signIn (email, pass, rm) { let rand;
 
       let fileSets = { title: 'accounts.json', mimeType: 'application/json' };
       let blob = Utilities.newBlob(JSON.stringify(acctJson), 'application/json');
-      l('edit to '+blob)
+      l(`edit to ${blob}`)
       Drive.Files.update(fileSets, file.getId(), blob)
     }
     let toReturn = [ HtmlService.createTemplateFromFile('Index').getRawContent(), rand ];
@@ -308,7 +308,7 @@ function signInWToken(email, token) {
 
   let fileSets = { title: 'accounts.json', mimeType: 'application/json' };
   let blob = Utilities.newBlob(JSON.stringify(acctJson), 'application/json');
-  l('edit to '+blob)
+  l(`edit to ${blob}`)
   Drive.Files.update(fileSets, file.getId(), blob)
 
   let toReturn = [ HtmlService.createTemplateFromFile('Index').getRawContent(), rand ];
@@ -324,11 +324,11 @@ function refreshCache_() {
   l(acctJson)
   let schInfo = []
   for (let acct in acctJson) {
-    let iter = fold.getFilesByName(acctJson[acct].email+'.json'); let sch
+    let iter = fold.getFilesByName(`${acctJson[acct].email}.json`); let sch
     if (iter.hasNext()) {
       sch = iter.next().getBlob().getDataAsString()
     } else {
-      w('file not found for: '+acctJson[acct].email)
+      w(`file not found for: ${acctJson[acct].email}`)
     }
     l(sch)
     schInfo.push(sch)
@@ -380,8 +380,8 @@ function refreshSchedules_() {
 function getSchedule(email, token) { let file
   try { if (!SchedulesSecure.verify(email, token)) { err('invalid token') } } catch(e) { err(e.message) }
   try { file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${ email }.json`).next() }
-  catch { w('no file for '+email); file = null }
-  if (!file) { return `<center><header style='font-size: 40px; margin: 30px;'>We couldn't find a schedule for you.</header></center>   <center><a onclick="toggleDisplay('editPop')" class='link' style='font-size: 25px; padding: 10px; margin-top: -30px;'>Create Schedule</a></center>` }
+  catch { w(`no file for ${email}`); file = null }
+  if (!file) { return '<center><header style="font-size: 40px; margin: 30px;">We couldn\'t find a schedule for you.</header></center>   <center><a onclick="toggleDisplay(\'editPop\')" class="link" style="font-size: 25px; padding: 10px; margin-top: -30px;">Create Schedule</a></center>' }
   let data = JSON.parse(file.getBlob().getDataAsString()); let schedule = []; let date = new Date()
   // get schedule for today
   for (let i in data) {
@@ -399,17 +399,17 @@ function getSchedule(email, token) { let file
   }
 
   let schStr = ''; let rab = 'a'
-  schStr += '<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">'+DateUtils.getDateAsText()+'</td></tr>'
-  schStr += '<tr><th colspan="8">'+schedule[0].name+'</th></tr>'
+  schStr += `<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">${DateUtils.getDateAsText()}</td></tr>`
+  schStr += `<tr><th colspan="8">${schedule[0].name}</th></tr>`
 
   let classNows = []; let minu = String(date.getMinutes())
-  if (minu.length === 1) { minu = '0'+minu }
+if (minu.length === 1) { minu =`0${minu}` }
   const nowInt = parseInt(String(date.getHours())+minu)
   let boldRows = []
 
   schedule.forEach((row, r) => {
     let strtTime = row.strt; let sHr = strtTime.split(':')[0]; let sMin = strtTime.split(':')[1]
-    let endTime = row.end;   let eHr =  endTime.split(':')[0]; let eMin =  endTime.split(':')[1]
+    let endTime  = row.end;  let eHr =  endTime.split(':')[0]; let eMin =  endTime.split(':')[1]
     const sInt = parseInt(sHr+sMin);  const eInt = parseInt(eHr+eMin)
     if (nowInt >= sInt && nowInt <= eInt) {
       classNows.push(r);
@@ -423,10 +423,10 @@ function getSchedule(email, token) { let file
     schStr+='<tr>'
     l(row)
     row.forEach((cell, c) => {
-      schStr+='<td class="c'+c+' r'+rab
+      schStr+=`<td class="c${c} r${rab}`
       if (c === 0) { if (boldRows.includes(r)) { schStr+= ' b' } }
       if (classNows.includes(r)) { schStr+= ' y' }
-      schStr+='">'+cell+'</td>'
+      schStr+= `">${cell}</td>`
     });
 
     schStr+='</tr>';
