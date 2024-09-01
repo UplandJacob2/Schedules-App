@@ -26,10 +26,13 @@ const globalsUsed = {
   
   jsonReparse: "writable",
   confirmPopup: "writable",
+  
   signInF: "writable",
   signUp: "writable",
   signInSuccess: "writable",
   signOutBtn: "writable",
+  deleteSch: "writable",
+  editPopClose: "writable",
   
   checkSignUpButton: "writable",
   checkSignInButton: "writable",
