@@ -1,65 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-	<base target="_top"/>
-  <title>Schedules App - Confirm sign up</title>
-	<?!= include('style.css'); ?>
+  <head>
+    <base target="_top"/>
+    <title>Schedules App - Confirm sign up</title>
+    <?!= include('style.css'); ?>
 
-</head>
+  </head>
 
-<body>
-  <div id="things">
+  <body>
+    <div id="things">
 
-    <div id="mainTable" style="width: 100%; height: 100%; top: 0px; left: 0px; position: absolute; padding: 0px; margin: 0px;">
-      <div class="mainTableR" style="position: fixed; height: 60px; width: 100%; top: 0px; left: 0px;">
-        <div id="top-table">
-          <div class="topBarSection">
-            <a class="top-link relative link reload active" style="top: 5px;" onclick="openMenu();">
-              <div style="position: relative; left: -5px; top: 0px; width: 25px; height: 25px;">
-                <ion-icon name="menu-outline"/>
-              </div>
-            </a>
+      <div id="mainTable" style="width: 100%; height: 100%; top: 0px; left: 0px; position: absolute; padding: 0px; margin: 0px;">
+        <div class="mainTableR" style="position: fixed; height: 60px; width: 100%; top: 0px; left: 0px;">
+          <div id="top-table">
+            <div class="topBarSection">
+              <a class="top-link relative link reload active" style="top: 5px;" onclick="openMenu();">
+                <div style="position: relative; left: -5px; top: 0px; width: 25px; height: 25px;">
+                  <ion-icon name="menu-outline"/>
+                </div>
+              </a>
+            </div>
+            <div class="topBarSection">
+              <a style="flex-direction: left; top: 5px;" class="top-link relative link" onclick="toggleDisplay('signOut'); document.getElementById('signOutBtn').focus()">Sign Out</a>
+            </div>
           </div>
-          <div class="topBarSection">
-            <a style="flex-direction: left; top: 5px;" class="top-link relative link" onclick="toggleDisplay('signOut'); document.getElementById('signOutBtn').focus()">Sign Out</a>
+        </div>
+        <div class="mainTableR" style="position: fixed; height: calc(100% - 60px); width: 100%; top: 60px; left: 0px; display: flex;">
+          <div class="menu-cont">
+            <ul class="nav-menu">
+
+              <a class="top-link relative link nav-link" onclick="update()">Re-add Schedule</a>
+
+              <a class="top-link relative link nav-link" href=userScheduleURL target="_blank">Your Sheet</a>
+              <a class="top-link relative link nav-link" onclick="toggleDisplay('editPop'); toggleDisplay('grid');">Edit Schedule</a>
+
+              <a class="new-line nav-item">
+                <a onclick="toggleDisplay('helpPop');" class="link nav-link">Help</a>
+                <a onclick="toggleDisplay('aboutPop');" class="link nav-link">About</a>
+                <a onclick="toggleDisplay('contactPop');" class="link nav-link">Contact</a>
+              </a>
+            </ul>
+          </div>
+          <!-- MAIN -->
+          <div id="main">
+            <a style="margin-top: 100px; position: relative; font-size: 50px;"><header>Account Created</header></a>
+            <a style="margin-top: 20px; position: relative; font-size: 30px;"><header><a class="link" href="https://script.google.com/macros/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec">Click Here</a> to create a schedule.</header></a>
           </div>
         </div>
       </div>
-      <div class="mainTableR" style="position: fixed; height: calc(100% - 60px); width: 100%; top: 60px; left: 0px; display: flex;">
-        <div class="menu-cont">
-          <ul class="nav-menu">
 
-            <a class="top-link relative link nav-link" onclick="update()">Re-add Schedule</a>
+    </div><!-- end things -->
 
-            <a class="top-link relative link nav-link" href=userScheduleURL target="_blank">Your Sheet</a>
-            <a class="top-link relative link nav-link" onclick="toggleDisplay('editPop'); toggleDisplay('grid');">Edit Schedule</a>
+    <?!= include('popups.html'); ?>
 
-            <a class="new-line nav-item">
-              <a onclick="toggleDisplay('helpPop');" class="link nav-link">Help</a>
-              <a onclick="toggleDisplay('aboutPop');" class="link nav-link">About</a>
-              <a onclick="toggleDisplay('contactPop');" class="link nav-link">Contact</a>
-            </a>
-          </ul>
-        </div>
-        <!-- MAIN -->
-        <div id="main">
-          <a style="margin-top: 100px; position: relative; font-size: 50px;"><header>Account Created</header></a>
-          <a style="margin-top: 20px; position: relative; font-size: 30px;"><header><a class="link" href="https://script.google.com/macros/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec">Click Here</a> to create a schedule.</header></a>
-        </div>
-      </div>
-    </div>
+    <?!= include('script.js'); ?>
+    <?!= include('signUtils.js'); ?>
 
-  </div><!-- end things -->
-
-  <?!= include('popups.html'); ?>
-
-  <?!= include('script.js'); ?>
-  <?!= include('signUtils.js'); ?>
-
-  <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>\
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-</body>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>\
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  </body>
 
 </html>
