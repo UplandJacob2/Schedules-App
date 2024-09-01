@@ -14,19 +14,23 @@ const globalsUsed = {
   DebugLog: "writable",
   
   loadSheet: "writable",
-  toggleDisplay: "writable",
+  saveSettings: "writable",
+  
   SHEET: "writable",
   USER_SETTINGS: "writable",
-  error: "writable",
   
   getToken: "writable",
   getEmail: "writable",
   setCookie: "writable",
+  getCookie: "writable",
   deleteSignInCookies: "writable",
   
   jsonReparse: "writable",
   confirmPopup: "writable",
-  
+  resizeInput: "writable",
+  toggleDisplay: "writable",
+  error: "writable",
+
   signInF: "writable",
   signUp: "writable",
   signInSuccess: "writable",
@@ -38,13 +42,13 @@ const globalsUsed = {
   checkSignInButton: "writable",
   checkEmailBox: "writable",
   checkPassBox: "writable",
+  showPassword: "writable",
   
-  resizeInput: "writable",
-
   newSchedulesFail: "writable",
   getSchedulesSuccess: "writable",
   recoverSchedulesFail: "writable",
   recoverSchedulesSuccess: "writable",
+  recoverSpecificSchedule: "writable",
 
   l: "writable",
   w: "writable",
