@@ -100,7 +100,7 @@ module.exports = [
       semi: "off",
 
       "no-unused-vars": ["error", { 
-        "varsIgnorePattern": ".+_$" 
+        "varsIgnorePattern": regexStr
       }],
     },
 
