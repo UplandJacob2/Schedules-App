@@ -16,10 +16,16 @@ All data is stored in my Google Drive. The code is run in Google Apps Script.
 
 **Note: I can see any data in your schedules, your email, and password.**
 
-** **
-
 ### Testing deployment: 
 
 https://script.google.com/macros/s/AKfycby2WEDnie17ngh3Ra4n-2wvR5u-xnot76eaVXjc97mcw2xjNiQ8Ch9hWHcGTVRD8z1ykw/exec
 
 Bugs are bound to be plentiful, so report them.
+
+** **
+
+### Developing on it yourself
+
+Create a Google Apps Script project and copy the files from the `src` folder.
+
+Feel free to make pull requests.
