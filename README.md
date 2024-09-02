@@ -25,7 +25,7 @@ Bugs are bound to be plentiful, so report them.
 ** **
 
 ### Developing on it yourself
-> project is under the MIT License
+> project is under the [MIT License](https://github.com/UplandJacob2/Schedules-App/blob/main/LICENSE)
 
 Create a Google Apps Script project and copy the files from the `src` folder.
 
