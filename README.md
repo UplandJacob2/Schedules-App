@@ -3,7 +3,7 @@
 
 Create and view schedules in a web app. 
 
-Report any bugs you find and tell me what to see on the [issues](https://github.com/UplandJacob2/Schedules-App/issues) page
+Report any bugs you find and tell me what you want to see on the [issues](https://github.com/UplandJacob2/Schedules-App/issues) page
 
 ** **
 
