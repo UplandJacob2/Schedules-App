@@ -170,7 +170,7 @@ module.exports = [
       "block-scoped-var": "error",
       "block-spacing": "warn",
       "brace-style": ["error", "1tbs", { 
-        "allowSingleLine": false 
+        "allowSingleLine": true 
       }],
       curly: ["warn", "multi-line"],
 
