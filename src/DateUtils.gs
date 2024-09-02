@@ -21,7 +21,7 @@ const DateUtils = {};
  * @param {bool} is formated
  * @return {string[]} list of dates formated as month/day/year
  */
-DateUtils.dayRange = function (fromD, toD, formated) { 
+DateUtils.dayRange = function (fromD, toD, formated) {
   let daysPerMonth = (DateUtils.isLeapYear()) ? [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ] : [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
   let month, day, year, eMonth, eDay, eYear, found;
   l('day range', fromD, toD, formated)
@@ -71,7 +71,7 @@ DateUtils.dayRange = function (fromD, toD, formated) {
  * @param {number} offset
  * @return {string} date formated as month/day/year
  */
-DateUtils.iterateDays = function (fromD, num) { 
+DateUtils.iterateDays = function (fromD, num) {
   let daysPerMonth = (DateUtils.isLeapYear()) ? [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ] : [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
 
   l('iterating through days')
@@ -211,7 +211,7 @@ DateUtils.getDateAsText = function () {
 function getDaysOff(returnListOfReasons) {
   const feed = 'https://district.evscschools.com/syndication/rss.aspx?serverid=74688&userid=5&feed=portalcalendarevents&key=AldG6kAOC9I2Zqbatkslk0yAX9ddipkQPpCdFDbupJGi1SVEK7IS9vWmI53h058bbTRRdB8qA8cAq4FQMyjbVA%3d%3d&portal_id=74772&page_id=74794&calendar_context_id=82481&portlet_instance_id=12393&calendar_id=82482&v=2.0'; let txt
 
-  try { txt = UrlFetchApp.fetch(feed, { 'muteHttpExceptions': true, 'redirect': 'follow' }).getContentText(); 
+  try { txt = UrlFetchApp.fetch(feed, { 'muteHttpExceptions': true, 'redirect': 'follow' }).getContentText();
   } catch { Utilities.sleep(1000); txt = UrlFetchApp.fetch(feed, { 'muteHttpExceptions': true, 'redirect': 'follow' }).getContentText(); }
   //l(txt);
 
