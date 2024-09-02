@@ -11,10 +11,11 @@ function doGet(q) {
   let doit;
 
   if (String(q.parameter.do) !== 'undefined') { doit = q.parameter.do; }
-  else { return HtmlService.createHtmlOutput(
-    HtmlService.createTemplateFromFile('notSignedIn').evaluate())
-    .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
-    .setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
+  else {
+    return HtmlService.createHtmlOutput(
+      HtmlService.createTemplateFromFile('notSignedIn').evaluate())
+        .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+        .setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
   }
 
   if (doit === 'confirmSignUp') { let key = q.parameter.key;
