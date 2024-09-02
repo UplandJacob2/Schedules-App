@@ -73,19 +73,13 @@ for (let k = 0; k < globalsUsedKeys.length; k++) {
 //export default 
 module.exports = [
   //js.configs.recommended,
+  ////  HTML
   {
     files: ["src/**/*.html"],
     ignores: ["src/**/*.js.html"],
 
     languageOptions: {
-      //ecmaVersion: "latest",
-      //sourceType: "module",
-      //parser: "eslintPlugin/parser",
       parser: htmlParser,
-      // globals: {
-      //   ...globals.browser,
-      //   ...globals.jquery,
-      // },
     },
     ...htmlLint.configs["flat/recommended"],
     rules: {
@@ -96,12 +90,13 @@ module.exports = [
       "@html-eslint/no-obsolete-tags": "warn",
       "@html-eslint/require-closing-tags": ["warn", {
         "selfClosing": "always", 
-        //"selfClosingCustomPatterns": ["ion-icon"],
+        "selfClosingCustomPatterns": ["ion-icon"],
       }],
 
 
     },
   },
+  //// JS IN HTML
   {
     files: ["src/**/*.js.html.js"],
     ignores: ["**/Date.js.html.js", "**/Datejs.js.html.js", "**/underscore-observe.js.html.js"],
@@ -110,7 +105,6 @@ module.exports = [
         ...globals.browser,
         ...globals.jquery,
         
-        _: "readonly",
         google: "readonly",
         tui: "readonly",
 
@@ -127,34 +121,20 @@ module.exports = [
     },
 
   },
+  //// GS
   {
     files: ["src/**/*.gs"],
     plugins: { googleappsscript },
     languageOptions: {
       globals: {
         ...googleappsscript.environments.googleappsscript.globals,
-        /*Utilities: "readonly",
-        XmlService: "readonly",
-        HtmlService: "readonly",
-        CacheService: "readonly",
-        MailApp: "readonly",
-        UrlFetchApp: "readonly",
-        DocumentApp: "readonly",
-        SpreadsheetApp: "readonly",
-        DriveApp: "readonly",*/
-        Drive: "readonly",
 
         Underscore: "writable",
-        _: "writable",
 
         SchedulesSecure: "writable",
         DateUtils: "writable",
         
-        console: "readonly",
-        
-        l: "writable",
-        w: "writable",
-        e: "writable",
+        ...globalsUsed,
       },
     },
 
