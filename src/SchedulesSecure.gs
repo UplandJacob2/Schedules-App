@@ -1,4 +1,4 @@
-var SchedulesSecure = {}
+const SchedulesSecure = {}
 
 
 SchedulesSecure.verify = function(email, token) {
