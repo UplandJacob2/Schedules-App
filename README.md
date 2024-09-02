@@ -28,4 +28,6 @@ Bugs are bound to be plentiful, so report them.
 
 Create a Google Apps Script project and copy the files from the `src` folder.
 
+> You will also need to change the folder ids to ones in your Google Drive
+
 Feel free to make pull requests.
