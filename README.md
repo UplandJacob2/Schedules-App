@@ -25,6 +25,7 @@ Bugs are bound to be plentiful, so report them.
 ** **
 
 ### Developing on it yourself
+> project is under the MIT License
 
 Create a Google Apps Script project and copy the files from the `src` folder.
 
