@@ -12,6 +12,7 @@ const globalsUsed = {
   getDaysOff: "writable",
   confirmSignUp: "writable",
   signIn: "writable",
+  signInWToken: "writable",
   doGet: "writable",
   include: "writable",
   _: "writable",
