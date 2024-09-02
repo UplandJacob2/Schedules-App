@@ -1,4 +1,4 @@
-var DateUtils = {};
+const DateUtils = {};
 /**
  * Returns all formated (month/day/year) days ranging from one input to the other
  *
