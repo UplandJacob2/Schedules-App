@@ -379,7 +379,9 @@ function refreshSchedules_() {
   cacheSheet.getRange(2, 2).setValue(JSON.stringify(schs));
   refreshCache_();
 }
-
+/**
+ * @deprecated
+ */
 function getSchedule(email, token) {
   let file
   try { if (!SchedulesSecure.verify(email, token)) { err_('invalid token') } } catch(e) { err_(e.message) }
