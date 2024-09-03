@@ -7,6 +7,8 @@ const htmlParser = require("@html-eslint/parser");
 const globals = require("globals");
 const googleappsscript = require("eslint-plugin-googleappsscript")
 
+import braceStyleCustom from './rules/brace-style-custom';
+
 const globalsUsed = {
   getSchedule: "writable",
   getDaysOff: "writable",
@@ -101,7 +103,13 @@ module.exports = [
   {
     files: ["src/**/*.js.html.js"],
     ignores: ["**/Date.js.html.js", "**/Datejs.js.html.js", "**/underscore-observe.js.html.js"],
-    plugins: ["custom-rules"],
+    plugins: {
+      "custom-rules": {
+        rules: {
+          "brace-style-custom": braceStyleCustom
+        }
+      }
+    },
     languageOptions : {
       globals: {
         ...globals.browser,
@@ -126,7 +134,14 @@ module.exports = [
   //// GS
   {
     files: ["src/**/*.gs"],
-    plugins: { googleappsscript, "custom-rules" },
+    plugins: {
+      googleappsscript, 
+      "custom-rules": {
+        rules: {
+          "brace-style-custom": braceStyleCustom
+        }
+      },
+    },
     languageOptions: {
       globals: {
         ...googleappsscript.environments.googleappsscript.globals,
