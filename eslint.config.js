@@ -101,6 +101,7 @@ module.exports = [
   {
     files: ["src/**/*.js.html.js"],
     ignores: ["**/Date.js.html.js", "**/Datejs.js.html.js", "**/underscore-observe.js.html.js"],
+    plugins: ["custom-rules"],
     languageOptions : {
       globals: {
         ...globals.browser,
@@ -125,7 +126,7 @@ module.exports = [
   //// GS
   {
     files: ["src/**/*.gs"],
-    plugins: { googleappsscript },
+    plugins: { googleappsscript, "custom-rules" },
     languageOptions: {
       globals: {
         ...googleappsscript.environments.googleappsscript.globals,
