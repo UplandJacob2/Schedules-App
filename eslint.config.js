@@ -7,7 +7,7 @@ const htmlParser = require("@html-eslint/parser");
 const globals = require("globals");
 const googleappsscript = require("eslint-plugin-googleappsscript")
 
-import braceStyleCustom from './rules/brace-style-custom';
+const braceStyleCustom = require('./rules/brace-style-custom')
 
 const globalsUsed = {
   getSchedule: "writable",
