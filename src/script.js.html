@@ -18,8 +18,13 @@ function openMenu() {
     } else {document.getElementById('main').style.setProperty('width', '100%')}
 }
 
-function toggleDisplay(elmStrIn) { let elm = $('#'+elmStrIn)
-  if (elm.css('display') === "none") { elm.css('display', 'block') }  else  { elm.css('display', 'none') }
+function toggleDisplay(elmStrIn, toState) {
+  let elm = $('#'+elmStrIn)
+  if (typeof toState !== 'undefined') { // if toState is specified
+    if (toState) { elm.css('display', 'block') } else { elm.css('display', 'none') }
+  } else { // otherwise, toggle
+    if (elm.css('display') === "none") { elm.css('display', 'block') } else { elm.css('display', 'none') }
+  }
 }
 
 
@@ -113,17 +118,25 @@ function getSettingsSuccess(response) {
     }
   })
   USER_SETTINGS = jsonReparse(obj)
+
+  updateSettings()
 }
 function getSettingsFail(err) { error('Error getting user settings', err) }
 function saveSettingsSuccess() {
   document.getElementById('saveSet').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
   setTimeout(function() { document.getElementById('saveSet').innerHTML = 'Save' }, 4000)
-  USER_SETTINGS = jsonReparse(USER_SETTINGS_NOT_SAVED); updateSettingsNotSaved()
+  USER_SETTINGS = jsonReparse(USER_SETTINGS_NOT_SAVED); updateSettings()
 }
 function saveSettingsFail(err) {
   document.getElementById('saveSet').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
   setTimeout(function() { document.getElementById('saveSet').innerHTML = 'Save' }, 4000)
   error('Error saving user settings', err)
+}
+function updateSettings () {
+  updateSettingsNotSaved()
+
+  toggleDisplay('debugPop', USER_SETTINGS.debugMode)
+  SHEET.militaryTime = USER_SETTINGS.militaryTime
 }
 
 
@@ -356,12 +369,13 @@ function loadSheet() {
     columns: [
       { header: 'Info',      name: 'info', width: 50,  editor: { type: 'text', options: { attrs: {maxlength: '2'}, style: {width: '30px'} } } },
       { header: 'Class',     name: 'class',width: 200, editor: { type: 'text', options: { style: {width: 'auto'} } } },
-      { header: 'Start Time',name: 'strt', width: 100, editor: { type: 'time', options: { format: format }} },
-      { header: 'End Time',  name: 'end',  width: 100, editor: { type: 'time', options: { format: format }} },
+      { header: 'Start Time',name: 'strt', width: 100, editor: { type: 'time' } },
+      { header: 'End Time',  name: 'end',  width: 100, editor: { type: 'time' } },
       { header: 'Bold',      name: 'b',    width: 30,  editor: { type: 'checkbox', options: { checked: true, style: { "margin-left": "20px" } } } },
       { header: 'Days',      name: 'days', width: 200, editor: { type: 'checklist',options: { listItems: [  { text: 'Sun', value: 'Sun' }, { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' }, { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' }]}, active: { type: 'col', if: 'info', equalTo: 's' } } },
       { header: 'Name',      name: 'name', width: 200, editor: { type: 'text', options: { style: {width: '200px'} }, active: { type: 'col', if: 'info', equalTo: 's' } } }
     ],
+    militaryTime: USER_SETTINGS.militaryTime,
     data: [firstRow, emptyRow, emptyRow],
     onDataChange: updateSaveBtn
   })
