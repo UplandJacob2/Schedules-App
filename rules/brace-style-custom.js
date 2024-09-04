@@ -40,7 +40,7 @@ module.exports = {
           },
           //more properties here
           stroustrupAfterSingleLine: {
-          	type: "boolean",
+            type: "boolean",
             default: false
           }
         },
