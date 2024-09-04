@@ -5,6 +5,9 @@ class Editor {
     this.options = options
     this.columns = options.columns
     this.data = jsonReparse(options.data)
+
+    this.militaryTime = options.militaryTime
+
     this.timeSelectCache = null
     // colors
     this.tableBack = '#999'
@@ -65,7 +68,7 @@ class Editor {
     if (type === 'a' || type === 'text' || type === 'checklist') {
       el.innerHTML = data
     } else if (type === 'time') {
-      if (!USER_SETTINGS.militaryTime) {
+      if (!this.militaryTime) {
         el.innerHTML = DateUtils.militaryToStandard(data, true)
       } else {
         el.innerHTML = data
@@ -95,7 +98,11 @@ class Editor {
     }
     let el = document.createElement(eTag)
 
-    if (type === 'text') {     el.value = data; el.addEventListener('keydown', resizeInput);  /*resizeInput.call(el);*/ $('input').keyup(resizeInput)//.each(resizeInput);
+    if (type === 'text') {
+      el.value = data
+      el.addEventListener('keydown', resizeInput)
+      /*resizeInput.call(el);*/
+      $('input').keyup(resizeInput)//.each(resizeInput);
     } else if (type === 'a') { el.innerHTML = data
     } else if (type === 'checkbox') { el.type = 'checkbox'; el.checked = data
     } else if (type === 'checklist') {
@@ -123,7 +130,7 @@ class Editor {
         opt.innerHTML = inp.outerHTML + txt.outerHTML
         ul.append(opt)
       }
-      el.addEventListener('keypress', function (ev) { if (ev.code === 'Enter') { alert(this); this.blur() } })
+      el.addEventListener('keypress', function (ev) { if (ev.code === 'enter') { alert(this); this.blur() } })
       el.append(ul)
       el.setAttribute('customtype', 'checklist')
     } else if (type === 'time') {
@@ -138,7 +145,7 @@ class Editor {
       el.append(container)
       el.setAttribute('customtype', 'time')
     }
-    let { attrs, style } = this.columns[coli].editor.options
+    let { attrs, style } = this.columns[coli].editor.options || {}
     for (var attr in attrs) { el.setAttribute(attr, attrs[attr]) }
     for (var stl in style)  { el.style.setProperty(stl, style[stl]) }
     return el
@@ -233,7 +240,7 @@ class Editor {
     let customtype
     try { customtype = el.innerHTML.match(/(?<=customtype=")[a-z]+(?=")/g)[0] } catch { customtype = null }
     if (el.children[0].type === 'checkbox') {
-      if (SHEET.data[row][col]) { el.children[0].checked = false } else { el.children[0].checked = true } this.data[row][col] = el.children[0].checked
+      if (this.data[row][col]) { el.children[0].checked = false } else { el.children[0].checked = true } this.data[row][col] = el.children[0].checked
       this.render()
     } else if (customtype === 'checklist') {
       if (option === 'close') {
@@ -262,31 +269,30 @@ class Editor {
     } else {
       if (el.classList.contains('editMode')) {
         el.classList.remove('editMode')
-        el.innerHTML = SHEET.createElm(row, col).outerHTML
+        el.innerHTML = this.createElm(row, col).outerHTML
       } else {
         el.classList.add('editMode')
-        el.innerHTML = SHEET.createEditorElm(row, col).outerHTML
+        el.innerHTML = this.createEditorElm(row, col).outerHTML
         if (this.columns[this.columns.findIndex((c) => c.name === col)].editor.type === 'time') {
-          //alert(this.timeSelectCache)
-          //let format = this.columns[coli].editor.options.format
+          DebugLog.warn("time thing clicked")
           let hr, min
           try {hr = this.data[row][col].match(/[0-9]{1,2}(?=:)/g)[0]} catch {hr = 8}
           try {min= this.data[row][col].match(/(?<=:)[0-9]{2}/g)[0]}  catch {min = 0}
-          
+          try {
           this.timeSelectCache = new tui.TimePicker(el.children[0].children[1], {
             usageStatistics: false, language: 'en',
             initialHour: parseInt(hr),
             initialMinute: parseInt(min),
             inputType: 'spinbox',
-            showMeridiem: !USER_SETTINGS.militaryTime,
+            showMeridiem: !this.militaryTime,
             input: {element: el.children[0].children[0]}
           })  // 'showMeridiem' to false for 24hr format
-
+          } catch (e) {DebugLog.error(DebugLog.getStacktraceFromErr(e))}
           
 
         } else if (this.columns[this.columns.findIndex((c) => c.name === col)].editor.type === 'text') {
           let box = el.children[0]
-          box.value = SHEET.data[row][col]
+          box.value = this.data[row][col]
           box.select()
           box.addEventListener('keypress', function (ev) { if (ev.code === 'Enter') { this.blur() } })
           box.addEventListener('blur', function (ev) {
