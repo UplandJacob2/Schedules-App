@@ -7,24 +7,27 @@ const l = console.log
 const w = console.warn
 const e = console.error
 
-const DebugLog = {}
-DebugLog.log = function(inp) {
-  l(inp)
-  let txtArea = document.getElementById('debugTxt')
-  txtArea.text = `${txtArea.text}\nLOG: ${inp}`
-}
-DebugLog.warn = function(inp) {
-  w(inp)
-  let txtArea = document.getElementById('debugTxt')
-  txtArea.text = `${txtArea.text}\nWARN: ${inp}`
-}
-DebugLog.error = function(inp) {
-  e(inp)
-  let txtArea = document.getElementById('debugTxt')
-  txtArea.text = `${txtArea.text}\nERROR: ${inp}`
-}
-DebugLog.getStacktraceFromErr = function(err) {
-  return err.stack.split("\n").join('\n"')
+const DebugLog = {
+  log: function(inp) {
+    l(inp)
+    let txtArea = document.getElementById('debugTxt')
+    txtArea.text = `${txtArea.text}\nLOG: ${inp}`
+  },
+  warn: function(inp) {
+    w(inp)
+    let txtArea = document.getElementById('debugTxt')
+    txtArea.text = `${txtArea.text}\nWARN: ${inp}`
+  },
+  error: function(inp) {
+    e(inp)
+    let txtArea = document.getElementById('debugTxt')
+    txtArea.text = `${txtArea.text}\nERROR: ${inp}`
+  },
+  getStacktraceFromErr: function(err) {
+    return err.stack.split("\n").join('\n"')
+  },
+
+
 }
 
 const Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=",
