@@ -4,43 +4,12 @@ const w = console.warn
 const e = console.error
 function err_(e) { throw new Error(e) }
 
+//function test(str) { SchedulesSecure.testDoc(str) } // edit a Google Doc to whatever, can be called from the client for testing
 
-function doGet(q) {
-  console.log(q);
+// when html templates are evaluated, this function is called to add scripts, style, etc. to the html
+function include(filename) { return HtmlService.createHtmlOutputFromFile(filename).setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent(); }
 
-  let doit;
 
-  if (String(q.parameter.do) !== 'undefined') {
-    doit = q.parameter.do;
-  } else {
-    return HtmlService.createHtmlOutput(
-      HtmlService.createTemplateFromFile('notSignedIn').evaluate())
-      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
-      .setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
-  }
-
-  if (doit === 'confirmSignUp') {
-    let key = q.parameter.key;
-    if (String(key) === '') { err_('No token.'); }
-    let json = JSON.parse(CacheService.getScriptCache().get(key)); let email, pass, passR
-    try { [ email, pass, passR ] = [ json.email, json.pass, json.passR ]; } catch { err_('Bad token.'); }
-
-    const sheet = SpreadsheetApp.open(DriveApp.getFilesByName('Schedules Accounts').next()).getActiveSheet();
-    const row = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().findIndex(em => em[0].toLowerCase() === email.toLowerCase()) + 1;
-    if (row > 0) { err_('Already an account with that email.'); }
-
-    if (!SchedulesSecure.isValidEmail(email)) { err_('Invalid email. How do you get around client side checks? And/or the server died?'); }
-    if (!SchedulesSecure.isValidPassword(pass)) { err_('Invalid Password. How do you get around client side checks? And/or the server died?'); }
-    if (pass !== passR) { err_('Passwords don\'t match. How do you get around client side checks? And/or the server died?'); }
-
-    sheet.getRange(sheet.getLastRow()+1, 1).setValue(email);
-    sheet.getRange(sheet.getLastRow(), 2).setValue(pass);
-
-    return HtmlService.createHtmlOutput(HtmlService.createTemplateFromFile('confirmSignUp').evaluate()).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
-  } else if (doit === 'api') {
-    return HtmlService.createHtmlOutput(api(q.parameter))
-  }
-}
 
 function api (parameter) {
   l(parameter)
@@ -214,10 +183,42 @@ function api (parameter) {
 
   }
 }
-//function test(str) { SchedulesSecure.testDoc(str) } // edit a Google Doc to whatever, can be called from the client for testing
+function doGet(q) {
+  console.log(q);
 
-// when html templates are evaluated, this function is called to add scripts, style, etc. to the html
-function include(filename) { return HtmlService.createHtmlOutputFromFile(filename).setSandboxMode(HtmlService.SandboxMode.IFRAME).getContent(); }
+  let doit;
+
+  if (String(q.parameter.do) !== 'undefined') {
+    doit = q.parameter.do;
+  } else {
+    return HtmlService.createHtmlOutput(
+      HtmlService.createTemplateFromFile('notSignedIn').evaluate())
+      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
+      .setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
+  }
+
+  if (doit === 'confirmSignUp') {
+    let key = q.parameter.key;
+    if (String(key) === '') { err_('No token.'); }
+    let json = JSON.parse(CacheService.getScriptCache().get(key)); let email, pass, passR
+    try { [ email, pass, passR ] = [ json.email, json.pass, json.passR ]; } catch { err_('Bad token.'); }
+
+    const sheet = SpreadsheetApp.open(DriveApp.getFilesByName('Schedules Accounts').next()).getActiveSheet();
+    const row = sheet.getRange(1, 1, sheet.getLastRow(), 1).getValues().findIndex(em => em[0].toLowerCase() === email.toLowerCase()) + 1;
+    if (row > 0) { err_('Already an account with that email.'); }
+
+    if (!SchedulesSecure.isValidEmail(email)) { err_('Invalid email. How do you get around client side checks? And/or the server died?'); }
+    if (!SchedulesSecure.isValidPassword(pass)) { err_('Invalid Password. How do you get around client side checks? And/or the server died?'); }
+    if (pass !== passR) { err_('Passwords don\'t match. How do you get around client side checks? And/or the server died?'); }
+
+    sheet.getRange(sheet.getLastRow()+1, 1).setValue(email);
+    sheet.getRange(sheet.getLastRow(), 2).setValue(pass);
+
+    return HtmlService.createHtmlOutput(HtmlService.createTemplateFromFile('confirmSignUp').evaluate()).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
+  } else if (doit === 'api') {
+    return HtmlService.createHtmlOutput(api(q.parameter))
+  }
+}
 
 function signUp (pass, passR, email) {
   console.log(`${pass}   ${passR}   ${email}`);
