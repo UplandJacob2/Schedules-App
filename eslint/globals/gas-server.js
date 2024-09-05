@@ -1,6 +1,12 @@
 const globalsUsed = require("./globals")
 module.exports = {
   ...globalsUsed,
+
+  Underscore: "writable",
+
+  SchedulesSecure: "writable",
+  DateUtils: "writable",
+  
   getSchedule: "writable",
   getDaysOff: "writable",
   signUp: "writable",
