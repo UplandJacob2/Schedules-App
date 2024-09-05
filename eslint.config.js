@@ -187,7 +187,8 @@ module.exports = [
       "block-spacing": "warn",
       "custom-rules/brace-style-custom": ["error", "1tbs", { 
         allowSingleLine: true,
-        stroustrupAfterSingleLine: true
+        stroustrupAfterSingleLine: true,
+        allowDualSingleLine: true
       }],
       curly: ["warn", "multi-line"],
 
