@@ -25,11 +25,7 @@ module.exports = {
     }
   },
   globalsUsed: {
-    server: [
-      ...globalsUsedServer
-    ],
-    client: [
-      ...globalsUsedClient
-    ]
+    server: globalsUsedServer,
+    client: globalsUsedClient
   }
 }
