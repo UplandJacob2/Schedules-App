@@ -70,7 +70,8 @@ function api (parameter) {
     } else if (action === 'get') {
       let data
       try { data = file.getBlob().getDataAsString() }
-      catch { let onfail //////////////////   onfail
+      catch {
+        let onfail //////////////////   onfail
         if (parameter.onfail) { onfail = parameter.onfail }
         //////   if the file we are looking for is trashed
         let files = DriveApp.getTrashedFiles()
@@ -109,8 +110,8 @@ function api (parameter) {
           let nnfile = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${email}.json`).next()
           return nnfile.getBlob().getDataAsString()
 
-        } else if (onfail) { err_('invalid onfail')
-        } else if (filesToRecover) { err_('No active file found, but a trashed file was found for your account.') }
+        } else if (onfail) err_('invalid onfail')
+        else if (filesToRecover) { err_('No active file found, but a trashed file was found for your account.') }
       }
       l(data)
       return data
@@ -157,7 +158,8 @@ function api (parameter) {
     } else if (action === 'get') {
       let data
       try { data = file.getBlob().getDataAsString() }
-      catch { let onfail //////////////////   onfail
+      catch {
+        let onfail //////////////////   onfail
         if (parameter.onfail) { onfail = parameter.onfail }
         //////   if the file we are looking for is trashed
         let files = DriveApp.getTrashedFiles()
@@ -186,8 +188,8 @@ function api (parameter) {
           let nnfile = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(`${email}_settings.json`).next()
           return nnfile.getBlob().getDataAsString()
 
-        } else if (onfail) { err_('invalid onfail')
-        } else if (filesToRecover) { err_('No active file found, but a trashed file was found for your account.') }
+        } else if (onfail) err_('invalid onfail')
+        else if (filesToRecover) { err_('No active file found, but a trashed file was found for your account.') }
       }
       l(data)
       return data
@@ -273,7 +275,8 @@ function confirmSignUp(token) {
 
   return ntoken
 }
-function signIn (email, pass, rm) { let rand;
+function signIn (email, pass, rm) {
+  let rand;
   const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   const acctJson = JSON.parse(file.getBlob().getDataAsString())
 
@@ -294,8 +297,7 @@ function signIn (email, pass, rm) { let rand;
     let toReturn = [ HtmlService.createTemplateFromFile('Index').getRawContent(), rand ];
     //refreshCache_();
     return toReturn
-  }
-  else { err_('Incorrect password.'); }
+  } else { err_('Incorrect password.'); }
 }
 function signInWToken(email, token) {
   if (!SchedulesSecure.verify(email, token)) { err_('Bad token.'); }
