@@ -361,9 +361,6 @@ function getSchedule(query) {
 
 function loadSheet() {
 
-  //let format = ''
-  //if (USER_SETTINGS.militaryTime) {format = 'hh:mm'} else {format = 'hh:mm A'}
-  let format = (USER_SETTINGS.militaryTime) ? 'hh:mm' : 'hh:mm A'
   SHEET = new Editor({
     el: document.getElementById('testEditor'),
     columns: [
