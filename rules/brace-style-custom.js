@@ -206,7 +206,7 @@ module.exports = {
       },
       IfStatement(node) {
         if (node.consequent.type === "BlockStatement" && node.alternate) {
-          if (astUtils.isTokenOnSameLine(sourceCode.getFirstToken(node.consequent), sourceCode.getLastToken(node.consequent)) {
+          if ( astUtils.isTokenOnSameLine(sourceCode.getFirstToken(node.consequent), sourceCode.getLastToken(node.consequent)) ) {
               validateCurlyBeforeKeyword(sourceCode.getLastToken(node.consequent), "stroustrup");
           } else {
           	// Handle the keyword after the `if` block (before `else`)
