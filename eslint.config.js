@@ -8,13 +8,6 @@ const globals = require("globals");
 const googleappsscript = require("eslint-plugin-googleappsscript")
 
 const customPlugin = require("./eslint/custom-plugin")
-// const braceStyleCustom = require('./rules/brace-style-custom')
-
-// const customRules = {
-//   rules: {
-//     "brace-style-custom": braceStyleCustom
-//   }
-// }
 
 const globalsUsed = {
   _: "writable",
