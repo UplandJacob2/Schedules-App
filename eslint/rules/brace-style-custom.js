@@ -171,9 +171,6 @@ module.exports = {
       }
     }
 	
-    function test(node, out) {
-      context.report({node: node, message: out})
-    }
     
     //--------------------------------------------------------------------------
     // Public API
@@ -182,14 +179,6 @@ module.exports = {
     return {
       BlockStatement(node) {
         if (!STATEMENT_LIST_PARENTS.has(node.parent.type)) {
-          // if we're looking at an 'else' statement
-          if (node.parent.type === 'IfStatement' && node.parent.alternate && node.parent.alternate === node) {
-			if (sourceCode.getFirstToken(node)) {
-              
-            }
-			//test(node, 'TEST'+JSON.stringify(sourceCode.getTokenBefore(sourceCode.getTokenBefore(node))) )
-
-          }
           validateCurlyPair(sourceCode.getFirstToken(node), sourceCode.getLastToken(node));
         }
       },
