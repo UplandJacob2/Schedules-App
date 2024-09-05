@@ -5,4 +5,5 @@ let clientUsedregex = "(.+_$)"
 for (let k = 0; k < clientGlobalsUsedKeys.length; k++) {
   clientUsedregex += "|(^"+clientGlobalsUsedKeys[k]+"$)"
 }
+console.log(clientUsedregex)
 module.exports = clientUsedregex
