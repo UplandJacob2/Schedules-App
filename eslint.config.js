@@ -9,81 +9,6 @@ const googleappsscript = require("eslint-plugin-googleappsscript")
 
 const customPlugin = require("./eslint/custom-plugin")
 
-// const globalsUsed = {
-//   _: "writable",
-  
-//   DateUtils: "writable",
-//   Base64: "writable",
-//   Editor: "writable",
-//   DebugLog: "writable",
-
-//   l: "writable",
-//   w: "writable",
-//   e: "writable",
-// }
-// const globalsUsedClient = {
-//   ...globalsUsed,
-//   loadSheet: "writable",
-//   saveSettings: "writable",
-//   openMenu: "writable",
-  
-//   SHEET: "writable",
-//   USER_SETTINGS: "writable",
-  
-//   getToken: "writable",
-//   getEmail: "writable",
-//   setCookie: "writable",
-//   getCookie: "writable",
-//   deleteSignInCookies: "writable",
-  
-//   jsonReparse: "writable",
-//   confirmPopup: "writable",
-//   resizeInput: "writable",
-//   toggleDisplay: "writable",
-//   error: "writable",
-  
-//   signInF: "writable",
-//   signUp: "writable",
-//   signInSuccess: "writable",
-//   signOutBtn: "writable",
-//   deleteSch: "writable",
-//   editPopClose: "writable",
-  
-//   checkSignUpButton: "writable",
-//   checkSignInButton: "writable",
-//   checkEmailBox: "writable",
-//   checkPassBox: "writable",
-//   showPassword: "writable",
-  
-//   newSchedulesFail: "writable",
-//   getSchedulesSuccess: "writable",
-//   recoverSchedulesFail: "writable",
-//   recoverSchedulesSuccess: "writable",
-//   recoverSpecificSchedule: "writable",
-// }
-// const globalsUsedServer = {
-//   ...globalsUsed,
-//   getSchedule: "writable",
-//   getDaysOff: "writable",
-//   confirmSignUp: "writable",
-//   signIn: "writable",
-//   signInWToken: "writable",
-//   doGet: "writable",
-//   include: "writable",
-// }
-
-// const serverGlobalsUsedKeys = Object.keys(globalsUsedServer)
-// let serverUsedregex = "(.+_$)"
-// for (let k = 0; k < serverGlobalsUsedKeys.length; k++) {
-//   serverUsedregex += "|(^"+serverGlobalsUsedKeys[k]+"$)"
-// }
-// let clientUsedregex = "(.+_$)"
-// const clientGlobalsUsedKeys = Object.keys(globalsUsedClient)
-// for (let k = 0; k < clientGlobalsUsedKeys.length; k++) {
-//   clientUsedregex += "|(^"+clientGlobalsUsedKeys[k]+"$)"
-// }
-
-
 //export default 
 module.exports = [
   //js.configs.recommended,
@@ -119,14 +44,7 @@ module.exports = [
     },
     languageOptions : {
       globals: {
-        // ...globals.browser,
-        // ...globals.jquery,
-        ...customPlugin.globals.client,
-        
-        google: "readonly",
-        tui: "readonly",
-
-        // ...globalsUsedClient,        
+        ...customPlugin.globals.client
       },
     },
     rules: {
@@ -134,7 +52,7 @@ module.exports = [
       semi: "off",
 
       "no-unused-vars": ["error", { 
-        "varsIgnorePattern": customPlugin.globalsUsed.client  //clientUsedregex
+        "varsIgnorePattern": customPlugin.globalsUsed.client
       }],
     },
 
@@ -148,14 +66,7 @@ module.exports = [
     },
     languageOptions: {
       globals: {
-        // ...googleappsscript.environments.googleappsscript.globals,
-
-        Underscore: "writable",
-
-        SchedulesSecure: "writable",
-        DateUtils: "writable",
         ...customPlugin.globals.server
-        // ...globalsUsedServer,
       },
     },
 
@@ -198,7 +109,7 @@ module.exports = [
 
 
       "no-unused-vars": ["error", { 
-        "varsIgnorePattern": customPlugin.globalsUsed.server  //serverUsedregex 
+        "varsIgnorePattern": customPlugin.globalsUsed.server
       }],
       
     },
