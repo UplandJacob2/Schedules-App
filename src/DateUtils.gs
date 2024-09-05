@@ -51,7 +51,7 @@ DateUtils.dayRange = function (fromD, toD, formated) {
       if (`${month}/${day}/${year}` === `${eMonth}/${eDay}/${eYear}`) {
         return daysToReturn
       }
-      if (day < daysInMonth) day++;  
+      if (day < daysInMonth) day++;
       else { day = 1; month ++; }
     } else { year ++; month = 1; }
   }
