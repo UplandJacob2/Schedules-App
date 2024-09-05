@@ -3,6 +3,7 @@ module.exports = {
   ...globalsUsed,
   getSchedule: "writable",
   getDaysOff: "writable",
+  signUp: "writable",
   confirmSignUp: "writable",
   signIn: "writable",
   signInWToken: "writable",
