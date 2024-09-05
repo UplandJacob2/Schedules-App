@@ -210,8 +210,8 @@ module.exports = {
       },
       IfStatement(node) {
         if (node.consequent.type === "BlockStatement" && node.alternate) {
-          if ( astUtils.isTokenOnSameLine(sourceCode.getFirstToken(node.consequent), sourceCode.getLastToken(node.consequent)) ) {
-              validateCurlyBeforeKeyword(sourceCode.getLastToken(node.consequent), "stroustrup");
+          if ( astUtils.isTokenOnSameLine(sourceCode.getFirstToken(node.consequent), sourceCode.getLastToken(node.consequent)) && params.stroustrupAfterSingleLine ) {
+             validateCurlyBeforeKeyword(sourceCode.getLastToken(node.consequent), "stroustrup");
           } else {
           	// Handle the keyword after the `if` block (before `else`)
           	validateCurlyBeforeKeyword(sourceCode.getLastToken(node.consequent));
@@ -223,7 +223,13 @@ module.exports = {
       TryStatement(node) {
 
         // Handle the keyword after the `try` block (before `catch` or `finally`)
-        validateCurlyBeforeKeyword(sourceCode.getLastToken(node.block));
+        if ( astUtils.isTokenOnSameLine(sourceCode.getFirstToken(node.block), sourceCode.getLastToken(node.block)) && params.stroustrupAfterSingleLine ) {
+          validateCurlyBeforeKeyword(sourceCode.getLastToken(node.block), "stroustrup");
+        } else {
+          // Handle the keyword after the `if` block (before `else`)
+          validateCurlyBeforeKeyword(sourceCode.getLastToken(node.block));
+        }
+        //validateCurlyBeforeKeyword(sourceCode.getLastToken(node.block));
 
         if (node.handler && node.finalizer) {
 
