@@ -1,5 +1,5 @@
 const globalsUsed = require("../globals.js")
-const globalsUsedClient = {
+module.exports = {
   ...globalsUsed,
   loadSheet: "writable",
   saveSettings: "writable",
