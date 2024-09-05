@@ -16,7 +16,7 @@ module.exports = {
   globals: {
     server: {
       ...globalsServer,
-      ...gas.environment.googleappsscript.globals
+      ...gas.environments.googleappsscript.globals
     },
     client: {
       ...globalsClient,
