@@ -9,21 +9,26 @@ const googleappsscript = require("eslint-plugin-googleappsscript")
 
 const braceStyleCustom = require('./rules/brace-style-custom')
 
+const customRules = {
+  rules: {
+    "brace-style-custom": braceStyleCustom
+  }
+}
+
 const globalsUsed = {
-  getSchedule: "writable",
-  getDaysOff: "writable",
-  confirmSignUp: "writable",
-  signIn: "writable",
-  signInWToken: "writable",
-  doGet: "writable",
-  include: "writable",
   _: "writable",
   
   DateUtils: "writable",
   Base64: "writable",
   Editor: "writable",
   DebugLog: "writable",
-  
+
+  l: "writable",
+  w: "writable",
+  e: "writable",
+}
+const globalsUsedClient = {
+  ...globalsUsed,
   loadSheet: "writable",
   saveSettings: "writable",
   openMenu: "writable",
@@ -42,7 +47,7 @@ const globalsUsed = {
   resizeInput: "writable",
   toggleDisplay: "writable",
   error: "writable",
-
+  
   signInF: "writable",
   signUp: "writable",
   signInSuccess: "writable",
@@ -61,15 +66,27 @@ const globalsUsed = {
   recoverSchedulesFail: "writable",
   recoverSchedulesSuccess: "writable",
   recoverSpecificSchedule: "writable",
-
-  l: "writable",
-  w: "writable",
-  e: "writable",
 }
-const globalsUsedKeys = Object.keys(globalsUsed)
-let regexStr = "(.+_$)"
-for (let k = 0; k < globalsUsedKeys.length; k++) {
-  regexStr += "|(^"+globalsUsedKeys[k]+"$)"
+const globalsUsedServer = {
+  ...globalsUsed,
+  getSchedule: "writable",
+  getDaysOff: "writable",
+  confirmSignUp: "writable",
+  signIn: "writable",
+  signInWToken: "writable",
+  doGet: "writable",
+  include: "writable",
+}
+
+const serverGlobalsUsedKeys = Object.keys(globalsUsedServer)
+let serverUsedregex = "(.+_$)"
+for (let k = 0; k < serverGlobalsUsedKeys.length; k++) {
+  serverUsedregex += "|(^"+serverGlobalsUsedKeys[k]+"$)"
+}
+let clientUsedregex = "(.+_$)"
+const clientGlobalsUsedKeys = Object.keys(globalsUsedClient)
+for (let k = 0; k < clientGlobalsUsedKeys.length; k++) {
+  clientUsedregex += "|(^"+clientGlobalsUsedKeys[k]+"$)"
 }
 
 
@@ -104,11 +121,7 @@ module.exports = [
     files: ["src/**/*.js.html.js"],
     ignores: ["**/Date.js.html.js", "**/Datejs.js.html.js", "**/underscore-observe.js.html.js"],
     plugins: {
-      "custom-rules": {
-        rules: {
-          "brace-style-custom": braceStyleCustom
-        }
-      }
+      "custom-rules": customRules
     },
     languageOptions : {
       globals: {
@@ -118,7 +131,7 @@ module.exports = [
         google: "readonly",
         tui: "readonly",
 
-        ...globalsUsed,        
+        ...globalsUsedClient,        
       },
     },
     rules: {
@@ -126,7 +139,7 @@ module.exports = [
       semi: "off",
 
       "no-unused-vars": ["error", { 
-        "varsIgnorePattern": regexStr
+        "varsIgnorePattern": clientUsedregex
       }],
     },
 
@@ -136,11 +149,7 @@ module.exports = [
     files: ["src/**/*.gs"],
     plugins: {
       googleappsscript, 
-      "custom-rules": {
-        rules: {
-          "brace-style-custom": braceStyleCustom
-        }
-      },
+      "custom-rules": customRules
     },
     languageOptions: {
       globals: {
@@ -151,7 +160,7 @@ module.exports = [
         SchedulesSecure: "writable",
         DateUtils: "writable",
         
-        ...globalsUsed,
+        ...globalsUsedServer,
       },
     },
 
@@ -194,7 +203,7 @@ module.exports = [
 
 
       "no-unused-vars": ["error", { 
-        "varsIgnorePattern": regexStr 
+        "varsIgnorePattern": serverUsedregex 
       }],
       
     },
