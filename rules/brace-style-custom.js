@@ -38,9 +38,13 @@ module.exports = {
             type: "boolean",
             default: false
           },
-          //more properties here
+          //additional properties from original
           stroustrupAfterSingleLine: {
             type: "boolean",
+            default: false
+          },
+          allowDualSingleLine: {
+          	type: "boolean",
             default: false
           }
         },
@@ -97,7 +101,7 @@ module.exports = {
       params.allowSingleLine = true
       const singleLineException = params.allowSingleLine && astUtils.isTokenOnSameLine(openingCurly, closingCurly);
 
-      // starting { should be after statement ex: 'if (...) { '
+      // starting { should be after statement ex: 'else {'
       if (style !== "allman" && !astUtils.isTokenOnSameLine(tokenBeforeOpeningCurly, openingCurly)) {
         if (params.stroustrupAfterSingleLine) {
           if (astUtils.isTokenOnSameLine(openingCurly, tokenAfterOpeningCurly) && tokenAfterOpeningCurly !== closingCurly) {
@@ -158,7 +162,7 @@ module.exports = {
         });
       }
 
-      if (newStyle !== "1tbs" && astUtils.isTokenOnSameLine(curlyToken, keywordToken)) {
+      if (newStyle !== "1tbs" && astUtils.isTokenOnSameLine(curlyToken, keywordToken) && !params.allowDualSingleLine) {
         context.report({
           node: curlyToken,
           messageId: "sameLineClose",
