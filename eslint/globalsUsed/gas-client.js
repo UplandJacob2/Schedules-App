@@ -1,6 +1,6 @@
 const globalsUsedClient = require("../globals/gas-client")
-let clientUsedregex = "(.+_$)"
 const clientGlobalsUsedKeys = Object.keys(globalsUsedClient)
+let clientUsedregex = "(.+_$)"
 for (let k = 0; k < clientGlobalsUsedKeys.length; k++) {
   clientUsedregex += "|(^"+clientGlobalsUsedKeys[k]+"$)"
 }
