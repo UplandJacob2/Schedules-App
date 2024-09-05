@@ -93,7 +93,7 @@ module.exports = [
       "@html-eslint/no-obsolete-tags": "warn",
       "@html-eslint/require-closing-tags": ["warn", {
         "selfClosing": "always", 
-        "selfClosingCustomPatterns": ["ion-icon"],
+        "selfClosingCustomPatterns": ["^ion-icon$"],
       }],
 
 
