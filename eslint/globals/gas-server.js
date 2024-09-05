@@ -1,4 +1,4 @@
-const globalsUsed = require("../globals.js")
+const globalsUsed = require("./globals")
 module.exports = {
   ...globalsUsed,
   getSchedule: "writable",
