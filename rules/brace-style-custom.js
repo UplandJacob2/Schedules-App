@@ -146,10 +146,11 @@ module.exports = {
      * @param {Token} curlyToken The closing curly token. This is assumed to precede a keyword token (such as `else` or `finally`).
      * @returns {void}
      */
-    function validateCurlyBeforeKeyword(curlyToken) {
+    function validateCurlyBeforeKeyword(curlyToken, styleOverride) {
       const keywordToken = sourceCode.getTokenAfter(curlyToken);
+      const newStyle = styleOverride || style
 
-      if (style === "1tbs" && !astUtils.isTokenOnSameLine(curlyToken, keywordToken)) {
+      if (newStyle === "1tbs" && !astUtils.isTokenOnSameLine(curlyToken, keywordToken)) {
         context.report({
           node: curlyToken,
           messageId: "nextLineClose",
@@ -157,7 +158,7 @@ module.exports = {
         });
       }
 
-      if (style !== "1tbs" && astUtils.isTokenOnSameLine(curlyToken, keywordToken)) {
+      if (newStyle !== "1tbs" && astUtils.isTokenOnSameLine(curlyToken, keywordToken)) {
         context.report({
           node: curlyToken,
           messageId: "sameLineClose",
@@ -182,7 +183,7 @@ module.exports = {
 			if (sourceCode.getFirstToken(node)) {
               
             }
-			test(node, 'TEST'+JSON.stringify(sourceCode.getTokenBefore(sourceCode.getTokenBefore(node))) )
+			//test(node, 'TEST'+JSON.stringify(sourceCode.getTokenBefore(sourceCode.getTokenBefore(node))) )
 
           }
           validateCurlyPair(sourceCode.getFirstToken(node), sourceCode.getLastToken(node));
@@ -205,10 +206,15 @@ module.exports = {
       },
       IfStatement(node) {
         if (node.consequent.type === "BlockStatement" && node.alternate) {
-
-          // Handle the keyword after the `if` block (before `else`)
-          validateCurlyBeforeKeyword(sourceCode.getLastToken(node.consequent));
-        }
+          if (astUtils.isTokenOnSameLine(sourceCode.getFirstToken(node.consequent), sourceCode.getLastToken(node.consequent)) {
+              validateCurlyBeforeKeyword(sourceCode.getLastToken(node.consequent), "stroustrup");
+          } else {
+          	// Handle the keyword after the `if` block (before `else`)
+          	validateCurlyBeforeKeyword(sourceCode.getLastToken(node.consequent));
+          }
+        } //else if (node.consequent.type === "ExpressionStatement") {
+          
+        //}
       },
       TryStatement(node) {
 
