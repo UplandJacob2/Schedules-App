@@ -5,6 +5,7 @@ const braceStyleCustom = require('./rules/brace-style-custom')
 const globals = require("globals");
 const gas = require("eslint-plugin-googleappsscript")
 
+const globalsC = require("./globals/globals")
 const globalsServer = require("./globals/gas-server")
 const globalsClient = require("./globals/gas-client")
 const globalsUsedServer = require("./globalsUsed/gas-server")
@@ -73,7 +74,7 @@ module.exports = {
 
 
       "no-unused-vars": ["error", { 
-        "varsIgnorePattern": plugin.globalsUsed.server
+        "varsIgnorePattern": globalsC
       }],
     }
   }
