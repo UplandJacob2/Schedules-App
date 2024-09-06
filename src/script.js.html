@@ -5,6 +5,9 @@ const SETTINGS_INFO = {
   elIDs: [ 'militaryTimeSwitch', 'debugModeSwitch' ],
   types: [ 'check', 'check' ]
 }
+const firstRow = { info: 's', class: 'Some Class', strt: '8:00', end: '9:00', b: false, days: 'Mon, Wed, Fri', name: 'Schedule Name' }
+const emptyRow = { info: '',  class: 'Some Class', strt: '8:00', end: '9:00', b: false, days: '', name: '' }
+
 
 function openMenu() {
     document.querySelector('.nav-menu').classList.toggle("active");
@@ -26,38 +29,88 @@ function toggleDisplay(elmStrIn, toState) {
     if (elm.css('display') === "none") { elm.css('display', 'block') } else { elm.css('display', 'none') }
   }
 }
+/**
+ * returns a schedule as html
+ *
+ * query = {
+ * * name  - get schedule by name
+ * * index - get schedule by index
+ * * data  - do query using data
+ * * dateTime
+ * }
+ *
+ * @param {Object} query
+ *
+ * @return {String}
+**/
+function getSchedule(query) {
 
-
-window.onload = function () {
-  // google.script.url.getLocation(function(location) {
-  //   alert(location.parameters);
-  // });
-
-  let events = [ 'keypress', 'keydown', 'keyup' ];
-
-  events.forEach(e => { document.getElementById('signInC').addEventListener(e, function(){ checkSignInButton(); }); });
-  events.forEach(e => { document.getElementById('passSignIn').addEventListener(e, function(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
-  events.forEach(e => { document.getElementById('signUpC').addEventListener(e, function(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
-  [ 'emailSignUp', 'emailSignIn' ].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
-
-  if (getToken()) {
-    toggleDisplay('signInLoad');
-    google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function(e){ if (e.message === 'Bad token.'){ deleteSignInCookies(); }
-      if (document.getElementById('signInLoad').style.display === "block") { toggleDisplay('signInLoad'); }
-      error('Error when automatically signing in.', e.message)
-    }).signInWToken(getEmail(), getToken());
+  let scheduleName, scheduleIndex, data, date; let schedule = []
+  if (query) {
+    data = (typeof query.data !== 'undefined') ? query.data : DATA
+    scheduleName = (typeof query.name !== 'undefined') ? query.name : null
+    scheduleIndex = (typeof query.index !== 'undefined') ? query.index : null
+    date = (typeof query.dateTime !== 'undefined') ? query.dateTime : new Date()
+  } else {
+    date = new Date()
+    data = DATA
+  }
+  if (data === []) {
+    return '<header class="center" style="font-size: 40px; margin: 30px;"">We couldn\'t find a schedule for you.</header>   <a onclick="toggleDisplay(\'editPop\')" class="link center" style="font-size: 25px; padding: 10px; margin-top: -30px;"">Create Schedule</a>''
+  }
+  let schIndex = -1
+  for (let i in data) {
+    if (data[i].info === 's') {
+      schIndex ++
+      if ( (scheduleName && data[i].name === scheduleName) || (scheduleIndex && schIndex === scheduleIndex) || (!scheduleName && !scheduleIndex && data[i].days.includes(date.toString('ddd'))) ) {
+        let rInfo = data[i].info; let r = i
+        while (rInfo !== 'es') {
+          schedule.push(data[r])
+          r ++
+          try { rInfo = data[r].info } catch {error('Error parsing schedule', 'no end \'es\'')}
+        }
+        schedule.push(data[r])
+      }
+    }
   }
 
-  const signUpForm = document.getElementById("signUpForm");
-  signUpForm.addEventListener("submit", signUp);
-  const signInForm = document.getElementById('signInForm');
-  signInForm.addEventListener('submit', signInF);
+  let schStr = ''; let rab = 'a'
+  schStr += '<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">'+DateUtils.getDateAsText({dateTime: date, militaryTime: USER_SETTINGS.militaryTime})+'</td></tr>'
+  schStr += '<tr><th colspan="8">'+schedule[0].name+'</th></tr>'
+
+  let minu = String(date.getMinutes())
+  if (minu.length === 1) { minu = '0'+minu }
+  const nowInt = parseInt(String(date.getHours())+minu)
+  let boldRows = []; let classNows = [];
+
+  schedule.forEach((row, r) => {
+    let strtTime = row.strt; let sHr = strtTime.split(':')[0]; let sMin = strtTime.split(':')[1]
+    let endTime = row.end;   let eHr =  endTime.split(':')[0]; let eMin =  endTime.split(':')[1]
+    const sInt = parseInt(sHr+sMin);  const eInt = parseInt(eHr+eMin)
+    if (nowInt >= sInt && nowInt <= eInt) {
+      classNows.push(r);
+    }
+    l(classNows, sInt, eInt, nowInt)
+    if (!USER_SETTINGS.militaryTime) {strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime)}
+    if (row.b) {boldRows.push(r)}
+    schedule[r] = [row['class'], strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1]]
+  })
+  schedule.forEach((row, r) => {
+    schStr+='<tr>'
+    l(row)
+    row.forEach((cell, c) => {
+      schStr+='<td class="c'+c+' r'+rab
+      if (c === 0) {if (boldRows.includes(r)) { schStr+= ' b' }}
+      if (classNows.includes(r)) { schStr+= ' y' }
+      schStr+='">'+cell+'</td>'
+    });
+
+    schStr+='</tr>';
+    if (rab === "a") { rab = "b" } else { rab ="a" }
+  });
+  l(schStr)
+  return schStr
 }
-
-const firstRow = { info: 's', class: 'Some Class', strt: '8:00', end: '9:00', b: false, days: 'Mon, Wed, Fri', name: 'Schedule Name' }
-const emptyRow = { info: '',  class: 'Some Class', strt: '8:00', end: '9:00', b: false, days: '', name: '' }
-
-
 
 
 function reloadEdit() {
@@ -226,7 +279,17 @@ function newSchedulesFail(err) {
 }
 
 
-
+function getWidthOfInput(inputEl) {
+  let tmp = document.createElement('span');
+  tmp.className = 'input-element tmp-element';
+  tmp.innerHTML = inputEl.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  document.body.appendChild(tmp);
+  //let theWidth = tmp.getBoundingClientRect().width;
+  let theWidth = tmp.offsetWidth
+  //alert(theWidth)
+  document.body.removeChild(tmp);
+  return theWidth;
+}
 function resizeInput() {
   //this.style.width = this.value.length + "ch";
   let elm = this
@@ -244,17 +307,7 @@ function resizeInput() {
 //     $(this).css('width', $('.new_width').width());
 //     $('.new_width').remove()
 // }
-function getWidthOfInput(inputEl) {
-  let tmp = document.createElement('span');
-  tmp.className = 'input-element tmp-element';
-  tmp.innerHTML = inputEl.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  document.body.appendChild(tmp);
-  //let theWidth = tmp.getBoundingClientRect().width;
-  let theWidth = tmp.offsetWidth
-  //alert(theWidth)
-  document.body.removeChild(tmp);
-  return theWidth;
-}
+
 tui.usageStatistics = false
 //const TP = tui.TimePicker
 
@@ -274,93 +327,8 @@ function getSchedulesHTML(data, dateTimeStr) {
 }
 
 
-/**
- * returns a schedule as html
- *
- * query = {
- * * name  - get schedule by name
- * * index - get schedule by index
- * * data  - do query using data
- * * dateTime
- * }
- *
- * @param {Object} query
- *
- * @return {String}
-**/
-function getSchedule(query) {
-
-  let scheduleName, scheduleIndex, data, date; let schedule = []
-  if (query) {
-    data = (typeof query.data !== 'undefined') ? query.data : DATA
-    scheduleName = (typeof query.name !== 'undefined') ? query.name : null
-    scheduleIndex = (typeof query.index !== 'undefined') ? query.index : null
-    date = (typeof query.dateTime !== 'undefined') ? query.dateTime : new Date()
-  } else {
-    date = new Date()
-    data = DATA
-  }
-  if (data === []) {
-    return `<header class="center" style='font-size: 40px; margin: 30px;'>We couldn't find a schedule for you.</header>   <a onclick="toggleDisplay('editPop')" class='link center' style='font-size: 25px; padding: 10px; margin-top: -30px;'>Create Schedule</a>`
-  }
-  let schIndex = -1
-  for (let i in data) {
-    if (data[i].info === 's') {
-      schIndex ++
-      if ( (scheduleName && data[i].name === scheduleName) || (scheduleIndex && schIndex === scheduleIndex) || (!scheduleName && !scheduleIndex && data[i].days.includes(date.toString('ddd'))) ) {
-        let rInfo = data[i].info; let r = i
-        while (rInfo !== 'es') {
-          schedule.push(data[r])
-          r ++
-          try { rInfo = data[r].info } catch {error('Error parsing schedule', 'no end \'es\'')}
-        }
-        schedule.push(data[r])
-      }
-    }
-  }
-
-  let schStr = ''; let rab = 'a'
-  schStr += '<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">'+DateUtils.getDateAsText({dateTime: date, militaryTime: USER_SETTINGS.militaryTime})+'</td></tr>'
-  schStr += '<tr><th colspan="8">'+schedule[0].name+'</th></tr>'
-
-  let minu = String(date.getMinutes())
-  if (minu.length === 1) { minu = '0'+minu }
-  const nowInt = parseInt(String(date.getHours())+minu)
-  let boldRows = []; let classNows = [];
-
-  schedule.forEach((row, r) => {
-    let strtTime = row.strt; let sHr = strtTime.split(':')[0]; let sMin = strtTime.split(':')[1]
-    let endTime = row.end;   let eHr =  endTime.split(':')[0]; let eMin =  endTime.split(':')[1]
-    const sInt = parseInt(sHr+sMin);  const eInt = parseInt(eHr+eMin)
-    if (nowInt >= sInt && nowInt <= eInt) {
-      classNows.push(r);
-    }
-    l(classNows, sInt, eInt, nowInt)
-    if (!USER_SETTINGS.militaryTime) {strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime)}
-    if (row.b) {boldRows.push(r)}
-    schedule[r] = [row['class'], strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1]]
-  })
-  schedule.forEach((row, r) => {
-    schStr+='<tr>'
-    l(row)
-    row.forEach((cell, c) => {
-      schStr+='<td class="c'+c+' r'+rab
-      if (c === 0) {if (boldRows.includes(r)) { schStr+= ' b' }}
-      if (classNows.includes(r)) { schStr+= ' y' }
-      schStr+='">'+cell+'</td>'
-    });
-
-    schStr+='</tr>';
-    if (rab === "a") { rab = "b" } else { rab ="a" }
-  });
-  l(schStr)
-  return schStr
-}
-
-
 
 function loadSheet() {
-
   SHEET = new Editor({
     el: document.getElementById('testEditor'),
     columns: [
@@ -409,6 +377,30 @@ function loadSheet() {
   //$('input').keyup(resizeInput)//.each(resizeInput);
 }
 
+window.onload = function () {
+  // google.script.url.getLocation(function(location) {
+  //   alert(location.parameters);
+  // });
+
+  let events = [ 'keypress', 'keydown', 'keyup' ];
+  events.forEach(e => { document.getElementById('signInC').addEventListener(e, function(){ checkSignInButton(); }); });
+  events.forEach(e => { document.getElementById('passSignIn').addEventListener(e, function(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
+  events.forEach(e => { document.getElementById('signUpC').addEventListener(e, function(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
+  [ 'emailSignUp', 'emailSignIn' ].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
+
+  if (getToken()) {
+    toggleDisplay('signInLoad');
+    google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function(e){ if (e.message === 'Bad token.'){ deleteSignInCookies(); }
+      if (document.getElementById('signInLoad').style.display === "block") { toggleDisplay('signInLoad'); }
+      error('Error when automatically signing in.', e.message)
+    }).signInWToken(getEmail(), getToken());
+  }
+
+  const signUpForm = document.getElementById("signUpForm");
+  signUpForm.addEventListener("submit", signUp);
+  const signInForm = document.getElementById('signInForm');
+  signInForm.addEventListener('submit', signInF);
+}
 
 
 </script>
