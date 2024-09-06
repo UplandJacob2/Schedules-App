@@ -125,8 +125,7 @@ function checkPassBoxI(inpStr) {
     let pRT = document.getElementById('passRTxt')
     if (good) { pRT.innerHTML = 'Passwords match.'; pRT.style.setProperty('color', '#040'); }
     else { pRT.innerHTML = 'Passwords do not match.'; pRT.style.setProperty('color', '#800'); }
-  }
-  else { good = isValidPassword(pass); }
+  } else { good = isValidPassword(pass); }
 
   if (inpStr === "passSignUp" || inpStr === "passSignUpR") {
     let c = document.getElementById(inpStr + "C"); let x = document.getElementById(inpStr + "X");
