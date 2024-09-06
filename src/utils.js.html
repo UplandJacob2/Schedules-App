@@ -34,7 +34,7 @@ const Base64={_keyStr:"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234
   encode:function(e){
     let t="";let n,r,i,s,o,u,a;let f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},
   decode:function(e){
-    let t="";let n,r,i;let s,o,u,a;let f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!=64){t=t+String.fromCharCode(r)}if(a!=64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},
+    let t="";let n,r,i;let s,o,u,a;let f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,"");while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!==64){t=t+String.fromCharCode(r)}if(a!==64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},
   _utf8_encode:function(e){
     e=e.replace(/\r\n/g,"\n");let t="";for(let n=0;n<e.length;n++){let r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},
   _utf8_decode:function(e){
@@ -54,8 +54,8 @@ function error(title, txt) {
 function confirmPopup(args) {let title,text,onYes,onNo,yesBtTxt,noBtTxt
   title = args.title || 'Confirm'; text = args.text || 'Confirm?'; yesBtTxt = args.yesBtTxt || 'Yes'; noBtTxt = args.noBtTxt || 'No'
   onYes = args.onYes || "toggleDisplay('confirmPop')"; onNo = args.onNo || "toggleDisplay('confirmPop')"
-  if(typeof args.onYes != 'undefined') {onYes+="\ntoggleDisplay('confirmPop')"}
-  if(typeof args.onNo  != 'undefined') {onNo +="\ntoggleDisplay('confirmPop')"}
+  if(typeof args.onYes !== 'undefined') {onYes+="\ntoggleDisplay('confirmPop')"}
+  if(typeof args.onNo  !== 'undefined') {onNo +="\ntoggleDisplay('confirmPop')"}
 
   toggleDisplay('confirmPop')
   document.getElementById('confirmTitle' ).innerHTML = title
@@ -72,28 +72,25 @@ function checkSignUpButton() {
   let butt = document.getElementById('signUpButt');
   if (checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
     butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
-  }
-  else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
+  } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
 }
 function checkSignInButton() {
   let butt = document.getElementById('signInButt');
   if (checkEmailBoxI('emailSignIn') && checkPassBoxI('passSignIn')) {
     butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
-  }
-  else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
+  } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
 }
 function checkEmailBox(inpStr) { setTimeout(function () { checkEmailBoxI(inpStr); }, 10); }
 function checkEmailBoxI(inpStr) {
   let inp = document.getElementById(inpStr);
   let email = inp.value;
-  if (inpStr == "emailSignUp") {
+  if (inpStr === "emailSignUp") {
     let c = document.getElementById("emailSignUpC");
     let x = document.getElementById("emailSignUpX");
     if (isValidEmail(email)) {
       c.style.setProperty('display', 'block'); x.style.setProperty('display', 'none');
       inp.style.setProperty('background-color', 'palegreen'); return true
-    }
-    else {
+    } else {
       x.style.setProperty('display', 'block'); c.style.setProperty('display', 'none');
       inp.style.setProperty('background-color', 'lightpink'); return false
     }
@@ -105,7 +102,7 @@ function checkEmailBoxI(inpStr) {
 function checkPassBox(inpStr) { setTimeout(function () { checkPassBoxI(inpStr); }, 10); }
 function checkPassBoxI(inpStr) {
   let inp = document.getElementById(inpStr); let pass = inp.value; let good; //console.log(pass);
-  if (inpStr == "passSignUp") {
+  if (inpStr === "passSignUp") {
     if ((pass.match(/[a-z]/g) || []).length >= 1) {
       document.getElementById('lowR').style.setProperty('color', '#040');
     } else { document.getElementById('lowR').style.setProperty('color', '#800'); }
@@ -122,15 +119,15 @@ function checkPassBoxI(inpStr) {
       document.getElementById('lR').style.setProperty('color', '#040');
     } else { document.getElementById('lR').style.setProperty('color', '#800'); }
   }
-  if (inpStr == "passSignUpR") {
-    if (pass == document.getElementById('passSignUp').value) { good = true } else { good = false }
+  if (inpStr === "passSignUpR") {
+    if (pass === document.getElementById('passSignUp').value) { good = true } else { good = false }
     let pRT = document.getElementById('passRTxt')
     if (good) { pRT.innerHTML = 'Passwords match.'; pRT.style.setProperty('color', '#040'); }
     else { pRT.innerHTML = 'Passwords do not match.'; pRT.style.setProperty('color', '#800'); }
   }
   else { good = isValidPassword(pass); }
 
-  if (inpStr == "passSignUp" || inpStr == "passSignUpR") {
+  if (inpStr === "passSignUp" || inpStr === "passSignUpR") {
     let c = document.getElementById(inpStr + "C"); let x = document.getElementById(inpStr + "X");
     if (good) {
       inp.style.setProperty('background-color', 'palegreen');
@@ -172,10 +169,10 @@ function signUp(event) {
   toggleDisplay('signUp');
   toggleDisplay('signUpLoad');
   google.script.run.withSuccessHandler(function () {
-    if (document.getElementById('signUpLoad').style.display == "block") { toggleDisplay('signUpLoad'); }
+    if (document.getElementById('signUpLoad').style.display === "block") { toggleDisplay('signUpLoad'); }
     toggleDisplay('signUpEmailSent');
   }).withFailureHandler(function (err) {
-    if (document.getElementById('signUpLoad').style.display == "block") { toggleDisplay('signUpLoad'); }
+    if (document.getElementById('signUpLoad').style.display === "block") { toggleDisplay('signUpLoad'); }
     toggleDisplay('error');
     document.getElementById('errorWhen').innerHTML = 'Error when creating account.';
     document.getElementById('errorTxt').innerHTML = err.message;
@@ -189,12 +186,12 @@ function signInF(e) {
 }
 function signIn(email, pass, rm) {
   google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function (err) {
-    if ($('#signInLoad').css('display') == 'block') { toggleDisplay('signInLoad'); }
+    if ($('#signInLoad').css('display') === 'block') { toggleDisplay('signInLoad'); }
     error('Error when signing in.', err.message);
   }).signIn(email, pass, rm);
 }
 function signInSuccess(inp) {
-  if (document.getElementById('signInLoad').style.display == "block") { toggleDisplay('signInLoad'); }
+  if (document.getElementById('signInLoad').style.display === "block") { toggleDisplay('signInLoad'); }
   if (document.getElementById('emailSignIn').value) {
     document.cookie = 'signin={"token":"' + inp[1] + '", "email":"' + document.getElementById('emailSignIn').value + '"}; SameSite=none; secure';
   } else {
@@ -282,8 +279,8 @@ DateUtils.militaryToStandard = function(time, showMeridiem) {
  * 
 **/ 
 DateUtils.getDateAsText = function (query) {
-  let miltime = (typeof query.militaryTime != 'undefined') ? query.militaryTime : false
-  let dateTime = (typeof query.dateTime != 'undefined') ? query.dateTime : new Date()
+  let miltime = (typeof query.militaryTime !== 'undefined') ? query.militaryTime : false
+  let dateTime = (typeof query.dateTime !== 'undefined') ? query.dateTime : new Date()
 
   if (miltime) {
     return dateTime.toString("M/d/yyyy H:mm:ss ")
