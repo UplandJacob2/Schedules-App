@@ -49,7 +49,8 @@ module.exports = [
     },
     rules: {
       ...js.configs.recommended.rules,
-      semi: "off",
+      // semi: "off",
+      ...customPlugin.configs.rules,
 
       "no-unused-vars": ["error", { 
         "varsIgnorePattern": customPlugin.globalsUsed.client
@@ -72,42 +73,7 @@ module.exports = [
 
     rules: {
       ...js.configs.recommended.rules,
-      semi: "off",
-      quotes: ["warn", "single"],
-      indent: ["warn", 2],
-      "no-trailing-spaces": "warn",
-      eqeqeq: "warn",
-      "no-var": "warn",
-      "no-use-before-define": "error",
-      
-      "prefer-template": "warn",
-      "no-useless-concat": "warn",
-      
-      "array-bracket-newline": ["warn", {
-        "multiline": true
-      }],
-      "array-bracket-spacing": ["warn", "always", { 
-        "singleValue": false 
-      }],
-      "array-element-newline": ["warn", {
-        "multiline": true
-      }],
-      "arrow-body-style": ["warn", "as-needed"],
-      "arrow-parens": ["error", "as-needed"],
-      "arrow-spacing": ["warn", { 
-        "before": true, 
-        "after": true 
-      }],
-      "block-scoped-var": "error",
-      "block-spacing": "warn",
-      "custom-rules/brace-style-custom": ["error", "1tbs", { 
-        allowSingleLine: true,
-        stroustrupAfterSingleLine: true,
-        allowDualSingleLine: true
-      }],
-      curly: ["warn", "multi-line"],
-
-
+      ...customPlugin.configs.rules,
       "no-unused-vars": ["error", { 
         "varsIgnorePattern": customPlugin.globalsUsed.server
       }],
