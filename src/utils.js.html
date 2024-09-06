@@ -52,7 +52,8 @@ function error(title, txt) {
  * Opens a popup to confirm
  *
 **/
-function confirmPopup(args) {let title,text,onYes,onNo,yesBtTxt,noBtTxt
+function confirmPopup(args) {
+  let title,text,onYes,onNo,yesBtTxt,noBtTxt
   title = args.title || 'Confirm'; text = args.text || 'Confirm?'; yesBtTxt = args.yesBtTxt || 'Yes'; noBtTxt = args.noBtTxt || 'No'
   onYes = args.onYes || "toggleDisplay('confirmPop')"; onNo = args.onNo || "toggleDisplay('confirmPop')"
   if(typeof args.onYes !== 'undefined') {onYes+="\ntoggleDisplay('confirmPop')"}
