@@ -10,8 +10,8 @@ const emptyRow = { info: '',  class: 'Some Class', strt: '8:00', end: '9:00', b:
 
 
 function openMenu() {
-    document.querySelector('.nav-menu').classList.toggle("active");
-    document.querySelector('.menu-cont').classList.toggle("active");
+    document.querySelector('.nav-menu').classList.toggle('active');
+    document.querySelector('.menu-cont').classList.toggle('active');
     if (window.innerWidth > 668) {
       if (document.querySelector('.menu-cont').contains('active')) { // inactive menu
         document.getElementById('main').style.setProperty('width', '100%')
@@ -26,7 +26,7 @@ function toggleDisplay(elmStrIn, toState) {
   if (typeof toState !== 'undefined') { // if toState is specified
     if (toState) { elm.css('display', 'block') } else { elm.css('display', 'none') }
   } else { // otherwise, toggle
-    if (elm.css('display') === "none") { elm.css('display', 'block') } else { elm.css('display', 'none') }
+    if (elm.css('display') === 'none') { elm.css('display', 'block') } else { elm.css('display', 'none') }
   }
 }
 /**
@@ -56,7 +56,7 @@ function getSchedule(query) {
     data = DATA
   }
   if (data === []) {
-    return '<header class="center" style="font-size: 40px; margin: 30px;"">We couldn\'t find a schedule for you.</header>   <a onclick="toggleDisplay(\'editPop\')" class="link center" style="font-size: 25px; padding: 10px; margin-top: -30px;"">Create Schedule</a>''
+    return '<header class="center" style="font-size: 40px; margin: 30px;">We couldn\'t find a schedule for you.</header>   <a onclick="toggleDisplay(\'editPop\')" class="link center" style="font-size: 25px; padding: 10px; margin-top: -30px;">Create Schedule</a>''
   }
   let schIndex = -1
   for (let i in data) {
@@ -106,7 +106,7 @@ function getSchedule(query) {
     });
 
     schStr+='</tr>';
-    if (rab === "a") { rab = "b" } else { rab ="a" }
+    if (rab === 'a') { rab = 'b' } else { rab ='a' }
   });
   l(schStr)
   return schStr
@@ -140,7 +140,7 @@ function deleteSch() {
 }
 function editPopClose () {
   if (updateSaveBtn()) {
-    confirmPopup({title: 'Save?', text: 'Do you want to save your changes?', onYes: 'saveSch()', onNo: "toggleDisplay('editPop')"})
+    confirmPopup({title: 'Save?', text: 'Do you want to save your changes?', onYes: 'saveSch()', onNo: 'toggleDisplay(\'editPop\')'})
   } else {
     toggleDisplay('editPop')
   }
@@ -253,7 +253,7 @@ function recoverSchedulesSuccess(response) {
   if (options.length === 1) {
     getSchedulesSuccess(options[0][1])
   } else {
-    let html = "<header style='font-weight: bold;'>Multiple schedules were found.</header>"
+    let html = '<header style="font-weight: bold;">Multiple schedules were found.</header>'
     for (let i = 0; i < options.length; i++) {
       html += `<div><button onclick="recoverSpecificSchedule('${Base64.encode(options[i][1])}', '${options[i][2]}');" class="link" style="padding: 10px; margin: 5px;" >Option ${i+1}</button> <a style="margin: 5px; margin-bottom: 20px;">${getSchedulesHTML(options[i][1], options[i][0])}</a></div>`
     }
@@ -291,12 +291,12 @@ function getWidthOfInput(inputEl) {
   return theWidth;
 }
 function resizeInput() {
-  //this.style.width = this.value.length + "ch";
+  //this.style.width = this.value.length + 'ch';
   let elm = this
   setTimeout(function() {
     setTimeout(function() {alert(elm.outerHTML)})
     //alert(elm.outerHTML)
-    elm.style.width = getWidthOfInput(elm) + "px";
+    elm.style.width = getWidthOfInput(elm) + 'px';
   }, 200 );
   //alert(getWidthOfInput(this))
   //alert('resized')
@@ -336,7 +336,7 @@ function loadSheet() {
       { header: 'Class',     name: 'class',width: 200, editor: { type: 'text', options: { style: {width: 'auto'} } } },
       { header: 'Start Time',name: 'strt', width: 100, editor: { type: 'time' } },
       { header: 'End Time',  name: 'end',  width: 100, editor: { type: 'time' } },
-      { header: 'Bold',      name: 'b',    width: 30,  editor: { type: 'checkbox', options: { checked: true, style: { "margin-left": "20px" } } } },
+      { header: 'Bold',      name: 'b',    width: 30,  editor: { type: 'checkbox', options: { checked: true, style: { 'margin-left': '20px' } } } },
       { header: 'Days',      name: 'days', width: 200, editor: { type: 'checklist',options: { listItems: [  { text: 'Sun', value: 'Sun' }, { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' }, { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' }]}, active: { type: 'col', if: 'info', equalTo: 's' } } },
       { header: 'Name',      name: 'name', width: 200, editor: { type: 'text', options: { style: {width: '200px'} }, active: { type: 'col', if: 'info', equalTo: 's' } } }
     ],
@@ -391,13 +391,13 @@ window.onload = function () {
   if (getToken()) {
     toggleDisplay('signInLoad');
     google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function(e){ if (e.message === 'Bad token.'){ deleteSignInCookies(); }
-      if (document.getElementById('signInLoad').style.display === "block") { toggleDisplay('signInLoad'); }
+      if (document.getElementById('signInLoad').style.display === 'block') { toggleDisplay('signInLoad'); }
       error('Error when automatically signing in.', e.message)
     }).signInWToken(getEmail(), getToken());
   }
 
-  const signUpForm = document.getElementById("signUpForm");
-  signUpForm.addEventListener("submit", signUp);
+  const signUpForm = document.getElementById('signUpForm');
+  signUpForm.addEventListener('submit', signUp);
   const signInForm = document.getElementById('signInForm');
   signInForm.addEventListener('submit', signInF);
 }
