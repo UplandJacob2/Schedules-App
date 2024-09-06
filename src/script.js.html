@@ -35,10 +35,10 @@ window.onload = function () {
 
   let events = [ 'keypress', 'keydown', 'keyup' ];
 
-  events.forEach((e) => { document.getElementById('signInC').addEventListener(e, function(){ checkSignInButton(); }); });
-  events.forEach((e) => { document.getElementById('passSignIn').addEventListener(e, function(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
-  events.forEach((e) => { document.getElementById('signUpC').addEventListener(e, function(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
-  [ 'emailSignUp', 'emailSignIn' ].forEach((str) => { let elm = document.getElementById(str); events.forEach((e) => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
+  events.forEach(e => { document.getElementById('signInC').addEventListener(e, function(){ checkSignInButton(); }); });
+  events.forEach(e => { document.getElementById('passSignIn').addEventListener(e, function(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
+  events.forEach(e => { document.getElementById('signUpC').addEventListener(e, function(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
+  [ 'emailSignUp', 'emailSignIn' ].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
 
   if (getToken()) {
     toggleDisplay('signInLoad');
