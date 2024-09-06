@@ -278,7 +278,7 @@ class Editor {
           let hr, min
           try { hr = this.data[row][col].match(/[0-9]{1,2}(?=:)/g)[0] } catch { hr  = 8 }
           try { min= this.data[row][col].match(/(?<=:)[0-9]{2}/g)[0]  } catch { min = 0 }
-          try {
+
           this.timeSelectCache = new tui.TimePicker(el.children[0].children[1], {
             usageStatistics: false, language: 'en',
             initialHour: parseInt(hr),
@@ -287,8 +287,6 @@ class Editor {
             showMeridiem: !this.militaryTime,
             input: {element: el.children[0].children[0]}
           })  // 'showMeridiem' to false for 24hr format
-          } catch (e) {DebugLog.error(DebugLog.getStacktraceFromErr(e))}
-
 
         } else if (this.columns[this.columns.findIndex(c => c.name === col)].editor.type === 'text') {
           let box = el.children[0]
