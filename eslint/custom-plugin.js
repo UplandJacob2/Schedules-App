@@ -30,7 +30,9 @@ module.exports = {
     server: globalsUsedServer,
     client: globalsUsedClient
   },
-  plugins: [ "custom-rules": plugin ],
+  plugins: {
+    "custom-rules": plugin
+  },
   configs: {
     rules: {
       semi: "off",
