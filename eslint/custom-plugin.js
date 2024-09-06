@@ -76,4 +76,5 @@ module.exports = {
         "varsIgnorePattern": plugin.globalsUsed.server
       }],
     }
+  }
 }
