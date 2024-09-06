@@ -153,28 +153,28 @@ class Editor {
   }
 
   render(mod) {
-    if (mod === 'load') {this.el.innerHTML = '<center><img id="img" style="width: 50px; top: 100px;" src="https://shortpixel.com/img/spinner2.gif"></center>'; return}
-    else if (mod === 'none') { 
+    if (mod === 'load') { this.el.innerHTML = '<center><img id="img" style="width: 50px; top: 100px;" src="https://shortpixel.com/img/spinner2.gif"></center>'; return }
+    else if (mod === 'none') {
       this.el.innerHTML = `<center> 
         <header> No schedule found. What would you like to do?</header>
         <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" class="link" id="recoverSch">Recover</a> 
         <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" class="link" id="newSch">New</a> 
-      </center>`; 
+      </center>`;
       const recoverBt = document.getElementById('recoverSch')
       recoverBt.addEventListener('click', function () {
         google.script.run.withSuccessHandler(recoverSchedulesSuccess).withFailureHandler(recoverSchedulesFail).api(
           { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'recover'})
-        document.getElementById('recoverSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+        document.getElementById('recoverSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">'
       })
       const newBt = document.getElementById('newSch')
       newBt.addEventListener('click', function () {
         google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(newSchedulesFail).api(
           { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'new'})
-        document.getElementById('newSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">' 
+        document.getElementById('newSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">'
       })
-      return 
+      return
     }
-    
+
     let table = document.createElement('table')
     let header = document.createElement('tr')
     for (var col in this.columns) {
@@ -212,11 +212,10 @@ class Editor {
             colEl.style.setProperty('background', this.disabledBack)
             this.setDataRowCol(row, col, '')
           }
-        } else {colEl.setAttribute('onclick', 'SHEET.onCellClick(this)')}
+        } else { colEl.setAttribute('onclick', 'SHEET.onCellClick(this)') }
         if (this.columns[coli].name === 'class') {
-          if (this.data[row].b) {
-            colEl.style.setProperty('font-weight', 'bold')
-          } else { colEl.style.setProperty('font-weight', 'normal') }
+          if (this.data[row].b) { colEl.style.setProperty('font-weight', 'bold') } 
+          else { colEl.style.setProperty('font-weight', 'normal') }
         }
 
         colEl.style.setProperties({padding: '5px', 'text-align': 'center'})
