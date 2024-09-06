@@ -1,9 +1,9 @@
 <script>
 var SHEET, DATA; var USER_SETTINGS = {militaryTime: false, debugMode: false}; var USER_SETTINGS_NOT_SAVED = jsonReparse(USER_SETTINGS)
 const SETTINGS_INFO = {
-  settingsNames: ['militaryTime', 'debugMode'],
-  elIDs: ['militaryTimeSwitch', 'debugModeSwitch'],
-  types: ['check', 'check']
+  settingsNames: [ 'militaryTime', 'debugMode' ],
+  elIDs: [ 'militaryTimeSwitch', 'debugModeSwitch' ],
+  types: [ 'check', 'check' ]
 }
 
 function openMenu() {
@@ -245,8 +245,8 @@ function resizeInput() {
 //     $('.new_width').remove()
 // }
 function getWidthOfInput(inputEl) {
-  let tmp = document.createElement("span");
-  tmp.className = "input-element tmp-element";
+  let tmp = document.createElement('span');
+  tmp.className = 'input-element tmp-element';
   tmp.innerHTML = inputEl.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   document.body.appendChild(tmp);
   //let theWidth = tmp.getBoundingClientRect().width;
@@ -265,7 +265,7 @@ function getSchedulesHTML(data, dateTimeStr) {
     let schNum = 0;
     for (let i = 0; i < dataArr.length; i++) {
       if (dataArr[i].info === 's') {
-        output += ("<table style='position: relative; zoom: 80%; display: inline-block; margin: 2px;' class='schedule'>"+getSchedule({data: dataArr, index: schNum, dateTime: Date.parse(dateTimeStr)})+'</table>')
+        output += ('<table style="position: relative; zoom: 80%; display: inline-block; margin: 2px;" class="schedule">'+getSchedule({data: dataArr, index: schNum, dateTime: Date.parse(dateTimeStr)})+'</table>')
         schNum ++
       }
     }
