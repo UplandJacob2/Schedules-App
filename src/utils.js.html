@@ -69,19 +69,20 @@ function confirmPopup(args) {let title,text,onYes,onNo,yesBtTxt,noBtTxt
 
 
 // sign in, sign up, etc
-function checkSignUpButton() {
-  let butt = document.getElementById('signUpButt');
-  if (checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
-    butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
-  } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
+function isValidEmail(email) {
+  const re = /^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/
+  //console.log(re.test(email) && /^(.){3,320}$/.test(email))
+  return (re.test(email) && /^(.){3,320}$/.test(email))
 }
-function checkSignInButton() {
-  let butt = document.getElementById('signInButt');
-  if (checkEmailBoxI('emailSignIn') && checkPassBoxI('passSignIn')) {
-    butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
-  } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
+function isValidPassword(pass) {
+  return (
+    ((pass.match(/[0-9]/g) || []).length >= 1) &&   //must have #
+    ((pass.match(/[a-z]/g) || []).length >= 1) &&   //must have lowercase letter
+    ((pass.match(/[A-Z]/g) || []).length >= 1) &&   //must have uppercase letter
+    ((pass.match(/[^A-Za-z0-9]/g) || []).length >= 1) && //must have symbol
+    (pass.match(/(.){8,}/g))  // must be at least 8 characters
+  )
 }
-function checkEmailBox(inpStr) { setTimeout(function () { checkEmailBoxI(inpStr); }, 10); }
 function checkEmailBoxI(inpStr) {
   let inp = document.getElementById(inpStr);
   let email = inp.value;
@@ -100,7 +101,7 @@ function checkEmailBoxI(inpStr) {
     else { inp.style.setProperty('background-color', 'lightpink'); return false }
   }
 }
-function checkPassBox(inpStr) { setTimeout(function () { checkPassBoxI(inpStr); }, 10); }
+function checkEmailBox(inpStr) { setTimeout(function () { checkEmailBoxI(inpStr); }, 10); }
 function checkPassBoxI(inpStr) {
   let inp = document.getElementById(inpStr); let pass = inp.value; let good; //console.log(pass);
   if (inpStr === "passSignUp") {
@@ -139,6 +140,19 @@ function checkPassBoxI(inpStr) {
   }
   return good
 }
+function checkPassBox(inpStr) { setTimeout(function () { checkPassBoxI(inpStr); }, 10); }
+function checkSignUpButton() {
+  let butt = document.getElementById('signUpButt');
+  if (checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
+    butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
+  } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
+}
+function checkSignInButton() {
+  let butt = document.getElementById('signInButt');
+  if (checkEmailBoxI('emailSignIn') && checkPassBoxI('passSignIn')) {
+    butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
+  } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
+}
 function showPassword(check, boxN) {
   let box = document.getElementById(boxN);
   if (document.getElementById(check).checked) {
@@ -146,20 +160,6 @@ function showPassword(check, boxN) {
   } else {
     box.type = "password";
   }
-}
-function isValidEmail(email) {
-  const re = /^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/
-  //console.log(re.test(email) && /^(.){3,320}$/.test(email))
-  return (re.test(email) && /^(.){3,320}$/.test(email))
-}
-function isValidPassword(pass) {
-  return (
-    ((pass.match(/[0-9]/g) || []).length >= 1) &&   //must have #
-    ((pass.match(/[a-z]/g) || []).length >= 1) &&   //must have lowercase letter
-    ((pass.match(/[A-Z]/g) || []).length >= 1) &&   //must have uppercase letter
-    ((pass.match(/[^A-Za-z0-9]/g) || []).length >= 1) && //must have symbol
-    (pass.match(/(.){8,}/g))  // must be at least 8 characters
-  )
 }
 function signUp(event) {
   let pass = document.getElementById('passSignUp').value;
@@ -178,17 +178,17 @@ function signUp(event) {
     document.getElementById('errorTxt').innerHTML = err.message;
   }).signUp(pass, passR, email);
 }
-function signInF(e) {
-  e.preventDefault();
-  toggleDisplay('signIn');
-  toggleDisplay('signInLoad');
-  signIn(document.getElementById('emailSignIn').value, document.getElementById('passSignIn').value, document.getElementById('rmSignIn').checked);
-}
 function signIn(email, pass, rm) {
   google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function (err) {
     if ($('#signInLoad').css('display') === 'block') { toggleDisplay('signInLoad'); }
     error('Error when signing in.', err.message);
   }).signIn(email, pass, rm);
+}
+function signInF(e) {
+  e.preventDefault();
+  toggleDisplay('signIn');
+  toggleDisplay('signInLoad');
+  signIn(document.getElementById('emailSignIn').value, document.getElementById('passSignIn').value, document.getElementById('rmSignIn').checked);
 }
 function signInSuccess(inp) {
   if (document.getElementById('signInLoad').style.display === "block") { toggleDisplay('signInLoad'); }
@@ -208,7 +208,7 @@ function signInSuccess(inp) {
   // }, 8000);
 
   //google.script.run.test(document.body.parentElement.innerHTML)
-  try{loadSheet()} catch (e) {alert(DebugLog.getStacktraceFromErr(e))}
+  try{ loadSheet() } catch (e) { alert(DebugLog.getStacktraceFromErr(e)) }
 }
 function getToken() { let thing;
   try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } } catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
