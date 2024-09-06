@@ -54,7 +54,7 @@ class Editor {
   //   }
   // }
   createElm(row, col) {
-    let coli = this.columns.findIndex((c) => c.name === col)
+    let coli = this.columns.findIndex(c => c.name === col)
     let type = this.columns[coli].editor.type
     let data = this.data[row][col]
     let eT
@@ -86,7 +86,7 @@ class Editor {
   }
 
   createEditorElm(row, col) {
-    let coli = this.columns.findIndex((c) => c.name === col)
+    let coli = this.columns.findIndex(c => c.name === col)
     let type = this.columns[coli].editor.type
     let data = this.data[row][col]
     let eTag
@@ -191,7 +191,7 @@ class Editor {
       let rowEl = document.createElement('tr')
       for (let col in this.data[row]) {
         let colEl = document.createElement('td')
-        let coli = this.columns.findIndex((c) => c.name === col)
+        let coli = this.columns.findIndex(c => c.name === col)
         colEl.setAttribute('row', row)
         colEl.setAttribute('col', col)
         // enable if
@@ -244,12 +244,12 @@ class Editor {
       this.render()
     } else if (customtype === 'checklist') {
       if (option === 'close') {
-        let options = this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems
+        let options = this.columns[this.columns.findIndex(c => c.name === col)].editor.options.listItems
         let dat = ''
         for (let i = 0; i < options.length; i++) {
           if (el.children[0].children[1].children[i].children[0].checked) {
             if (dat) { dat += ', ' }
-            dat += this.columns[this.columns.findIndex((c) => c.name === col)].editor.options.listItems[i].value
+            dat += this.columns[this.columns.findIndex(c => c.name === col)].editor.options.listItems[i].value
           }
         }
         this.setDataRowCol(row, col, dat)
@@ -273,7 +273,7 @@ class Editor {
       } else {
         el.classList.add('editMode')
         el.innerHTML = this.createEditorElm(row, col).outerHTML
-        if (this.columns[this.columns.findIndex((c) => c.name === col)].editor.type === 'time') {
+        if (this.columns[this.columns.findIndex(c => c.name === col)].editor.type === 'time') {
           DebugLog.warn('time thing clicked')
           let hr, min
           try { hr = this.data[row][col].match(/[0-9]{1,2}(?=:)/g)[0] } catch { hr  = 8 }
@@ -290,7 +290,7 @@ class Editor {
           } catch (e) {DebugLog.error(DebugLog.getStacktraceFromErr(e))}
 
 
-        } else if (this.columns[this.columns.findIndex((c) => c.name === col)].editor.type === 'text') {
+        } else if (this.columns[this.columns.findIndex(c => c.name === col)].editor.type === 'text') {
           let box = el.children[0]
           box.value = this.data[row][col]
           box.select()
