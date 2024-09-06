@@ -33,12 +33,12 @@ window.onload = function () {
   //   alert(location.parameters);
   // });
 
-  var events = ['keypress', 'keydown', 'keyup'];
+  let events = [ 'keypress', 'keydown', 'keyup' ];
 
   events.forEach((e) => { document.getElementById('signInC').addEventListener(e, function(){ checkSignInButton(); }); });
   events.forEach((e) => { document.getElementById('passSignIn').addEventListener(e, function(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
   events.forEach((e) => { document.getElementById('signUpC').addEventListener(e, function(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
-  ['emailSignUp', 'emailSignIn'].forEach((str) => { var elm = document.getElementById(str); events.forEach((e) => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
+  [ 'emailSignUp', 'emailSignIn' ].forEach((str) => { let elm = document.getElementById(str); events.forEach((e) => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
 
   if (getToken()) {
     toggleDisplay('signInLoad');
@@ -201,7 +201,7 @@ function recoverSchedulesSuccess(response) {
     getSchedulesSuccess(options[0][1])
   } else {
     let html = "<header style='font-weight: bold;'>Multiple schedules were found.</header>"
-    for (var i = 0; i < options.length; i++) {
+    for (let i = 0; i < options.length; i++) {
       html += `<div><button onclick="recoverSpecificSchedule('${Base64.encode(options[i][1])}', '${options[i][2]}');" class="link" style="padding: 10px; margin: 5px;" >Option ${i+1}</button> <a style="margin: 5px; margin-bottom: 20px;">${getSchedulesHTML(options[i][1], options[i][0])}</a></div>`
     }
     DATA = []
@@ -229,7 +229,7 @@ function newSchedulesFail(err) {
 
 function resizeInput() {
   //this.style.width = this.value.length + "ch";
-  var elm = this
+  let elm = this
   setTimeout(function() {
     setTimeout(function() {alert(elm.outerHTML)})
     //alert(elm.outerHTML)
@@ -245,12 +245,12 @@ function resizeInput() {
 //     $('.new_width').remove()
 // }
 function getWidthOfInput(inputEl) {
-  var tmp = document.createElement("span");
+  let tmp = document.createElement("span");
   tmp.className = "input-element tmp-element";
   tmp.innerHTML = inputEl.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   document.body.appendChild(tmp);
-  //var theWidth = tmp.getBoundingClientRect().width;
-  var theWidth = tmp.offsetWidth
+  //let theWidth = tmp.getBoundingClientRect().width;
+  let theWidth = tmp.offsetWidth
   //alert(theWidth)
   document.body.removeChild(tmp);
   return theWidth;
