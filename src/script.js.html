@@ -68,7 +68,7 @@ function reloadEdit() {
 function updateSaveBtn() {
   const saveBt = document.getElementById('saveSch')
   //alert('CHANGE\n'+JSON.stringify(DATA)+"\n"+JSON.stringify(SHEET.data))
-  if (JSON.stringify(DATA) != JSON.stringify(SHEET.data)) {
+  if (JSON.stringify(DATA) !== JSON.stringify(SHEET.data)) {
     saveBt.disabled = false;saveBt.classList.remove('grayLink');  saveBt.classList.add('link'); return true
   } else {
     saveBt.disabled = true; saveBt.classList.remove('link');  saveBt.classList.add('grayLink'); return false
@@ -97,12 +97,12 @@ function editPopClose () {
 function updateSettingsNotSaved() {
   setTimeout(function() {
     for (let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
-      if (SETTINGS_INFO.types[seti] == 'check') {
+      if (SETTINGS_INFO.types[seti] === 'check') {
         USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
       }
     }
     let sB = document.getElementById('saveSet')
-    if (JSON.stringify(USER_SETTINGS) != JSON.stringify(USER_SETTINGS_NOT_SAVED)) {sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink')
+    if (JSON.stringify(USER_SETTINGS) !== JSON.stringify(USER_SETTINGS_NOT_SAVED)) {sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink')
     } else {sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link')}
   }, 1)
 }
@@ -113,7 +113,7 @@ function saveSettings() {
 function getSettingsSuccess(response) {
   let obj = JSON.parse(response) 
   Object.keys(obj).forEach((k, i) => {
-    if(SETTINGS_INFO.types[i] == 'check') {
+    if(SETTINGS_INFO.types[i] === 'check') {
       document.getElementById(SETTINGS_INFO.elIDs[i]).checked = obj[k]
     }
   })
@@ -197,7 +197,7 @@ function deleteSchedulesFail(err) {
 function recoverSchedulesSuccess(response) {
   let resp = JSON.parse(response)
   let options = resp[1]
-  if (options.length == 1) {
+  if (options.length === 1) {
     getSchedulesSuccess(options[0][1])
   } else {
     let html = "<header style='font-weight: bold;'>Multiple schedules were found.</header>"
@@ -264,7 +264,7 @@ function getSchedulesHTML(data, dateTimeStr) {
   try {
     let schNum = 0;
     for (let i = 0; i < dataArr.length; i++) {
-      if (dataArr[i].info == 's') {
+      if (dataArr[i].info === 's') {
         output += ("<table style='position: relative; zoom: 80%; display: inline-block; margin: 2px;' class='schedule'>"+getSchedule({data: dataArr, index: schNum, dateTime: Date.parse(dateTimeStr)})+'</table>')
         schNum ++
       }
@@ -292,24 +292,24 @@ function getSchedule(query) {
   
   let scheduleName, scheduleIndex, data, date; let schedule = []
   if (query) {
-    data = (typeof query.data != 'undefined') ? query.data : DATA
-    scheduleName = (typeof query.name != 'undefined') ? query.name : null
-    scheduleIndex = (typeof query.index != 'undefined') ? query.index : null
-    date = (typeof query.dateTime != 'undefined') ? query.dateTime : new Date()
+    data = (typeof query.data !== 'undefined') ? query.data : DATA
+    scheduleName = (typeof query.name !== 'undefined') ? query.name : null
+    scheduleIndex = (typeof query.index !== 'undefined') ? query.index : null
+    date = (typeof query.dateTime !== 'undefined') ? query.dateTime : new Date()
   } else { 
     date = new Date()
     data = DATA
   }
-  if (data == []) {
+  if (data === []) {
     return `<header class="center" style='font-size: 40px; margin: 30px;'>We couldn't find a schedule for you.</header>   <a onclick="toggleDisplay('editPop')" class='link center' style='font-size: 25px; padding: 10px; margin-top: -30px;'>Create Schedule</a>`
   }
   let schIndex = -1
   for (let i in data) {
-    if (data[i].info == 's') {
+    if (data[i].info === 's') {
       schIndex ++
-      if ( (scheduleName && data[i].name == scheduleName) || (scheduleIndex && schIndex == scheduleIndex) || (!scheduleName && !scheduleIndex && data[i].days.includes(date.toString('ddd'))) ) {
+      if ( (scheduleName && data[i].name === scheduleName) || (scheduleIndex && schIndex === scheduleIndex) || (!scheduleName && !scheduleIndex && data[i].days.includes(date.toString('ddd'))) ) {
         let rInfo = data[i].info; let r = i
-        while (rInfo != 'es') {
+        while (rInfo !== 'es') {
           schedule.push(data[r])
           r ++
           try { rInfo = data[r].info } catch {error('Error parsing schedule', 'no end \'es\'')}
@@ -324,7 +324,7 @@ function getSchedule(query) {
   schStr += '<tr><th colspan="8">'+schedule[0].name+'</th></tr>'
 
   let minu = String(date.getMinutes())
-  if (minu.length == 1) { minu = '0'+minu }
+  if (minu.length === 1) { minu = '0'+minu }
   const nowInt = parseInt(String(date.getHours())+minu)
   let boldRows = []; let classNows = []; 
 
@@ -345,13 +345,13 @@ function getSchedule(query) {
     l(row)
     row.forEach((cell, c) => {
       schStr+='<td class="c'+c+' r'+rab
-      if (c == 0) {if (boldRows.includes(r)) { schStr+= ' b' }}
+      if (c === 0) {if (boldRows.includes(r)) { schStr+= ' b' }}
       if (classNows.includes(r)) { schStr+= ' y' }
       schStr+='">'+cell+'</td>'
     }); 
     
     schStr+='</tr>';
-    if (rab == "a") { rab = "b" } else { rab ="a" }
+    if (rab === "a") { rab = "b" } else { rab ="a" }
   });
   l(schStr)
   return schStr
@@ -393,7 +393,7 @@ function loadSheet() {
   })
   const reloadBt = document.getElementById('reloadSch')
   reloadBt.addEventListener('click', function () {
-    if (DATA != SHEET.data) {
+    if (DATA !== SHEET.data) {
       confirmPopup({title: 'Changes not saved', text: 'Your changes aren\'t saved. Would you like to save before reloading?', onYes: 'saveSch()', onNo: 'reloadEdit()'})
       return
     }
