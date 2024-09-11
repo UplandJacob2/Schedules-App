@@ -39,7 +39,7 @@ function error(title, txt) {
 }
 /**
  * Opens a popup to confirm
- * 
+ *
 **/
 function confirmPopup(args) {let title,text,onYes,onNo,yesBtTxt,noBtTxt
   title = args.title || 'Confirm'; text = args.text || 'Confirm?'; yesBtTxt = args.yesBtTxt || 'Yes'; noBtTxt = args.noBtTxt || 'No'
@@ -193,7 +193,7 @@ function signInSuccess(inp) {
   document.getElementById('things').innerHTML = inp[0];
   ////      INDEX ONLOAD
   //toggleDisplay('grid')
-  
+
   //google.script.run.withSuccessHandler(function (schedule) { $('.schedule').html(schedule); $('#img').css('display', 'none'); }).getSchedule(getEmail(), getToken());
 
   // setInterval(function () {
@@ -228,15 +228,15 @@ var DateUtils = DateUtils || {};
 /**
  * Returns day of week as 3 letters: sun, mon, tue, wed, thu, fri, sat
  *
- * inputs: 
+ * inputs:
  * * {int} day
- * 
+ *
  * returned: day as string
- * {string} 
+ * {string}
  *   * ex: 'mon'
- * 
+ *
  * @param {int} day as int
- * 
+ *
  * @return {string} day as string
  */
 DateUtils.numDayToStr = function (num) {
@@ -264,13 +264,13 @@ DateUtils.militaryToStandard = function(time, showMeridiem) {
   return timeValue
 }
 /**
- * 
+ *
  * query:
  * * dateTime
  * * militaryTime
- * 
- * 
-**/ 
+ *
+ *
+**/
 DateUtils.getDateAsText = function (query) {
   let miltime = (typeof query.militaryTime !== 'undefined') ? query.militaryTime : false
   let dateTime = (typeof query.dateTime !== 'undefined') ? query.dateTime : new Date()
