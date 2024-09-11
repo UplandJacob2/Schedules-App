@@ -30,7 +30,7 @@ const DebugLog = {
 
 // eslint-disable-next-line
 const Base64={_keyStr:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',encode:function(e){let t='';let n,r,i,s,o,u,a;let f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){let t='';let n,r,i;let s,o,u,a;let f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,'');while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!==64){t=t+String.fromCharCode(r)}if(a!==64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,'\n');let t='';for(let n=0;n<e.length;n++){let r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){let t='';let n=0;let r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
-function jsonReparse (arr) { return JSON.parse(JSON.stringify(arr))}
+function jsonReparse (arr) { return JSON.parse(JSON.stringify(arr)) }
 
 function error(title, txt) {
   toggleDisplay('error')
@@ -41,11 +41,12 @@ function error(title, txt) {
  * Opens a popup to confirm
  *
 **/
-function confirmPopup(args) {let title,text,onYes,onNo,yesBtTxt,noBtTxt
+function confirmPopup(args) {
+  let title,text,onYes,onNo,yesBtTxt,noBtTxt
   title = args.title || 'Confirm'; text = args.text || 'Confirm?'; yesBtTxt = args.yesBtTxt || 'Yes'; noBtTxt = args.noBtTxt || 'No'
   onYes = args.onYes || "toggleDisplay('confirmPop')"; onNo = args.onNo || "toggleDisplay('confirmPop')"
-  if(typeof args.onYes !== 'undefined') {onYes!=="\ntoggleDisplay('confirmPop')"}
-  if(typeof args.onNo  !== 'undefined') {onNo !=="\ntoggleDisplay('confirmPop')"}
+  if(typeof args.onYes !== 'undefined') { onYes!=="\ntoggleDisplay('confirmPop')" }
+  if(typeof args.onNo  !== 'undefined') { onNo !=="\ntoggleDisplay('confirmPop')" }
 
   toggleDisplay('confirmPop')
   document.getElementById('confirmTitle' ).innerHTML = title
@@ -57,7 +58,23 @@ function confirmPopup(args) {let title,text,onYes,onNo,yesBtTxt,noBtTxt
 }
 
 
-// sign in, sign up, etc
+////// sign in, sign up, etc
+
+function isValidEmail(email) {
+  const re = /^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/
+  //console.log(re.test(email) && /^(.){3,320}$/.test(email))
+  return (re.test(email) && /^(.){3,320}$/.test(email))
+}
+function isValidPassword(pass) {
+  return (
+    ((pass.match(/[0-9]/g) || []).length >= 1) &&   //must have #
+    ((pass.match(/[a-z]/g) || []).length >= 1) &&   //must have lowercase letter
+    ((pass.match(/[A-Z]/g) || []).length >= 1) &&   //must have uppercase letter
+    ((pass.match(/[^A-Za-z0-9]/g) || []).length >= 1) && //must have symbol
+    (pass.match(/(.){8,}/g))  // must be at least 8 characters
+  )
+}
+
 function checkSignUpButton() {
   let butt = document.getElementById('signUpButt');
   if (checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
@@ -72,7 +89,6 @@ function checkSignInButton() {
   }
   else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
 }
-function checkEmailBox(inpStr) { setTimeout(function () { checkEmailBoxI(inpStr); }, 10); }
 function checkEmailBoxI(inpStr) {
   let inp = document.getElementById(inpStr);
   let email = inp.value;
@@ -92,7 +108,7 @@ function checkEmailBoxI(inpStr) {
     else { inp.style.setProperty('background-color', 'lightpink'); return false }
   }
 }
-function checkPassBox(inpStr) { setTimeout(function () { checkPassBoxI(inpStr); }, 10); }
+function checkEmailBox(inpStr) { setTimeout(function () { checkEmailBoxI(inpStr); }, 10); }
 function checkPassBoxI(inpStr) {
   let inp = document.getElementById(inpStr); let pass = inp.value; let good; //console.log(pass);
   if (inpStr === "passSignUp") {
@@ -117,8 +133,7 @@ function checkPassBoxI(inpStr) {
     let pRT = document.getElementById('passRTxt')
     if (good) { pRT.innerHTML = 'Passwords match.'; pRT.style.setProperty('color', '#040'); }
     else { pRT.innerHTML = 'Passwords do not match.'; pRT.style.setProperty('color', '#800'); }
-  }
-  else { good = isValidPassword(pass); }
+  } else { good = isValidPassword(pass); }
 
   if (inpStr === "passSignUp" || inpStr === "passSignUpR") {
     let c = document.getElementById(inpStr + "C"); let x = document.getElementById(inpStr + "X");
@@ -132,6 +147,8 @@ function checkPassBoxI(inpStr) {
   }
   return good
 }
+function checkPassBox(inpStr) { setTimeout(function () { checkPassBoxI(inpStr); }, 10); }
+
 function showPassword(check, boxN) {
   let box = document.getElementById(boxN);
   if (document.getElementById(check).checked) {
@@ -139,20 +156,6 @@ function showPassword(check, boxN) {
   } else {
     box.type = "password";
   }
-}
-function isValidEmail(email) {
-  const re = /^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/
-  //console.log(re.test(email) && /^(.){3,320}$/.test(email))
-  return (re.test(email) && /^(.){3,320}$/.test(email))
-}
-function isValidPassword(pass) {
-  return (
-    ((pass.match(/[0-9]/g) || []).length >= 1) &&   //must have #
-    ((pass.match(/[a-z]/g) || []).length >= 1) &&   //must have lowercase letter
-    ((pass.match(/[A-Z]/g) || []).length >= 1) &&   //must have uppercase letter
-    ((pass.match(/[^A-Za-z0-9]/g) || []).length >= 1) && //must have symbol
-    (pass.match(/(.){8,}/g))  // must be at least 8 characters
-  )
 }
 function signUp(event) {
   let pass = document.getElementById('passSignUp').value;
@@ -201,7 +204,7 @@ function signInSuccess(inp) {
   // }, 8000);
 
   //google.script.run.test(document.body.parentElement.innerHTML)
-  try{loadSheet()} catch (e) {alert(DebugLog.getStacktraceFromErr(e))}
+  try{ loadSheet() } catch (e) { alert(DebugLog.getStacktraceFromErr(e)) }
 }
 function getToken() { let thing;
   try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } } catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
