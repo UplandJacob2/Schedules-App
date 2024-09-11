@@ -24,7 +24,7 @@ class Editor {
   }
   onDataChangeFunc() {
     try {
-      if (typeof this.onDataChange === 'undefined') {
+      if (typeof this.onDataChange !== 'undefined') {
         this.onDataChange()
       }
     } catch (e) {alert(e.stack.split('\n').join('\n"'))}
