@@ -1,5 +1,5 @@
 <script>
-var SHEET, DATA; var USER_SETTINGS = {militaryTime: false, debugMode: false}; var USER_SETTINGS_NOT_SAVED = jsonReparse(USER_SETTINGS)
+var SHEET, DATA; var USER_SETTINGS = { militaryTime: false, debugMode: false }; var USER_SETTINGS_NOT_SAVED = jsonReparse(USER_SETTINGS)
 const SETTINGS_INFO = {
   settingsNames: [ 'militaryTime', 'debugMode' ],
   elIDs: [ 'militaryTimeSwitch', 'debugModeSwitch' ],
@@ -76,7 +76,7 @@ function getSchedule(query) {
   }
 
   let schStr = ''; let rab = 'a'
-  schStr += '<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">'+DateUtils.getDateAsText({dateTime: date, militaryTime: USER_SETTINGS.militaryTime})+'</td></tr>'
+  schStr += '<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">'+DateUtils.getDateAsText({ dateTime: date, militaryTime: USER_SETTINGS.militaryTime })+'</td></tr>'
   schStr += '<tr><th colspan="8">'+schedule[0].name+'</th></tr>'
 
   let minu = String(date.getMinutes())
@@ -101,7 +101,7 @@ function getSchedule(query) {
     l(row)
     row.forEach((cell, c) => {
       schStr+='<td class="c'+c+' r'+rab
-      if (c === 0) {if (boldRows.includes(r)) { schStr+= ' b' }}
+      if (c === 0) { if (boldRows.includes(r)) { schStr+= ' b' } }
       if (classNows.includes(r)) { schStr+= ' y' }
       schStr+='">'+cell+'</td>'
     });
@@ -163,12 +163,12 @@ function saveSch() {
 }
 function deleteSch() {
   google.script.run.withSuccessHandler(deleteSchedulesSuccess).withFailureHandler(deleteSchedulesFail).api(
-    { email: getEmail(), action: 'delete', token: getToken(), item: 'sch'})
+    { email: getEmail(), action: 'delete', token: getToken(), item: 'sch' })
   document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 function editPopClose () {
   if (updateSaveBtn()) {
-    confirmPopup({title: 'Save?', text: 'Do you want to save your changes?', onYes: 'saveSch()', onNo: 'toggleDisplay(\'editPop\')'})
+    confirmPopup({ title: 'Save?', text: 'Do you want to save your changes?', onYes: 'saveSch()', onNo: 'toggleDisplay(\'editPop\')' })
   } else {
     toggleDisplay('editPop')
   }
@@ -184,7 +184,7 @@ function updateSettingsNotSaved() {
     }
     let sB = document.getElementById('saveSet')
     if (JSON.stringify(USER_SETTINGS) !== JSON.stringify(USER_SETTINGS_NOT_SAVED)) { sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink') }
-    else {sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link')}
+    else { sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link') }
   }, 1)
 }
 function saveSettings() {
@@ -224,8 +224,8 @@ function updateSettings () {
 function firstGetSchedulesSuccess(response) {
   getSchedulesSuccess(response)
 
-  try {$('.schedule').html(getSchedule()); $('#img').css('display', 'none');
-  } catch (err) {alert(DebugLog.getStacktraceFromErr(err)/*.splice(0, 2)*/.join('\n"'))}
+  try { $('.schedule').html(getSchedule()); $('#img').css('display', 'none');
+  } catch (err) { alert(DebugLog.getStacktraceFromErr(err)/*.splice(0, 2)*/.join('\n"')) }
 
   setInterval(function () {
     //google.script.run.withSuccessHandler(function (schedule) { $('.schedule').html(schedule); $('#img').css('display', 'none'); }).getSchedule(getEmail(), getToken());
@@ -243,8 +243,8 @@ function getSchedulesSuccess(response, encoded) {
   aR.disabled = false;  aR.classList.remove('grayLink');  aR.classList.add('link')
   let dR = document.getElementById('removeRow')
   dR.disabled = false;  dR.classList.remove('grayLink');  dR.classList.add('link')
-  if (encoded) {response = Base64.decode(response)}
-  try { SHEET.resetData(response) } catch (e) {error('Error handling response', DebugLog.getStacktraceFromErr(e))}
+  if (encoded) response = Base64.decode(response)
+  try { SHEET.resetData(response) } catch (e) { error('Error handling response', DebugLog.getStacktraceFromErr(e)) }
   DATA = jsonReparse(SHEET.data); updateSaveBtn()
 }
 function getSchedulesFail(err) { error('Error getting schedule for editing', err); DATA = []; SHEET.render('none') }
@@ -292,7 +292,7 @@ function recoverSchedulesSuccess(response) {
 }
 function recoverSpecificSchedule(data, recoverID) {
   google.script.run.withSuccessHandler(recoverSchedulesSuccess).withFailureHandler(recoverSchedulesFail).api(
-    { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'recover', fileId: recoverID})
+    { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'recover', fileId: recoverID })
   DATA = []
   SHEET.render('load')
 }
@@ -312,7 +312,7 @@ function resizeInput() {
   //this.style.width = this.value.length + 'ch';
   let elm = this
   setTimeout(function() {
-    setTimeout(function() {alert(elm.outerHTML)})
+    setTimeout(function() { alert(elm.outerHTML) })
     //alert(elm.outerHTML)
     elm.style.width = getWidthOfInput(elm) + 'px';
   }, 200 );
@@ -346,11 +346,11 @@ function getSchedulesHTML(data, dateTimeStr) {
     let schNum = 0;
     for (let i = 0; i < dataArr.length; i++) {
       if (dataArr[i].info === 's') {
-        output += ('<table style="position: relative; zoom: 80%; display: inline-block; margin: 2px;" class="schedule">'+getSchedule({data: dataArr, index: schNum, dateTime: Date.parse(dateTimeStr)})+'</table>')
+        output += ('<table style="position: relative; zoom: 80%; display: inline-block; margin: 2px;" class="schedule">'+getSchedule({ data: dataArr, index: schNum, dateTime: Date.parse(dateTimeStr)})+'</table>')
         schNum ++
       }
     }
-  } catch(err) {error('error', err)}
+  } catch(err) { error('error', err) }
   return output
 }
 
@@ -359,13 +359,13 @@ function loadSheet() {
   SHEET = new Editor({
     el: document.getElementById('testEditor'),
     columns: [
-      { header: 'Info',      name: 'info', width: 50,  editor: { type: 'text', options: { attrs: {maxlength: '2'}, style: {width: '30px'} } } },
-      { header: 'Class',     name: 'class',width: 200, editor: { type: 'text', options: { style: {width: 'auto'} } } },
+      { header: 'Info',      name: 'info', width: 50,  editor: { type: 'text', options: { attrs: { maxlength: '2' }, style: { width: '30px' } } } },
+      { header: 'Class',     name: 'class',width: 200, editor: { type: 'text', options: { style: { width: 'auto' } } } },
       { header: 'Start Time',name: 'strt', width: 100, editor: { type: 'time' } },
       { header: 'End Time',  name: 'end',  width: 100, editor: { type: 'time' } },
       { header: 'Bold',      name: 'b',    width: 30,  editor: { type: 'checkbox', options: { checked: true, style: { 'margin-left': '20px' } } } },
-      { header: 'Days',      name: 'days', width: 200, editor: { type: 'checklist',options: { listItems: [  { text: 'Sun', value: 'Sun' }, { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' }, { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' }]}, active: { type: 'col', if: 'info', equalTo: 's' } } },
-      { header: 'Name',      name: 'name', width: 200, editor: { type: 'text', options: { style: {width: '200px'} }, active: { type: 'col', if: 'info', equalTo: 's' } } }
+      { header: 'Days',      name: 'days', width: 200, editor: { type: 'checklist',options: { listItems: [  { text: 'Sun', value: 'Sun' }, { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' }, { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' }] }, active: { type: 'col', if: 'info', equalTo: 's' } } },
+      { header: 'Name',      name: 'name', width: 200, editor: { type: 'text', options: { style: { width: '200px' } }, active: { type: 'col', if: 'info', equalTo: 's' } } }
     ],
     militaryTime: USER_SETTINGS.militaryTime,
     data: [firstRow, emptyRow, emptyRow],
@@ -384,12 +384,12 @@ function loadSheet() {
   })
   const deleteBt = document.getElementById('deleteSch')
   deleteBt.addEventListener('click', function () {
-    confirmPopup({ title: 'Confirm deletion', text: 'Are you sure you want to delete your schedules? (Can be recovered)', onYes: `deleteSch()`})
+    confirmPopup({ title: 'Confirm deletion', text: 'Are you sure you want to delete your schedules? (Can be recovered)', onYes: `deleteSch()` })
   })
   const reloadBt = document.getElementById('reloadSch')
   reloadBt.addEventListener('click', function () {
     if (DATA !== SHEET.data) {
-      confirmPopup({title: 'Changes not saved', text: 'Your changes aren\'t saved. Would you like to save before reloading?', onYes: 'saveSch()', onNo: 'reloadEdit()'})
+      confirmPopup({ title: 'Changes not saved', text: 'Your changes aren\'t saved. Would you like to save before reloading?', onYes: 'saveSch()', onNo: 'reloadEdit()' })
       return
     }
     reloadEdit()
