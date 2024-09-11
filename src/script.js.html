@@ -9,15 +9,15 @@ const firstRow = { info: 's', class: 'Some Class', strt: '8:00', end: '9:00', b:
 const emptyRow = { info: '',  class: 'Some Class', strt: '8:00', end: '9:00', b: false, days: '', name: '' }
 
 function openMenu() {
-    document.querySelector('.nav-menu').classList.toggle('active');
-    document.querySelector('.menu-cont').classList.toggle('active');
-    if (window.innerWidth > 668) {
-      if (document.querySelector('.menu-cont').contains('active')) { // inactive menu
-        document.getElementById('main').style.setProperty('width', '100%')
-      } else { // active menu
-        document.getElementById('main').style.setProperty('width', 'calc(100% - 130px)')
-      }
-    } else {document.getElementById('main').style.setProperty('width', '100%')}
+  document.querySelector('.nav-menu').classList.toggle('active');
+  document.querySelector('.menu-cont').classList.toggle('active');
+  if (window.innerWidth > 668) {
+    if (document.querySelector('.menu-cont').contains('active')) { // inactive menu
+      document.getElementById('main').style.setProperty('width', '100%')
+    } else { // active menu
+      document.getElementById('main').style.setProperty('width', 'calc(100% - 130px)')
+    }
+  } else { document.getElementById('main').style.setProperty('width', '100%') }
 }
 
 function toggleDisplay(elmStrIn, toState) {
@@ -68,7 +68,7 @@ function getSchedule(query) {
         while (rInfo !== 'es') {
           schedule.push(data[r])
           r ++
-          try { rInfo = data[r].info } catch {error('Error parsing schedule', 'no end \'es\'')}
+          try { rInfo = data[r].info } catch { error('Error parsing schedule', 'no end \'es\'') }
         }
         schedule.push(data[r])
       }
@@ -159,12 +159,12 @@ function updateSaveBtn() {
 function saveSch() {
   google.script.run.withSuccessHandler(saveSchedulesSuccess).withFailureHandler(saveSchedulesFail).api(
     { email: getEmail(), action: 'edit', token: getToken(), item: 'sch', val: JSON.stringify(SHEET.data) })
-  document.getElementById('saveSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>' 
+  document.getElementById('saveSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 function deleteSch() {
   google.script.run.withSuccessHandler(deleteSchedulesSuccess).withFailureHandler(deleteSchedulesFail).api(
     { email: getEmail(), action: 'delete', token: getToken(), item: 'sch'})
-  document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>' 
+  document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 function editPopClose () {
   if (updateSaveBtn()) {
