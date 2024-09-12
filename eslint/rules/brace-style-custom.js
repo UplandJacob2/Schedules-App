@@ -5,14 +5,14 @@
  */
 
 "use strict";
-
-const astUtils = {
-  isTokenOnSameLine(left, right) {
-    return left.loc.end.line === right.loc.start.line;
-  },
+const astUtils = require("./utils/ast-utils")
+// const astUtils = {
+//   isTokenOnSameLine(left, right) {
+//     return left.loc.end.line === right.loc.start.line;
+//   },
   
-}
-const STATEMENT_LIST_PARENTS = new Set(["Program", "BlockStatement", "StaticBlock", "SwitchCase"]);
+// }
+// const STATEMENT_LIST_PARENTS = new Set(["Program", "BlockStatement", "StaticBlock", "SwitchCase"]);
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -178,7 +178,7 @@ module.exports = {
 
     return {
       BlockStatement(node) {
-        if (!STATEMENT_LIST_PARENTS.has(node.parent.type)) {
+        if (!astUtils.STATEMENT_LIST_PARENTS.has(node.parent.type)) {
           validateCurlyPair(sourceCode.getFirstToken(node), sourceCode.getLastToken(node));
         }
       },
