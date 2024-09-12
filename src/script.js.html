@@ -100,10 +100,10 @@ function getSchedule(query) {
     schStr+='<tr>'
     l(row)
     row.forEach((cell, c) => {
-      schStr+='<td class="c'+c+' r'+rab
+      schStr+=`<td class="c${c} r${rab}`
       if (c === 0) { if (boldRows.includes(r)) { schStr+= ' b' } }
       if (classNows.includes(r)) { schStr+= ' y' }
-      schStr+='">'+cell+'</td>'
+      schStr+=`">${cell}</td>`
     });
 
     schStr+='</tr>';
@@ -224,8 +224,8 @@ function updateSettings () {
 function firstGetSchedulesSuccess(response) {
   getSchedulesSuccess(response)
 
-  try { $('.schedule').html(getSchedule()); $('#img').css('display', 'none');
-  } catch (err) { alert(DebugLog.getStacktraceFromErr(err)/*.splice(0, 2)*/.join('\n"')) }
+  try { $('.schedule').html(getSchedule()); $('#img').css('display', 'none'); }
+  catch (err) { alert(DebugLog.getStacktraceFromErr(err)/*.splice(0, 2)*/.join('\n"')) }
 
   setInterval(function () {
     //google.script.run.withSuccessHandler(function (schedule) { $('.schedule').html(schedule); $('#img').css('display', 'none'); }).getSchedule(getEmail(), getToken());
@@ -324,7 +324,7 @@ function resizeInput() {
   setTimeout(function() {
     setTimeout(function() { alert(elm.outerHTML) })
     //alert(elm.outerHTML)
-    elm.style.width = getWidthOfInput(elm) + 'px';
+    elm.style.width = `${getWidthOfInput(elm)}px`;
   }, 200 );
   //alert(getWidthOfInput(this))
   //alert('resized')
