@@ -17,19 +17,19 @@ function minify_(inp) {
 }
 
 function githubCommit() {
-  let contents = getScriptSourceCode(ScriptApp.getScriptId())
+  let contents = getScriptSourceCode_(ScriptApp.getScriptId())
   for (let dat in contents) {
-    updateGithubRepo(contents[dat][0], contents[dat][1])
+    updateGithubRepo_(contents[dat][0], contents[dat][1])
   }
 }
-function parse () {
+function parse_() {
   let input = inp||'<html></html>'
   let response = UrlFetchApp.fetch("https://www.toptal.com/developers/html-minifier/api/raw", {'muteHttpExceptions': true, 'method': 'POST', 'payload': 'input='+encodeURIComponent(input)})
   l(response.getContentText())
 }
 
 function minifyAll() {
-  let contents = getScriptSourceCode(DriveApp.getFilesByName('Schedules App').next().getId())
+  let contents = getScriptSourceCode_(DriveApp.getFilesByName('Schedules App').next().getId())
   for (let dat in contents) {
     let n = contents[dat][0]
     if ( !(n == 'Date.js.html' || n == 'Datejs.js.html' || n == 'underscore-observe.js.html') && contents[dat][0].match(/(\.gs)|(\.js\.html)/g) ) {
@@ -41,7 +41,7 @@ function minifyAll() {
 }
 
 function gitHubRelease() {
-  //let fileTxt = getGithubFilesAndZip().getBlob().getDataAsString()
+  //let fileTxt = getGithubFilesAndZip_().getBlob().getDataAsString()
   let fileTxt = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG').getFilesByName('SchedulesApp-v'+version+'.zip').next().getBlob().getDataAsString()
   const data = {
     tag_name: 'v'+version,
@@ -71,19 +71,19 @@ function gitHubRelease() {
   const response = UrlFetchApp.fetch(githubApiUrl, options);
   l('Response:', response.getContentText());
 }
-function getGithubFilesAndZip() {
+function getGithubFilesAndZip_() {
   let url = `https://api.github.com/repos/${name}/${repo}/contents`;
   
   let releaseFolder = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG')
   let folder = releaseFolder.createFolder('SchedulesApp-v'+version)
   l('creating files...')
-  getAndPutFiles(folder, url)
+  getAndPutFiles_(folder, url)
   l('getting from Google Drive and creating a zip...')
-  let file = releaseFolder.createFile(zipFilesInFolder(folder, 'SchedulesApp-v'+version))
+  let file = releaseFolder.createFile(zipFilesInFolder_(folder, 'SchedulesApp-v'+version))
   l('zip created')
   return file
 }
-function zipFilesInFolder(folder, filename) {
+function zipFilesInFolder_(folder, filename) {
   function getBlobs(rootFolder, path) {
     let blobs = [];
     let files = rootFolder.getFiles();
@@ -105,7 +105,7 @@ function zipFilesInFolder(folder, filename) {
   }
   return Utilities.zip(getBlobs(folder, ''), filename + '.zip');
 }
-function getAndPutFiles(folder, url) {
+function getAndPutFiles_(folder, url) {
   let options = { muteHttpExceptions: true, headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3.raw' } };
   let files = JSON.parse(UrlFetchApp.fetch(url, options).getContentText())
 
@@ -117,14 +117,14 @@ function getAndPutFiles(folder, url) {
     } else if (file.type === 'dir') {
       let nFolder = folder.createFolder(file.name)
       url = url+'/'+file.name
-      getAndPutFiles(nFolder, url)
+      getAndPutFiles_(nFolder, url)
     }
   });
 }
 
 
 
-function getScriptSourceCode(fileid) {
+function getScriptSourceCode_(fileid) {
   let toReturn = []
   let params = { headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() }, followRedirects: true, muteHttpExceptions: true};
   let url = 'https://script.google.com/feeds/download/export?id='+fileid+'&format=json';
@@ -147,7 +147,7 @@ function getScriptSourceCode(fileid) {
   }
   return toReturn
 }
-function updateGithubRepo(filePath, content) {
+function updateGithubRepo_(filePath, content) {
   const url = `https://api.github.com/repos/${name}/${repo}/contents/src/${filePath}`;
 
   let getResponse = JSON.parse(UrlFetchApp.fetch(url, { muteHttpExceptions: true, headers: {authorization: `token ${token}`} }).getContentText())
