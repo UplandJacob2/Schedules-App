@@ -1,5 +1,5 @@
-const token = PropertiesService.getScriptProperties().getProperty('GithubToken')
-const email = 'jacob.feil@stu.evsck12.com'
+const token = PropertiesService.getScriptProperties().getProperty('GithubToken') // token stored as a script property
+const email = DriveApp.getFileById(ScriptApp.getScriptId()).getOwner().getEmail()
 const name = 'UplandJacob2'
 const repo = 'Schedules-App'
 const branch = 'main'
