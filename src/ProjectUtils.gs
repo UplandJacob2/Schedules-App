@@ -12,14 +12,14 @@ const prerelease = true
 
 function minify_(inp) {
   let input = inp||'console.log (    1)'
-  let response = UrlFetchApp.fetch("https://www.toptal.com/developers/javascript-minifier/api/raw", {'muteHttpExceptions': true, 'method': 'POST', 'payload': 'input='+encodeURIComponent(input)})
+  let response = UrlFetchApp.fetch('https://www.toptal.com/developers/javascript-minifier/api/raw', {'muteHttpExceptions': true, 'method': 'POST', 'payload': 'input='+encodeURIComponent(input)})
   l(response.getContentText())
 }
 
 
 function parse_(inp) {
   let input = inp||'<html></html>'
-  let response = UrlFetchApp.fetch("https://www.toptal.com/developers/html-minifier/api/raw", {'muteHttpExceptions': true, 'method': 'POST', 'payload': 'input='+encodeURIComponent(input)})
+  let response = UrlFetchApp.fetch('https://www.toptal.com/developers/html-minifier/api/raw', {'muteHttpExceptions': true, 'method': 'POST', 'payload': 'input='+encodeURIComponent(input)})
   l(response.getContentText())
 }
 
@@ -127,18 +127,18 @@ function updateGithubRepo_(filePath, content) {
   //if (filePath !== 'Code.gs') {return}
   
   const data = {
-    "path": `src/${filePath}`,
-    "message": message,
-    "committer": {
-      "name": name,
-      "email": email
+    'path': `src/${filePath}`,
+    'message': message,
+    'committer': {
+      'name': name,
+      'email': email
     },
-    "content": content,
-    "branch": branch,
+    'content': content,
+    'branch': branch,
     'sha': sha
   };
   const params = {
-    method: "put",
+    method: 'put',
     payload: JSON.stringify(data),
     muteHttpExceptions: true,
     headers: {
@@ -168,13 +168,13 @@ function gitHubRelease() {
     prerelease: prerelease,
     generate_release_notes: true
   };
-  const params = { method: "POST", payload: JSON.stringify(data),
+  const params = { method: 'POST', payload: JSON.stringify(data),
     muteHttpExceptions: true, headers: { authorization: `token ${token}`, }
   };
   let createResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${name}/${repo}/releases`, params)
   l(createResponse.getContentText())
 
-  let getResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${name}/${repo}/releases/tags${'v'+version}`, { method: "POST",
+  let getResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${name}/${repo}/releases/tags${'v'+version}`, { method: 'POST',
     muteHttpExceptions: true, headers: { authorization: `token ${token}`, } } )
   l(getResponse.getContentText())
 
