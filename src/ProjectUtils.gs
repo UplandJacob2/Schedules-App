@@ -17,7 +17,7 @@ function minify_(inp) {
 }
 
 
-function parse_() {
+function parse_(inp) {
   let input = inp||'<html></html>'
   let response = UrlFetchApp.fetch("https://www.toptal.com/developers/html-minifier/api/raw", {'muteHttpExceptions': true, 'method': 'POST', 'payload': 'input='+encodeURIComponent(input)})
   l(response.getContentText())
@@ -27,7 +27,7 @@ function minifyAll() {
   let contents = getScriptSourceCode_(DriveApp.getFilesByName('Schedules App').next().getId())
   for (let dat in contents) {
     let n = contents[dat][0]
-    if ( !(n == 'Date.js.html' || n == 'Datejs.js.html' || n == 'underscore-observe.js.html') && contents[dat][0].match(/(\.gs)|(\.js\.html)/g) ) {
+    if ( !(n === 'Date.js.html' || n === 'Datejs.js.html' || n === 'underscore-observe.js.html') && contents[dat][0].match(/(\.gs)|(\.js\.html)/g) ) {
       let data = contents[dat][1].replace(/<\/?script>/g, '')//.replace(/(?<![;{},\n:]|(\/\/.+))\n(?! +\{)/g, ';\n')
       // l(data)
       minify_(data)
@@ -124,7 +124,7 @@ function updateGithubRepo_(filePath, content) {
   
   content = Utilities.base64Encode(Utilities.newBlob(content).getBytes())
   if (content === getResponse['content'].replace(/\n/g, '')) { l('no changes'); return }
-  //if (filePath != 'Code.gs') {return}
+  //if (filePath !== 'Code.gs') {return}
   
   const data = {
     "path": `src/${filePath}`,
