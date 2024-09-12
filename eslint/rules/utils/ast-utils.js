@@ -19,8 +19,8 @@ const {
     lineBreakPattern,
     shebangPattern
 } = require("../../shared/ast-utils");
-const globals = require("../../../conf/globals");
-const { LATEST_ECMA_VERSION } = require("../../../conf/ecma-version");
+const globals = require("../../conf/globals");
+const { LATEST_ECMA_VERSION } = require("../../conf/ecma-version");
 
 //------------------------------------------------------------------------------
 // Helpers
