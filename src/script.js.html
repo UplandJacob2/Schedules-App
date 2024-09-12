@@ -201,12 +201,6 @@ function getSettingsSuccess(response) {
   updateSettings()
 }
 function getSettingsFail(err) { error('Error getting user settings', err) }
-function updateSettings () {
-  updateSettingsNotSaved()
-
-  toggleDisplay('debugPop', USER_SETTINGS.debugMode)
-  SHEET.militaryTime = USER_SETTINGS.militaryTime
-}
 function updateSettingsNotSaved() {
   setTimeout(function() {
     for (let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
@@ -218,6 +212,12 @@ function updateSettingsNotSaved() {
     if (JSON.stringify(USER_SETTINGS) !== JSON.stringify(USER_SETTINGS_NOT_SAVED)) { sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink') }
     else { sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link') }
   }, 1)
+}
+function updateSettings () {
+  updateSettingsNotSaved()
+
+  toggleDisplay('debugPop', USER_SETTINGS.debugMode)
+  SHEET.militaryTime = USER_SETTINGS.militaryTime
 }
 function saveSettingsSuccess() {
   document.getElementById('saveSet').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
