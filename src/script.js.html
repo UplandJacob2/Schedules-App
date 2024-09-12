@@ -189,18 +189,6 @@ function editPopClose () {
   }
 }
 
-function getSettingsSuccess(response) {
-  let obj = JSON.parse(response)
-  Object.keys(obj).forEach((k, i) => {
-    if(SETTINGS_INFO.types[i] === 'check') {
-      document.getElementById(SETTINGS_INFO.elIDs[i]).checked = obj[k]
-    }
-  })
-  USER_SETTINGS = jsonReparse(obj)
-
-  updateSettings()
-}
-function getSettingsFail(err) { error('Error getting user settings', err) }
 function updateSettingsNotSaved() {
   setTimeout(function() {
     for (let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
@@ -219,6 +207,18 @@ function updateSettings () {
   toggleDisplay('debugPop', USER_SETTINGS.debugMode)
   SHEET.militaryTime = USER_SETTINGS.militaryTime
 }
+function getSettingsSuccess(response) {
+  let obj = JSON.parse(response)
+  Object.keys(obj).forEach((k, i) => {
+    if(SETTINGS_INFO.types[i] === 'check') {
+      document.getElementById(SETTINGS_INFO.elIDs[i]).checked = obj[k]
+    }
+  })
+  USER_SETTINGS = jsonReparse(obj)
+
+  updateSettings()
+}
+function getSettingsFail(err) { error('Error getting user settings', err) }
 function saveSettingsSuccess() {
   document.getElementById('saveSet').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
   setTimeout(function() { document.getElementById('saveSet').innerHTML = 'Save' }, 4000)
