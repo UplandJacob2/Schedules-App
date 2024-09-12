@@ -156,7 +156,24 @@ window.onload = function () {
 }
 
 
+function updateSettingsNotSaved() {
+  setTimeout(function() {
+    for (let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
+      if (SETTINGS_INFO.types[seti] === 'check') {
+        USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
+      }
+    }
+    let sB = document.getElementById('saveSet')
+    if (JSON.stringify(USER_SETTINGS) !== JSON.stringify(USER_SETTINGS_NOT_SAVED)) { sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink') }
+    else { sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link') }
+  }, 1)
+}
+function updateSettings() {
+  updateSettingsNotSaved()
 
+  toggleDisplay('debugPop', USER_SETTINGS.debugMode)
+  SHEET.militaryTime = USER_SETTINGS.militaryTime
+}
 
 function getSettingsSuccess(response) {
   let obj = JSON.parse(response)
@@ -180,6 +197,11 @@ function saveSettingsFail(err) {
   setTimeout(function() { document.getElementById('saveSet').innerHTML = 'Save' }, 4000)
   error('Error saving user settings', err)
 }
+function saveSettings() {
+  google.script.run.withSuccessHandler(saveSettingsSuccess).withFailureHandler(saveSettingsFail).api({ email: getEmail(), action: 'edit', token: getToken(), item: 'settings', onfail: 'new', val: JSON.stringify(USER_SETTINGS_NOT_SAVED) })
+  document.getElementById('saveSet').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
+}
+
 
 function getSchedulesSuccess(response, encoded) {
   let dB = document.getElementById('deleteSch'); dB.disabled = false;  dB.classList.remove('grayLink');  dB.classList.add('link')
@@ -294,30 +316,6 @@ function editPopClose () {
   } else {
     toggleDisplay('editPop')
   }
-}
-
-function updateSettingsNotSaved() {
-  setTimeout(function() {
-    for (let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
-      if (SETTINGS_INFO.types[seti] === 'check') {
-        USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
-      }
-    }
-    let sB = document.getElementById('saveSet')
-    if (JSON.stringify(USER_SETTINGS) !== JSON.stringify(USER_SETTINGS_NOT_SAVED)) { sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink') }
-    else { sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link') }
-  }, 1)
-}
-function updateSettings () {
-  updateSettingsNotSaved()
-
-  toggleDisplay('debugPop', USER_SETTINGS.debugMode)
-  SHEET.militaryTime = USER_SETTINGS.militaryTime
-}
-
-function saveSettings() {
-  google.script.run.withSuccessHandler(saveSettingsSuccess).withFailureHandler(saveSettingsFail).api({ email: getEmail(), action: 'edit', token: getToken(), item: 'settings', onfail: 'new', val: JSON.stringify(USER_SETTINGS_NOT_SAVED) })
-  document.getElementById('saveSet').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 
 
