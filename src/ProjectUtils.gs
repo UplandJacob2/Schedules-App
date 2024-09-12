@@ -4,7 +4,7 @@ const name = 'UplandJacob2'
 const repo = 'Schedules-App'
 const branch = 'main'
 // commit settings
-const message = `fix ESLint alerts`
+const message = 'fix ESLint alerts'
 // release settings
 const version = '2.0.2pre-b'
 const body = 'updates'
@@ -53,7 +53,7 @@ function zipFilesInFolder_(folder, filename) {
     let folders = rootFolder.getFolders();
     while (folders.hasNext()) {
       let subfolder = folders.next();
-      let subPath = path + subfolder.getName() + '/';
+      let subPath = `${path+subfolder.getName()}/`;
       l(path+subPath)
       blobs.push(Utilities.newBlob([]).setName(subPath));
       blobs = blobs.concat(getBlobs(subfolder, subPath));
