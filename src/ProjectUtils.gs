@@ -163,7 +163,7 @@ function gitHubRelease() {
   let createResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${name}/${repo}/releases`, params)
   l(createResponse.getContentText())
 
-  let getResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${name}/${repo}/releases/tags${'v'+version}`, { method: 'POST',
+  let getResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${name}/${repo}/releases/tags/v${version}`, { method: 'POST',
     muteHttpExceptions: true, headers: { authorization: `token ${token}`, } } )
   l(getResponse.getContentText())
 
