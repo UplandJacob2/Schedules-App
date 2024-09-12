@@ -23,17 +23,6 @@ function parse_(inp) {
   l(response.getContentText())
 }
 
-function minifyAll() {
-  let contents = getScriptSourceCode_(DriveApp.getFilesByName('Schedules App').next().getId())
-  for (let dat in contents) {
-    let n = contents[dat][0]
-    if ( !(n === 'Date.js.html' || n === 'Datejs.js.html' || n === 'underscore-observe.js.html') && contents[dat][0].match(/(\.gs)|(\.js\.html)/g) ) {
-      let data = contents[dat][1].replace(/<\/?script>/g, '')//.replace(/(?<![;{},\n:]|(\/\/.+))\n(?! +\{)/g, ';\n')
-      // l(data)
-      minify_(data)
-    }
-  }
-}
 
 function getAndPutFiles_(folder, url) {
   let options = { muteHttpExceptions: true, headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3.raw' } };
@@ -186,4 +175,16 @@ function gitHubRelease() {
   };
   const response = UrlFetchApp.fetch(githubApiUrl, options);
   l('Response:', response.getContentText());
+}
+
+function minifyAll() {
+  let contents = getScriptSourceCode_(DriveApp.getFilesByName('Schedules App').next().getId())
+  for (let dat in contents) {
+    let n = contents[dat][0]
+    if ( !(n === 'Date.js.html' || n === 'Datejs.js.html' || n === 'underscore-observe.js.html') && contents[dat][0].match(/(\.gs)|(\.js\.html)/g) ) {
+      let data = contents[dat][1].replace(/<\/?script>/g, '')//.replace(/(?<![;{},\n:]|(\/\/.+))\n(?! +\{)/g, ';\n')
+      // l(data)
+      minify_(data)
+    }
+  }
 }
