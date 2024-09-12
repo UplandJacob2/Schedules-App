@@ -202,9 +202,9 @@ function signUp(event) {
 function signInSuccess(inp) {
   if (document.getElementById('signInLoad').style.display === 'block') { toggleDisplay('signInLoad'); }
   if (document.getElementById('emailSignIn').value) {
-    document.cookie = 'signin={"token":"' + inp[1] + '", "email":"' + document.getElementById('emailSignIn').value + '"}; SameSite=none; secure';
+    document.cookie = `signin={"token":"${inp[1]}", "email":"${document.getElementById('emailSignIn').value}"}; SameSite=none; secure`;
   } else {
-    document.cookie = 'signin={"token":"' + inp[1] + '", "email":"' + getEmail() + '"}; SameSite=none; secure';
+    document.cookie = `signin={"token":"${inp[1]}", "email":"${getEmail()}"}; SameSite=none; secure`;
   }
   document.getElementById('things').innerHTML = inp[0];
   ////      INDEX ONLOAD
@@ -275,7 +275,7 @@ DateUtils.militaryToStandard = function(time, showMeridiem) {
     timeValue = '12';
   }
 
-  timeValue += (minutes < 10) ? ':0' + minutes : ':' + minutes;  // get minutes
+  timeValue += (minutes < 10) ? `:0${minutes}` : `:${minutes}`;  // get minutes
   if (showMeridiem) { timeValue += (hours >= 12) ? ' PM' : ' AM' }  // get AM/PM
   return timeValue
 }
