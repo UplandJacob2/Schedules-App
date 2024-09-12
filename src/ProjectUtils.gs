@@ -16,12 +16,7 @@ function minify_(inp) {
   l(response.getContentText())
 }
 
-function githubCommit() {
-  let contents = getScriptSourceCode_(ScriptApp.getScriptId())
-  for (let dat in contents) {
-    updateGithubRepo_(contents[dat][0], contents[dat][1])
-  }
-}
+
 function parse_() {
   let input = inp||'<html></html>'
   let response = UrlFetchApp.fetch("https://www.toptal.com/developers/html-minifier/api/raw", {'muteHttpExceptions': true, 'method': 'POST', 'payload': 'input='+encodeURIComponent(input)})
@@ -40,48 +35,21 @@ function minifyAll() {
   }
 }
 
-function gitHubRelease() {
-  //let fileTxt = getGithubFilesAndZip_().getBlob().getDataAsString()
-  let fileTxt = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG').getFilesByName('SchedulesApp-v'+version+'.zip').next().getBlob().getDataAsString()
-  const data = {
-    tag_name: 'v'+version,
-    target_commitish: branch,
-    name: 'SchedulesApp-v'+version,
-    body: body,
-    draft: false,
-    prerelease: prerelease,
-    generate_release_notes: true
-  };
-  const params = { method: "POST", payload: JSON.stringify(data),
-    muteHttpExceptions: true, headers: { authorization: `token ${token}`, }
-  };
-  let createResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${name}/${repo}/releases`, params)
-  l(createResponse.getContentText())
+function getAndPutFiles_(folder, url) {
+  let options = { muteHttpExceptions: true, headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3.raw' } };
+  let files = JSON.parse(UrlFetchApp.fetch(url, options).getContentText())
 
-  let getResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${name}/${repo}/releases/tags${'v'+version}`, { method: "POST",
-    muteHttpExceptions: true, headers: { authorization: `token ${token}`, } } )
-  l(getResponse.getContentText())
-
-  let releaseId
-  const githubApiUrl = `https://api.github.com/repos/${name}/${repo}/releases/${releaseId}/assets`
-  const options = { method: 'POST', muteHttpExceptions: true,
-    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/zip' },
-    payload: fileTxt
-  };
-  const response = UrlFetchApp.fetch(githubApiUrl, options);
-  l('Response:', response.getContentText());
-}
-function getGithubFilesAndZip_() {
-  let url = `https://api.github.com/repos/${name}/${repo}/contents`;
-  
-  let releaseFolder = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG')
-  let folder = releaseFolder.createFolder('SchedulesApp-v'+version)
-  l('creating files...')
-  getAndPutFiles_(folder, url)
-  l('getting from Google Drive and creating a zip...')
-  let file = releaseFolder.createFile(zipFilesInFolder_(folder, 'SchedulesApp-v'+version))
-  l('zip created')
-  return file
+  files.forEach(function(file) {
+    l(file.name, ':', file.type)
+    if (file.type === 'file') {
+      let fileResponse = UrlFetchApp.fetch(file.download_url, options);
+      folder.createFile(fileResponse.getBlob()).setName(file.name);
+    } else if (file.type === 'dir') {
+      let nFolder = folder.createFolder(file.name)
+      url = url+'/'+file.name
+      getAndPutFiles_(nFolder, url)
+    }
+  });
 }
 function zipFilesInFolder_(folder, filename) {
   function getBlobs(rootFolder, path) {
@@ -105,21 +73,17 @@ function zipFilesInFolder_(folder, filename) {
   }
   return Utilities.zip(getBlobs(folder, ''), filename + '.zip');
 }
-function getAndPutFiles_(folder, url) {
-  let options = { muteHttpExceptions: true, headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3.raw' } };
-  let files = JSON.parse(UrlFetchApp.fetch(url, options).getContentText())
-
-  files.forEach(function(file) {
-    l(file.name, ':', file.type)
-    if (file.type === 'file') {
-      let fileResponse = UrlFetchApp.fetch(file.download_url, options);
-      folder.createFile(fileResponse.getBlob()).setName(file.name);
-    } else if (file.type === 'dir') {
-      let nFolder = folder.createFolder(file.name)
-      url = url+'/'+file.name
-      getAndPutFiles_(nFolder, url)
-    }
-  });
+function getGithubFilesAndZip_() {
+  let url = `https://api.github.com/repos/${name}/${repo}/contents`;
+  
+  let releaseFolder = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG')
+  let folder = releaseFolder.createFolder('SchedulesApp-v'+version)
+  l('creating files...')
+  getAndPutFiles_(folder, url)
+  l('getting from Google Drive and creating a zip...')
+  let file = releaseFolder.createFile(zipFilesInFolder_(folder, 'SchedulesApp-v'+version))
+  l('zip created')
+  return file
 }
 
 
@@ -183,4 +147,43 @@ function updateGithubRepo_(filePath, content) {
   };
   const res = UrlFetchApp.fetch(url, params);
   l(res.getContentText());
+}
+
+
+function githubCommit() {
+  let contents = getScriptSourceCode_(ScriptApp.getScriptId())
+  for (let dat in contents) {
+    updateGithubRepo_(contents[dat][0], contents[dat][1])
+  }
+}
+function gitHubRelease() {
+  //let fileTxt = getGithubFilesAndZip_().getBlob().getDataAsString()
+  let fileTxt = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG').getFilesByName('SchedulesApp-v'+version+'.zip').next().getBlob().getDataAsString()
+  const data = {
+    tag_name: 'v'+version,
+    target_commitish: branch,
+    name: 'SchedulesApp-v'+version,
+    body: body,
+    draft: false,
+    prerelease: prerelease,
+    generate_release_notes: true
+  };
+  const params = { method: "POST", payload: JSON.stringify(data),
+    muteHttpExceptions: true, headers: { authorization: `token ${token}`, }
+  };
+  let createResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${name}/${repo}/releases`, params)
+  l(createResponse.getContentText())
+
+  let getResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${name}/${repo}/releases/tags${'v'+version}`, { method: "POST",
+    muteHttpExceptions: true, headers: { authorization: `token ${token}`, } } )
+  l(getResponse.getContentText())
+
+  let releaseId
+  const githubApiUrl = `https://api.github.com/repos/${name}/${repo}/releases/${releaseId}/assets`
+  const options = { method: 'POST', muteHttpExceptions: true,
+    headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/zip' },
+    payload: fileTxt
+  };
+  const response = UrlFetchApp.fetch(githubApiUrl, options);
+  l('Response:', response.getContentText());
 }
