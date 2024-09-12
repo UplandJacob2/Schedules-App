@@ -12,14 +12,14 @@ const prerelease = true
 
 function minify_(inp) {
   let input = inp||'console.log (    1)'
-  let response = UrlFetchApp.fetch('https://www.toptal.com/developers/javascript-minifier/api/raw', {'muteHttpExceptions': true, 'method': 'POST', 'payload': 'input='+encodeURIComponent(input)})
+  let response = UrlFetchApp.fetch('https://www.toptal.com/developers/javascript-minifier/api/raw', { 'muteHttpExceptions': true, 'method': 'POST', 'payload': `input=${encodeURIComponent(input)}` })
   l(response.getContentText())
 }
 
 
 function parse_(inp) {
   let input = inp||'<html></html>'
-  let response = UrlFetchApp.fetch('https://www.toptal.com/developers/html-minifier/api/raw', {'muteHttpExceptions': true, 'method': 'POST', 'payload': 'input='+encodeURIComponent(input)})
+  let response = UrlFetchApp.fetch('https://www.toptal.com/developers/html-minifier/api/raw', { 'muteHttpExceptions': true, 'method': 'POST', 'payload': `input=${encodeURIComponent(input)}`})
   l(response.getContentText())
 }
 
