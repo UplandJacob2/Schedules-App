@@ -258,8 +258,11 @@ class Editor {
       }
     } else if (customtype === 'time') {
       if (option === 'close') {
+        let hr = this.timeSelectCache.getHour()
         let min = this.timeSelectCache.getMinute()
-        let dat = `${this.timeSelectCache.getHour()}:${((String(min).length === 2) ? min : '0'+min)}`
+        min = ((String(min).length === 2) ? min : `0${min}`)
+        let dat = `${hr}:${min}`
+
         this.setDataRowCol(row, col, dat)
         el = this.createElm(row, col)
         this.timeSelectCache.destroy()
