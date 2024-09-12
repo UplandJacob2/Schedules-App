@@ -307,7 +307,17 @@ function newSchedulesFail(err) {
 }
 
 
-
+function getWidthOfInput(inputEl) {
+  let tmp = document.createElement('span');
+  tmp.className = 'input-element tmp-element';
+  tmp.innerHTML = inputEl.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  document.body.appendChild(tmp);
+  //let theWidth = tmp.getBoundingClientRect().width;
+  let theWidth = tmp.offsetWidth
+  //alert(theWidth)
+  document.body.removeChild(tmp);
+  return theWidth;
+}
 function resizeInput() {
   //this.style.width = this.value.length + 'ch';
   let elm = this
@@ -325,17 +335,7 @@ function resizeInput() {
 //     $(this).css('width', $('.new_width').width());
 //     $('.new_width').remove()
 // }
-function getWidthOfInput(inputEl) {
-  let tmp = document.createElement('span');
-  tmp.className = 'input-element tmp-element';
-  tmp.innerHTML = inputEl.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  document.body.appendChild(tmp);
-  //let theWidth = tmp.getBoundingClientRect().width;
-  let theWidth = tmp.offsetWidth
-  //alert(theWidth)
-  document.body.removeChild(tmp);
-  return theWidth;
-}
+
 tui.usageStatistics = false
 //const TP = tui.TimePicker
 
