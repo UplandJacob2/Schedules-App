@@ -80,7 +80,7 @@ function getSchedule(query) {
   schStr += `<tr><th colspan="8">${schedule[0].name}</th></tr>`
 
   let minu = String(date.getMinutes())
-  if (minu.length === 1) { minu = '0'+minu }
+  if (minu.length === 1) { minu = `0${minu}` }
   const nowInt = parseInt(String(date.getHours())+minu)
   let boldRows = []; let classNows = [];
 
@@ -119,7 +119,7 @@ function getSchedulesHTML(data, dateTimeStr) {
     let schNum = 0;
     for (let i = 0; i < dataArr.length; i++) {
       if (dataArr[i].info === 's') {
-        output += ('<table style="position: relative; zoom: 80%; display: inline-block; margin: 2px;" class="schedule">'+getSchedule({ data: dataArr, index: schNum, dateTime: Date.parse(dateTimeStr)})+'</table>')
+        output += (`<table style="position: relative; zoom: 80%; display: inline-block; margin: 2px;" class="schedule">${getSchedule({ data: dataArr, index: schNum, dateTime: Date.parse(dateTimeStr)})}</table>`)
         schNum ++
       }
     }
@@ -363,11 +363,11 @@ function loadSheet() {
       { header: 'Start Time',name: 'strt', width: 100, editor: { type: 'time' } },
       { header: 'End Time',  name: 'end',  width: 100, editor: { type: 'time' } },
       { header: 'Bold',      name: 'b',    width: 30,  editor: { type: 'checkbox', options: { checked: true, style: { 'margin-left': '20px' } } } },
-      { header: 'Days',      name: 'days', width: 200, editor: { type: 'checklist',options: { listItems: [  { text: 'Sun', value: 'Sun' }, { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' }, { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' }] }, active: { type: 'col', if: 'info', equalTo: 's' } } },
+      { header: 'Days',      name: 'days', width: 200, editor: { type: 'checklist',options: { listItems: [  { text: 'Sun', value: 'Sun' }, { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' }, { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' } ] }, active: { type: 'col', if: 'info', equalTo: 's' } } },
       { header: 'Name',      name: 'name', width: 200, editor: { type: 'text', options: { style: { width: '200px' } }, active: { type: 'col', if: 'info', equalTo: 's' } } }
     ],
     militaryTime: USER_SETTINGS.militaryTime,
-    data: [firstRow, emptyRow, emptyRow],
+    data: [ firstRow, emptyRow, emptyRow ],
     onDataChange: updateSaveBtn
   })
   //_.observe(SHEET.data, updateSaveBtn)
@@ -383,7 +383,7 @@ function loadSheet() {
   })
   const deleteBt = document.getElementById('deleteSch')
   deleteBt.addEventListener('click', function () {
-    confirmPopup({ title: 'Confirm deletion', text: 'Are you sure you want to delete your schedules? (Can be recovered)', onYes: `deleteSch()` })
+    confirmPopup({ title: 'Confirm deletion', text: 'Are you sure you want to delete your schedules? (Can be recovered)', onYes: 'deleteSch()' })
   })
   const reloadBt = document.getElementById('reloadSch')
   reloadBt.addEventListener('click', function () {
