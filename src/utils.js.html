@@ -75,20 +75,7 @@ function isValidPassword(pass) {
   )
 }
 
-function checkSignUpButton() {
-  let butt = document.getElementById('signUpButt');
-  if (checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
-    butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
-  }
-  else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
-}
-function checkSignInButton() {
-  let butt = document.getElementById('signInButt');
-  if (checkEmailBoxI('emailSignIn') && checkPassBoxI('passSignIn')) {
-    butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
-  }
-  else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
-}
+
 function checkEmailBoxI(inpStr) {
   let inp = document.getElementById(inpStr);
   let email = inp.value;
@@ -98,8 +85,7 @@ function checkEmailBoxI(inpStr) {
     if (isValidEmail(email)) {
       c.style.setProperty('display', 'block'); x.style.setProperty('display', 'none');
       inp.style.setProperty('background-color', 'palegreen'); return true
-    }
-    else {
+    } else {
       x.style.setProperty('display', 'block'); c.style.setProperty('display', 'none');
       inp.style.setProperty('background-color', 'lightpink'); return false
     }
@@ -148,6 +134,19 @@ function checkPassBoxI(inpStr) {
   return good
 }
 function checkPassBox(inpStr) { setTimeout(function () { checkPassBoxI(inpStr); }, 10); }
+
+function checkSignUpButton() {
+  let butt = document.getElementById('signUpButt');
+  if (checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
+    butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
+  } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
+}
+function checkSignInButton() {
+  let butt = document.getElementById('signInButt');
+  if (checkEmailBoxI('emailSignIn') && checkPassBoxI('passSignIn')) {
+    butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
+  } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
+}
 
 function showPassword(check, boxN) {
   let box = document.getElementById(boxN);
