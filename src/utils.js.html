@@ -147,7 +147,7 @@ function checkPassBoxI(inpStr) {
   } else { good = isValidPassword(pass); }
 
   if (inpStr === 'passSignUp' || inpStr === 'passSignUpR') {
-    let c = document.getElementById(inpStr + 'C'); let x = document.getElementById(inpStr + 'X');
+    let c = document.getElementById(`${inpStr}C`); let x = document.getElementById(`${inpStr}X`);
     if (good) {
       inp.style.setProperty('background-color', 'palegreen');
       c.style.setProperty('display', 'block'); x.style.setProperty('display', 'none');
