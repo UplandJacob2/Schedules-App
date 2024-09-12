@@ -90,11 +90,11 @@ function getScriptSourceCode_(fileid) {
     let fullName
     switch (type) {
       case 'server_js':
-        fullName = `${name}.gs`; break
+        fullName = `${name}.gs`; break;
       case 'json':
-        fullName = `${name}.json`; break
+        fullName = `${name}.json`; break;
       case 'html':
-        fullName = `${name}.html`; break
+        fullName = `${name}.html`; break;
     }
     toReturn.push([ fullName, json['files'][file]['source'] ])
   }
