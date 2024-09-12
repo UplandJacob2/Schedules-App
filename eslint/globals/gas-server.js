@@ -15,4 +15,8 @@ module.exports = {
   signInWToken: "writable",
   doGet: "writable",
   include: "writable",
+
+  gitHubRelease: "writable",
+  minifyAll: "writable",
+  githubCommit: "writable",
 }
