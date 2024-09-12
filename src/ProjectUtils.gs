@@ -66,11 +66,11 @@ function getGithubFilesAndZip_() {
   let url = `https://api.github.com/repos/${name}/${repo}/contents`;
 
   let releaseFolder = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG')
-  let folder = releaseFolder.createFolder('SchedulesApp-v'+version)
+  let folder = releaseFolder.createFolder(`SchedulesApp-v${version}`)
   l('creating files...')
   getAndPutFiles_(folder, url)
   l('getting from Google Drive and creating a zip...')
-  let file = releaseFolder.createFile(zipFilesInFolder_(folder, 'SchedulesApp-v'+version))
+  let file = releaseFolder.createFile(zipFilesInFolder_(folder, `SchedulesApp-v${version}`))
   l('zip created')
   return file
 }
@@ -149,9 +149,9 @@ function gitHubRelease() {
   //let fileTxt = getGithubFilesAndZip_().getBlob().getDataAsString()
   let fileTxt = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG').getFilesByName(`SchedulesApp-v${version}.zip`).next().getBlob().getDataAsString()
   const data = {
-    tag_name: 'v'+version,
+    tag_name: `v${version}`,
     target_commitish: branch,
-    name: 'SchedulesApp-v'+version,
+    name: `SchedulesApp-v${version}`,
     body: body,
     draft: false,
     prerelease: prerelease,
