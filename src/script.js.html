@@ -21,7 +21,7 @@ function openMenu() {
 }
 
 function toggleDisplay(elmStrIn, toState) {
-  let elm = $('#'+elmStrIn)
+  let elm = $(`#${elmStrIn}`)
   if (typeof toState !== 'undefined') { // if toState is specified
     if (toState) { elm.css('display', 'block') } else { elm.css('display', 'none') }
   } else { // otherwise, toggle
