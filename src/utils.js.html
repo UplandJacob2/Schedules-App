@@ -206,13 +206,19 @@ function signInSuccess(inp) {
   //google.script.run.test(document.body.parentElement.innerHTML)
   try{ loadSheet() } catch (e) { alert(DebugLog.getStacktraceFromErr(e)) }
 }
-function getToken() { let thing;
-  try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } } catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
-  try { if (JSON.parse(thing).token) { return JSON.parse(thing).token; } else { return null } } catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
+function getToken() {
+  let thing;
+  try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
+  catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
+  try { if (JSON.parse(thing).token) { return JSON.parse(thing).token; } else { return null } }
+  catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
 }
-function getEmail() { let thing;
-  try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } } catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
-  try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } } catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
+function getEmail() {
+  let thing;
+  try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
+  catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
+  try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
+  catch (e) { error('Cookie Error: ' + e.message, "Try to sign in."); return null }
 }
 
 function signOutBtn() {
@@ -221,13 +227,16 @@ function signOutBtn() {
 }
 function deleteSignInCookies() { document.cookie = 'signin={"token":"", "email":""}; SameSite=none; secure'; }
 function setCookie(cookie, value) { document.cookie = `${cookie}=${value}; SameSite=none; secure`; }
-function getCookie(cookie) { let thing;
-  try { if (document.cookie) { thing = document.cookie.match(new RegExp("(?<="+cookie+"=)\{.+\}" , 'g')); } else { return null } } catch (e) { w('Cookie Error:', e.message); return null }
-  try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } } catch (e) { w('Cookie Error: ' + e.message); return null }
+function getCookie(cookie) {
+  let thing;
+  try { if (document.cookie) { thing = document.cookie.match(new RegExp("(?<="+cookie+"=)\{.+\}" , 'g')); } else { return null } }
+  catch (e) { w('Cookie Error:', e.message); return null }
+  try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
+  catch (e) { w('Cookie Error: ' + e.message); return null }
 }
 
 // date utils
-var DateUtils = DateUtils || {};
+var DateUtils = {};
 /**
  * Returns day of week as 3 letters: sun, mon, tue, wed, thu, fri, sat
  *
