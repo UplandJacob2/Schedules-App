@@ -63,16 +63,16 @@ function confirmPopup(args) {
 function getToken() {
   let thing;
   try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
-  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
+  catch (e) { error(`Cookie Error: ${e.message}`, 'Try to sign in.'); return null }
   try { if (JSON.parse(thing).token) { return JSON.parse(thing).token; } else { return null } }
-  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
+  catch (e) { error(`Cookie Error: ${e.message}`, 'Try to sign in.'); return null }
 }
 function getEmail() {
   let thing;
   try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
-  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
+  catch (e) { error(`Cookie Error: ${e.message}`, 'Try to sign in.'); return null }
   try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
-  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
+  catch (e) { error(`Cookie Error: ${e.message}`, 'Try to sign in.'); return null }
 }
 
 function deleteSignInCookies() { document.cookie = 'signin={"token":"", "email":""}; SameSite=none; secure'; }
