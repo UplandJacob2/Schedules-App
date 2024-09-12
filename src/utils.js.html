@@ -24,7 +24,7 @@ const DebugLog = {
     txtArea.text = `${txtArea.text}\nERROR: ${inp}`
   },
   getStacktraceFromErr: function(err) {
-    return err.stack.split("\n").join('\n"')
+    return err.stack.split('\n').join('\n"')
   },
 }
 
@@ -44,9 +44,9 @@ function error(title, txt) {
 function confirmPopup(args) {
   let title,text,onYes,onNo,yesBtTxt,noBtTxt
   title = args.title || 'Confirm'; text = args.text || 'Confirm?'; yesBtTxt = args.yesBtTxt || 'Yes'; noBtTxt = args.noBtTxt || 'No'
-  onYes = args.onYes || "toggleDisplay('confirmPop')"; onNo = args.onNo || "toggleDisplay('confirmPop')"
-  if(typeof args.onYes !== 'undefined') { onYes!=="\ntoggleDisplay('confirmPop')" }
-  if(typeof args.onNo  !== 'undefined') { onNo !=="\ntoggleDisplay('confirmPop')" }
+  onYes = args.onYes || 'toggleDisplay(\'confirmPop\')'; onNo = args.onNo || 'toggleDisplay(\'confirmPop\')'
+  if(typeof args.onYes !== 'undefined') { onYes!=='\ntoggleDisplay(\'confirmPop\')' }
+  if(typeof args.onNo  !== 'undefined') { onNo !=='\ntoggleDisplay(\'confirmPop\')' }
 
   toggleDisplay('confirmPop')
   document.getElementById('confirmTitle' ).innerHTML = title
@@ -92,9 +92,9 @@ function checkSignInButton() {
 function checkEmailBoxI(inpStr) {
   let inp = document.getElementById(inpStr);
   let email = inp.value;
-  if (inpStr === "emailSignUp") {
-    let c = document.getElementById("emailSignUpC");
-    let x = document.getElementById("emailSignUpX");
+  if (inpStr === 'emailSignUp') {
+    let c = document.getElementById('emailSignUpC');
+    let x = document.getElementById('emailSignUpX');
     if (isValidEmail(email)) {
       c.style.setProperty('display', 'block'); x.style.setProperty('display', 'none');
       inp.style.setProperty('background-color', 'palegreen'); return true
@@ -111,7 +111,7 @@ function checkEmailBoxI(inpStr) {
 function checkEmailBox(inpStr) { setTimeout(function () { checkEmailBoxI(inpStr); }, 10); }
 function checkPassBoxI(inpStr) {
   let inp = document.getElementById(inpStr); let pass = inp.value; let good; //console.log(pass);
-  if (inpStr === "passSignUp") {
+  if (inpStr === 'passSignUp') {
     if ((pass.match(/[a-z]/g) || []).length >= 1) {
       document.getElementById('lowR').style.setProperty('color', '#040');
     } else { document.getElementById('lowR').style.setProperty('color', '#800'); }
@@ -128,15 +128,15 @@ function checkPassBoxI(inpStr) {
       document.getElementById('lR').style.setProperty('color', '#040');
     } else { document.getElementById('lR').style.setProperty('color', '#800'); }
   }
-  if (inpStr === "passSignUpR") {
+  if (inpStr === 'passSignUpR') {
     if (pass === document.getElementById('passSignUp').value) { good = true } else { good = false }
     let pRT = document.getElementById('passRTxt')
     if (good) { pRT.innerHTML = 'Passwords match.'; pRT.style.setProperty('color', '#040'); }
     else { pRT.innerHTML = 'Passwords do not match.'; pRT.style.setProperty('color', '#800'); }
   } else { good = isValidPassword(pass); }
 
-  if (inpStr === "passSignUp" || inpStr === "passSignUpR") {
-    let c = document.getElementById(inpStr + "C"); let x = document.getElementById(inpStr + "X");
+  if (inpStr === 'passSignUp' || inpStr === 'passSignUpR') {
+    let c = document.getElementById(inpStr + 'C'); let x = document.getElementById(inpStr + 'X');
     if (good) {
       inp.style.setProperty('background-color', 'palegreen');
       c.style.setProperty('display', 'block'); x.style.setProperty('display', 'none');
@@ -152,9 +152,9 @@ function checkPassBox(inpStr) { setTimeout(function () { checkPassBoxI(inpStr); 
 function showPassword(check, boxN) {
   let box = document.getElementById(boxN);
   if (document.getElementById(check).checked) {
-    box.type = "text";
+    box.type = 'text';
   } else {
-    box.type = "password";
+    box.type = 'password';
   }
 }
 function signUp(event) {
@@ -165,10 +165,10 @@ function signUp(event) {
   toggleDisplay('signUp');
   toggleDisplay('signUpLoad');
   google.script.run.withSuccessHandler(function () {
-    if (document.getElementById('signUpLoad').style.display === "block") { toggleDisplay('signUpLoad'); }
+    if (document.getElementById('signUpLoad').style.display === 'block') { toggleDisplay('signUpLoad'); }
     toggleDisplay('signUpEmailSent');
   }).withFailureHandler(function (err) {
-    if (document.getElementById('signUpLoad').style.display === "block") { toggleDisplay('signUpLoad'); }
+    if (document.getElementById('signUpLoad').style.display === 'block') { toggleDisplay('signUpLoad'); }
     toggleDisplay('error');
     document.getElementById('errorWhen').innerHTML = 'Error when creating account.';
     document.getElementById('errorTxt').innerHTML = err.message;
@@ -187,7 +187,7 @@ function signIn(email, pass, rm) {
   }).signIn(email, pass, rm);
 }
 function signInSuccess(inp) {
-  if (document.getElementById('signInLoad').style.display === "block") { toggleDisplay('signInLoad'); }
+  if (document.getElementById('signInLoad').style.display === 'block') { toggleDisplay('signInLoad'); }
   if (document.getElementById('emailSignIn').value) {
     document.cookie = 'signin={"token":"' + inp[1] + '", "email":"' + document.getElementById('emailSignIn').value + '"}; SameSite=none; secure';
   } else {
