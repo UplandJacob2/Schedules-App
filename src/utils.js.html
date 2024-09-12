@@ -60,6 +60,31 @@ function confirmPopup(args) {
 
 ////// sign in, sign up, etc
 
+function getToken() {
+  let thing;
+  try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
+  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
+  try { if (JSON.parse(thing).token) { return JSON.parse(thing).token; } else { return null } }
+  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
+}
+function getEmail() {
+  let thing;
+  try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
+  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
+  try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
+  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
+}
+
+function deleteSignInCookies() { document.cookie = 'signin={"token":"", "email":""}; SameSite=none; secure'; }
+function setCookie(cookie, value) { document.cookie = `${cookie}=${value}; SameSite=none; secure`; }
+function getCookie(cookie) {
+  let thing;
+  try { if (document.cookie) { thing = document.cookie.match(new RegExp('(?<='+cookie+'=)\{.+\}' , 'g')); } else { return null } }
+  catch (e) { w('Cookie Error:', e.message); return null }
+  try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
+  catch (e) { w('Cookie Error: ' + e.message); return null }
+}
+
 function isValidEmail(email) {
   const re = /^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/
   //console.log(re.test(email) && /^(.){3,320}$/.test(email))
@@ -205,34 +230,12 @@ function signInSuccess(inp) {
   //google.script.run.test(document.body.parentElement.innerHTML)
   try{ loadSheet() } catch (e) { alert(DebugLog.getStacktraceFromErr(e)) }
 }
-function getToken() {
-  let thing;
-  try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
-  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
-  try { if (JSON.parse(thing).token) { return JSON.parse(thing).token; } else { return null } }
-  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
-}
-function getEmail() {
-  let thing;
-  try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
-  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
-  try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
-  catch (e) { error('Cookie Error: ' + e.message, 'Try to sign in.'); return null }
-}
 
 function signOutBtn() {
   deleteSignInCookies()
   window.top.location.href = 'https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec';
 }
-function deleteSignInCookies() { document.cookie = 'signin={"token":"", "email":""}; SameSite=none; secure'; }
-function setCookie(cookie, value) { document.cookie = `${cookie}=${value}; SameSite=none; secure`; }
-function getCookie(cookie) {
-  let thing;
-  try { if (document.cookie) { thing = document.cookie.match(new RegExp('(?<='+cookie+'=)\{.+\}' , 'g')); } else { return null } }
-  catch (e) { w('Cookie Error:', e.message); return null }
-  try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
-  catch (e) { w('Cookie Error: ' + e.message); return null }
-}
+
 
 // date utils
 const DateUtils = {};
