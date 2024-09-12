@@ -75,7 +75,7 @@ function zipFilesInFolder_(folder, filename) {
 }
 function getGithubFilesAndZip_() {
   let url = `https://api.github.com/repos/${name}/${repo}/contents`;
-  
+
   let releaseFolder = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG')
   let folder = releaseFolder.createFolder('SchedulesApp-v'+version)
   l('creating files...')
@@ -91,7 +91,7 @@ function getGithubFilesAndZip_() {
 function getScriptSourceCode_(fileid) {
   let toReturn = []
   let params = { headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() }, followRedirects: true, muteHttpExceptions: true};
-  let url = 'https://script.google.com/feeds/download/export?id='+fileid+'&format=json';
+  let url = `https://script.google.com/feeds/download/export?id=${fileid}&format=json`;
   let response = UrlFetchApp.fetch(url, params);
   let json = JSON.parse(response);
 
@@ -101,11 +101,11 @@ function getScriptSourceCode_(fileid) {
     let fullName
     switch (type) {
       case 'server_js':
-        fullName = name+'.gs'; break
+        fullName = `${name}.gs`; break
       case 'json':
-        fullName = name+'.json'; break
+        fullName = `${name}.json`; break
       case 'html':
-        fullName = name+'.html'; break
+        fullName = `${name}.html`; break
     }
     toReturn.push([fullName, json['files'][file]['source']])
   }
@@ -121,11 +121,11 @@ function updateGithubRepo_(filePath, content) {
   getResponse
   //*/
   )
-  
+
   content = Utilities.base64Encode(Utilities.newBlob(content).getBytes())
   if (content === getResponse['content'].replace(/\n/g, '')) { l('no changes'); return }
   //if (filePath !== 'Code.gs') {return}
-  
+
   const data = {
     'path': `src/${filePath}`,
     'message': message,
@@ -158,7 +158,7 @@ function githubCommit() {
 }
 function gitHubRelease() {
   //let fileTxt = getGithubFilesAndZip_().getBlob().getDataAsString()
-  let fileTxt = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG').getFilesByName('SchedulesApp-v'+version+'.zip').next().getBlob().getDataAsString()
+  let fileTxt = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG').getFilesByName(`SchedulesApp-v${version}.zip`).next().getBlob().getDataAsString()
   const data = {
     tag_name: 'v'+version,
     target_commitish: branch,
