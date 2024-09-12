@@ -11,7 +11,8 @@ fs.readdirSync(sourceDir).forEach(file => {
 
     let content = fs.readFileSync(sourcePath, 'utf8');
     content = content.replace(/<script>/g, '').replace(/<\/script>/g, '');
-    content = content.replace(/(?<=\/\/ eslint-disable-next-line\n)(.)+(?=\n)/g, '// LINE REMOVED');
+    content = content.replace(/(?<=\/\/ ?eslint-disable-next-line\n)(.)+(?=\n)/g, '// LINE REMOVED');
+    content = content.replace(/(?<=\n)(.)+(?=\/\/ ?eslint-disable-line\n)/g, '// LINE REMOVED');
 
     fs.writeFileSync(destPath, content);
     console.log(`Processed ${file} to ${destPath}`);
