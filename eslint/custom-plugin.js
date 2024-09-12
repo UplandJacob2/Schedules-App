@@ -38,7 +38,9 @@ module.exports = {
     rules: {
       semi: "off",
       quotes: ["warn", "single"],
-      indent: ["warn", 2],
+      indent: ["warn", 2, {
+        SwitchCase: 1
+      }],
       "no-trailing-spaces": "warn",
       eqeqeq: "warn",
       "no-var": "warn",
