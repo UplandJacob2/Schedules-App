@@ -113,6 +113,20 @@ function getSchedule(query) {
   return schStr
 }
 
+function getSchedulesHTML(data, dateTimeStr) {
+  let dataArr = JSON.parse(data); let output = ''
+  try {
+    let schNum = 0;
+    for (let i = 0; i < dataArr.length; i++) {
+      if (dataArr[i].info === 's') {
+        output += ('<table style="position: relative; zoom: 80%; display: inline-block; margin: 2px;" class="schedule">'+getSchedule({ data: dataArr, index: schNum, dateTime: Date.parse(dateTimeStr)})+'</table>')
+        schNum ++
+      }
+    }
+  } catch(err) { error('error', err) }
+  return output
+}
+
 
 window.onload = function () {
   // google.script.url.getLocation(function(location) {
@@ -128,7 +142,8 @@ window.onload = function () {
 
   if (getToken()) {
     toggleDisplay('signInLoad');
-    google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function(e){ if (e.message === 'Bad token.'){ deleteSignInCookies(); }
+    google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function(e){
+      if (e.message === 'Bad token.') deleteSignInCookies()
       if (document.getElementById('signInLoad').style.display === 'block') { toggleDisplay('signInLoad'); }
       error('Error when automatically signing in.', e.message)
     }).signInWToken(getEmail(), getToken());
@@ -174,23 +189,6 @@ function editPopClose () {
   }
 }
 
-
-function updateSettingsNotSaved() {
-  setTimeout(function() {
-    for (let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
-      if (SETTINGS_INFO.types[seti] === 'check') {
-        USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
-      }
-    }
-    let sB = document.getElementById('saveSet')
-    if (JSON.stringify(USER_SETTINGS) !== JSON.stringify(USER_SETTINGS_NOT_SAVED)) { sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink') }
-    else { sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link') }
-  }, 1)
-}
-function saveSettings() {
-  google.script.run.withSuccessHandler(saveSettingsSuccess).withFailureHandler(saveSettingsFail).api({ email: getEmail(), action: 'edit', token: getToken(), item: 'settings', onfail: 'new', val: JSON.stringify(USER_SETTINGS_NOT_SAVED) })
-  document.getElementById('saveSet').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
-}
 function getSettingsSuccess(response) {
   let obj = JSON.parse(response)
   Object.keys(obj).forEach((k, i) => {
@@ -203,6 +201,24 @@ function getSettingsSuccess(response) {
   updateSettings()
 }
 function getSettingsFail(err) { error('Error getting user settings', err) }
+function updateSettings () {
+  updateSettingsNotSaved()
+
+  toggleDisplay('debugPop', USER_SETTINGS.debugMode)
+  SHEET.militaryTime = USER_SETTINGS.militaryTime
+}
+function updateSettingsNotSaved() {
+  setTimeout(function() {
+    for (let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
+      if (SETTINGS_INFO.types[seti] === 'check') {
+        USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
+      }
+    }
+    let sB = document.getElementById('saveSet')
+    if (JSON.stringify(USER_SETTINGS) !== JSON.stringify(USER_SETTINGS_NOT_SAVED)) { sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink') }
+    else { sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link') }
+  }, 1)
+}
 function saveSettingsSuccess() {
   document.getElementById('saveSet').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
   setTimeout(function() { document.getElementById('saveSet').innerHTML = 'Save' }, 4000)
@@ -213,11 +229,9 @@ function saveSettingsFail(err) {
   setTimeout(function() { document.getElementById('saveSet').innerHTML = 'Save' }, 4000)
   error('Error saving user settings', err)
 }
-function updateSettings () {
-  updateSettingsNotSaved()
-
-  toggleDisplay('debugPop', USER_SETTINGS.debugMode)
-  SHEET.militaryTime = USER_SETTINGS.militaryTime
+function saveSettings() {
+  google.script.run.withSuccessHandler(saveSettingsSuccess).withFailureHandler(saveSettingsFail).api({ email: getEmail(), action: 'edit', token: getToken(), item: 'settings', onfail: 'new', val: JSON.stringify(USER_SETTINGS_NOT_SAVED) })
+  document.getElementById('saveSet').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 
 
@@ -338,21 +352,6 @@ function resizeInput() {
 
 tui.usageStatistics = false
 //const TP = tui.TimePicker
-
-
-function getSchedulesHTML(data, dateTimeStr) {
-  let dataArr = JSON.parse(data); let output = ''
-  try {
-    let schNum = 0;
-    for (let i = 0; i < dataArr.length; i++) {
-      if (dataArr[i].info === 's') {
-        output += ('<table style="position: relative; zoom: 80%; display: inline-block; margin: 2px;" class="schedule">'+getSchedule({ data: dataArr, index: schNum, dateTime: Date.parse(dateTimeStr)})+'</table>')
-        schNum ++
-      }
-    }
-  } catch(err) { error('error', err) }
-  return output
-}
 
 
 function loadSheet() {
