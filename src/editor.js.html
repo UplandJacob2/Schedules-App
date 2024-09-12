@@ -104,9 +104,9 @@ class Editor {
       el.addEventListener('keydown', resizeInput)
       /*resizeInput.call(el);*/
       $('input').keyup(resizeInput)//.each(resizeInput);
-    } else if (type === 'a') { el.innerHTML = data
-    } else if (type === 'checkbox') { el.type = 'checkbox'; el.checked = data
-    } else if (type === 'checklist') {
+    } else if (type === 'a') el.innerHTML = data
+    else if (type === 'checkbox') { el.type = 'checkbox'; el.checked = data }
+    else if (type === 'checklist') {
       //el.classList.add('dropdown-check-list')
       let a = document.createElement('span')
       a.setAttribute('onclick', 'SHEET.onCellClick(this.parentElement.parentElement, "close")')
