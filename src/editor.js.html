@@ -139,7 +139,7 @@ class Editor {
       let a = document.createElement('a')
       a.setAttribute('onclick', 'SHEET.onCellClick(this.parentElement.parentElement, "close")')
       a.style.setProperties({'min-width': '30px', 'min-height': '20px', margin: '-1px'})
-      if (!USER_SETTINGS.militaryTime) { a.innerHTML = DateUtils.militaryToStandard(this.data[row][col], true) } 
+      if (!USER_SETTINGS.militaryTime) { a.innerHTML = DateUtils.militaryToStandard(this.data[row][col], true) }
       else { a.innerHTML = this.data[row][col] }
       container.style.setProperty('position', 'absolute')
       el.append(a)
