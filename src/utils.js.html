@@ -82,7 +82,7 @@ function getCookie(cookie) {
   try { if (document.cookie) { thing = document.cookie.match(new RegExp(`(?<=${cookie}=)\{.+\}` , 'g')); } else { return null } }
   catch (e) { w('Cookie Error:', e.message); return null }
   try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
-  catch (e) { w('Cookie Error: ' + e.message); return null }
+  catch (e) { w('Cookie Error:', e.message); return null }
 }
 
 function isValidEmail(email) {
