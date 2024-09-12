@@ -4,7 +4,7 @@ const name = 'UplandJacob2'
 const repo = 'Schedules-App'
 const branch = 'main'
 // commit settings
-const message = `fix ESLint alerts and copy over Github tools`
+const message = `fix ESLint alerts`
 // release settings
 const version = '2.0.2pre-b'
 const body = 'updates'
@@ -72,10 +72,10 @@ function gitHubRelease() {
   l('Response:', response.getContentText());
 }
 function getGithubFilesAndZip() {
-  var url = `https://api.github.com/repos/${name}/${repo}/contents`;
+  let url = `https://api.github.com/repos/${name}/${repo}/contents`;
   
-  var releaseFolder = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG')
-  var folder = releaseFolder.createFolder('SchedulesApp-v'+version)
+  let releaseFolder = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG')
+  let folder = releaseFolder.createFolder('SchedulesApp-v'+version)
   l('creating files...')
   getAndPutFiles(folder, url)
   l('getting from Google Drive and creating a zip...')
@@ -85,18 +85,18 @@ function getGithubFilesAndZip() {
 }
 function zipFilesInFolder(folder, filename) {
   function getBlobs(rootFolder, path) {
-    var blobs = [];
-    var files = rootFolder.getFiles();
+    let blobs = [];
+    let files = rootFolder.getFiles();
     while (files.hasNext()) {
-      var file = files.next().getBlob();
+      let file = files.next().getBlob();
       l(path+file.getName())
       //file.setName(path + file.getName());
       blobs.push(file);
     }
-    var folders = rootFolder.getFolders();
+    let folders = rootFolder.getFolders();
     while (folders.hasNext()) {
-      var subfolder = folders.next();
-      var subPath = path + subfolder.getName() + '/';
+      let subfolder = folders.next();
+      let subPath = path + subfolder.getName() + '/';
       l(path+subPath)
       blobs.push(Utilities.newBlob([]).setName(subPath));
       blobs = blobs.concat(getBlobs(subfolder, subPath));
@@ -112,7 +112,7 @@ function getAndPutFiles(folder, url) {
   files.forEach(function(file) {
     l(file.name, ':', file.type)
     if (file.type === 'file') {
-      var fileResponse = UrlFetchApp.fetch(file.download_url, options);
+      let fileResponse = UrlFetchApp.fetch(file.download_url, options);
       folder.createFile(fileResponse.getBlob()).setName(file.name);
     } else if (file.type === 'dir') {
       let nFolder = folder.createFolder(file.name)
@@ -124,13 +124,14 @@ function getAndPutFiles(folder, url) {
 
 
 
-function getScriptSourceCode(fileid) {let toReturn = []
-  var params = { headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() }, followRedirects: true, muteHttpExceptions: true};
-  var url = 'https://script.google.com/feeds/download/export?id='+fileid+'&format=json';
-  var response = UrlFetchApp.fetch(url, params);
-  var json = JSON.parse(response);
+function getScriptSourceCode(fileid) {
+  let toReturn = []
+  let params = { headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() }, followRedirects: true, muteHttpExceptions: true};
+  let url = 'https://script.google.com/feeds/download/export?id='+fileid+'&format=json';
+  let response = UrlFetchApp.fetch(url, params);
+  let json = JSON.parse(response);
 
-  for (var file in json['files']) {
+  for (let file in json['files']) {
     let name = json['files'][file]['name']
     let type = json['files'][file]['type']
     let fullName
