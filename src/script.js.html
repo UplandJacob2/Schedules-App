@@ -76,8 +76,8 @@ function getSchedule(query) {
   }
 
   let schStr = ''; let rab = 'a'
-  schStr += '<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">'+DateUtils.getDateAsText({ dateTime: date, militaryTime: USER_SETTINGS.militaryTime })+'</td></tr>'
-  schStr += '<tr><th colspan="8">'+schedule[0].name+'</th></tr>'
+  schStr += `<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">${DateUtils.getDateAsText({ dateTime: date, militaryTime: USER_SETTINGS.militaryTime })}</td></tr>`
+  schStr += `<tr><th colspan="8">${schedule[0].name}</th></tr>`
 
   let minu = String(date.getMinutes())
   if (minu.length === 1) { minu = '0'+minu }
@@ -119,12 +119,12 @@ window.onload = function () {
   //   alert(location.parameters);
   // });
 
-  let events = ['keypress', 'keydown', 'keyup'];
+  let events = [ 'keypress', 'keydown', 'keyup' ];
 
   events.forEach(e => { document.getElementById('signInC').addEventListener(e, function(){ checkSignInButton(); }); });
   events.forEach(e => { document.getElementById('passSignIn').addEventListener(e, function(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
   events.forEach(e => { document.getElementById('signUpC').addEventListener(e, function(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
-  ['emailSignUp', 'emailSignIn'].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
+  [ 'emailSignUp', 'emailSignIn' ].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
 
   if (getToken()) {
     toggleDisplay('signInLoad');
