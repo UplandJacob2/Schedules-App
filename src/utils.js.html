@@ -198,18 +198,7 @@ function signUp(event) {
     document.getElementById('errorTxt').innerHTML = err.message;
   }).signUp(pass, passR, email);
 }
-function signInF(e) {
-  e.preventDefault();
-  toggleDisplay('signIn');
-  toggleDisplay('signInLoad');
-  signIn(document.getElementById('emailSignIn').value, document.getElementById('passSignIn').value, document.getElementById('rmSignIn').checked);
-}
-function signIn(email, pass, rm) {
-  google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function (err) {
-    if ($('#signInLoad').css('display') === 'block') { toggleDisplay('signInLoad'); }
-    error('Error when signing in.', err.message);
-  }).signIn(email, pass, rm);
-}
+
 function signInSuccess(inp) {
   if (document.getElementById('signInLoad').style.display === 'block') { toggleDisplay('signInLoad'); }
   if (document.getElementById('emailSignIn').value) {
@@ -230,6 +219,19 @@ function signInSuccess(inp) {
   //google.script.run.test(document.body.parentElement.innerHTML)
   try{ loadSheet() } catch (e) { alert(DebugLog.getStacktraceFromErr(e)) }
 }
+function signIn(email, pass, rm) {
+  google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function (err) {
+    if ($('#signInLoad').css('display') === 'block') { toggleDisplay('signInLoad'); }
+    error('Error when signing in.', err.message);
+  }).signIn(email, pass, rm);
+}
+function signInF(e) {
+  e.preventDefault();
+  toggleDisplay('signIn');
+  toggleDisplay('signInLoad');
+  signIn(document.getElementById('emailSignIn').value, document.getElementById('passSignIn').value, document.getElementById('rmSignIn').checked);
+}
+
 
 function signOutBtn() {
   deleteSignInCookies()
