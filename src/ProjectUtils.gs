@@ -35,7 +35,7 @@ function getAndPutFiles_(folder, url) {
       folder.createFile(fileResponse.getBlob()).setName(file.name);
     } else if (file.type === 'dir') {
       let nFolder = folder.createFolder(file.name)
-      url = url+'/'+file.name
+      url = `${url}/${file.name}`
       getAndPutFiles_(nFolder, url)
     }
   });
@@ -60,7 +60,7 @@ function zipFilesInFolder_(folder, filename) {
     }
     return blobs;
   }
-  return Utilities.zip(getBlobs(folder, ''), filename + '.zip');
+  return Utilities.zip(getBlobs(folder, ''), `${filename}.zip`);
 }
 function getGithubFilesAndZip_() {
   let url = `https://api.github.com/repos/${name}/${repo}/contents`;
@@ -79,7 +79,7 @@ function getGithubFilesAndZip_() {
 
 function getScriptSourceCode_(fileid) {
   let toReturn = []
-  let params = { headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() }, followRedirects: true, muteHttpExceptions: true};
+  let params = { headers: { Authorization: `Bearer ${ScriptApp.getOAuthToken()}` }, followRedirects: true, muteHttpExceptions: true};
   let url = `https://script.google.com/feeds/download/export?id=${fileid}&format=json`;
   let response = UrlFetchApp.fetch(url, params);
   let json = JSON.parse(response);
@@ -96,7 +96,7 @@ function getScriptSourceCode_(fileid) {
       case 'html':
         fullName = `${name}.html`; break
     }
-    toReturn.push([fullName, json['files'][file]['source']])
+    toReturn.push([ fullName, json['files'][file]['source'] ])
   }
   return toReturn
 }
