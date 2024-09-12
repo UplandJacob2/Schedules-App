@@ -205,6 +205,16 @@ function firstGetSchedulesSuccess(response) {
 
 }
 function getSchedulesFail(err) { error('Error getting schedule for editing', err); DATA = []; SHEET.render('none') }
+
+function updateSaveBtn() {
+  const saveBt = document.getElementById('saveSch')
+  //alert('CHANGE\n'+JSON.stringify(DATA)+"\n"+JSON.stringify(SHEET.data))
+  if (JSON.stringify(DATA) !== JSON.stringify(SHEET.data)) {
+    saveBt.disabled = false;saveBt.classList.remove('grayLink');  saveBt.classList.add('link'); return true
+  } else {
+    saveBt.disabled = true; saveBt.classList.remove('link');  saveBt.classList.add('grayLink'); return false
+  }
+}
 function saveSchedulesSuccess() {
   document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
   setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000)
@@ -266,15 +276,7 @@ function reloadEdit() {
   SHEET.render('load')
   google.script.run.withSuccessHandler(firstGetSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
 }
-function updateSaveBtn() {
-  const saveBt = document.getElementById('saveSch')
-  //alert('CHANGE\n'+JSON.stringify(DATA)+"\n"+JSON.stringify(SHEET.data))
-  if (JSON.stringify(DATA) !== JSON.stringify(SHEET.data)) {
-    saveBt.disabled = false;saveBt.classList.remove('grayLink');  saveBt.classList.add('link'); return true
-  } else {
-    saveBt.disabled = true; saveBt.classList.remove('link');  saveBt.classList.add('grayLink'); return false
-  }
-}
+
 
 function saveSch() {
   google.script.run.withSuccessHandler(saveSchedulesSuccess).withFailureHandler(saveSchedulesFail).api(
