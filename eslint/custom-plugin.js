@@ -54,7 +54,7 @@ module.exports = {
       "array-bracket-spacing": ["warn", "always", { 
         "singleValue": false 
       }],
-      "array-element-newline": ["warn", "consistant"],
+      "array-element-newline": ["warn", "consistent"],
       "arrow-body-style": ["warn", "as-needed"],
       "arrow-parens": ["error", "as-needed"],
       "arrow-spacing": ["warn", { 
