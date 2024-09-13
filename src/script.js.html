@@ -155,6 +155,18 @@ window.onload = function () {
   signInForm.addEventListener('submit', signInF);
 }
 
+function addIconToElmForTime (elmId, mainTxt, iconName, iconColor, time) {
+  document.getElementById(elmId).innerHTML = `${mainTxt} <ion-icon style="top: 15px; color: ${iconColor}; --ionicon-stroke-width: 30px;" class="font-20 bold" name="${iconName}"/>`
+  setTimeout(function removeRemoveAfterTimeout() { document.getElementById(elmId).innerHTML = mainTxt }, time)
+}
+function setEditorButtonsEnabled(enabled) {
+  let add = (enabled) ? 'link' : 'grayLink'
+  let rm = (!enabled) ? 'link' : 'grayLink'
+  let dB = document.getElementById('deleteSch'); dB.disabled = !enabled;  dB.classList.remove(rm);  dB.classList.add(add)
+  let aR = document.getElementById('addRow');    aR.disabled = !enabled;  aR.classList.remove(rm);  aR.classList.add(add)
+  let dR = document.getElementById('removeRow'); dR.disabled = !enabled;  dR.classList.remove(rm);  dR.classList.add(add)
+  let rS = document.getElementById('reloadSch'); rS.disabled = !enabled;  rS.classList.remove(rm);  rS.classList.add(add)
+}
 
 function updateSettingsNotSaved() {
   setTimeout(function() {
@@ -187,14 +199,13 @@ function getSettingsSuccess(response) {
   updateSettings()
 }
 function getSettingsFail(err) { error('Error getting user settings', err) }
-function saveSettingsSuccess() {
-  document.getElementById('saveSet').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
-  setTimeout(function() { document.getElementById('saveSet').innerHTML = 'Save' }, 4000)
+function saveSettingsSuccess() { 
+  addIconToElmForTime('saveSet', 'Save', 'checkmark', 'green', 4000)
   USER_SETTINGS = jsonReparse(USER_SETTINGS_NOT_SAVED); updateSettings()
 }
+
 function saveSettingsFail(err) {
-  document.getElementById('saveSet').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
-  setTimeout(function() { document.getElementById('saveSet').innerHTML = 'Save' }, 4000)
+  addIconToElmForTime('saveSet', 'Save', 'alert', 'red', 4000)
   error('Error saving user settings', err)
 }
 function saveSettings() {
@@ -204,9 +215,7 @@ function saveSettings() {
 
 
 function getSchedulesSuccess(response, encoded) {
-  let dB = document.getElementById('deleteSch'); dB.disabled = false;  dB.classList.remove('grayLink');  dB.classList.add('link')
-  let aR = document.getElementById('addRow');    aR.disabled = false;  aR.classList.remove('grayLink');  aR.classList.add('link')
-  let dR = document.getElementById('removeRow'); dR.disabled = false;  dR.classList.remove('grayLink');  dR.classList.add('link')
+  setEditorButtonsEnabled(true)
   if(encoded) response = Base64.decode(response)
   try { SHEET.resetData(response) } catch (e) { error('Error handling response', DebugLog.getStacktraceFromErr(e)) }
   DATA = jsonReparse(SHEET.data); updateSaveBtn()
@@ -217,12 +226,11 @@ function firstGetSchedulesSuccess(response) {
   try { $('.schedule').html(getSchedule()); $('#img').css('display', 'none'); }
   catch (err) { alert(DebugLog.getStacktraceFromErr(err)/*.splice(0, 2)*/.join('\n"')) }
 
-  setInterval(function () {
+  setInterval(function tickSecond() {
     //google.script.run.withSuccessHandler(function (schedule) { $('.schedule').html(schedule); $('#img').css('display', 'none'); }).getSchedule(getEmail(), getToken());
     try {
       $('.schedule').html(getSchedule()); $('#img').css('display', 'none');
-    } catch(e) { console.error(e) }
-
+    } catch (e) { console.error(e) }
   }, 1000);
 
 }
@@ -238,28 +246,23 @@ function updateSaveBtn() {
   }
 }
 function saveSchedulesSuccess() {
-  document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
-  setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000)
+  addIconToElmForTime('saveSch', 'Save', 'checkmark', 'green', 4000)
   DATA = jsonReparse(SHEET.data)
   updateSaveBtn()
   firstGetSchedulesSuccess()
 }
 function saveSchedulesFail(err) {
-  document.getElementById('saveSch').innerHTML = 'Save <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
-  setTimeout(function() { document.getElementById('saveSch').innerHTML = 'Save' }, 4000);      error('error saving schedule for editing', err)
+  addIconToElmForTime('saveSch', 'Save', 'alert', 'red', 4000)
+  error('error saving schedule for editing', err)
 }
 function deleteSchedulesSuccess() {
-  document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: green; --ionicon-stroke-width: 30px;" class="font-20 bold" name="checkmark"/>'
-  setTimeout(function() { document.getElementById('deleteSch').innerHTML = 'Delete' }, 4000)
+  addIconToElmForTime('deleteSch', 'Delete', 'checkmark', 'green', 4000)
   DATA = []; SHEET.data = []; SHEET.render('none'); updateSaveBtn()
-
-  let dB = document.getElementById('deleteSch'); dB.disabled = true;  dB.classList.add('grayLink');  dB.classList.remove('link')
-  let aR = document.getElementById('addRow');    aR.disabled = true;  aR.classList.add('grayLink');  aR.classList.remove('link')
-  let dR = document.getElementById('removeRow'); dR.disabled = true;  dR.classList.add('grayLink');  dR.classList.remove('link')
+  setEditorButtonsEnabled(false)
 }
 function deleteSchedulesFail(err) {
-  document.getElementById('deleteSch').innerHTML = 'Delete <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
-  setTimeout(function() { document.getElementById('deleteSch').innerHTML = 'Delete' }, 4000);  error('error deleting schedule', err)
+  addIconToElmForTime('deleteSch', 'Delete', 'alert', 'red', 4000)
+  error('error deleting schedule', err)
 }
 function recoverSchedulesSuccess(response) {
   let resp = JSON.parse(response)
@@ -267,7 +270,7 @@ function recoverSchedulesSuccess(response) {
   if(options.length === 1) {
     getSchedulesSuccess(options[0][1])
   } else {
-    let html = '<header style=\'font-weight: bold;\'>Multiple schedules were found.</header>'
+    let html = '<header style="font-weight: bold;">Multiple schedules were found.</header>'
     for(let i = 0; i < options.length; i++) {
       html += `<div><button onclick="recoverSpecificSchedule('${Base64.encode(options[i][1])}', '${options[i][2]}');" class="link" style="padding: 10px; margin: 5px;" >Option ${i+1}</button> <a style="margin: 5px; margin-bottom: 20px;">${getSchedulesHTML(options[i][1], options[i][0])}</a></div>`
     }
@@ -277,8 +280,8 @@ function recoverSchedulesSuccess(response) {
 
 }
 function recoverSchedulesFail(err) {
-  document.getElementById('recoverSch').innerHTML = 'Recover <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
-  setTimeout(function() { document.getElementById('recoverSch').innerHTML = 'Recover' }, 4000);error('error recovering schedule', err)
+  addIconToElmForTime('recoverSch', 'Recover', 'alert', 'red', 4000)
+  error('error recovering schedule', err)
 }
 function recoverSpecificSchedule(data, recoverID) {
   google.script.run.withSuccessHandler(recoverSchedulesSuccess).withFailureHandler(recoverSchedulesFail).api(
@@ -288,8 +291,10 @@ function recoverSpecificSchedule(data, recoverID) {
 }
 
 function newSchedulesFail(err) {
-  document.getElementById('recoverSch').innerHTML = 'New <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
-  setTimeout(function() { document.getElementById('newSch').innerHTML = 'New' }, 4000);        error('error creating schedule', err)
+  // document.getElementById('recoverSch').innerHTML = 'New <ion-icon style="top: 15px; color: red; --ionicon-stroke-width: 30px;" class="font-20 bold" name="alert"/>'
+  // setTimeout(function removeXAfterNewSchFail() { document.getElementById('newSch').innerHTML = 'New' }, 4000);
+  addIconToElmForTime('recoverSch', 'New', 'alert', 'red', 4000)
+  error('error creating schedule', err)
 }
 
 
@@ -335,8 +340,8 @@ function getWidthOfInput(inputEl) {
 function resizeInput() {
   //this.style.width = this.value.length + 'ch';
   let elm = this
-  setTimeout(function() {
-    setTimeout(function() { alert(elm.outerHTML) })
+  setTimeout(function resizeInputAfterTimeout() {
+    setTimeout(function resizeInputDebugAfterTimeout() { alert(elm.outerHTML) })
     //alert(elm.outerHTML)
     elm.style.width = `${getWidthOfInput(elm)}px`;
   }, 200 );
@@ -380,7 +385,7 @@ function loadSheet() {
     confirmPopup({ title: 'Confirm deletion', text: 'Are you sure you want to delete your schedules? (Can be recovered)', onYes: 'deleteSch()' })
   })
   document.getElementById('reloadSch').addEventListener('click', function reloadSchOnClick() {
-    if(DATA !== SHEET.data) {
+    if(updateSaveBtn()) {
       confirmPopup({ title: 'Changes not saved', text: 'Your changes aren\'t saved. Would you like to save before reloading?', onYes: 'saveSch()', onNo: 'reloadEdit()' })
       return
     }
