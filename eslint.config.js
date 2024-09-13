@@ -69,4 +69,13 @@ module.exports = [
       
     },
   },
+  ////  other JS
+  {
+    files: ["**/*.js"],
+    plugins: customPlugin.configs.recommended.plugins,
+    rules: {
+      ...js.configs.recommended.rules,
+      ...customPlugin.configs.recommended.rules,
+    },
+  }
 ];
