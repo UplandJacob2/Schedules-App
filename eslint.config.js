@@ -72,6 +72,7 @@ module.exports = [
   ////  other JS
   {
     files: ["**/*.js"],
+    ignores: ["**/*.html.js"],
     plugins: customPlugin.configs.recommended.plugins,
     rules: {
       ...js.configs.recommended.rules,
