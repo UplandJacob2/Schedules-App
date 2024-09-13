@@ -117,7 +117,7 @@ class Editor {
       ul.style.setProperties({position: 'absolute', background: this.dropBack, 'margin-top': '5px', 'margin-left': '-6px', 'text-align': 'left' })
       ul.classList.add('items')
       let options = this.columns[coli].editor.options.listItems
-      for (let op in options) {
+      for(let op in options) {
         let opt = document.createElement('li')
         let inp = document.createElement('input')
         let txt = document.createElement('a')
@@ -147,8 +147,8 @@ class Editor {
       el.setAttribute('customtype', 'time')
     }
     let { attrs, style } = this.columns[coli].editor.options || {}
-    for (let attr in attrs) { el.setAttribute(attr, attrs[attr]) }
-    for (let stl in style)  { el.style.setProperty(stl, style[stl]) }
+    for(let attr in attrs) { el.setAttribute(attr, attrs[attr]) }
+    for(let stl in style)  { el.style.setProperty(stl, style[stl]) }
     return el
   }
 
@@ -177,7 +177,7 @@ class Editor {
 
     let table = document.createElement('table')
     let header = document.createElement('tr')
-    for (let col in this.columns) {
+    for(let col in this.columns) {
       let el = document.createElement('td')
       el.innerHTML = this.columns[col].header
       el.style.setProperties({margin: '10px', padding: '5px', 'text-align': 'center'})
@@ -187,9 +187,9 @@ class Editor {
     table.style.setProperties({background: this.tableBack, 'font-size': '25px', 'margin-bottom': '200px'})
     table.append(header)
 
-    for (let row in this.data) {
+    for(let row in this.data) {
       let rowEl = document.createElement('tr')
-      for (let col in this.data[row]) {
+      for(let col in this.data[row]) {
         let colEl = document.createElement('td')
         let coli = this.columns.findIndex(c => c.name === col)
         colEl.setAttribute('row', row)
@@ -246,7 +246,7 @@ class Editor {
       if(option === 'close') {
         let options = this.columns[this.columns.findIndex(c => c.name === col)].editor.options.listItems
         let dat = ''
-        for (let i = 0; i < options.length; i++) {
+        for(let i = 0; i < options.length; i++) {
           if(el.children[0].children[1].children[i].children[0].checked) {
             if(dat) { dat += ', ' }
             dat += this.columns[this.columns.findIndex(c => c.name === col)].editor.options.listItems[i].value
