@@ -65,7 +65,7 @@ function getSchedule(query) {
       schIndex ++
       if( (scheduleName && data[i].name === scheduleName) || (scheduleIndex && schIndex === scheduleIndex) || (!scheduleName && !scheduleIndex && data[i].days.includes(date.toString('ddd'))) ) {
         let rInfo = data[i].info; let r = i
-        while (rInfo !== 'es') {
+        while(rInfo !== 'es') {
           schedule.push(data[r])
           r ++
           try { rInfo = data[r].info } catch { error('Error parsing schedule', 'no end \'es\'') }
