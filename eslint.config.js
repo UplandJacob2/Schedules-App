@@ -1,18 +1,14 @@
-//import eslintPlugin from '@typescript-eslint/eslint-plugin'
 //import js from "@eslint/js";
 
 const js = require("@eslint/js");
 const htmlLint = require("@html-eslint/eslint-plugin");
 const htmlParser = require("@html-eslint/parser");
-// const globals = require("globals");
-// const googleappsscript = require("eslint-plugin-googleappsscript")
 
 const customPlugin = require("./eslint/custom-plugin")
 
 //export default 
 module.exports = [
-  //js.configs.recommended,
-  ////  HTML
+  ////  client HTML
   {
     files: ["src/**/*.html"],
     ignores: ["src/**/*.js.html"],
@@ -35,7 +31,7 @@ module.exports = [
 
     },
   },
-  //// JS IN HTML
+  ////  client JS IN HTML
   {
     files: ["src/**/*.js.html.js"],
     ignores: ["**/Date.js.html.js", "**/Datejs.js.html.js", "**/underscore-observe.js.html.js"],
@@ -54,7 +50,7 @@ module.exports = [
       }],
     },
   },
-  //// GS
+  ////  server GS
   {
     files: ["src/**/*.gs"],
     plugins: customPlugin.configs.recommended.plugins,
