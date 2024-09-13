@@ -41,7 +41,7 @@ DateUtils.dayRange = function dayRange(fromD, toD, formated) {
   //console.log(month+'/'+day+'/'+year);
   //console.log(eMonth+'/'+eDay+'/'+eYear);
 
-  while (!found) {
+  while(!found) {
     l(month, day, year)
     //month = parseInt(month); day = parseInt(day); year = parseInt(year)
     daysInMonth = daysPerMonth[month-1];
