@@ -79,7 +79,7 @@ DateUtils.iterateDays = function iterateDays(fromD, num) {
 
   let year = fromD.match(/[0-9]{4}/g)[0]; let month = DateUtils.monthToNum(fromD.match(/(\D){3}(?= )/g)[0]); let daysInMonth = daysPerMonth[month-1]; let day = fromD.match(/[0-9]{2}(?=, )/g);
   if(num > 0 ) {
-    for (let i=0; i < num; i++) {
+    for(let i=0; i < num; i++) {
       daysInMonth = daysPerMonth[month-1];
       if(month <= 12) {
         if(day < daysInMonth) { day++; } else { day = 1; month ++; }
@@ -87,7 +87,7 @@ DateUtils.iterateDays = function iterateDays(fromD, num) {
     }
     return `${month}/${day}/${year}`
   } else if(num < 0) {
-    for (let i=0; i > num; i--) {
+    for(let i=0; i > num; i--) {
       daysInMonth = daysPerMonth[month-1];
       if(month <= 12) {
         if(day < daysInMonth) { day--; } else { day = 1; month --; }
