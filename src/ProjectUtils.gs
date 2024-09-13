@@ -44,14 +44,14 @@ function zipFilesInFolder_(folder, filename) {
   function getBlobs(rootFolder, path) {
     let blobs = [];
     let files = rootFolder.getFiles();
-    while (files.hasNext()) {
+    while(files.hasNext()) {
       let file = files.next().getBlob();
       l(path+file.getName())
       //file.setName(path + file.getName());
       blobs.push(file);
     }
     let folders = rootFolder.getFolders();
-    while (folders.hasNext()) {
+    while(folders.hasNext()) {
       let subfolder = folders.next();
       let subPath = `${path+subfolder.getName()}/`;
       l(path+subPath)
