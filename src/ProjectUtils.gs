@@ -85,8 +85,8 @@ function getScriptSourceCode_(fileid) {
   let json = JSON.parse(response);
 
   for (let file in json['files']) {
-    let name = json['files'][file]['name']
-    let type = json['files'][file]['type']
+    let name = json.files[file].name
+    let type = json.files[file].type
     let fullName
     switch (type) {
       case 'server_js':
@@ -113,7 +113,7 @@ function updateGithubRepo_(filePath, content) {
   )
 
   content = Utilities.base64Encode(Utilities.newBlob(content).getBytes())
-  if(content === getResponse['content'].replace(/\n/g, '')) { l('no changes'); return }
+  if(content === getResponse.content.replace(/\n/g, '')) { l('no changes'); return }
   //if(filePath !== 'Code.gs') {return}
 
   const data = {
