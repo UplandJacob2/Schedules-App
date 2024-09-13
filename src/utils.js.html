@@ -217,7 +217,7 @@ function signInSuccess(inp) {
   // }, 8000);
 
   //google.script.run.test(document.body.parentElement.innerHTML)
-  try{ loadSheet() } catch (e) { alert(DebugLog.getStacktraceFromErr(e)) }
+  try { loadSheet() } catch (e) { alert(DebugLog.getStacktraceFromErr(e)) }
 }
 function signIn(email, pass, rm) {
   google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function (err) {
