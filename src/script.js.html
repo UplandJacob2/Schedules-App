@@ -11,8 +11,8 @@ const emptyRow = { info: '',  class: 'Some Class', strt: '8:00', end: '9:00', b:
 function openMenu() {
   document.querySelector('.nav-menu').classList.toggle('active');
   document.querySelector('.menu-cont').classList.toggle('active');
-  if (window.innerWidth > 668) {
-    if (document.querySelector('.menu-cont').contains('active')) { // inactive menu
+  if(window.innerWidth > 668) {
+    if(document.querySelector('.menu-cont').contains('active')) { // inactive menu
       document.getElementById('main').style.setProperty('width', '100%')
     } else { // active menu
       document.getElementById('main').style.setProperty('width', 'calc(100% - 130px)')
@@ -22,10 +22,10 @@ function openMenu() {
 
 function toggleDisplay(elmStrIn, toState) {
   let elm = $(`#${elmStrIn}`)
-  if (typeof toState !== 'undefined') { // if toState is specified
-    if (toState) { elm.css('display', 'block') } else { elm.css('display', 'none') }
+  if(typeof toState !== 'undefined') { // if toState is specified
+    if(toState) { elm.css('display', 'block') } else { elm.css('display', 'none') }
   } else { // otherwise, toggle
-    if (elm.css('display') === 'none') { elm.css('display', 'block') } else { elm.css('display', 'none') }
+    if(elm.css('display') === 'none') { elm.css('display', 'block') } else { elm.css('display', 'none') }
   }
 }
 
@@ -47,7 +47,7 @@ function toggleDisplay(elmStrIn, toState) {
 function getSchedule(query) {
 
   let scheduleName, scheduleIndex, data, date; let schedule = []
-  if (query) {
+  if(query) {
     data = (typeof query.data !== 'undefined') ? query.data : DATA
     scheduleName = (typeof query.name !== 'undefined') ? query.name : null
     scheduleIndex = (typeof query.index !== 'undefined') ? query.index : null
@@ -56,14 +56,14 @@ function getSchedule(query) {
     date = new Date()
     data = DATA
   }
-  if (data === []) {
+  if(data === []) {
     return '<header class="center" style="font-size: 40px; margin: 30px;">We couldn\'t find a schedule for you.</header>   <a onclick="toggleDisplay(\'editPop\')" class="link center" style="font-size: 25px; padding: 10px; margin-top: -30px;">Create Schedule</a>'
   }
   let schIndex = -1
   for (let i in data) {
-    if (data[i].info === 's') {
+    if(data[i].info === 's') {
       schIndex ++
-      if ( (scheduleName && data[i].name === scheduleName) || (scheduleIndex && schIndex === scheduleIndex) || (!scheduleName && !scheduleIndex && data[i].days.includes(date.toString('ddd'))) ) {
+      if( (scheduleName && data[i].name === scheduleName) || (scheduleIndex && schIndex === scheduleIndex) || (!scheduleName && !scheduleIndex && data[i].days.includes(date.toString('ddd'))) ) {
         let rInfo = data[i].info; let r = i
         while (rInfo !== 'es') {
           schedule.push(data[r])
@@ -80,7 +80,7 @@ function getSchedule(query) {
   schStr += `<tr><th colspan="8">${schedule[0].name}</th></tr>`
 
   let minu = String(date.getMinutes())
-  if (minu.length === 1) { minu = `0${minu}` }
+  if(minu.length === 1) { minu = `0${minu}` }
   const nowInt = parseInt(String(date.getHours())+minu)
   let boldRows = []; let classNows = [];
 
@@ -88,12 +88,12 @@ function getSchedule(query) {
     let strtTime = row.strt; let sHr = strtTime.split(':')[0]; let sMin = strtTime.split(':')[1]
     let endTime = row.end;   let eHr =  endTime.split(':')[0]; let eMin =  endTime.split(':')[1]
     const sInt = parseInt(sHr+sMin);  const eInt = parseInt(eHr+eMin)
-    if (nowInt >= sInt && nowInt <= eInt) {
+    if(nowInt >= sInt && nowInt <= eInt) {
       classNows.push(r);
     }
     l(classNows, sInt, eInt, nowInt)
-    if (!USER_SETTINGS.militaryTime) { strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime) }
-    if (row.b) boldRows.push(r)
+    if(!USER_SETTINGS.militaryTime) { strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime) }
+    if(row.b) boldRows.push(r)
     schedule[r] = [ row['class'], strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1] ]
   })
   schedule.forEach((row, r) => {
@@ -101,13 +101,13 @@ function getSchedule(query) {
     l(row)
     row.forEach((cell, c) => {
       schStr+=`<td class="c${c} r${rab}`
-      if (c === 0) { if (boldRows.includes(r)) { schStr+= ' b' } }
-      if (classNows.includes(r)) { schStr+= ' y' }
+      if(c === 0) { if(boldRows.includes(r)) { schStr+= ' b' } }
+      if(classNows.includes(r)) { schStr+= ' y' }
       schStr+=`">${cell}</td>`
     });
 
     schStr+='</tr>';
-    if (rab === 'a') { rab = 'b' } else { rab ='a' }
+    if(rab === 'a') { rab = 'b' } else { rab ='a' }
   });
   l(schStr)
   return schStr
@@ -118,7 +118,7 @@ function getSchedulesHTML(data, dateTimeStr) {
   try {
     let schNum = 0;
     for (let i = 0; i < dataArr.length; i++) {
-      if (dataArr[i].info === 's') {
+      if(dataArr[i].info === 's') {
         output += (`<table style="position: relative; zoom: 80%; display: inline-block; margin: 2px;" class="schedule">${getSchedule({ data: dataArr, index: schNum, dateTime: Date.parse(dateTimeStr)})}</table>`)
         schNum ++
       }
@@ -140,11 +140,11 @@ window.onload = function () {
   events.forEach(e => { document.getElementById('signUpC').addEventListener(e, function(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
   [ 'emailSignUp', 'emailSignIn' ].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
 
-  if (getToken()) {
+  if(getToken()) {
     toggleDisplay('signInLoad');
     google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function(e){
-      if (e.message === 'Bad token.') deleteSignInCookies()
-      if (document.getElementById('signInLoad').style.display === 'block') { toggleDisplay('signInLoad'); }
+      if(e.message === 'Bad token.') deleteSignInCookies()
+      if(document.getElementById('signInLoad').style.display === 'block') { toggleDisplay('signInLoad'); }
       error('Error when automatically signing in.', e.message)
     }).signInWToken(getEmail(), getToken());
   }
@@ -159,12 +159,12 @@ window.onload = function () {
 function updateSettingsNotSaved() {
   setTimeout(function() {
     for (let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
-      if (SETTINGS_INFO.types[seti] === 'check') {
+      if(SETTINGS_INFO.types[seti] === 'check') {
         USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
       }
     }
     let sB = document.getElementById('saveSet')
-    if (JSON.stringify(USER_SETTINGS) !== JSON.stringify(USER_SETTINGS_NOT_SAVED)) { sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink') }
+    if(JSON.stringify(USER_SETTINGS) !== JSON.stringify(USER_SETTINGS_NOT_SAVED)) { sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink') }
     else { sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link') }
   }, 1)
 }
@@ -207,7 +207,7 @@ function getSchedulesSuccess(response, encoded) {
   let dB = document.getElementById('deleteSch'); dB.disabled = false;  dB.classList.remove('grayLink');  dB.classList.add('link')
   let aR = document.getElementById('addRow');    aR.disabled = false;  aR.classList.remove('grayLink');  aR.classList.add('link')
   let dR = document.getElementById('removeRow'); dR.disabled = false;  dR.classList.remove('grayLink');  dR.classList.add('link')
-  if (encoded) response = Base64.decode(response)
+  if(encoded) response = Base64.decode(response)
   try { SHEET.resetData(response) } catch (e) { error('Error handling response', DebugLog.getStacktraceFromErr(e)) }
   DATA = jsonReparse(SHEET.data); updateSaveBtn()
 }
@@ -231,7 +231,7 @@ function getSchedulesFail(err) { error('Error getting schedule for editing', err
 function updateSaveBtn() {
   const saveBt = document.getElementById('saveSch')
   //alert('CHANGE\n'+JSON.stringify(DATA)+"\n"+JSON.stringify(SHEET.data))
-  if (JSON.stringify(DATA) !== JSON.stringify(SHEET.data)) {
+  if(JSON.stringify(DATA) !== JSON.stringify(SHEET.data)) {
     saveBt.disabled = false;saveBt.classList.remove('grayLink');  saveBt.classList.add('link'); return true
   } else {
     saveBt.disabled = true; saveBt.classList.remove('link');  saveBt.classList.add('grayLink'); return false
@@ -264,7 +264,7 @@ function deleteSchedulesFail(err) {
 function recoverSchedulesSuccess(response) {
   let resp = JSON.parse(response)
   let options = resp[1]
-  if (options.length === 1) {
+  if(options.length === 1) {
     getSchedulesSuccess(options[0][1])
   } else {
     let html = '<header style=\'font-weight: bold;\'>Multiple schedules were found.</header>'
@@ -311,7 +311,7 @@ function deleteSch() {
   document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 function editPopClose () {
-  if (updateSaveBtn()) {
+  if(updateSaveBtn()) {
     confirmPopup({ title: 'Save?', text: 'Do you want to save your changes?', onYes: 'saveSch()', onNo: 'toggleDisplay(\'editPop\')' })
   } else {
     toggleDisplay('editPop')
@@ -387,7 +387,7 @@ function loadSheet() {
   })
   const reloadBt = document.getElementById('reloadSch')
   reloadBt.addEventListener('click', function () {
-    if (DATA !== SHEET.data) {
+    if(DATA !== SHEET.data) {
       confirmPopup({ title: 'Changes not saved', text: 'Your changes aren\'t saved. Would you like to save before reloading?', onYes: 'saveSch()', onNo: 'reloadEdit()' })
       return
     }
