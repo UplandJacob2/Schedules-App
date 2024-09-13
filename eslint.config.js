@@ -4,8 +4,8 @@
 const js = require("@eslint/js");
 const htmlLint = require("@html-eslint/eslint-plugin");
 const htmlParser = require("@html-eslint/parser");
-const globals = require("globals");
-const googleappsscript = require("eslint-plugin-googleappsscript")
+// const globals = require("globals");
+// const googleappsscript = require("eslint-plugin-googleappsscript")
 
 const customPlugin = require("./eslint/custom-plugin")
 
@@ -39,9 +39,6 @@ module.exports = [
   {
     files: ["src/**/*.js.html.js"],
     ignores: ["**/Date.js.html.js", "**/Datejs.js.html.js", "**/underscore-observe.js.html.js"],
-    plugins: {
-      "custom-rules": customPlugin
-    },
     languageOptions : {
       globals: {
         ...customPlugin.globals.client
@@ -49,22 +46,16 @@ module.exports = [
     },
     rules: {
       ...js.configs.recommended.rules,
-      // semi: "off",
-      ...customPlugin.configs.rules,
+      ...customPlugin.configs.recommended.rules,
 
       "no-unused-vars": ["error", { 
         "varsIgnorePattern": customPlugin.globalsUsed.client
       }],
     },
-
   },
   //// GS
   {
     files: ["src/**/*.gs"],
-    plugins: {
-      googleappsscript, 
-      "custom-rules": customPlugin
-    },
     languageOptions: {
       globals: {
         ...customPlugin.globals.server
@@ -73,14 +64,11 @@ module.exports = [
 
     rules: {
       ...js.configs.recommended.rules,
-      ...customPlugin.configs.rules,
+      ...customPlugin.configs.recommended.rules,
       "no-unused-vars": ["error", { 
         "varsIgnorePattern": customPlugin.globalsUsed.server
       }],
       
     },
-
-
   },
-
 ];
