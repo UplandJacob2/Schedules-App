@@ -36,20 +36,6 @@ module.exports = {
   },
   configs: {
     rules: {
-      semi: "off",
-      quotes: ["warn", "single"],
-      indent: ["warn", 2, {
-        SwitchCase: 1
-      }],
-      "no-trailing-spaces": "warn",
-      eqeqeq: "warn",
-      "no-var": "warn",
-      "no-use-before-define": "error",
-      
-      "prefer-template": "warn",
-      "no-useless-concat": "warn",
-      
-      
       "array-bracket-newline": ["warn", {
         "multiline": true
       }],
@@ -70,8 +56,36 @@ module.exports = {
         stroustrupAfterSingleLine: true,
         allowDualSingleLine: true
       }],
+      "comma-spacing": ["warn", { 
+        "before": false, 
+        "after": true 
+      }],
+      "computed-property-spacing": ["warn", "never"],
       curly: ["warn", "multi-line"],
+      "default-case": "error",
+      "default-case-last": "warn",
+      "default-param-last": ["error"],
+      "dot-location": ["error", "property"],
+      "dot-notation": "error",
+      eqeqeq: "warn",
+      "for-direction": "error",
+      "func-call-spacing": ["error", "never"],
+      "func-names": ["error", "as-needed"],
+      
+      
 
+      semi: "off",
+      quotes: ["warn", "single"],
+      indent: ["warn", 2, {
+        SwitchCase: 1
+      }],
+      "no-trailing-spaces": "warn",
+      "no-var": "warn",
+      "no-use-before-define": "error",
+      
+      "prefer-template": "warn",
+      "no-useless-concat": "warn",
+      
 
       "no-unused-vars": ["error", { 
         "varsIgnorePattern": globalsC
