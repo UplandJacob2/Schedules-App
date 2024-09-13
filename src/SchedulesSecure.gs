@@ -1,7 +1,7 @@
 const SchedulesSecure = {}
 
 
-SchedulesSecure.verify = function(email, token) {
+SchedulesSecure.verify = function verify(email, token) {
   if(!email) { throw new Error('No email.'); }
   if(!token) { throw new Error('No token.'); }
 
@@ -24,23 +24,23 @@ SchedulesSecure.verify = function(email, token) {
   }
 }
 
-SchedulesSecure.testDoc = function(str) {
+SchedulesSecure.testDoc = function testDoc(str) {
   DocumentApp.openById('1NUtowdsYBC1Kq00xtr0VYsxnbbZBt8ROt01P1-EXeXo').getBody().setText(str);
 }
 /**
  * generate a 250 character using random.org
  */
-SchedulesSecure.random250 = function() {
+SchedulesSecure.random250 = function random250() {
   let code = UrlFetchApp.fetch('https://www.random.org/strings/?num=10&len=25&digits=on&upperalpha=on&loweralpha=on&unique=on&format=html&rnd=new', {'muteHttpExceptions': true}).getContentText();
   return ''.concat(code.match(/([a-zA-Z0-9]{25})/g)).replace(/,/g, '');
 }
 
-SchedulesSecure.isValidEmail = function(email) {
+SchedulesSecure.isValidEmail = function isValidEmail(email) {
   const re = /^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*)@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)$/;
   console.log(re.test(email) && /^(.){3,320}$/.test(email))
   return (re.test(email) && /^(.){3,320}$/.test(email))
 }
-SchedulesSecure.isValidPassword = function(pass) {
+SchedulesSecure.isValidPassword = function isValidPassword(pass) {
   return (
     ((pass.match(/[0-9]/g) || []).length >= 1) &&   //must have #
     ((pass.match(/[a-z]/g) || []).length >= 1) &&   //must have lowercase letter
