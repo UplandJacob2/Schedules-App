@@ -30,10 +30,10 @@ function getAndPutFiles_(folder, url) {
 
   files.forEach(function(file) {
     l(file.name, ':', file.type)
-    if (file.type === 'file') {
+    if(file.type === 'file') {
       let fileResponse = UrlFetchApp.fetch(file.download_url, options);
       folder.createFile(fileResponse.getBlob()).setName(file.name);
-    } else if (file.type === 'dir') {
+    } else if(file.type === 'dir') {
       let nFolder = folder.createFolder(file.name)
       url = `${url}/${file.name}`
       getAndPutFiles_(nFolder, url)
@@ -95,6 +95,7 @@ function getScriptSourceCode_(fileid) {
         fullName = `${name}.json`; break;
       case 'html':
         fullName = `${name}.html`; break;
+      // no default
     }
     toReturn.push([ fullName, json['files'][file]['source'] ])
   }
@@ -112,8 +113,8 @@ function updateGithubRepo_(filePath, content) {
   )
 
   content = Utilities.base64Encode(Utilities.newBlob(content).getBytes())
-  if (content === getResponse['content'].replace(/\n/g, '')) { l('no changes'); return }
-  //if (filePath !== 'Code.gs') {return}
+  if(content === getResponse['content'].replace(/\n/g, '')) { l('no changes'); return }
+  //if(filePath !== 'Code.gs') {return}
 
   const data = {
     'path': `src/${filePath}`,
@@ -181,7 +182,7 @@ function minifyAll() {
   let contents = getScriptSourceCode_(DriveApp.getFilesByName('Schedules App').next().getId())
   for (let dat in contents) {
     let n = contents[dat][0]
-    if ( !(n === 'Date.js.html' || n === 'Datejs.js.html' || n === 'underscore-observe.js.html') && contents[dat][0].match(/(\.gs)|(\.js\.html)/g) ) {
+    if( !(n === 'Date.js.html' || n === 'Datejs.js.html' || n === 'underscore-observe.js.html') && contents[dat][0].match(/(\.gs)|(\.js\.html)/g) ) {
       let data = contents[dat][1].replace(/<\/?script>/g, '')//.replace(/(?<![;{},\n:]|(\/\/.+))\n(?! +\{)/g, ';\n')
       // l(data)
       minify_(data)
