@@ -324,7 +324,7 @@ function editPopClose () {
 function getWidthOfInput(inputEl) {
   let tmp = document.createElement('span');
   tmp.className = 'input-element tmp-element';
-  tmp.innerHTML = inputEl.value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  tmp.innerHTML = inputEl.value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   document.body.appendChild(tmp);
   //let theWidth = tmp.getBoundingClientRect().width;
   let theWidth = tmp.offsetWidth
