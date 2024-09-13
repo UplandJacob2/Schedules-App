@@ -135,14 +135,14 @@ window.onload = function () {
 
   let events = [ 'keypress', 'keydown', 'keyup' ];
 
-  events.forEach(e => { document.getElementById('signInC').addEventListener(e, function(){ checkSignInButton(); }); });
-  events.forEach(e => { document.getElementById('passSignIn').addEventListener(e, function(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
-  events.forEach(e => { document.getElementById('signUpC').addEventListener(e, function(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
+  events.forEach(e => { document.getElementById('signInC').addEventListener(e, checkSignInButton); });
+  events.forEach(e => { document.getElementById('passSignIn').addEventListener(e, function updateSignInBox(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
+  events.forEach(e => { document.getElementById('signUpC').addEventListener(e, function updateSignUpBox(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
   [ 'emailSignUp', 'emailSignIn' ].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
 
   if(getToken()) {
     toggleDisplay('signInLoad');
-    google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function(e){
+    google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function signInErrorHandler(e){
       if(e.message === 'Bad token.') deleteSignInCookies()
       if(document.getElementById('signInLoad').style.display === 'block') { toggleDisplay('signInLoad'); }
       error('Error when automatically signing in.', e.message)
@@ -169,7 +169,7 @@ function setEditorButtonsEnabled(enabled) {
 }
 
 function updateSettingsNotSaved() {
-  setTimeout(function() {
+  setTimeout(function updateSettingsNotSavedAsync() {
     for(let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
       if(SETTINGS_INFO.types[seti] === 'check') {
         USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
@@ -199,7 +199,7 @@ function getSettingsSuccess(response) {
   updateSettings()
 }
 function getSettingsFail(err) { error('Error getting user settings', err) }
-function saveSettingsSuccess() { 
+function saveSettingsSuccess() {
   addIconToElmForTime('saveSet', 'Save', 'checkmark', 'green', 4000)
   USER_SETTINGS = jsonReparse(USER_SETTINGS_NOT_SAVED); updateSettings()
 }
