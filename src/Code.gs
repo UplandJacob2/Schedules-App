@@ -18,7 +18,7 @@ function api (parameter) {
   if(item === 'sch') {
     l('schedule data')
     if(!parameter.action) { err_('Action required.'); } if(!parameter.email) { err_('Email required.'); } if(!parameter.token) { err_('Token required.'); } let { action, email, token } = parameter
-    try { if(!SchedulesSecure.verify(email, token)) { err_('invalid token') } } catch(e) { err_(e.message) } let file
+    try { if(!SchedulesSecure.verify(email, token)) { err_('invalid token') } } catch (e) { err_(e.message) } let file
     try { file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${email}.json`).next() } catch { w(`no file for ${email}`); file = null }
 
     if(action === 'delete'){
@@ -106,7 +106,7 @@ function api (parameter) {
   } else if(item === 'settings') { /////////////////////////////////////////
     l('user settings')
     if(!parameter.action) { err_('Action required.'); } if(!parameter.email) { err_('Email required.'); } if(!parameter.token) { err_('Token required.'); } let { action, email, token } = parameter
-    try { if(!SchedulesSecure.verify(email, token)) { err_('invalid token') } } catch(e) { err_(e.message) } let file
+    try { if(!SchedulesSecure.verify(email, token)) { err_('invalid token') } } catch (e) { err_(e.message) } let file
     try { file = DriveApp.getFolderById('1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR').getFilesByName(`${email}_settings.json`).next() } catch { w(`no file for ${email}`); file = null }
 
     if(action === 'delete'){
@@ -387,7 +387,7 @@ function refreshSchedules_() {
  */
 function getSchedule(email, token) {
   let file
-  try { if(!SchedulesSecure.verify(email, token)) { err_('invalid token') } } catch(e) { err_(e.message) }
+  try { if(!SchedulesSecure.verify(email, token)) { err_('invalid token') } } catch (e) { err_(e.message) }
   try { file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${email}.json`).next() }
   catch { w(`no file for ${email}`); file = null }
   if(!file) { return '<center><header style="font-size: 40px; margin: 30px;">We couldn\'t find a schedule for you.</header></center>   <center><a onclick="toggleDisplay(\'editPop\')" class="link" style="font-size: 25px; padding: 10px; margin-top: -30px;">Create Schedule</a></center>' }
