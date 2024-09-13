@@ -131,7 +131,7 @@ class Editor {
         opt.innerHTML = inp.outerHTML + txt.outerHTML
         ul.append(opt)
       }
-      el.addEventListener('keypress', function (ev) { if(ev.code === 'enter') { alert(this); this.blur() } })
+      el.addEventListener('keypress', function blurOnKeypress(ev) { if(ev.code === 'enter') { alert(this); this.blur() } })
       el.append(ul)
       el.setAttribute('customtype', 'checklist')
     } else if(type === 'time') {
@@ -161,13 +161,13 @@ class Editor {
         <a style="width: auto; height: 25px; display: inline-block; padding: 10px; margin: 2px;" class="link" id="newSch">New</a>
       </center>`;
       const recoverBt = document.getElementById('recoverSch')
-      recoverBt.addEventListener('click', function () {
+      recoverBt.addEventListener('click', function recoverOnCLick() {
         google.script.run.withSuccessHandler(recoverSchedulesSuccess).withFailureHandler(recoverSchedulesFail).api(
           { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'recover'})
         document.getElementById('recoverSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">'
       })
       const newBt = document.getElementById('newSch')
-      newBt.addEventListener('click', function () {
+      newBt.addEventListener('click', function newSchOnClick() {
         google.script.run.withSuccessHandler(getSchedulesSuccess).withFailureHandler(newSchedulesFail).api(
           { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'new'})
         document.getElementById('newSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif">'
