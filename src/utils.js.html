@@ -42,7 +42,7 @@ function error(title, txt) {
  *
 **/
 function confirmPopup(args) {
-  let title,text,onYes,onNo,yesBtTxt,noBtTxt
+  let title, text, onYes, onNo, yesBtTxt, noBtTxt
   title = args.title || 'Confirm'; text = args.text || 'Confirm?'; yesBtTxt = args.yesBtTxt || 'Yes'; noBtTxt = args.noBtTxt || 'No'
   onYes = args.onYes || 'toggleDisplay(\'confirmPop\')'; onNo = args.onNo || 'toggleDisplay(\'confirmPop\')'
   if(typeof args.onYes !== 'undefined') { onYes!=='\ntoggleDisplay(\'confirmPop\')' }
@@ -79,7 +79,7 @@ function deleteSignInCookies() { document.cookie = 'signin={"token":"", "email":
 function setCookie(cookie, value) { document.cookie = `${cookie}=${value}; SameSite=none; secure`; }
 function getCookie(cookie) {
   let thing;
-  try { if(document.cookie) { thing = document.cookie.match(new RegExp(`(?<=${cookie}=)\{.+\}` , 'g')); } else { return null } }
+  try { if(document.cookie) { thing = document.cookie.match(new RegExp(`(?<=${cookie}=)\{.+\}`, 'g')); } else { return null } }
   catch (e) { w('Cookie Error:', e.message); return null }
   try { if(JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
   catch (e) { w('Cookie Error:', e.message); return null }
