@@ -97,7 +97,7 @@ function getScriptSourceCode_(fileid) {
         fullName = `${name}.html`; break;
       // no default
     }
-    toReturn.push([ fullName, json['files'][file]['source'] ])
+    toReturn.push([ fullName, json.files[file].source ])
   }
   return toReturn
 }
@@ -105,7 +105,7 @@ function updateGithubRepo_(filePath, content) {
   const url = `https://api.github.com/repos/${name}/${repo}/contents/src/${filePath}`;
 
   let getResponse = JSON.parse(UrlFetchApp.fetch(url, { muteHttpExceptions: true, headers: {authorization: `token ${token}`} }).getContentText())
-  let sha = getResponse['sha']
+  let sha = getResponse.sha
 
   l(repo, branch, filePath, name, email, token, sha, url, /*
   getResponse
