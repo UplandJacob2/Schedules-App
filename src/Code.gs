@@ -329,7 +329,7 @@ function refreshCache_() {
   const acctJson = JSON.parse(fold.getFilesByName('accounts.json').next().getBlob().getDataAsString())
   l(acctJson)
   let schInfo = []
-  for (let acct in acctJson) {
+  for(let acct in acctJson) {
     let iter = fold.getFilesByName(`${acctJson[acct].email}.json`); let sch
     if(iter.hasNext()) {
       sch = iter.next().getBlob().getDataAsString()
@@ -393,7 +393,7 @@ function getSchedule(email, token) {
   if(!file) { return '<center><header style="font-size: 40px; margin: 30px;">We couldn\'t find a schedule for you.</header></center>   <center><a onclick="toggleDisplay(\'editPop\')" class="link" style="font-size: 25px; padding: 10px; margin-top: -30px;">Create Schedule</a></center>' }
   let data = JSON.parse(file.getBlob().getDataAsString()); let schedule = []; let date = new Date()
   // get schedule for today
-  for (let i in data) {
+  for(let i in data) {
     if(data[i].info === 's') {
       if(data[i].days.toLowerCase().includes(DateUtils.numDayToStr(date.getDay()))) {
         let rInfo = data[i].info; let r = i
