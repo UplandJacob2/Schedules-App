@@ -60,7 +60,7 @@ function getSchedule(query) {
     return '<header class="center" style="font-size: 40px; margin: 30px;">We couldn\'t find a schedule for you.</header>   <a onclick="toggleDisplay(\'editPop\')" class="link center" style="font-size: 25px; padding: 10px; margin-top: -30px;">Create Schedule</a>'
   }
   let schIndex = -1
-  for (let i in data) {
+  for(let i in data) {
     if(data[i].info === 's') {
       schIndex ++
       if( (scheduleName && data[i].name === scheduleName) || (scheduleIndex && schIndex === scheduleIndex) || (!scheduleName && !scheduleIndex && data[i].days.includes(date.toString('ddd'))) ) {
@@ -117,7 +117,7 @@ function getSchedulesHTML(data, dateTimeStr) {
   let dataArr = JSON.parse(data); let output = ''
   try {
     let schNum = 0;
-    for (let i = 0; i < dataArr.length; i++) {
+    for(let i = 0; i < dataArr.length; i++) {
       if(dataArr[i].info === 's') {
         output += (`<table style="position: relative; zoom: 80%; display: inline-block; margin: 2px;" class="schedule">${getSchedule({ data: dataArr, index: schNum, dateTime: Date.parse(dateTimeStr)})}</table>`)
         schNum ++
@@ -158,7 +158,7 @@ window.onload = function () {
 
 function updateSettingsNotSaved() {
   setTimeout(function() {
-    for (let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
+    for(let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
       if(SETTINGS_INFO.types[seti] === 'check') {
         USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
       }
@@ -268,7 +268,7 @@ function recoverSchedulesSuccess(response) {
     getSchedulesSuccess(options[0][1])
   } else {
     let html = '<header style=\'font-weight: bold;\'>Multiple schedules were found.</header>'
-    for (let i = 0; i < options.length; i++) {
+    for(let i = 0; i < options.length; i++) {
       html += `<div><button onclick="recoverSpecificSchedule('${Base64.encode(options[i][1])}', '${options[i][2]}');" class="link" style="padding: 10px; margin: 5px;" >Option ${i+1}</button> <a style="margin: 5px; margin-bottom: 20px;">${getSchedulesHTML(options[i][1], options[i][0])}</a></div>`
     }
     DATA = []
