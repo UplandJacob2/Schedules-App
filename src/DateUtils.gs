@@ -21,12 +21,12 @@ const DateUtils = {};
  * @param {bool} is formated
  * @return {string[]} list of dates formated as month/day/year
  */
-DateUtils.dayRange = function (fromD, toD, formated) {
+DateUtils.dayRange = function dayRange(fromD, toD, formated) {
   let daysPerMonth = (DateUtils.isLeapYear()) ? [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ] : [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
   let month, day, year, eMonth, eDay, eYear, found;
   l('day range', fromD, toD, formated)
 
-  if (formated) {
+  if(formated) {
     month = parseInt(fromD.match(/^[0-9]{1,2}(?=\/)/g)[0]); day = parseInt(fromD.match(/(?<=\/)[0-9]{1,2}(?=\/)/g)[0]); year = parseInt(fromD.match(/(?<=\/)[0-9]{4}/g)[0]);
     eMonth =parseInt(  toD.match(/^[0-9]{1,2}(?=\/)/g)[0]);eDay = parseInt(  toD.match(/(?<=\/)[0-9]{1,2}(?=\/)/g)[0]);eYear = parseInt(  toD.match(/(?<=\/)[0-9]{4}/g)[0]);
   } else {
@@ -34,7 +34,7 @@ DateUtils.dayRange = function (fromD, toD, formated) {
     eMonth =  DateUtils.monthToNum(toD.match(/(\D){3}(?= )/g)[0]);   eDay=parseInt(toD.match(/[0-9]{2}(?=, )/g)[0]);   eYear =  toD.match(/[0-9]{4}/g)[0];
   }
   l(year, eYear)
-  if (eYear < year) {
+  if(eYear < year) {
     year = year - 1
   }
   let daysToReturn = new Array();  let daysInMonth = daysPerMonth[month-1];
@@ -45,13 +45,13 @@ DateUtils.dayRange = function (fromD, toD, formated) {
     l(month, day, year)
     //month = parseInt(month); day = parseInt(day); year = parseInt(year)
     daysInMonth = daysPerMonth[month-1];
-    if (month <= 12) {
+    if(month <= 12) {
       //console.log(month+'/'+day+'/'+year);
       daysToReturn[daysToReturn.length] = `${month}/${day}/${year}`;
-      if (`${month}/${day}/${year}` === `${eMonth}/${eDay}/${eYear}`) {
+      if(`${month}/${day}/${year}` === `${eMonth}/${eDay}/${eYear}`) {
         return daysToReturn
       }
-      if (day < daysInMonth) day++;
+      if(day < daysInMonth) day++;
       else { day = 1; month ++; }
     } else { year ++; month = 1; }
   }
@@ -71,26 +71,26 @@ DateUtils.dayRange = function (fromD, toD, formated) {
  * @param {number} offset
  * @return {string} date formated as month/day/year
  */
-DateUtils.iterateDays = function (fromD, num) {
+DateUtils.iterateDays = function iterateDays(fromD, num) {
   let daysPerMonth = (DateUtils.isLeapYear()) ? [ 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ] : [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ]
 
   l('iterating through days')
   //l('from date: ', fromD)
 
   let year = fromD.match(/[0-9]{4}/g)[0]; let month = DateUtils.monthToNum(fromD.match(/(\D){3}(?= )/g)[0]); let daysInMonth = daysPerMonth[month-1]; let day = fromD.match(/[0-9]{2}(?=, )/g);
-  if (num > 0 ) {
+  if(num > 0 ) {
     for (let i=0; i < num; i++) {
       daysInMonth = daysPerMonth[month-1];
-      if (month <= 12) {
-        if (day < daysInMonth) { day++; } else { day = 1; month ++; }
+      if(month <= 12) {
+        if(day < daysInMonth) { day++; } else { day = 1; month ++; }
       } else { year ++; month = 1; }
     }
     return `${month}/${day}/${year}`
-  } else if (num < 0) {
+  } else if(num < 0) {
     for (let i=0; i > num; i--) {
       daysInMonth = daysPerMonth[month-1];
-      if (month <= 12) {
-        if (day < daysInMonth) { day--; } else { day = 1; month --; }
+      if(month <= 12) {
+        if(day < daysInMonth) { day--; } else { day = 1; month --; }
       } else { year --; month = 1; }
     }
     return `${month}/${day}/${year}`;
@@ -104,7 +104,7 @@ DateUtils.iterateDays = function (fromD, num) {
  *
  * @return {bool} is leap year
  */
-DateUtils.isLeapYear = function () { const d = new Date().getFullYear(); /*d = 2100; */  return ((d % 4 === 0) && ((d / 100 !== 0) || (d / 400 === 0))) }
+DateUtils.isLeapYear = function isLeapYear() { const d = new Date().getFullYear(); /*d = 2100; */  return ((d % 4 === 0) && ((d / 100 !== 0) || (d / 400 === 0))) }
 /**
  * Returns today formated: month/day/year
  *  * ex: 1/5/2024
@@ -114,7 +114,7 @@ DateUtils.isLeapYear = function () { const d = new Date().getFullYear(); /*d = 2
  *
  * @return {string} today's date
  */
-DateUtils.today = function () {
+DateUtils.today = function today() {
   const day = new Date();
   return `${day.getMonth()+1}/${day.getDate()}/${day.getFullYear()}`;
 }
@@ -133,10 +133,10 @@ DateUtils.today = function () {
  *
  * @return {string} number for month
  */
-DateUtils.monthToNum = function (str) {
+DateUtils.monthToNum = function monthToNum(str) {
   str = str.toLowerCase(); let ans;
   const months = [ 'jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec' ];
-  months.forEach((month, i) => { if (month === str) { ans = i + 1; } });
+  months.forEach((month, i) => { if(month === str) { ans = i + 1; } });
   return ans
 }
 /**
@@ -153,23 +153,23 @@ DateUtils.monthToNum = function (str) {
  *
  * @return {string} day as string
  */
-DateUtils.numDayToStr = function (num) {
+DateUtils.numDayToStr = function numDayToStr(num) {
   const days = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ]
   return days[num]
 }
 
 
-DateUtils.militaryToStandard = function(time) {
+DateUtils.militaryToStandard = function militaryToStandard(time) {
   time = time.split(':'); // convert to array
   let hours = Number(time[0]);
   let minutes = Number(time[1]);
   let timeValue;
 
-  if (hours > 0 && hours <= 12) {
+  if(hours > 0 && hours <= 12) {
     timeValue = String(hours)
-  } else if (hours > 12) {
+  } else if(hours > 12) {
     timeValue = String(hours - 12);
-  } else if (hours === 0) {
+  } else if(hours === 0) {
     timeValue = '12';
   }
   timeValue += (minutes < 10) ? `:0${minutes}` : `:${minutes}`;  // get minutes
@@ -186,7 +186,7 @@ DateUtils.militaryToStandard = function(time) {
  *
  * @return {string} current date and time
 */
-DateUtils.getDateAsText = function () {
+DateUtils.getDateAsText = function getDateAsText() {
   return Utilities.formatDate(new Date(), 'CST', 'MM/dd/yyyy HH:mm:ss')
 }
 
@@ -220,19 +220,19 @@ function getDaysOff(returnListOfReasons) {
   const itemElms = XmlService.parse(txt).getAllContent()[0].asElement().getChild('channel').getChildren('item');
 
   itemElms.forEach(item => {
-    if (item.getChildText('title').match(/No School/g)) {
+    if(item.getChildText('title').match(/No School/g)) {
       items[items.length] = new Array();
       items[items.length-1][0] = item.getChildText('title');
       items[items.length-1][1] = item.getChildText('description').match(/(.){3} [0-9]{2}, [0-9]{4}/g);
-    } else if (item.getChildText('title').match(/End of 4th Grading Period\/2nd Semester/g)) {
+    } else if(item.getChildText('title').match(/End of 4th Grading Period\/2nd Semester/g)) {
       lastDay = item.getChildText('description').match(/(.){3} [0-9]{2}, [0-9]{4}/g)[0];
       l(item.getChildText('description'))
-    } else if (item.getChildText('title').match(/Students with Last Names A-J in Attendance/g)) {
+    } else if(item.getChildText('title').match(/Students with Last Names A-J in Attendance/g)) {
       firstDay = item.getChildText('description').match(/(.){3} [0-9]{2}, [0-9]{4}/g)[0];
     }
   });
   let summer, eSummer;
-  if (firstDay && lastDay) {
+  if(firstDay && lastDay) {
     summer = DateUtils.iterateDays(lastDay, 1);  eSummer = DateUtils.iterateDays(firstDay, -1);  // get first and last day of summer
     console.log(`${summer}'     '${eSummer}`) ;
     DateUtils.dayRange(summer, eSummer, true).forEach(item => { daysoff[daysoff.length] = item }); // add all days of the summer to list
@@ -241,7 +241,7 @@ function getDaysOff(returnListOfReasons) {
 
 
   items.forEach(item => {
-    if (item[1].length === 1) {
+    if(item[1].length === 1) {
       daysoff[daysoff.length] = `${DateUtils.monthToNum(item[1][0].match(/(\D){3}(?= )/g)[0])}/${parseInt(item[1][0].match(/[0-9]{2}(?=, )/g))}/${item[1][0].match(/[0-9]{4}/g)[0]}`;
     } else {
       DateUtils.dayRange(item[1][0], item[1][1], false).forEach(item => { daysoff[daysoff.length] = item })
@@ -251,7 +251,7 @@ function getDaysOff(returnListOfReasons) {
   });
   console.log(daysoff);
 
-  if (returnListOfReasons) {
+  if(returnListOfReasons) {
     console.warn('oop, need to do this...');
     return 'oop, need to do this...'
   }
