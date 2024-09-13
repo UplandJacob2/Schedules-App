@@ -87,22 +87,16 @@ module.exports = {
           "catch": { "after": false }
         } 
       }],
-      
-
-      semi: "off",
-      quotes: ["warn", "single"],
-      
       "no-trailing-spaces": "warn",
-      "no-var": "warn",
-      "no-use-before-define": "error",
-      
-      "prefer-template": "warn",
-      "no-useless-concat": "warn",
-      
-
       "no-unused-vars": ["error", { 
         "varsIgnorePattern": globalsC
       }],
+      "no-use-before-define": "error",
+      "no-useless-concat": "warn",
+      "no-var": "warn",
+      "prefer-template": "warn",
+      quotes: ["warn", "single"],
+      semi: "off",
     }
   }
 }
