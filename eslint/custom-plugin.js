@@ -81,7 +81,6 @@ module.exports = {
         "if": { "after": false },
         "for": { "after": false },
         "while": { "after": false },
-        "catch": { "after": false },
         "function": { "after": false }
       } }],
       "no-trailing-spaces": "warn",
