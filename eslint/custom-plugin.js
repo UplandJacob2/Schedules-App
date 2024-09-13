@@ -1,5 +1,3 @@
-const plugin = require("..")
-
 const braceStyleCustom = require('./rules/brace-style-custom')
 
 const globals = require("globals");
@@ -12,7 +10,7 @@ const globalsUsedServer = require("./globalsUsed/gas-server")
 const globalsUsedClient = require("./globalsUsed/gas-client")
 
 
-module.exports = {
+const plugin = {
   rules: {
     "brace-style-custom": braceStyleCustom
   },
@@ -31,10 +29,12 @@ module.exports = {
     server: globalsUsedServer,
     client: globalsUsedClient
   },
-  plugins: {
-    "custom-rules": plugin
-  },
-  configs: {
+}
+Object.assign(plugin.configs, {
+  recommended: {
+    plugins: {
+      custom: plugin
+    },
     rules: {
       "array-bracket-newline": ["warn", {
         "multiline": true
@@ -51,7 +51,7 @@ module.exports = {
       }],
       "block-scoped-var": "error",
       "block-spacing": "warn",
-      "custom-rules/brace-style-custom": ["error", "1tbs", { 
+      "custom/brace-style-custom": ["error", "1tbs", { 
         allowSingleLine: true,
         stroustrupAfterSingleLine: true,
         allowDualSingleLine: true
@@ -78,8 +78,8 @@ module.exports = {
       "jsx-quotes": ["warn", "prefer-double"],
       "key-spacing": ["warn", { "beforeColon": false }],
       "keyword-spacing": ["error", { 
-        before: true,
-        after: true,
+        "before": true,
+        "after": true,
         "overrides": {
           "if": { "after": false },
           "for": { "after": false },
@@ -99,4 +99,5 @@ module.exports = {
       semi: "off",
     }
   }
-}
+})
+module.exports = plugin
