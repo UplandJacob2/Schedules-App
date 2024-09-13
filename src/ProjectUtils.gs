@@ -28,7 +28,7 @@ function getAndPutFiles_(folder, url) {
   let options = { muteHttpExceptions: true, headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3.raw' } };
   let files = JSON.parse(UrlFetchApp.fetch(url, options).getContentText())
 
-  files.forEach(function(file) {
+  files.forEach(function putFile(file) {
     l(file.name, ':', file.type)
     if(file.type === 'file') {
       let fileResponse = UrlFetchApp.fetch(file.download_url, options);
