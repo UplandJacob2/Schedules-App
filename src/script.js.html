@@ -372,21 +372,14 @@ function loadSheet() {
   })
   //_.observe(SHEET.data, updateSaveBtn)
 
-  const addRowBt = document.getElementById('addRow')
-  addRowBt.addEventListener('click', function () { SHEET.data.push(emptyRow); SHEET.resetData() })
-  const rmvRowBt = document.getElementById('removeRow')
-  rmvRowBt.addEventListener('click', function () { SHEET.data.pop(); SHEET.resetData() })
+  document.getElementById('addRow').addEventListener('click', function addRow() { SHEET.data.push(emptyRow); SHEET.resetData() })
+  document.getElementById('removeRow').addEventListener('click', function removeRow() { SHEET.data.pop(); SHEET.resetData() })
 
-  const saveBt = document.getElementById('saveSch')
-  saveBt.addEventListener('click', function () {
-    saveSch()
-  })
-  const deleteBt = document.getElementById('deleteSch')
-  deleteBt.addEventListener('click', function () {
+  document.getElementById('saveSch').addEventListener('click', saveSch)
+  document.getElementById('deleteSch').addEventListener('click', function deleteSchOnClick() {
     confirmPopup({ title: 'Confirm deletion', text: 'Are you sure you want to delete your schedules? (Can be recovered)', onYes: 'deleteSch()' })
   })
-  const reloadBt = document.getElementById('reloadSch')
-  reloadBt.addEventListener('click', function () {
+  document.getElementById('reloadSch').addEventListener('click', function reloadSchOnClick() {
     if(DATA !== SHEET.data) {
       confirmPopup({ title: 'Changes not saved', text: 'Your changes aren\'t saved. Would you like to save before reloading?', onYes: 'saveSch()', onNo: 'reloadEdit()' })
       return
