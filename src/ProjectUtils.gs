@@ -4,7 +4,7 @@ const name = 'UplandJacob2'
 const repo = 'Schedules-App'
 const branch = 'main'
 // commit settings
-const message = 'fix ESLint alerts'
+const message = 'fix ESLint alerts, cleaning code, and squashing bugs'
 // release settings
 const version = '2.0.2pre-b'
 const body = 'updates'
@@ -84,7 +84,7 @@ function getScriptSourceCode_(fileid) {
   let response = UrlFetchApp.fetch(url, params);
   let json = JSON.parse(response);
 
-  for(let file in json['files']) {
+  for(let file in json.files) {
     let name = json.files[file].name
     let type = json.files[file].type
     let fullName
