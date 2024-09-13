@@ -69,9 +69,9 @@ module.exports = {
       "dot-notation": "error",
       eqeqeq: "warn",
       "for-direction": "error",
-      "func-call-spacing": ["error", "never"],
-      "func-names": ["error", "as-needed"],
-      
+      "func-call-spacing": ["warn", "never"],
+      "func-names": ["warn", "as-needed"],
+      "generator-star-spacing": ["error", {"before": true, "after": false}],
       
 
       semi: "off",
