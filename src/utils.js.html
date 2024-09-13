@@ -119,7 +119,7 @@ function checkEmailBoxI(inpStr) {
     else { inp.style.setProperty('background-color', 'lightpink'); return false }
   }
 }
-function checkEmailBox(inpStr) { setTimeout(function () { checkEmailBoxI(inpStr); }, 10); }
+function checkEmailBox(inpStr) { setTimeout(function checkEmailBoxAfterTimeout() { checkEmailBoxI(inpStr); }, 10); }
 function checkPassBoxI(inpStr) {
   let inp = document.getElementById(inpStr); let pass = inp.value; let good; //console.log(pass);
   if(inpStr === 'passSignUp') {
@@ -158,8 +158,7 @@ function checkPassBoxI(inpStr) {
   }
   return good
 }
-function checkPassBox(inpStr) { setTimeout(function () { checkPassBoxI(inpStr); }, 10); }
-
+function checkPassBox(inpStr) { setTimeout(function checkPassBoxAfterTimeout() { checkPassBoxI(inpStr); }, 10); }
 function checkSignUpButton() {
   let butt = document.getElementById('signUpButt');
   if(checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
@@ -255,13 +254,13 @@ const DateUtils = {};
  *
  * @return {string} day as string
  */
-DateUtils.numDayToStr = function (num) {
+DateUtils.numDayToStr = function numDayToStr(num) {
   //const days = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat']
   //return days[num]
   return Date.CultureInfo.abbreviatedDayNames[num].toLowerCase()
 }
 
-DateUtils.militaryToStandard = function(time, showMeridiem) {
+DateUtils.militaryToStandard = function militaryToStandard(time, showMeridiem) {
   time = time.split(':'); // convert to array
   let hours = Number(time[0]);
   let minutes = Number(time[1]);
@@ -287,7 +286,7 @@ DateUtils.militaryToStandard = function(time, showMeridiem) {
  *
  *
 **/
-DateUtils.getDateAsText = function (query) {
+DateUtils.getDateAsText = function getDateAsText(query) {
   let miltime = (typeof query.militaryTime !== 'undefined') ? query.militaryTime : false
   let dateTime = (typeof query.dateTime !== 'undefined') ? query.dateTime : new Date()
 
