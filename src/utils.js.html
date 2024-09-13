@@ -62,16 +62,16 @@ function confirmPopup(args) {
 
 function getToken() {
   let thing;
-  try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
+  try { if(document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
   catch (e) { error(`Cookie Error: ${e.message}`, 'Try to sign in.'); return null }
-  try { if (JSON.parse(thing).token) { return JSON.parse(thing).token; } else { return null } }
+  try { if(JSON.parse(thing).token) { return JSON.parse(thing).token; } else { return null } }
   catch (e) { error(`Cookie Error: ${e.message}`, 'Try to sign in.'); return null }
 }
 function getEmail() {
   let thing;
-  try { if (document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
+  try { if(document.cookie) { thing = document.cookie.match(/(?<=signin=)\{.+\}/g); } else { return null } }
   catch (e) { error(`Cookie Error: ${e.message}`, 'Try to sign in.'); return null }
-  try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
+  try { if(JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
   catch (e) { error(`Cookie Error: ${e.message}`, 'Try to sign in.'); return null }
 }
 
@@ -79,9 +79,9 @@ function deleteSignInCookies() { document.cookie = 'signin={"token":"", "email":
 function setCookie(cookie, value) { document.cookie = `${cookie}=${value}; SameSite=none; secure`; }
 function getCookie(cookie) {
   let thing;
-  try { if (document.cookie) { thing = document.cookie.match(new RegExp(`(?<=${cookie}=)\{.+\}` , 'g')); } else { return null } }
+  try { if(document.cookie) { thing = document.cookie.match(new RegExp(`(?<=${cookie}=)\{.+\}` , 'g')); } else { return null } }
   catch (e) { w('Cookie Error:', e.message); return null }
-  try { if (JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
+  try { if(JSON.parse(thing).email) { return JSON.parse(thing).email; } else { return null } }
   catch (e) { w('Cookie Error:', e.message); return null }
 }
 
@@ -104,10 +104,10 @@ function isValidPassword(pass) {
 function checkEmailBoxI(inpStr) {
   let inp = document.getElementById(inpStr);
   let email = inp.value;
-  if (inpStr === 'emailSignUp') {
+  if(inpStr === 'emailSignUp') {
     let c = document.getElementById('emailSignUpC');
     let x = document.getElementById('emailSignUpX');
-    if (isValidEmail(email)) {
+    if(isValidEmail(email)) {
       c.style.setProperty('display', 'block'); x.style.setProperty('display', 'none');
       inp.style.setProperty('background-color', 'palegreen'); return true
     } else {
@@ -115,40 +115,40 @@ function checkEmailBoxI(inpStr) {
       inp.style.setProperty('background-color', 'lightpink'); return false
     }
   } else {
-    if (isValidEmail(email)) { inp.style.setProperty('background-color', 'palegreen'); return true }
+    if(isValidEmail(email)) { inp.style.setProperty('background-color', 'palegreen'); return true }
     else { inp.style.setProperty('background-color', 'lightpink'); return false }
   }
 }
 function checkEmailBox(inpStr) { setTimeout(function () { checkEmailBoxI(inpStr); }, 10); }
 function checkPassBoxI(inpStr) {
   let inp = document.getElementById(inpStr); let pass = inp.value; let good; //console.log(pass);
-  if (inpStr === 'passSignUp') {
-    if ((pass.match(/[a-z]/g) || []).length >= 1) {
+  if(inpStr === 'passSignUp') {
+    if((pass.match(/[a-z]/g) || []).length >= 1) {
       document.getElementById('lowR').style.setProperty('color', '#040');
     } else { document.getElementById('lowR').style.setProperty('color', '#800'); }
-    if ((pass.match(/[A-Z]/g) || []).length >= 1) {
+    if((pass.match(/[A-Z]/g) || []).length >= 1) {
       document.getElementById('upR').style.setProperty('color', '#040');
     } else { document.getElementById('upR').style.setProperty('color', '#800'); }
-    if ((pass.match(/[0-9]/g) || []).length >= 1) {
+    if((pass.match(/[0-9]/g) || []).length >= 1) {
       document.getElementById('numR').style.setProperty('color', '#040');
     } else { document.getElementById('numR').style.setProperty('color', '#800'); }
-    if ((pass.match(/[^A-Za-z0-9]/g) || []).length >= 1) {
+    if((pass.match(/[^A-Za-z0-9]/g) || []).length >= 1) {
       document.getElementById('chR').style.setProperty('color', '#040');
     } else { document.getElementById('chR').style.setProperty('color', '#800'); }
-    if (pass.match(/(.){8,}/g)) {
+    if(pass.match(/(.){8,}/g)) {
       document.getElementById('lR').style.setProperty('color', '#040');
     } else { document.getElementById('lR').style.setProperty('color', '#800'); }
   }
-  if (inpStr === 'passSignUpR') {
-    if (pass === document.getElementById('passSignUp').value) { good = true } else { good = false }
+  if(inpStr === 'passSignUpR') {
+    if(pass === document.getElementById('passSignUp').value) { good = true } else { good = false }
     let pRT = document.getElementById('passRTxt')
-    if (good) { pRT.innerHTML = 'Passwords match.'; pRT.style.setProperty('color', '#040'); }
+    if(good) { pRT.innerHTML = 'Passwords match.'; pRT.style.setProperty('color', '#040'); }
     else { pRT.innerHTML = 'Passwords do not match.'; pRT.style.setProperty('color', '#800'); }
   } else { good = isValidPassword(pass); }
 
-  if (inpStr === 'passSignUp' || inpStr === 'passSignUpR') {
+  if(inpStr === 'passSignUp' || inpStr === 'passSignUpR') {
     let c = document.getElementById(`${inpStr}C`); let x = document.getElementById(`${inpStr}X`);
-    if (good) {
+    if(good) {
       inp.style.setProperty('background-color', 'palegreen');
       c.style.setProperty('display', 'block'); x.style.setProperty('display', 'none');
     } else {
@@ -162,20 +162,20 @@ function checkPassBox(inpStr) { setTimeout(function () { checkPassBoxI(inpStr); 
 
 function checkSignUpButton() {
   let butt = document.getElementById('signUpButt');
-  if (checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
+  if(checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
     butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
   } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
 }
 function checkSignInButton() {
   let butt = document.getElementById('signInButt');
-  if (checkEmailBoxI('emailSignIn') && checkPassBoxI('passSignIn')) {
+  if(checkEmailBoxI('emailSignIn') && checkPassBoxI('passSignIn')) {
     butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
   } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
 }
 
 function showPassword(check, boxN) {
   let box = document.getElementById(boxN);
-  if (document.getElementById(check).checked) {
+  if(document.getElementById(check).checked) {
     box.type = 'text';
   } else {
     box.type = 'password';
@@ -189,10 +189,10 @@ function signUp(event) {
   toggleDisplay('signUp');
   toggleDisplay('signUpLoad');
   google.script.run.withSuccessHandler(function () {
-    if (document.getElementById('signUpLoad').style.display === 'block') { toggleDisplay('signUpLoad'); }
+    if(document.getElementById('signUpLoad').style.display === 'block') { toggleDisplay('signUpLoad'); }
     toggleDisplay('signUpEmailSent');
   }).withFailureHandler(function (err) {
-    if (document.getElementById('signUpLoad').style.display === 'block') { toggleDisplay('signUpLoad'); }
+    if(document.getElementById('signUpLoad').style.display === 'block') { toggleDisplay('signUpLoad'); }
     toggleDisplay('error');
     document.getElementById('errorWhen').innerHTML = 'Error when creating account.';
     document.getElementById('errorTxt').innerHTML = err.message;
@@ -200,8 +200,8 @@ function signUp(event) {
 }
 
 function signInSuccess(inp) {
-  if (document.getElementById('signInLoad').style.display === 'block') { toggleDisplay('signInLoad'); }
-  if (document.getElementById('emailSignIn').value) {
+  if(document.getElementById('signInLoad').style.display === 'block') { toggleDisplay('signInLoad'); }
+  if(document.getElementById('emailSignIn').value) {
     document.cookie = `signin={"token":"${inp[1]}", "email":"${document.getElementById('emailSignIn').value}"}; SameSite=none; secure`;
   } else {
     document.cookie = `signin={"token":"${inp[1]}", "email":"${getEmail()}"}; SameSite=none; secure`;
@@ -221,7 +221,7 @@ function signInSuccess(inp) {
 }
 function signIn(email, pass, rm) {
   google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function (err) {
-    if ($('#signInLoad').css('display') === 'block') { toggleDisplay('signInLoad'); }
+    if($('#signInLoad').css('display') === 'block') { toggleDisplay('signInLoad'); }
     error('Error when signing in.', err.message);
   }).signIn(email, pass, rm);
 }
@@ -267,16 +267,16 @@ DateUtils.militaryToStandard = function(time, showMeridiem) {
   let minutes = Number(time[1]);
   let timeValue;
 
-  if (hours > 0 && hours <= 12) {
+  if(hours > 0 && hours <= 12) {
     timeValue = String(hours);
-  } else if (hours > 12) {
+  } else if(hours > 12) {
     timeValue = String(hours - 12);
-  } else if (hours === 0) {
+  } else if(hours === 0) {
     timeValue = '12';
   }
 
   timeValue += (minutes < 10) ? `:0${minutes}` : `:${minutes}`;  // get minutes
-  if (showMeridiem) { timeValue += (hours >= 12) ? ' PM' : ' AM' }  // get AM/PM
+  if(showMeridiem) { timeValue += (hours >= 12) ? ' PM' : ' AM' }  // get AM/PM
   return timeValue
 }
 /**
@@ -291,7 +291,7 @@ DateUtils.getDateAsText = function (query) {
   let miltime = (typeof query.militaryTime !== 'undefined') ? query.militaryTime : false
   let dateTime = (typeof query.dateTime !== 'undefined') ? query.dateTime : new Date()
 
-  if (miltime) {
+  if(miltime) {
     return dateTime.toString('M/d/yyyy H:mm:ss')
   }
   return dateTime.toString('M/d/yyyy h:mm:ss tt')
