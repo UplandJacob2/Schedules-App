@@ -71,14 +71,27 @@ module.exports = {
       "for-direction": "error",
       "func-call-spacing": ["warn", "never"],
       "func-names": ["warn", "as-needed"],
-      "generator-star-spacing": ["error", {"before": true, "after": false}],
+      "generator-star-spacing": ["warn", {"before": true, "after": false}],
+      indent: ["error", 2, {
+        SwitchCase: 1
+      }],
+      "jsx-quotes": ["warn", "prefer-double"],
+      "key-spacing": ["warn", { "beforeColon": false }],
+      keyword-spacing: ["error", {
+        before: true,
+        after: true,
+        "overrides": {
+          "if": { "after": false },
+          "for": { "after": false },
+          "while": { "after": false },
+          "catch": { "after": false }
+        } 
+      }]
       
 
       semi: "off",
       quotes: ["warn", "single"],
-      indent: ["warn", 2, {
-        SwitchCase: 1
-      }],
+      
       "no-trailing-spaces": "warn",
       "no-var": "warn",
       "no-use-before-define": "error",
