@@ -188,10 +188,10 @@ function signUp(event) {
   event.preventDefault();
   toggleDisplay('signUp');
   toggleDisplay('signUpLoad');
-  google.script.run.withSuccessHandler(function () {
+  google.script.run.withSuccessHandler(function signUpSuccessHandler() {
     if(document.getElementById('signUpLoad').style.display === 'block') { toggleDisplay('signUpLoad'); }
     toggleDisplay('signUpEmailSent');
-  }).withFailureHandler(function (err) {
+  }).withFailureHandler(function signUpFailHandler(err) {
     if(document.getElementById('signUpLoad').style.display === 'block') { toggleDisplay('signUpLoad'); }
     toggleDisplay('error');
     document.getElementById('errorWhen').innerHTML = 'Error when creating account.';
