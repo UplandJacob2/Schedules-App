@@ -39,6 +39,7 @@ module.exports = [
   {
     files: ["src/**/*.js.html.js"],
     ignores: ["**/Date.js.html.js", "**/Datejs.js.html.js", "**/underscore-observe.js.html.js"],
+    plugins: customPlugin.configs.recommended.plugins,
     languageOptions : {
       globals: {
         ...customPlugin.globals.client
@@ -56,6 +57,7 @@ module.exports = [
   //// GS
   {
     files: ["src/**/*.gs"],
+    plugins: customPlugin.configs.recommended.plugins,
     languageOptions: {
       globals: {
         ...customPlugin.globals.server
