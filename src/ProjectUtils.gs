@@ -84,7 +84,7 @@ function getScriptSourceCode_(fileid) {
   let response = UrlFetchApp.fetch(url, params);
   let json = JSON.parse(response);
 
-  for (let file in json['files']) {
+  for(let file in json['files']) {
     let name = json.files[file].name
     let type = json.files[file].type
     let fullName
@@ -142,7 +142,7 @@ function updateGithubRepo_(filePath, content) {
 
 function githubCommit() {
   let contents = getScriptSourceCode_(ScriptApp.getScriptId())
-  for (let dat in contents) {
+  for(let dat in contents) {
     updateGithubRepo_(contents[dat][0], contents[dat][1])
   }
 }
@@ -180,7 +180,7 @@ function gitHubRelease() {
 
 function minifyAll() {
   let contents = getScriptSourceCode_(DriveApp.getFilesByName('Schedules App').next().getId())
-  for (let dat in contents) {
+  for(let dat in contents) {
     let n = contents[dat][0]
     if( !(n === 'Date.js.html' || n === 'Datejs.js.html' || n === 'underscore-observe.js.html') && contents[dat][0].match(/(\.gs)|(\.js\.html)/g) ) {
       let data = contents[dat][1].replace(/<\/?script>/g, '')//.replace(/(?<![;{},\n:]|(\/\/.+))\n(?! +\{)/g, ';\n')
