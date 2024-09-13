@@ -89,9 +89,9 @@ Object.assign(plugin.configs, {
         } 
       }],
       "no-trailing-spaces": "warn",
-      "no-unused-vars": ["error", { 
-        "varsIgnorePattern": globalsC
-      }],
+      // "no-unused-vars": ["error", { 
+      //   "varsIgnorePattern": globalsC
+      // }],
       "no-use-before-define": "error",
       "no-useless-concat": "warn",
       "no-var": "warn",
