@@ -426,7 +426,7 @@ function getSchedule(email, token) {
     l(classNows, sInt, eInt, nowInt)
     //if(!militaryTime) { strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime) }
     if(row.b) { boldRows.push(r) }
-    schedule[r] = [ row['class'], strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1] ]
+    schedule[r] = [ row.class, strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1] ]
   })
   schedule.forEach((row, r) => {
     schStr+='<tr>'
