@@ -45,7 +45,7 @@ function api (parameter) {
         //////   ifthe file we are looking for is trashed
         let files = DriveApp.getTrashedFiles()
         let filesToRecover = []
-        while (files.hasNext()){
+        while(files.hasNext()){
           let f = files.next()
           if(f.getName() === `${email}.json`){ //&& f.getParents().next().getId() === '1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc'){
             filesToRecover[filesToRecover.length] = f
@@ -88,7 +88,7 @@ function api (parameter) {
     // else if(action === 'recover') {
     //   let files = DriveApp.getTrashedFiles()
     //   let filesToRecover = []
-    //   while (files.hasNext()){
+    //   while(files.hasNext()){
     //     let f = files.next()
     //     if(f.getName() === `${email}.json`){ //&& f.getParents().next().getId() === '1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc'){
     //       filesToRecover[filesToRecover.length] = f
@@ -133,7 +133,7 @@ function api (parameter) {
         //////   ifthe file we are looking for is trashed
         let files = DriveApp.getTrashedFiles()
         let filesToRecover = []
-        while (files.hasNext()){
+        while(files.hasNext()){
           let f = files.next()
           if(f.getName() === `${email}_settings.json`  ){ //&& f.getParents().next().getId() === '1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR'){
             l(f.getParents().next().getId())
@@ -165,7 +165,7 @@ function api (parameter) {
     } else if(action === 'recover') {
       let files = DriveApp.getTrashedFiles()
       let filesToRecover = []
-      while (files.hasNext()){
+      while(files.hasNext()){
         let f = files.next()
         if(f.getName() === `${email}_settings.json`){ //&& f.getParents().next().getId() === '1uWXjatjx8Gkm5Xv9bxxRRItfhTip0OmR'){
           filesToRecover[filesToRecover.length] = f
@@ -397,7 +397,7 @@ function getSchedule(email, token) {
     if(data[i].info === 's') {
       if(data[i].days.toLowerCase().includes(DateUtils.numDayToStr(date.getDay()))) {
         let rInfo = data[i].info; let r = i
-        while (rInfo !== 'es') {
+        while(rInfo !== 'es') {
           schedule.push(data[r])
           r ++
           try { rInfo = data[r].info } catch { err_('no end \'es\'') }
