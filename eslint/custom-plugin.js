@@ -77,12 +77,16 @@ module.exports = {
       }],
       "jsx-quotes": ["warn", "prefer-double"],
       "key-spacing": ["warn", { "beforeColon": false }],
-      "keyword-spacing": ["error", { "overrides": {
-        "if": { "after": false },
-        "for": { "after": false },
-        "while": { "after": false },
-        "function": { "after": false }
-      } }],
+      "keyword-spacing": ["error", { 
+        before: true,
+        after: true,
+        "overrides": {
+          "if": { "after": false },
+          "for": { "after": false },
+          "while": { "after": false },
+          "function": { "after": false }
+        } 
+      }],
       "no-trailing-spaces": "warn",
       "no-unused-vars": ["error", { 
         "varsIgnorePattern": globalsC
