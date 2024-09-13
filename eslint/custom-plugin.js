@@ -29,6 +29,7 @@ const plugin = {
     server: globalsUsedServer,
     client: globalsUsedClient
   },
+  configs: {}
 }
 Object.assign(plugin.configs, {
   recommended: {
