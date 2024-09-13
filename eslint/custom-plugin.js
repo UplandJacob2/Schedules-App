@@ -77,7 +77,7 @@ module.exports = {
       }],
       "jsx-quotes": ["warn", "prefer-double"],
       "key-spacing": ["warn", { "beforeColon": false }],
-      keyword-spacing: ["error", {
+      "keyword-spacing": ["error", {
         before: true,
         after: true,
         "overrides": {
