@@ -128,7 +128,7 @@ function getSchedulesHTML(data, dateTimeStr) {
 }
 
 
-window.onload = function () {
+window.onload = function onLoad() {
   // google.script.url.getLocation(function(location) {
   //   alert(location.parameters);
   // });
@@ -138,7 +138,7 @@ window.onload = function () {
   events.forEach(e => { document.getElementById('signInC').addEventListener(e, checkSignInButton); });
   events.forEach(e => { document.getElementById('passSignIn').addEventListener(e, function updateSignInBox(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
   events.forEach(e => { document.getElementById('signUpC').addEventListener(e, function updateSignUpBox(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
-  [ 'emailSignUp', 'emailSignIn' ].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function() { checkEmailBox(str); }); }); });
+  [ 'emailSignUp', 'emailSignIn' ].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function() checkEmailBoxStuff{ checkEmailBox(str); }); }); });
 
   if(getToken()) {
     toggleDisplay('signInLoad');
