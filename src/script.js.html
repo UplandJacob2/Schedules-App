@@ -258,7 +258,6 @@ function saveSchedulesFail(err) {
 function deleteSchedulesSuccess() {
   addIconToElmForTime('deleteSch', 'Delete', 'checkmark', 'green', 4000)
   DATA = []; SHEET.data = []; SHEET.render('none'); updateSaveBtn()
-  setEditorButtonsEnabled(false)
 }
 function deleteSchedulesFail(err) {
   addIconToElmForTime('deleteSch', 'Delete', 'alert', 'red', 4000)
@@ -299,6 +298,7 @@ function newSchedulesFail(err) {
 
 
 function reloadEdit() {
+  setEditorButtonsEnabled(false)
   DATA = []
   SHEET.render('load')
   google.script.run.withSuccessHandler(firstGetSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
@@ -311,6 +311,7 @@ function saveSch() {
   document.getElementById('saveSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 function deleteSch() {
+  setEditorButtonsEnabled(false)
   google.script.run.withSuccessHandler(deleteSchedulesSuccess).withFailureHandler(deleteSchedulesFail).api(
     { email: getEmail(), action: 'delete', token: getToken(), item: 'sch' })
   document.getElementById('deleteSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
