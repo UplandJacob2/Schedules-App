@@ -295,8 +295,8 @@ class Editor {
           let box = el.children[0]
           box.value = this.data[row][col]
           box.select()
-          box.addEventListener('keypress', function (ev) { if(ev.code === 'Enter') { this.blur() } })
-          box.addEventListener('blur', function (ev) {
+          box.addEventListener('keypress', function editBoxOnEnter(ev) { if(ev.code === 'Enter') { this.blur() } })
+          box.addEventListener('blur', function editBoxOnExit(ev) {
             ev.preventDefault()
             let row = this.parentElement.getAttribute('row')
             let col = this.parentElement.getAttribute('col')
