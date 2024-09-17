@@ -128,7 +128,7 @@ function getSchedulesHTML(data, dateTimeStr) {
 }
 
 
-window.onload = function() {
+window.onload = function onLoad() {
   // google.script.url.getLocation(function(location) {
   //   alert(location.parameters);
   // });
@@ -213,7 +213,15 @@ function saveSettings() {
   document.getElementById('saveSet').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 
-
+function updateSaveBtn() {
+  const saveBt = document.getElementById('saveSch')
+  //alert('CHANGE\n'+JSON.stringify(DATA)+"\n"+JSON.stringify(SHEET.data))
+  if(JSON.stringify(DATA) !== JSON.stringify(SHEET.data)) {
+    saveBt.disabled = false;saveBt.classList.remove('grayLink');  saveBt.classList.add('link'); return true
+  } else {
+    saveBt.disabled = true; saveBt.classList.remove('link');  saveBt.classList.add('grayLink'); return false
+  }
+}
 function getSchedulesSuccess(response, encoded) {
   setEditorButtonsEnabled(true)
   if(encoded) response = Base64.decode(response)
@@ -236,15 +244,6 @@ function firstGetSchedulesSuccess(response) {
 }
 function getSchedulesFail(err) { error('Error getting schedule for editing', err); DATA = []; SHEET.render('none') }
 
-function updateSaveBtn() {
-  const saveBt = document.getElementById('saveSch')
-  //alert('CHANGE\n'+JSON.stringify(DATA)+"\n"+JSON.stringify(SHEET.data))
-  if(JSON.stringify(DATA) !== JSON.stringify(SHEET.data)) {
-    saveBt.disabled = false;saveBt.classList.remove('grayLink');  saveBt.classList.add('link'); return true
-  } else {
-    saveBt.disabled = true; saveBt.classList.remove('link');  saveBt.classList.add('grayLink'); return false
-  }
-}
 function saveSchedulesSuccess() {
   addIconToElmForTime('saveSch', 'Save', 'checkmark', 'green', 4000)
   DATA = jsonReparse(SHEET.data)
