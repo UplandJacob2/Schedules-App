@@ -4,7 +4,7 @@ const name = 'UplandJacob2'
 const repo = 'Schedules-App'
 const branch = 'main'
 // commit settings
-const message = 'clean code with _'
+const message = 'fix parse error'
 // release settings
 const version = '2.0.2pre-b'
 const body = 'updates'
