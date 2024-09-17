@@ -1,65 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <head>
-    <base target="_top"/>
-    <title>Schedules App - Confirm sign up</title>
-    <?!= include('style.css'); ?>
+<head>
+	<base target="_top"/>
+  <title>Schedules App</title>
+  <!-- <link rel="stylesheet" href="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.css"/> -->
+  <?!= Underscore.include(output); ?>
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.13.7/underscore-esm-min.js" type="text/javascript"></script> -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet"/>
+  <?!= include('style.css'); ?>
 
-  </head>
+</head>
 
-  <body>
-    <div id="things">
-
-      <div id="mainTable" style="width: 100%; height: 100%; top: 0px; left: 0px; position: absolute; padding: 0px; margin: 0px;">
-        <div class="mainTableR" style="position: fixed; height: 60px; width: 100%; top: 0px; left: 0px;">
-          <div id="top-table">
-            <div class="topBarSection">
-              <a class="top-link relative link reload active" style="top: 5px;" onclick="openMenu();">
-                <div style="position: relative; left: -5px; top: 0px; width: 25px; height: 25px;">
-                  <ion-icon name="menu-outline"/>
-                </div>
-              </a>
-            </div>
-            <div class="topBarSection">
-              <a style="flex-direction: left; top: 5px;" class="top-link relative link" onclick="toggleDisplay('signOut'); document.getElementById('signOutBtn').focus()">Sign Out</a>
-            </div>
+<body>
+  <div id="things">
+	  <div id="mainTable" style="width: 100%; height: 100%; top: 0px; left: 0px; position: absolute; padding: 0px; margin: 0px;">
+      <div class="mainTableR" style="position: fixed; height: 60px; width: 100%; top: 0px; left: 0px;">
+        <div id="top-table">
+          <div class="topBarSection">
+            <a class="top-link relative link reload active" style="top: 5px;" onclick="openMenu();">
+              <div style="position: relative; left: -5px; top: 0px; width: 25px; height: 25px;">
+                <ion-icon name="menu-outline"/>
+              </div>
+            </a>
+          </div>
+          <div class="topBarSection">
+            <a style="flex-direction: left; top: 5px;" class="top-link relative link" onclick="document.getElementById('signUp').style.display='block'">Sign Up</a>
+            <a style="flex-direction: left; top: 5px;" class="top-link relative link" onclick="document.getElementById('signIn').style.display='block'">Sign In</a>
           </div>
         </div>
-        <div class="mainTableR" style="position: fixed; height: calc(100% - 60px); width: 100%; top: 60px; left: 0px; display: flex;">
-          <div class="menu-cont">
-            <ul class="nav-menu">
+			</div>
+			<div class="mainTableR" style="position: fixed; height: calc(100% - 60px); width: 100%; top: 60px; left: 0px; display: flex">
+        <div class="menu-cont">
+					<ul class="nav-menu">
 
-              <a class="top-link relative link nav-link" onclick="update()">Re-add Schedule</a>
+            <a class="grayLink relative nav-link" disabled onclick="toggleDisplay('editPop')">Edit Schedule</a>
 
-              <a class="top-link relative link nav-link" href=userScheduleURL target="_blank">Your Sheet</a>
-              <a class="top-link relative link nav-link" onclick="toggleDisplay('editPop'); toggleDisplay('grid');">Edit Schedule</a>
+            <a class="new-line nav-item">
+              <a onclick="toggleDisplay('helpPop');" class="link nav-link">Help</a>
+              <a onclick="toggleDisplay('aboutPop');" class="link nav-link">About</a>
+            </a>
+            <a class="new-line nav-item">
+              <a onclick="toggleDisplay('settingsPop');" disabled class="grayLink nav-link">Settings</a>
+            </a>
+					</ul>
+				</div>
+        <!-- MAIN -->
+        <div id="main">
 
-              <a class="new-line nav-item">
-                <a onclick="toggleDisplay('helpPop');" class="link nav-link">Help</a>
-                <a onclick="toggleDisplay('aboutPop');" class="link nav-link">About</a>
-                <a onclick="toggleDisplay('contactPop');" class="link nav-link">Contact</a>
-              </a>
-            </ul>
-          </div>
-          <!-- MAIN -->
-          <div id="main">
-            <a style="margin-top: 100px; position: relative; font-size: 50px;"><header>Account Created</header></a>
-            <a style="margin-top: 20px; position: relative; font-size: 30px;"><header><a class="link" href="https://script.google.com/macros/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec">Click Here</a> to create a schedule.</header></a>
-          </div>
+          <header class="bold center" style="margin-top: 100px; position: relative; font-size: 50px;">Sign up to create a schedule</header>
+          <header class="bold center" style="margin-top: 20px; position: relative; font-size: 30px;">or sign in to view your schedule.</header>
+
         </div>
-      </div>
+			</div>
+		</div>
 
-    </div><!-- end things -->
+    <!-- MAIN -->
+    <div id="main">
+      <a style="margin-top: 100px; position: relative; font-size: 50px;"><header>Account Created</header></a>
+      <a style="margin-top: 20px; position: relative; font-size: 30px;"><header><a class="link" href="https://script.google.com/macros/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec">Click Here</a> to create a schedule.</header></a>
+    </div>
 
-    <?!= include('popups.html'); ?>
+  </div><!-- end things -->
 
-    <?!= include('script.js'); ?>
-    <?!= include('signUtils.js'); ?>
+  <!------------ Always active (to the end of the document) ------------>
 
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>\
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-  </body>
+  <?!= include('popups.html'); ?>
+
+  <?!= include('underscore-observe.js'); ?>
+  <?!= include('utils.js'); ?>
+  <?!= include('Date.js'); ?>
+  <?!= include('script.js'); ?>
+  <?!= include('editor.js'); ?>
+  <!-- <script>
+    alert('sdgshsrthsth')
+    console.re.log('remote log test')
+    
+  </script> -->
+
+  <script src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js" type="module"></script>
+  <script src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js" nomodule></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <!-- <script src="https://uicdn.toast.com/tui.date-picker/latest/tui-date-picker.min.js"></script> -->
+  <script src="https://uicdn.toast.com/tui.time-picker/latest/tui-time-picker.min.js"></script> 
+  <!-- <script src="https://console.re/connector.js" data-channel="schedules-app" id="consolerescript"></script> -->
+
+</body>
 
 </html>
