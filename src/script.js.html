@@ -128,7 +128,8 @@ function getSchedulesHTML(data, dateTimeStr) {
 }
 
 
-window.onload = function onLoad() {
+window.onload = function() {
+  alert('ready')
   // google.script.url.getLocation(function(location) {
   //   alert(location.parameters);
   // });
@@ -138,7 +139,7 @@ window.onload = function onLoad() {
   events.forEach(e => { document.getElementById('signInC').addEventListener(e, checkSignInButton); });
   events.forEach(e => { document.getElementById('passSignIn').addEventListener(e, function updateSignInBox(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
   events.forEach(e => { document.getElementById('signUpC').addEventListener(e, function updateSignUpBox(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
-  [ 'emailSignUp', 'emailSignIn' ].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function() checkEmailBoxStuff{ checkEmailBox(str); }); }); });
+  [ 'emailSignUp', 'emailSignIn' ].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function checkEmailBoxStuff() { checkEmailBox(str); }); }); });
 
   if(getToken()) {
     toggleDisplay('signInLoad');
@@ -153,7 +154,7 @@ window.onload = function onLoad() {
   signUpForm.addEventListener('submit', signUp);
   const signInForm = document.getElementById('signInForm');
   signInForm.addEventListener('submit', signInF);
-}
+});
 
 function addIconToElmForTime (elmId, mainTxt, iconName, iconColor, time) {
   document.getElementById(elmId).innerHTML = `${mainTxt} <ion-icon style="top: 15px; color: ${iconColor}; --ionicon-stroke-width: 30px;" class="font-20 bold" name="${iconName}"/>`
