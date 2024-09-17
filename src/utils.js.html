@@ -75,8 +75,8 @@ function getEmail() {
   catch (e) { error(`Cookie Error: ${e.message}`, 'Try to sign in.'); return null }
 }
 
-function deleteSignInCookies() { setCookie('signin', '{}') }
 function setCookie(cookie, value) { document.cookie = `${cookie}=${value}; SameSite=none; secure`; }
+function deleteSignInCookies() { setCookie('signin', '{}') }
 function getCookie(cookie) {
   let thing;
   try { if(document.cookie) { thing = document.cookie.match(new RegExp(`(?<=${cookie}=){.+}`, 'g')); } else { return null } }
