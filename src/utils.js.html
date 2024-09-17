@@ -49,12 +49,12 @@ function confirmPopup(args) {
   if(typeof args.onNo  !== 'undefined') { onNo +='\ntoggleDisplay(\'confirmPop\')' }
 
   toggleDisplay('confirmPop')
-  document.getElementById('confirmTitle' ).innerHTML = title
-  document.getElementById('confirmText'  ).innerHTML = text
-  document.getElementById('confirmYes').setAttribute('onclick', onYes)
-  document.getElementById('confirmNo' ).setAttribute('onclick', onNo)
-  document.getElementById('confirmYesTxt').innerHTML = yesBtTxt
-  document.getElementById('confirmNoTxt' ).innerHTML = noBtTxt
+  $('#confirmTitle').html(title);
+  $('#confirmText').html(text);
+  $('#confirmYes').attr('onclick', onYes);
+  $('#confirmNo').attr('onclick', onNo);
+  $('#confirmYesTxt').html(yesBtTxt);
+  $('#confirmNoTxt').html(noBtTxt);
 }
 
 
@@ -75,7 +75,7 @@ function getEmail() {
   catch (e) { error(`Cookie Error: ${e.message}`, 'Try to sign in.'); return null }
 }
 
-function deleteSignInCookies() setCookie('signin', '{}')
+function deleteSignInCookies() { setCookie('signin', '{}') }
 function setCookie(cookie, value) { document.cookie = `${cookie}=${value}; SameSite=none; secure`; }
 function getCookie(cookie) {
   let thing;
