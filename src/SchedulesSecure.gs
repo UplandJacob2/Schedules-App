@@ -14,7 +14,7 @@ SchedulesSecure.verify = function verify(email, token) {
   //let accounts = JSON.parse(sc.get('SignInTokens'));
 
   const account = _.find(accounts, val => val.email.toLowerCase() === email.toLowerCase());
-  if (!account) throw new Error('No account with that email.')
+  if(!account) throw new Error('No account with that email.')
   return account.token === token
 }
 
