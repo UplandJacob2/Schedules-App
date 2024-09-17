@@ -216,7 +216,7 @@ function doGet(q) {
 
     return HtmlService.createHtmlOutput(HtmlService.createTemplateFromFile('confirmSignUp').evaluate()).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
   } else if(doit === 'api') {
-    return HtmlService.createHtmlOutput(api(q.parameter))
+    return ContentService.createTextOutput(api(q.parameter)).setMimeType(ContentService.MimeType.JSON)
   }
 }
 
