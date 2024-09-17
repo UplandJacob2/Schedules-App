@@ -5,7 +5,7 @@ const name = 'UplandJacob2'
 const repo = 'Schedules-App'
 const branch = 'main'
 // commit settings
-const message = 'fixes'
+const message = 'credits'
 // release settings
 const version = '2.0.2pre-b'
 const body = 'updates'
