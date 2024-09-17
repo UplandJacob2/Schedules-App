@@ -5,7 +5,7 @@ const sourceDir = path.join(__dirname, '../src');
 const destinationDir = sourceDir;
 
 fs.readdirSync(sourceDir).forEach(file => {
-  if (file.endsWith('.js.html')) {
+  if(file.endsWith('.js.html')) {
     const sourcePath = path.join(sourceDir, file);
     const destPath = path.join(destinationDir, `${file}.js`);
 
