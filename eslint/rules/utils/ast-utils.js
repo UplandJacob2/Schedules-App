@@ -211,7 +211,7 @@ function getStaticStringValue(node) {
         if(node.regex) return `/${node.regex.pattern}/${node.regex.flags}`;
         if(node.bigint) return node.bigint;
         // Otherwise, this is an unknown literal. The function will return null.
-      } else return String(node.value);
+      } else { return String(node.value); }
       break;
       
     case "TemplateLiteral":
