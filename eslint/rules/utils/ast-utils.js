@@ -211,15 +211,15 @@ function getStaticStringValue(node) {
         if(node.regex) return `/${node.regex.pattern}/${node.regex.flags}`;
         if(node.bigint) return node.bigint;
         // Otherwise, this is an unknown literal. The function will return null.
-      } else { return String(node.value); }
+      } else return String(node.value);
       break;
       
     case "TemplateLiteral":
       if(node.expressions.length === 0 && node.quasis.length === 1) return node.quasis[0].value.cooked;
       break;
-      // no default
-    }
-    return null;
+    // no default
+  }
+  return null;
 }
 
 /**
