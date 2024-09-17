@@ -207,7 +207,7 @@ function getStaticStringValue(node) {
   switch (node.type) {
     case "Literal":
       if(node.value === null) {
-        if(isNullLiteral(node)) { return String(node.value); // "null" }
+        if(isNullLiteral(node)) return String(node.value); // "null"
         if(node.regex) return `/${node.regex.pattern}/${node.regex.flags}`;
         if(node.bigint) return node.bigint;
         // Otherwise, this is an unknown literal. The function will return null.
