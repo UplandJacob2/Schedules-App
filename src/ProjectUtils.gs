@@ -1,4 +1,5 @@
 const token = PropertiesService.getScriptProperties().getProperty('GithubToken') // token stored as a script property
+const scriptToken = ScriptApp.getOAuthToken()
 const email = DriveApp.getFileById(ScriptApp.getScriptId()).getOwner().getEmail()
 const name = 'UplandJacob2'
 const repo = 'Schedules-App'
@@ -79,7 +80,7 @@ function getGithubFilesAndZip_() {
 
 function getScriptSourceCode_(fileid) {
   let toReturn = []
-  let params = { headers: { Authorization: `Bearer ${ScriptApp.getOAuthToken()}` }, followRedirects: true, muteHttpExceptions: true};
+  let params = { headers: { Authorization: `Bearer ${scriptToken}` }, followRedirects: true, muteHttpExceptions: true};
   let url = `https://script.google.com/feeds/download/export?id=${fileid}&format=json`;
   let response = UrlFetchApp.fetch(url, params);
   let json = JSON.parse(response);
