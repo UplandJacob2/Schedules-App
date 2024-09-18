@@ -798,8 +798,8 @@ function isReferenceToGlobalVariable(scope, node) {
  */
 function isConstant(scope, node, inBooleanPosition) {
   // node.elements can return null values in the case of sparse arrays ex. [,]
-  if (!node) return true;
-  switch (node.type) {
+  if(!node) return true;
+  switch(node.type) {
     case "Literal":
     case "ArrowFunctionExpression":
     case "FunctionExpression":
@@ -824,12 +824,12 @@ function isConstant(scope, node, inBooleanPosition) {
     case "TemplateLiteral":
       return (inBooleanPosition && node.quasis.some(quasi => quasi.value.cooked.length)) || node.expressions.every(exp => isConstant(scope, exp, false));
     case "ArrayExpression": {
-      if (!inBooleanPosition) return node.elements.every(element => isConstant(scope, element, false));
+      if(!inBooleanPosition) return node.elements.every(element => isConstant(scope, element, false));
       return true;
     }
     case "UnaryExpression":
-      if (node.operator === "void" || node.operator === "typeof" && inBooleanPosition) return true;
-      if (node.operator === "!") return isConstant(scope, node.argument, true);
+      if(node.operator === "void" || node.operator === "typeof" && inBooleanPosition) return true;
+      if(node.operator === "!") return isConstant(scope, node.argument, true);
       return isConstant(scope, node.argument, false);
     case "BinaryExpression":
       return isConstant(scope, node.left, false) && isConstant(scope, node.right, false) && node.operator !== "in";
@@ -844,10 +844,10 @@ function isConstant(scope, node, inBooleanPosition) {
     case "NewExpression":
       return inBooleanPosition;
     case "AssignmentExpression":
-      if (node.operator === "=") {
+      if(node.operator === "=") {
         return isConstant(scope, node.right, inBooleanPosition);
       }
-      if (["||=", "&&="].includes(node.operator) && inBooleanPosition) {
+      if(["||=", "&&="].includes(node.operator) && inBooleanPosition) {
         return isLogicalIdentity(node.right, node.operator.slice(0, -1));
       }
       return false;
@@ -856,8 +856,8 @@ function isConstant(scope, node, inBooleanPosition) {
     case "SpreadElement":
       return isConstant(scope, node.argument, inBooleanPosition);
     case "CallExpression":
-      if (node.callee.type === "Identifier" && node.callee.name === "Boolean") {
-        if (node.arguments.length === 0 || isConstant(scope, node.arguments[0], true)) {
+      if(node.callee.type === "Identifier" && node.callee.name === "Boolean") {
+        if(node.arguments.length === 0 || isConstant(scope, node.arguments[0], true)) {
           return isReferenceToGlobalVariable(scope, node.callee);
         }
       }
@@ -879,7 +879,7 @@ function isConstant(scope, node, inBooleanPosition) {
  * file or function body.
  */
 function isTopLevelExpressionStatement(node) {
-  if (node.type !== "ExpressionStatement") return false;
+  if(node.type !== "ExpressionStatement") return false;
   const parent = node.parent;
   return parent.type === "Program" || (parent.type === "BlockStatement" && isFunction(parent.parent));
 }
@@ -959,10 +959,10 @@ let needsPrecedingSemicolon;
 
   needsPrecedingSemicolon = function(sourceCode, node) {
     const prevToken = sourceCode.getTokenBefore(node);
-    if (!prevToken || prevToken.type === "Punctuator" && PUNCTUATORS.has(prevToken.value)) return false;
+    if(!prevToken || prevToken.type === "Punctuator" && PUNCTUATORS.has(prevToken.value)) return false;
     const prevNode = sourceCode.getNodeByRangeIndex(prevToken.range[0]);
-    if (isClosingParenToken(prevToken)) return !STATEMENTS.has(prevNode.type);
-    if (isClosingBraceToken(prevToken)) {
+    if(isClosingParenToken(prevToken)) return !STATEMENTS.has(prevNode.type);
+    if(isClosingBraceToken(prevToken)) {
       return (
         prevNode.type === "BlockStatement" && prevNode.parent.type === "FunctionExpression" && prevNode.parent.parent.type !== "MethodDefinition" ||
         prevNode.type === "ClassBody" && prevNode.parent.type === "ClassExpression" ||
@@ -970,14 +970,14 @@ let needsPrecedingSemicolon;
       );
     }
 
-    if (IDENTIFIER_OR_KEYWORD.has(prevToken.type)) {
-      if (BREAK_OR_CONTINUE.has(prevNode.parent.type)) return false;
+    if(IDENTIFIER_OR_KEYWORD.has(prevToken.type)) {
+      if(BREAK_OR_CONTINUE.has(prevNode.parent.type)) return false;
       const keyword = prevToken.value;
       const nodeType = NODE_TYPES_BY_KEYWORD[keyword];
       return prevNode.type !== nodeType;
     }
 
-    if (prevToken.type === "String") return !DECLARATIONS.has(prevNode.parent.type);
+    if(prevToken.type === "String") return !DECLARATIONS.has(prevNode.parent.type);
     return true;
   };
 }
@@ -1123,7 +1123,7 @@ module.exports = {
     let scope = initScope;
     while(scope) {
       const variable = scope.set.get(name);
-      if (variable) return variable;
+      if(variable) return variable;
       scope = scope.upper;
     }
     return null;
@@ -1308,7 +1308,7 @@ module.exports = {
       case "ConditionalExpression":
         return 3;
       case "LogicalExpression":
-        switch (node.operator) {
+        switch(node.operator) {
           case "||":
           case "??":
               return 4;
@@ -1551,7 +1551,7 @@ module.exports = {
       if(!parent.computed && parent.key.type === "PrivateIdentifier") tokens.push(`#${parent.key.name}`);
       else {
         const name = getStaticPropertyName(parent);
-        if (name !== null) tokens.push(`'${name}'`);
+        if(name !== null) tokens.push(`'${name}'`);
         else if(node.id) tokens.push(`'${node.id.name}'`);
       }
     } else if(node.id) tokens.push(`'${node.id.name}'`);
@@ -1656,24 +1656,24 @@ module.exports = {
    * @returns {string} The location of the function node for reporting.
    */
   getFunctionHeadLoc(node, sourceCode) {
-      const parent = node.parent;
-      let start;
-      let end;
-      if(parent.type === "Property" || parent.type === "MethodDefinition" || parent.type === "PropertyDefinition") {
-        start = parent.loc.start;
-        end = getOpeningParenOfParams(node, sourceCode).loc.start;
-      } else if(node.type === "ArrowFunctionExpression") {
-        const arrowToken = sourceCode.getTokenBefore(node.body, isArrowToken);
-        start = arrowToken.loc.start;
-        end = arrowToken.loc.end;
-      } else {
-        start = node.loc.start;
-        end = getOpeningParenOfParams(node, sourceCode).loc.start;
-      }
-      return {
-        start: Object.assign({}, start),
-        end: Object.assign({}, end)
-      };
+    const parent = node.parent;
+    let start;
+    let end;
+    if(parent.type === "Property" || parent.type === "MethodDefinition" || parent.type === "PropertyDefinition") {
+      start = parent.loc.start;
+      end = getOpeningParenOfParams(node, sourceCode).loc.start;
+    } else if(node.type === "ArrowFunctionExpression") {
+      const arrowToken = sourceCode.getTokenBefore(node.body, isArrowToken);
+      start = arrowToken.loc.start;
+      end = arrowToken.loc.end;
+    } else {
+      start = node.loc.start;
+      end = getOpeningParenOfParams(node, sourceCode).loc.start;
+    }
+    return {
+      start: Object.assign({}, start),
+      end: Object.assign({}, end)
+    };
   },
 
   /**
@@ -1756,7 +1756,7 @@ module.exports = {
    * @returns {boolean} True if there is a chance it contains an Error obj
    */
   couldBeError(node) {
-    switch (node.type) {
+    switch(node.type) {
       case "Identifier":
       case "CallExpression":
       case "NewExpression":
@@ -1767,8 +1767,8 @@ module.exports = {
       case "ChainExpression":
         return true; // possibly an error object.
       case "AssignmentExpression":
-        if (["=", "&&="].includes(node.operator)) return module.exports.couldBeError(node.right);
-        if (["||=", "??="].includes(node.operator)) return module.exports.couldBeError(node.left) || module.exports.couldBeError(node.right);
+        if(["=", "&&="].includes(node.operator)) return module.exports.couldBeError(node.right);
+        if(["||=", "??="].includes(node.operator)) return module.exports.couldBeError(node.left) || module.exports.couldBeError(node.right);
         /**
          * All other assignment operators are mathematical assignment operators (arithmetic or bitwise).
          * An assignment expression with a mathematical operator can either evaluate to a primitive value,
@@ -1787,7 +1787,7 @@ module.exports = {
          * a plausible error. A future improvement could verify that the left side could be truthy by
          * excluding falsy literals.
          */
-        if (node.operator === "&&") return module.exports.couldBeError(node.right);
+        if(node.operator === "&&") return module.exports.couldBeError(node.right);
         return module.exports.couldBeError(node.left) || module.exports.couldBeError(node.right);
       case "ConditionalExpression":
         return module.exports.couldBeError(node.consequent) || module.exports.couldBeError(node.alternate);
@@ -1837,15 +1837,15 @@ module.exports = {
     if(leftToken.type === "Shebang" || leftToken.type === "Hashbang") return false;
     let rightToken;
     if(typeof rightValue === "string") {
-        let tokens;
-        try { tokens = espree.tokenize(rightValue, espreeOptions); } 
-        catch { return false; }
-        const comments = tokens.comments;
-        rightToken = tokens[0];
-        if(comments.length) {
-          const firstComment = comments[0];
-          if(!rightToken || firstComment.range[0] < rightToken.range[0]) rightToken = firstComment;
-        }
+      let tokens;
+      try { tokens = espree.tokenize(rightValue, espreeOptions); } 
+      catch { return false; }
+      const comments = tokens.comments;
+      rightToken = tokens[0];
+      if(comments.length) {
+        const firstComment = comments[0];
+        if(!rightToken || firstComment.range[0] < rightToken.range[0]) rightToken = firstComment;
+      }
     } else rightToken = rightValue;
 
     if(leftToken.type === "Punctuator" || rightToken.type === "Punctuator") {
