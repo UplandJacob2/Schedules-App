@@ -103,15 +103,6 @@ module.exports = {
 
       // starting { should be after statement ex: 'else {'
       if(style !== "allman" && !astUtils.isTokenOnSameLine(tokenBeforeOpeningCurly, openingCurly)) {
-        if(params.stroustrupAfterSingleLine) {
-          if(astUtils.isTokenOnSameLine(openingCurly, tokenAfterOpeningCurly) && tokenAfterOpeningCurly !== closingCurly) {
-            context.report({
-              node: openingCurly,
-              message: 'kjsbjd',
-              
-            });
-          }
-        }
         context.report({
           node: openingCurly,
           messageId: "nextLineOpen",
