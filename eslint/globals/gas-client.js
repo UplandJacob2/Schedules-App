@@ -2,7 +2,7 @@ const globalsUsed = require("./globals")
 module.exports = {
   ...globalsUsed,
   google: "readonly",
-  tui: "readonly", 
+  tui: "readonly",
 
   loadSheet: "writable",
   saveSettings: "writable",
