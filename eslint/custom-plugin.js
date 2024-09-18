@@ -46,7 +46,7 @@ Object.assign(plugin.configs, {
       "array-bracket-spacing": [ "warn", "always", {
         "singleValue": false
       } ],
-      "custom/array-element-newline": [ "warn", "consistent", {
+      "custom/array-element-newline": [ "warn", {
         multiLine: true,
         multiNotRequired: [ "oneMultiLineItem", 7 ]
       } ],
