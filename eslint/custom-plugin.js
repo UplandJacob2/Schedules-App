@@ -40,13 +40,13 @@ Object.assign(plugin.configs, {
       "array-bracket-newline": [ "warn", {
         "multiline": true
       } ],
-      "array-bracket-spacing": [ "warn", "always", { 
+      "array-bracket-spacing": [ "warn", "always", {
         "singleValue": false 
       } ],
       "array-element-newline": [ "warn", "consistent" ],
       "arrow-body-style": [ "warn", "as-needed" ],
       "arrow-parens": [ "error", "as-needed" ],
-      "arrow-spacing": [ "warn", { 
+      "arrow-spacing": [ "warn", {
         "before": true, 
         "after": true 
       } ],
@@ -57,7 +57,7 @@ Object.assign(plugin.configs, {
         stroustrupAfterSingleLine: true,
         allowDualSingleLine: true
       } ],
-      "comma-spacing": [ "warn", { 
+      "comma-spacing": [ "warn", {
         "before": false, 
         "after": true 
       } ],
