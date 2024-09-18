@@ -58,8 +58,8 @@ Object.assign(plugin.configs, {
         allowDualSingleLine: true
       } ],
       "comma-spacing": [ "warn", {
-        "before": false, 
-        "after": true 
+        "before": false,
+        "after": true
       } ],
       "computed-property-spacing": [ "warn", "never" ],
       curly: [ "warn", "multi-line" ],
@@ -87,7 +87,7 @@ Object.assign(plugin.configs, {
           "while": { "after": false },
           "function": { "after": false },
           "switch": { "after": false }
-        } 
+        }
       } ],
       "no-trailing-spaces": "warn",
       // "no-unused-vars": ["error", {
