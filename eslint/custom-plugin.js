@@ -41,14 +41,14 @@ Object.assign(plugin.configs, {
         "multiline": true
       } ],
       "array-bracket-spacing": [ "warn", "always", {
-        "singleValue": false 
+        "singleValue": false
       } ],
       "array-element-newline": [ "warn", "consistent" ],
       "arrow-body-style": [ "warn", "as-needed" ],
       "arrow-parens": [ "error", "as-needed" ],
       "arrow-spacing": [ "warn", {
-        "before": true, 
-        "after": true 
+        "before": true,
+        "after": true
       } ],
       "block-scoped-var": "error",
       "block-spacing": "warn",
