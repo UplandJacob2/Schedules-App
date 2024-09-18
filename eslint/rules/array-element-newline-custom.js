@@ -261,8 +261,15 @@ module.exports = {
         if(astUtils.isTokenOnSameLine(openBracket, first)) reportRequiredBeginningLinebreak(node, openBracket);
         if(astUtils.isTokenOnSameLine(last, closeBracket)) reportRequiredEndingLinebreak(node, closeBracket);
       } else {
+        if(!(
+          context.options[0].multiNotRequired[0].oneMultiLineItem &&
+          elements.length <= context.options[0].multiNotRequired[1] &&
+          elements.filter(item => item.type === "ObjectExpression").length > 1 &&
+          !astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1]))
+        )) {
+          if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
+        }
         if(!astUtils.isTokenOnSameLine(openBracket, first)) reportNoBeginningLinebreak(node, openBracket);
-        if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
       }
     }
 
