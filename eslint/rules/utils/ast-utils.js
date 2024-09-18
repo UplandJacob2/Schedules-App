@@ -16,8 +16,8 @@ const escapeRegExp = require("escape-string-regexp");
 const {
   breakableTypePattern,
   createGlobalLinebreakMatcher,
-   lineBreakPattern,
-   shebangPattern
+  lineBreakPattern,
+  shebangPattern
 } = require("../../shared/ast-utils");
 const globals = require("../../conf/globals");
 const { LATEST_ECMA_VERSION } = require("../../conf/ecma-version");
@@ -256,7 +256,7 @@ function getStaticPropertyName(node) {
   let prop;
   switch(node && node.type) {
     case "ChainExpression":
-        return getStaticPropertyName(node.expression);
+      return getStaticPropertyName(node.expression);
     case "Property":
     case "PropertyDefinition":
     case "MethodDefinition":
@@ -386,8 +386,8 @@ function isSameReference(left, right, disableStaticComputedKey = false) {
         // x.y = x["y"]
         if(nameA !== null) {
           return (
-              isSameReference(left.object, right.object, disableStaticComputedKey) &&
-              nameA === getStaticPropertyName(right)
+            isSameReference(left.object, right.object, disableStaticComputedKey) &&
+            nameA === getStaticPropertyName(right)
           );
         }
       }
@@ -452,7 +452,7 @@ function negate(f) {
  */
 function hasJSDocThisTag(node, sourceCode) {
   const jsdocComment = sourceCode.getJSDocComment(node);
-  if (jsdocComment && thisTagPattern.test(jsdocComment.value)) return true;
+  if(jsdocComment && thisTagPattern.test(jsdocComment.value)) return true;
 
   // Checks `@this` in its leading comments for callbacks,
   // because callbacks don't have its JSDoc comment.
@@ -620,7 +620,7 @@ function isKeywordToken(token) {
  */
 function getOpeningParenOfParams(node, sourceCode) {
   // If the node is an arrow function and doesn't have parens, this returns the identifier of the first param.
-  if (node.type === "ArrowFunctionExpression" && node.params.length === 1) {
+  if(node.type === "ArrowFunctionExpression" && node.params.length === 1) {
     const argToken = sourceCode.getFirstToken(node.params[0]);
     const maybeParenToken = sourceCode.getTokenBefore(argToken);
     return isOpeningParenToken(maybeParenToken) ? maybeParenToken : argToken;
@@ -1310,9 +1310,9 @@ module.exports = {
         switch(node.operator) {
           case "||":
           case "??":
-              return 4;
+            return 4;
           case "&&":
-              return 5;
+            return 5;
           // no default
         }
         /* falls through */
