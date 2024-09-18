@@ -37,48 +37,48 @@ Object.assign(plugin.configs, {
       custom: plugin
     },
     rules: {
-      "array-bracket-newline": ["warn", {
+      "array-bracket-newline": [ "warn", {
         "multiline": true
-      }],
-      "array-bracket-spacing": ["warn", "always", { 
+      } ],
+      "array-bracket-spacing": [ "warn", "always", { 
         "singleValue": false 
-      }],
-      "array-element-newline": ["warn", "consistent"],
-      "arrow-body-style": ["warn", "as-needed"],
-      "arrow-parens": ["error", "as-needed"],
-      "arrow-spacing": ["warn", { 
+      } ],
+      "array-element-newline": [ "warn", "consistent" ],
+      "arrow-body-style": [ "warn", "as-needed" ],
+      "arrow-parens": [ "error", "as-needed" ],
+      "arrow-spacing": [ "warn", { 
         "before": true, 
         "after": true 
-      }],
+      } ],
       "block-scoped-var": "error",
       "block-spacing": "warn",
-      "custom/brace-style-custom": ["error", "1tbs", { 
+      "custom/brace-style-custom": [ "error", "1tbs", { 
         allowSingleLine: true,
         stroustrupAfterSingleLine: true,
         allowDualSingleLine: true
-      }],
-      "comma-spacing": ["warn", { 
+      } ],
+      "comma-spacing": [ "warn", { 
         "before": false, 
         "after": true 
-      }],
-      "computed-property-spacing": ["warn", "never"],
-      curly: ["warn", "multi-line"],
+      } ],
+      "computed-property-spacing": [ "warn", "never" ],
+      curly: [ "warn", "multi-line" ],
       "default-case": "error",
       "default-case-last": "warn",
       "default-param-last": ["error"],
-      "dot-location": ["error", "property"],
+      "dot-location": [ "error", "property" ],
       "dot-notation": "error",
       eqeqeq: "warn",
       "for-direction": "error",
-      "func-call-spacing": ["warn", "never"],
-      "func-names": ["warn", "as-needed"],
-      "generator-star-spacing": ["warn", {"before": true, "after": false}],
-      indent: ["error", 2, {
+      "func-call-spacing": [ "warn", "never" ],
+      "func-names": [ "warn", "as-needed" ],
+      "generator-star-spacing": [ "warn", {"before": true, "after": false} ],
+      indent: [ "error", 2, {
         SwitchCase: 1
-      }],
-      "jsx-quotes": ["warn", "prefer-double"],
-      "key-spacing": ["warn", { "beforeColon": false }],
-      "keyword-spacing": ["error", {
+      } ],
+      "jsx-quotes": [ "warn", "prefer-double" ],
+      "key-spacing": [ "warn", { "beforeColon": false } ],
+      "keyword-spacing": [ "error", {
         "before": true,
         "after": true,
         "overrides": {
@@ -88,7 +88,7 @@ Object.assign(plugin.configs, {
           "function": { "after": false },
           "switch": { "after": false }
         } 
-      }],
+      } ],
       "no-trailing-spaces": "warn",
       // "no-unused-vars": ["error", {
       //   "varsIgnorePattern": globalsC
