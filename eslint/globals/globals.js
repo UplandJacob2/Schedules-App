@@ -1,6 +1,6 @@
 module.exports = {
   _: "writable",
-  
+ 
   DateUtils: "writable",
   Base64: "writable",
   Editor: "writable",
