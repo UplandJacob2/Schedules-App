@@ -29,7 +29,7 @@ module.exports = {
       {
         oneOf: [
           {
-            enum: ["always", "never", "consistent"]
+            enum: [ "always", "never", "consistent" ]
           },
           {
             type: "object",
@@ -47,12 +47,12 @@ module.exports = {
                   }
                 },
                 {
-                  type: ["integer", "null"],
+                  type: [ "integer", "null" ],
                   minimum: 0
                 }
               ],
               minItems: {
-                type: ["integer", "null"],
+                type: [ "integer", "null" ],
                 minimum: 0
               }
             },
@@ -88,16 +88,16 @@ module.exports = {
       let multiline = false;
       let minItems;
 
-      if (option) {
-          if (option === "consistent") {
-            consistent = true;
-            minItems = Number.POSITIVE_INFINITY;
-          } else if (option === "always" || option.minItems === 0) minItems = 0;
-          else if (option === "never") minItems = Number.POSITIVE_INFINITY;
-          else {
-            multiline = Boolean(option.multiline);
-            minItems = option.minItems || Number.POSITIVE_INFINITY;
-          }
+      if(option) {
+        if(option === "consistent") {
+          consistent = true;
+          minItems = Number.POSITIVE_INFINITY;
+        } else if(option === "always" || option.minItems === 0) minItems = 0;
+        else if(option === "never") minItems = Number.POSITIVE_INFINITY;
+        else {
+          multiline = Boolean(option.multiline);
+          minItems = option.minItems || Number.POSITIVE_INFINITY;
+        }
       } else {
         consistent = false;
         multiline = true;
@@ -130,7 +130,7 @@ module.exports = {
         fix(fixer) {
           const nextToken = sourceCode.getTokenAfter(token, { includeComments: true });
           if(astUtils.isCommentToken(nextToken)) return null;
-          return fixer.removeRange([token.range[1], nextToken.range[0]]);
+          return fixer.removeRange([ token.range[1], nextToken.range[0] ]);
         }
       });
     }
@@ -148,7 +148,7 @@ module.exports = {
         messageId: "unexpectedClosingLinebreak",
         fix(fixer) {
           const previousToken = sourceCode.getTokenBefore(token, { includeComments: true });
-          if (astUtils.isCommentToken(previousToken)) return null;
+          if(astUtils.isCommentToken(previousToken)) return null;
           return fixer.removeRange([previousToken.range[1], token.range[0]]);
         }
       });
@@ -166,7 +166,7 @@ module.exports = {
         loc: token.loc,
         messageId: "missingOpeningLinebreak",
         fix(fixer) {
-            return fixer.insertTextAfter(token, "\n");
+          return fixer.insertTextAfter(token, "\n");
         }
       });
     }
@@ -213,7 +213,7 @@ module.exports = {
             options.multiline &&
             elements.length > 0 &&
             firstIncComment.loc.start.line !== lastIncComment.loc.end.line &&
-            elements.filter(item => item.type === 'ObjectExpression').length > 1 &&
+            elements.filter(item => item.type === "ObjectExpression").length > 1 &&
             !astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1]))
           ) ||
           (
@@ -225,7 +225,7 @@ module.exports = {
           (
             options.consistent &&
             openBracket.loc.end.line !== first.loc.start.line &&
-            elements.filter(item => item.type === 'ObjectExpression').length > 1 &&
+            elements.filter(item => item.type === "ObjectExpression").length > 1 &&
             !astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1]))
           )
         );
