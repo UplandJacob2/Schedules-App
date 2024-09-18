@@ -44,7 +44,7 @@ module.exports = {
             default: false
           },
           allowDualSingleLine: {
-          	type: "boolean",
+            type: "boolean",
             default: false
           }
         },
