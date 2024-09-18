@@ -207,6 +207,8 @@ module.exports = {
       let needsLinebreaks;
       console.log(JSON.stringify(context.options[0]))
       console.log(JSON.stringify(context.options[0].multiNotRequired))
+      console.log(JSON.stringify(context.options[0].multiNotRequired[0]))
+
       if(context.options[0].multiNotRquired[0].oneMultiLineItem && elements.length <= context.options[0].multiNotRequired[1]) {
         needsLineBreaks = (
           elements.length >= options.minItems ||
