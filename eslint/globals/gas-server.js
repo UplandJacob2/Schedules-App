@@ -6,7 +6,7 @@ module.exports = {
 
   SchedulesSecure: "writable",
   DateUtils: "writable",
- 
+
   getSchedule: "writable",
   getDaysOff: "writable",
   signUp: "writable",
