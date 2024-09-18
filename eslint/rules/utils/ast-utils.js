@@ -1366,7 +1366,7 @@ module.exports = {
       case "NewExpression":
         return 19;
       default:
-        if (node.type in eslintVisitorKeys) return 20;
+        if(node.type in eslintVisitorKeys) return 20;
         /*
          * if the node is not a standard node that we know about, then assume it has the lowest precedence
          * this will mean that rules will wrap unknown nodes in parentheses where applicable instead of
@@ -1402,7 +1402,7 @@ module.exports = {
   getDirectivePrologue(node) {
     const directives = [];
     // Directive prologues only occur at the top of files or functions.
-    if (
+    if(
       node.type === "Program" ||
       node.type === "FunctionDeclaration" ||
       node.type === "FunctionExpression" ||
@@ -1528,33 +1528,33 @@ module.exports = {
     const tokens = [];
     if(parent.type === "MethodDefinition" || parent.type === "PropertyDefinition") {
       // The proposal uses `static` word consistently before visibility words: https://github.com/tc39/proposal-static-class-features
-      if (parent.static) tokens.push("static");
-      if (!parent.computed && parent.key.type === "PrivateIdentifier") tokens.push("private");
+      if(parent.static) tokens.push("static");
+      if(!parent.computed && parent.key.type === "PrivateIdentifier") tokens.push("private");
     }
-    if (node.async) tokens.push("async");
-    if (node.generator) tokens.push("generator");
+    if(node.async) tokens.push("async");
+    if(node.generator) tokens.push("generator");
 
-    if (parent.type === "Property" || parent.type === "MethodDefinition") {
-      if (parent.kind === "constructor") return "constructor";
-      if (parent.kind === "get") tokens.push("getter");
-      else if (parent.kind === "set") tokens.push("setter");
+    if(parent.type === "Property" || parent.type === "MethodDefinition") {
+      if(parent.kind === "constructor") return "constructor";
+      if(parent.kind === "get") tokens.push("getter");
+      else if(parent.kind === "set") tokens.push("setter");
       else tokens.push("method");
-    } else if (parent.type === "PropertyDefinition") tokens.push("method");
+    } else if(parent.type === "PropertyDefinition") tokens.push("method");
     else {
-      if (node.type === "ArrowFunctionExpression") {
+      if(node.type === "ArrowFunctionExpression") {
         tokens.push("arrow");
       }
       tokens.push("function");
     }
 
-    if (parent.type === "Property" || parent.type === "MethodDefinition" || parent.type === "PropertyDefinition") {
-      if (!parent.computed && parent.key.type === "PrivateIdentifier") tokens.push(`#${parent.key.name}`);
+    if(parent.type === "Property" || parent.type === "MethodDefinition" || parent.type === "PropertyDefinition") {
+      if(!parent.computed && parent.key.type === "PrivateIdentifier") tokens.push(`#${parent.key.name}`);
       else {
         const name = getStaticPropertyName(parent);
         if (name !== null) tokens.push(`'${name}'`);
-        else if (node.id) tokens.push(`'${node.id.name}'`);
+        else if(node.id) tokens.push(`'${node.id.name}'`);
       }
-    } else if (node.id) tokens.push(`'${node.id.name}'`);
+    } else if(node.id) tokens.push(`'${node.id.name}'`);
     return tokens.join(" ");
   },
 
@@ -1721,8 +1721,8 @@ module.exports = {
    * @returns {{line: number, column: number} | null} Next location
    */
   getNextLocation(sourceCode, { line, column }) {
-      if (column < sourceCode.lines[line - 1].length) return { line, column: column + 1 };
-      if (line < sourceCode.lines.length) return { line: line + 1, column: 0 };
+      if(column < sourceCode.lines[line - 1].length) return { line, column: column + 1 };
+      if(line < sourceCode.lines.length) return { line: line + 1, column: 0 };
       return null;
   },
 
@@ -1816,15 +1816,15 @@ module.exports = {
     const espreeOptions = { ecmaVersion: espree.latestEcmaVersion, comment: true, range: true };
     let leftToken;
 
-    if (typeof leftValue === "string") {
+    if(typeof leftValue === "string") {
       let tokens;
       try { tokens = espree.tokenize(leftValue, espreeOptions); } 
       catch { return false; }
       const comments = tokens.comments;
       leftToken = tokens.at(-1);
-      if (comments.length) {
+      if(comments.length) {
         const lastComment = comments.at(-1);
-        if (!leftToken || lastComment.range[0] > leftToken.range[0]) leftToken = lastComment;
+        if(!leftToken || lastComment.range[0] > leftToken.range[0]) leftToken = lastComment;
       }
     } else leftToken = leftValue;
 
@@ -1834,22 +1834,22 @@ module.exports = {
      * If a hashbang comment was passed in a string and then tokenized in this function,
      * its type will be "Hashbang" because of the way Espree tokenizes hashbangs.
      */
-    if (leftToken.type === "Shebang" || leftToken.type === "Hashbang") return false;
+    if(leftToken.type === "Shebang" || leftToken.type === "Hashbang") return false;
     let rightToken;
-    if (typeof rightValue === "string") {
+    if(typeof rightValue === "string") {
         let tokens;
         try { tokens = espree.tokenize(rightValue, espreeOptions); } 
         catch { return false; }
         const comments = tokens.comments;
         rightToken = tokens[0];
-        if (comments.length) {
+        if(comments.length) {
           const firstComment = comments[0];
-          if (!rightToken || firstComment.range[0] < rightToken.range[0]) rightToken = firstComment;
+          if(!rightToken || firstComment.range[0] < rightToken.range[0]) rightToken = firstComment;
         }
     } else rightToken = rightValue;
 
-    if (leftToken.type === "Punctuator" || rightToken.type === "Punctuator") {
-      if (leftToken.type === "Punctuator" && rightToken.type === "Punctuator") {
+    if(leftToken.type === "Punctuator" || rightToken.type === "Punctuator") {
+      if(leftToken.type === "Punctuator" && rightToken.type === "Punctuator") {
         const PLUS_TOKENS = new Set(["+", "++"]);
         const MINUS_TOKENS = new Set(["-", "--"]);
         return !(
@@ -1857,19 +1857,19 @@ module.exports = {
           MINUS_TOKENS.has(leftToken.value) && MINUS_TOKENS.has(rightToken.value)
         );
       }
-      if (leftToken.type === "Punctuator" && leftToken.value === "/") return !["Block", "Line", "RegularExpression"].includes(rightToken.type);
+      if(leftToken.type === "Punctuator" && leftToken.value === "/") return !["Block", "Line", "RegularExpression"].includes(rightToken.type);
       return true;
     }
-    if (
+    if(
       leftToken.type === "String" || rightToken.type === "String" ||
       leftToken.type === "Template" || rightToken.type === "Template"
     ) {
       return true;
     }
 
-    if (leftToken.type !== "Numeric" && rightToken.type === "Numeric" && rightToken.value.startsWith(".")) return true;
-    if (leftToken.type === "Block" || rightToken.type === "Block" || rightToken.type === "Line") return true;
-    if (rightToken.type === "PrivateIdentifier") return true;
+    if(leftToken.type !== "Numeric" && rightToken.type === "Numeric" && rightToken.value.startsWith(".")) return true;
+    if(leftToken.type === "Block" || rightToken.type === "Block" || rightToken.type === "Line") return true;
+    if(rightToken.type === "PrivateIdentifier") return true;
 
     return false;
   },
