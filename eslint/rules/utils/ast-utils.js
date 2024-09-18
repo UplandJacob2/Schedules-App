@@ -36,17 +36,17 @@ const thisTagPattern = /^[\s*]*@this/mu;
 
 const COMMENTS_IGNORE_PATTERN = /^\s*(?:eslint|jshint\s+|jslint\s+|istanbul\s+|globals?\s+|exported\s+|jscs)/u;
 const ESLINT_DIRECTIVE_PATTERN = /^(?:eslint[- ]|(?:globals?|exported) )/u;
-const LINEBREAKS = new Set(["\r\n", "\r", "\n", "\u2028", "\u2029"]);
+const LINEBREAKS = new Set([ "\r\n", "\r", "\n", "\u2028", "\u2029" ]);
 
 // A set of node types that can contain a list of statements
-const STATEMENT_LIST_PARENTS = new Set(["Program", "BlockStatement", "StaticBlock", "SwitchCase"]);
+const STATEMENT_LIST_PARENTS = new Set([ "Program", "BlockStatement", "StaticBlock", "SwitchCase" ]);
 
 const DECIMAL_INTEGER_PATTERN = /^(?:0|0[0-7]*[89]\d*|[1-9](?:_?\d)*)$/u;
 
 // Tests the presence of at least one LegacyOctalEscapeSequence or NonOctalDecimalEscapeSequence in a raw string
 const OCTAL_OR_NON_OCTAL_DECIMAL_ESCAPE_PATTERN = /^(?:[^\\]|\\.)*\\(?:[1-9]|0[0-9])/su;
 
-const LOGICAL_ASSIGNMENT_OPERATORS = new Set(["&&=", "||=", "??="]);
+const LOGICAL_ASSIGNMENT_OPERATORS = new Set([ "&&=", "||=", "??=" ]);
 
 /**
  * All builtin global variables defined in the latest ECMAScript specification.
