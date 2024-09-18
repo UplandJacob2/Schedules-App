@@ -10,7 +10,7 @@ const astUtils = require("./utils/ast-utils")
 //   isTokenOnSameLine(left, right) {
 //     return left.loc.end.line === right.loc.start.line;
 //   },
-  
+
 // }
 // const STATEMENT_LIST_PARENTS = new Set(["Program", "BlockStatement", "StaticBlock", "SwitchCase"]);
 
@@ -29,7 +29,7 @@ module.exports = {
     },
     schema: [
       {
-        enum: ["1tbs", "stroustrup", "allman"]
+        enum: [ "1tbs", "stroustrup", "allman" ]
       },
       {
         type: "object",
@@ -78,7 +78,7 @@ module.exports = {
      * @returns {Function} A fixer function to remove the newlines between the tokens
      */
     function removeNewlineBetween(firstToken, secondToken) {
-      const textRange = [firstToken.range[1], secondToken.range[0]];
+      const textRange = [ firstToken.range[1], secondToken.range[0] ];
       const textBetween = sourceCode.text.slice(textRange[0], textRange[1]);
 
       // Don't do a fix if there is a comment between the tokens
@@ -109,7 +109,7 @@ module.exports = {
           fix: removeNewlineBetween(tokenBeforeOpeningCurly, openingCurly)
         });
       }
-      
+
       // starting { should be on the next line after statement ex: 'if (...)\n  { '
       if(style === "allman" && astUtils.isTokenOnSameLine(tokenBeforeOpeningCurly, openingCurly) && !singleLineException) {
         context.report({
@@ -126,7 +126,7 @@ module.exports = {
           fix: fixer => fixer.insertTextAfter(openingCurly, "\n")
         });
       }
-            
+
       if(tokenBeforeClosingCurly !== openingCurly && !singleLineException && astUtils.isTokenOnSameLine(tokenBeforeClosingCurly, closingCurly)) {
         context.report({
           node: closingCurly,
@@ -161,12 +161,10 @@ module.exports = {
         });
       }
     }
-	
-    
+
     //--------------------------------------------------------------------------
     // Public API
     //--------------------------------------------------------------------------
-
     return {
       BlockStatement(node) {
         if(!astUtils.STATEMENT_LIST_PARENTS.has(node.parent.type)) {
@@ -197,7 +195,6 @@ module.exports = {
             	validateCurlyBeforeKeyword(sourceCode.getLastToken(node.consequent));
           }
         } //else if(node.consequent.type === "ExpressionStatement") {
-          
         //}
       },
       TryStatement(node) {
