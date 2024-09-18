@@ -147,8 +147,8 @@ function isLoop(node) {
  * @returns {boolean} `true` if the node is in a loop.
  */
 function isInLoop(node) {
-  for (let currentNode = node; currentNode && !isFunction(currentNode); currentNode = currentNode.parent) {
-    if (isLoop(currentNode)) {
+  for(let currentNode = node; currentNode && !isFunction(currentNode); currentNode = currentNode.parent) {
+    if(isLoop(currentNode)) {
       return true;
     }
   }
@@ -204,7 +204,7 @@ function isCallee(node) {
  * @returns {string|null} String value if it can be determined. Otherwise, `null`.
  */
 function getStaticStringValue(node) {
-  switch (node.type) {
+  switch(node.type) {
     case "Literal":
       if(node.value === null) {
         if(isNullLiteral(node)) return String(node.value); // "null"
@@ -254,7 +254,7 @@ function getStaticStringValue(node) {
  */
 function getStaticPropertyName(node) {
   let prop;
-  switch (node && node.type) {
+  switch(node && node.type) {
     case "ChainExpression":
         return getStaticPropertyName(node.expression);
     case "Property":
@@ -262,14 +262,13 @@ function getStaticPropertyName(node) {
     case "MethodDefinition":
       prop = node.key;
       break;
-
     case "MemberExpression":
       prop = node.property;
       break;
     // no default
   }
-  if (prop) {
-    if (prop.type === "Identifier" && !node.computed) return prop.name;
+  if(prop) {
+    if(prop.type === "Identifier" && !node.computed) return prop.name;
     return getStaticStringValue(prop);
   }
   return null;
@@ -316,11 +315,11 @@ function isSpecificId(node, name) {
 function isSpecificMemberAccess(node, objectName, propertyName) {
   const checkNode = skipChainExpression(node);
 
-  if (checkNode.type !== "MemberExpression") return false;
-  if (objectName && !isSpecificId(checkNode.object, objectName)) return false;
-  if (propertyName) {
+  if(checkNode.type !== "MemberExpression") return false;
+  if(objectName && !isSpecificId(checkNode.object, objectName)) return false;
+  if(propertyName) {
     const actualPropertyName = getStaticPropertyName(checkNode);
-    if (typeof actualPropertyName !== "string" || !checkText(actualPropertyName, propertyName)) return false;
+    if(typeof actualPropertyName !== "string" || !checkText(actualPropertyName, propertyName)) return false;
   }
   return true;
 }
@@ -333,7 +332,7 @@ function isSpecificMemberAccess(node, objectName, propertyName) {
  */
 function equalLiteralValue(left, right) {
   // RegExp literal.
-  if (left.regex || right.regex) {
+  if(left.regex || right.regex) {
     return Boolean(
       left.regex &&
       right.regex &&
@@ -343,7 +342,7 @@ function equalLiteralValue(left, right) {
   }
 
   // BigInt literal.
-  if (left.bigint || right.bigint) return left.bigint === right.bigint;
+  if(left.bigint || right.bigint) return left.bigint === right.bigint;
   return left.value === right.value;
 }
 
@@ -359,18 +358,18 @@ function equalLiteralValue(left, right) {
  * @returns {boolean} `true` if both sides match and reference the same value.
  */
 function isSameReference(left, right, disableStaticComputedKey = false) {
-  if (left.type !== right.type) {
+  if(left.type !== right.type) {
     // Handle `a.b` and `a?.b` are samely.
-    if (left.type === "ChainExpression") {
+    if(left.type === "ChainExpression") {
       return isSameReference(left.expression, right, disableStaticComputedKey);
     }
-    if (right.type === "ChainExpression") {
+    if(right.type === "ChainExpression") {
       return isSameReference(left, right.expression, disableStaticComputedKey);
     }
     return false;
   }
 
-  switch (left.type) {
+  switch(left.type) {
     case "Super":
     case "ThisExpression":
       return true;
@@ -382,10 +381,10 @@ function isSameReference(left, right, disableStaticComputedKey = false) {
     case "ChainExpression":
       return isSameReference(left.expression, right.expression, disableStaticComputedKey);
     case "MemberExpression": {
-      if (!disableStaticComputedKey) {
+      if(!disableStaticComputedKey) {
         const nameA = getStaticPropertyName(left);
         // x.y = x["y"]
-        if (nameA !== null) {
+        if(nameA !== null) {
           return (
               isSameReference(left.object, right.object, disableStaticComputedKey) &&
               nameA === getStaticPropertyName(right)
@@ -707,7 +706,7 @@ function isLogicalAssignmentOperator(operator) {
  * @returns {Token} The colon token of the node.
  */
 function getSwitchCaseColonToken(node, sourceCode) {
-  if (node.test) return sourceCode.getTokenAfter(node.test, isColonToken);
+  if(node.test) return sourceCode.getTokenAfter(node.test, isColonToken);
   return sourceCode.getFirstToken(node, 1);
 }
 
@@ -722,7 +721,7 @@ function getSwitchCaseColonToken(node, sourceCode) {
  * @returns {string} The module export name.
  */
 function getModuleExportName(node) {
-  if (node.type === "Identifier") return node.name;
+  if(node.type === "Identifier") return node.name;
   // string literal
   return node.value;
 }
@@ -734,15 +733,15 @@ function getModuleExportName(node) {
  *  `null` when it cannot be determined.
  */
 function getBooleanValue(node) {
-  if (node.value === null) {
+  if(node.value === null) {
     /*
      * it might be a null literal or bigint/regex literal in unsupported environments .
      * https://github.com/estree/estree/blob/14df8a024956ea289bd55b9c2226a1d5b8a473ee/es5.md#regexpliteral
      * https://github.com/estree/estree/blob/14df8a024956ea289bd55b9c2226a1d5b8a473ee/es2020.md#bigintliteral
      */
-    if (node.raw === "null") return false;
+    if(node.raw === "null") return false;
     // regex is always truthy
-    if (typeof node.regex === "object") return true;
+    if(typeof node.regex === "object") return true;
     return null;
   }
   return !!node.value;
@@ -755,7 +754,7 @@ function getBooleanValue(node) {
  * @returns {boolean} true when condition short circuits whole condition
  */
 function isLogicalIdentity(node, operator) {
-  switch (node.type) {
+  switch(node.type) {
     case "Literal":
       return (operator === "||" && getBooleanValue(node) === true) || (operator === "&&" && getBooleanValue(node) === false);
     case "UnaryExpression":
@@ -1298,7 +1297,7 @@ module.exports = {
    * @private
    */
   getPrecedence(node) {
-    switch (node.type) {
+    switch(node.type) {
       case "SequenceExpression":
         return 0;
       case "AssignmentExpression":
@@ -1734,20 +1733,20 @@ module.exports = {
    * @returns {string} The text representing the node, with all surrounding parentheses included
    */
   getParenthesisedText(sourceCode, node) {
-      let leftToken = sourceCode.getFirstToken(node);
-      let rightToken = sourceCode.getLastToken(node);
-      while(
-        sourceCode.getTokenBefore(leftToken) &&
-        sourceCode.getTokenBefore(leftToken).type === "Punctuator" &&
-        sourceCode.getTokenBefore(leftToken).value === "(" &&
-        sourceCode.getTokenAfter(rightToken) &&
-        sourceCode.getTokenAfter(rightToken).type === "Punctuator" &&
-        sourceCode.getTokenAfter(rightToken).value === ")"
-      ) {
-        leftToken = sourceCode.getTokenBefore(leftToken);
-        rightToken = sourceCode.getTokenAfter(rightToken);
-      }
-      return sourceCode.getText().slice(leftToken.range[0], rightToken.range[1]);
+    let leftToken = sourceCode.getFirstToken(node);
+    let rightToken = sourceCode.getLastToken(node);
+    while(
+      sourceCode.getTokenBefore(leftToken) &&
+      sourceCode.getTokenBefore(leftToken).type === "Punctuator" &&
+      sourceCode.getTokenBefore(leftToken).value === "(" &&
+      sourceCode.getTokenAfter(rightToken) &&
+      sourceCode.getTokenAfter(rightToken).type === "Punctuator" &&
+      sourceCode.getTokenAfter(rightToken).value === ")"
+    ) {
+      leftToken = sourceCode.getTokenBefore(leftToken);
+      rightToken = sourceCode.getTokenAfter(rightToken);
+    }
+    return sourceCode.getText().slice(leftToken.range[0], rightToken.range[1]);
   },
 
   /**
