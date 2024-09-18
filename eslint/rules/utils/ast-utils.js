@@ -1720,9 +1720,9 @@ module.exports = {
    * @returns {{line: number, column: number} | null} Next location
    */
   getNextLocation(sourceCode, { line, column }) {
-      if(column < sourceCode.lines[line - 1].length) return { line, column: column + 1 };
-      if(line < sourceCode.lines.length) return { line: line + 1, column: 0 };
-      return null;
+    if(column < sourceCode.lines[line - 1].length) return { line, column: column + 1 };
+    if(line < sourceCode.lines.length) return { line: line + 1, column: 0 };
+    return null;
   },
 
   /**
