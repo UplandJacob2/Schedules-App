@@ -37,15 +37,15 @@ module.exports = {
               multiline: {
                 type: "boolean"
               },
-              multiNotRequired: {
+              multiNotRequired: [
                 {
                   enum: ["oneMultiLineItem"]
                 },
-                maxItems: {
+                {
                   type: ["integer", "null"],
                   minimum: 0
                 }
-              },
+              ],
               minItems: {
                 type: ["integer", "null"],
                 minimum: 0
