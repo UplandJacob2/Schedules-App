@@ -204,10 +204,10 @@ module.exports = {
       const first = sourceCode.getTokenAfter(openBracket);
       const last = sourceCode.getTokenBefore(closeBracket);
 
-      let needsLineBreaks;
+      let needsLinebreaks;
 
       if(context.options[0].multiNotRequired[0].oneMultiLineItem && elements.length <= context.options[0].multiNotRequired[1]) {
-        needsLineBreaks = (
+        needsLinebreaks = (
           elements.length >= options.minItems ||
           (
             options.multiline &&
@@ -230,7 +230,7 @@ module.exports = {
           )
         );
       } else {
-        needsLineBreaks = (
+        needsLinebreaks = (
           elements.length >= options.minItems ||
           (
             options.multiline &&
