@@ -29,7 +29,7 @@ module.exports = {
       {
         oneOf: [
           {
-              enum: ["always", "never", "consistent"]
+            enum: ["always", "never", "consistent"]
           },
           {
             type: "object",
@@ -39,7 +39,12 @@ module.exports = {
               },
               multiNotRequired: [
                 {
-                  enum: ["oneMultiLineItem"]
+                  type: "object",
+                  properties: {
+                    oneMultiLineItem: {
+                      type: "boolean"
+                    }
+                  }
                 },
                 {
                   type: ["integer", "null"],
@@ -124,7 +129,7 @@ module.exports = {
         messageId: "unexpectedOpeningLinebreak",
         fix(fixer) {
           const nextToken = sourceCode.getTokenAfter(token, { includeComments: true });
-          if (astUtils.isCommentToken(nextToken)) return null;
+          if(astUtils.isCommentToken(nextToken)) return null;
           return fixer.removeRange([token.range[1], nextToken.range[0]]);
         }
       });
