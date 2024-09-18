@@ -82,7 +82,7 @@ module.exports = {
       const textBetween = sourceCode.text.slice(textRange[0], textRange[1]);
 
       // Don't do a fix if there is a comment between the tokens
-      if (textBetween.trim()) {
+      if(textBetween.trim()) {
         return null;
       }
       return fixer => fixer.replaceTextRange(textRange, " ");
@@ -102,9 +102,9 @@ module.exports = {
       const singleLineException = params.allowSingleLine && astUtils.isTokenOnSameLine(openingCurly, closingCurly);
 
       // starting { should be after statement ex: 'else {'
-      if (style !== "allman" && !astUtils.isTokenOnSameLine(tokenBeforeOpeningCurly, openingCurly)) {
-        if (params.stroustrupAfterSingleLine) {
-          if (astUtils.isTokenOnSameLine(openingCurly, tokenAfterOpeningCurly) && tokenAfterOpeningCurly !== closingCurly) {
+      if(style !== "allman" && !astUtils.isTokenOnSameLine(tokenBeforeOpeningCurly, openingCurly)) {
+        if(params.stroustrupAfterSingleLine) {
+          if(astUtils.isTokenOnSameLine(openingCurly, tokenAfterOpeningCurly) && tokenAfterOpeningCurly !== closingCurly) {
             context.report({
               node: openingCurly,
               message: 'kjsbjd',
@@ -120,7 +120,7 @@ module.exports = {
       }
       
       // starting { should be on the next line after statement ex: 'if (...)\n  { '
-      if (style === "allman" && astUtils.isTokenOnSameLine(tokenBeforeOpeningCurly, openingCurly) && !singleLineException) {
+      if(style === "allman" && astUtils.isTokenOnSameLine(tokenBeforeOpeningCurly, openingCurly) && !singleLineException) {
         context.report({
           node: openingCurly,
           messageId: "sameLineOpen",
@@ -128,7 +128,7 @@ module.exports = {
         });
       }
 
-      if (astUtils.isTokenOnSameLine(openingCurly, tokenAfterOpeningCurly) && tokenAfterOpeningCurly !== closingCurly && !singleLineException) {
+      if(astUtils.isTokenOnSameLine(openingCurly, tokenAfterOpeningCurly) && tokenAfterOpeningCurly !== closingCurly && !singleLineException) {
         context.report({
           node: openingCurly,
           messageId: "blockSameLine",
@@ -136,7 +136,7 @@ module.exports = {
         });
       }
             
-      if (tokenBeforeClosingCurly !== openingCurly && !singleLineException && astUtils.isTokenOnSameLine(tokenBeforeClosingCurly, closingCurly)) {
+      if(tokenBeforeClosingCurly !== openingCurly && !singleLineException && astUtils.isTokenOnSameLine(tokenBeforeClosingCurly, closingCurly)) {
         context.report({
           node: closingCurly,
           messageId: "singleLineClose",
@@ -154,7 +154,7 @@ module.exports = {
       const keywordToken = sourceCode.getTokenAfter(curlyToken);
       const newStyle = styleOverride || style
 
-      if (newStyle === "1tbs" && !astUtils.isTokenOnSameLine(curlyToken, keywordToken)) {
+      if(newStyle === "1tbs" && !astUtils.isTokenOnSameLine(curlyToken, keywordToken)) {
         context.report({
           node: curlyToken,
           messageId: "nextLineClose",
@@ -162,7 +162,7 @@ module.exports = {
         });
       }
 
-      if (newStyle !== "1tbs" && astUtils.isTokenOnSameLine(curlyToken, keywordToken) && !params.allowDualSingleLine) {
+      if(newStyle !== "1tbs" && astUtils.isTokenOnSameLine(curlyToken, keywordToken) && !params.allowDualSingleLine) {
         context.report({
           node: curlyToken,
           messageId: "sameLineClose",
@@ -178,7 +178,7 @@ module.exports = {
 
     return {
       BlockStatement(node) {
-        if (!astUtils.STATEMENT_LIST_PARENTS.has(node.parent.type)) {
+        if(!astUtils.STATEMENT_LIST_PARENTS.has(node.parent.type)) {
           validateCurlyPair(sourceCode.getFirstToken(node), sourceCode.getLastToken(node));
         }
       },
@@ -198,30 +198,28 @@ module.exports = {
         validateCurlyPair(openingCurly, closingCurly);
       },
       IfStatement(node) {
-        if (node.consequent.type === "BlockStatement" && node.alternate) {
-          if ( astUtils.isTokenOnSameLine(sourceCode.getFirstToken(node.consequent), sourceCode.getLastToken(node.consequent)) && params.stroustrupAfterSingleLine ) {
+        if(node.consequent.type === "BlockStatement" && node.alternate) {
+          if( astUtils.isTokenOnSameLine(sourceCode.getFirstToken(node.consequent), sourceCode.getLastToken(node.consequent)) && params.stroustrupAfterSingleLine ) {
              validateCurlyBeforeKeyword(sourceCode.getLastToken(node.consequent), "stroustrup");
           } else {
-          	// Handle the keyword after the `if` block (before `else`)
-          	validateCurlyBeforeKeyword(sourceCode.getLastToken(node.consequent));
+            	// Handle the keyword after the `if` block (before `else`)
+            	validateCurlyBeforeKeyword(sourceCode.getLastToken(node.consequent));
           }
-        } //else if (node.consequent.type === "ExpressionStatement") {
+        } //else if(node.consequent.type === "ExpressionStatement") {
           
         //}
       },
       TryStatement(node) {
 
         // Handle the keyword after the `try` block (before `catch` or `finally`)
-        if ( astUtils.isTokenOnSameLine(sourceCode.getFirstToken(node.block), sourceCode.getLastToken(node.block)) && params.stroustrupAfterSingleLine ) {
+        if( astUtils.isTokenOnSameLine(sourceCode.getFirstToken(node.block), sourceCode.getLastToken(node.block)) && params.stroustrupAfterSingleLine ) {
           validateCurlyBeforeKeyword(sourceCode.getLastToken(node.block), "stroustrup");
         } else {
           // Handle the keyword after the `if` block (before `else`)
           validateCurlyBeforeKeyword(sourceCode.getLastToken(node.block));
         }
-        //validateCurlyBeforeKeyword(sourceCode.getLastToken(node.block));
 
-        if (node.handler && node.finalizer) {
-
+        if(node.handler && node.finalizer) {
           // Handle the keyword after the `catch` block (before `finally`)
           validateCurlyBeforeKeyword(sourceCode.getLastToken(node.handler.body));
         }
