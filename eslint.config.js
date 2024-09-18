@@ -82,6 +82,7 @@ module.exports = [
     rules: {
       ...js.configs.recommended.rules,
       ...customPlugin.configs.recommended.rules,
+      quotes: [ "warn", "double" ],
     },
   }
 ];
