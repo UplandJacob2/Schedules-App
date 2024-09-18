@@ -17,8 +17,8 @@ const commonjs = {
 };
 
 const es3 = {
-    Array: false,
-    Boolean: false,
+  Array: false,
+  Boolean: false,
     constructor: false,
     Date: false,
     decodeURI: false,
