@@ -52,7 +52,7 @@ Object.assign(plugin.configs, {
       } ],
       "block-scoped-var": "error",
       "block-spacing": "warn",
-      "custom/brace-style-custom": [ "error", "1tbs", { 
+      "custom/brace-style-custom": [ "error", "1tbs", {
         allowSingleLine: true,
         stroustrupAfterSingleLine: true,
         allowDualSingleLine: true
