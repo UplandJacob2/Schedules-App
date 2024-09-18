@@ -47,7 +47,7 @@ Object.assign(plugin.configs, {
         "singleValue": false
       } ],
       "custom/array-element-newline": [ "warn", {
-        multiLine: true,
+        multiline: true,
         multiNotRequired: [ "oneMultiLineItem", 7 ]
       } ],
       "arrow-body-style": [ "warn", "as-needed" ],
