@@ -1,4 +1,4 @@
-const braceStyleCustom = require('./rules/brace-style-custom')
+const braceStyleCustom = require("./rules/brace-style-custom")
 
 const globals = require("globals");
 const gas = require("eslint-plugin-googleappsscript")
