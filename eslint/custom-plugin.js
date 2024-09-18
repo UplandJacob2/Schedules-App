@@ -1,4 +1,6 @@
 const braceStyleCustom = require("./rules/brace-style-custom")
+const arrayElementNewLineCustom = require("./rules/array-element-newline-custom")
+
 
 const globals = require("globals");
 const gas = require("eslint-plugin-googleappsscript")
@@ -12,7 +14,8 @@ const globalsUsedClient = require("./globalsUsed/gas-client")
 
 const plugin = {
   rules: {
-    "brace-style-custom": braceStyleCustom
+    "brace-style": braceStyleCustom,
+    "array-element-newline": arrayElementNewLineCustom
   },
   globals: {
     server: {
@@ -43,7 +46,10 @@ Object.assign(plugin.configs, {
       "array-bracket-spacing": [ "warn", "always", {
         "singleValue": false
       } ],
-      "array-element-newline": [ "warn", "consistent" ],
+      "custom/array-element-newline": [ "warn", "consistent", {
+        multiLine: true,
+        multiNotRequired: [ "oneMultiLineItem", 7 ]
+      } ],
       "arrow-body-style": [ "warn", "as-needed" ],
       "arrow-parens": [ "error", "as-needed" ],
       "arrow-spacing": [ "warn", {
@@ -52,7 +58,7 @@ Object.assign(plugin.configs, {
       } ],
       "block-scoped-var": "error",
       "block-spacing": "warn",
-      "custom/brace-style-custom": [ "error", "1tbs", {
+      "custom/brace-style": [ "error", "1tbs", {
         allowSingleLine: true,
         stroustrupAfterSingleLine: true,
         allowDualSingleLine: true
