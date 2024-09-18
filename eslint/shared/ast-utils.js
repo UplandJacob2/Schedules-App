@@ -18,12 +18,12 @@ const shebangPattern = /^#!([^\r\n]+)/u;
  * @returns {RegExp} A global regular expression that matches line terminators
  */
 function createGlobalLinebreakMatcher() {
-    return new RegExp(lineBreakPattern.source, "gu");
+  return new RegExp(lineBreakPattern.source, "gu");
 }
 
 module.exports = {
-    breakableTypePattern,
-    lineBreakPattern,
-    createGlobalLinebreakMatcher,
-    shebangPattern
+  breakableTypePattern,
+  lineBreakPattern,
+  createGlobalLinebreakMatcher,
+  shebangPattern
 };
