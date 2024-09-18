@@ -27,34 +27,38 @@ module.exports = {
     fixable: "whitespace",
     schema: [
       {
-        enum: ["always", "never", "consistent"]
-      },
-      {
-        type: "object",
-        properties: {
-          multiline: {
-            type: "boolean"
+        oneOf: [
+          {
+            enum: ["always", "never", "consistent"]
           },
-          multiNotRequired: [
-            {
-              type: "object",
-              properties: {
-                oneMultiLineItem: {
-                  type: "boolean"
+          {
+            type: "object",
+            properties: {
+              multiline: {
+                type: "boolean"
+              },
+              multiNotRequired: [
+                {
+                  type: "object",
+                  properties: {
+                    oneMultiLineItem: {
+                      type: "boolean"
+                    }
+                  }
+                },
+                {
+                  type: ["integer", "null"],
+                  minimum: 0
                 }
+              ],
+              minItems: {
+                type: ["integer", "null"],
+                minimum: 0
               }
             },
-            {
-              type: ["integer", "null"],
-              minimum: 0
-            }
-          ],
-          minItems: {
-            type: ["integer", "null"],
-            minimum: 0
+            additionalProperties: false
           }
-        },
-        additionalProperties: false
+        ]
       }
     ],
 
@@ -203,7 +207,7 @@ module.exports = {
       let needsLinebreaks;
       console.log(JSON.stringify(options))
       console.log(JSON.stringify(options.multiNotRequired))
-      if(options.multiNotRquired[0].oneMultiLineItem && elements.length <= options.multiNotRequired[1]) {
+      if(context.options.multiNotRquired[0].oneMultiLineItem && elements.length <= context.options.multiNotRequired[1]) {
         needsLineBreaks = (
           elements.length >= options.minItems ||
           (
