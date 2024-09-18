@@ -3,7 +3,7 @@ const braceStyleCustom = require('./rules/brace-style-custom')
 const globals = require("globals");
 const gas = require("eslint-plugin-googleappsscript")
 
-const globalsC = require("./globals/globals")
+//const globalsC = require("./globals/globals")
 const globalsServer = require("./globals/gas-server")
 const globalsClient = require("./globals/gas-client")
 const globalsUsedServer = require("./globalsUsed/gas-server")
@@ -78,7 +78,7 @@ Object.assign(plugin.configs, {
       }],
       "jsx-quotes": ["warn", "prefer-double"],
       "key-spacing": ["warn", { "beforeColon": false }],
-      "keyword-spacing": ["error", { 
+      "keyword-spacing": ["error", {
         "before": true,
         "after": true,
         "overrides": {
@@ -90,14 +90,14 @@ Object.assign(plugin.configs, {
         } 
       }],
       "no-trailing-spaces": "warn",
-      // "no-unused-vars": ["error", { 
+      // "no-unused-vars": ["error", {
       //   "varsIgnorePattern": globalsC
       // }],
       "no-use-before-define": "error",
       "no-useless-concat": "warn",
       "no-var": "warn",
       "prefer-template": "warn",
-      quotes: ["warn", "single"],
+      quotes: [ "warn", "single" ],
       semi: "off",
     }
   }
