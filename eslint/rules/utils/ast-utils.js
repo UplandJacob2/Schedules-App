@@ -213,7 +213,6 @@ function getStaticStringValue(node) {
         // Otherwise, this is an unknown literal. The function will return null.
       } else return String(node.value);
       break;
-      
     case "TemplateLiteral":
       if(node.expressions.length === 0 && node.quasis.length === 1) return node.quasis[0].value.cooked;
       break;
@@ -766,7 +765,7 @@ function isLogicalIdentity(node, operator) {
        */
       return operator === node.operator && (isLogicalIdentity(node.left, operator) || isLogicalIdentity(node.right, operator));
     case "AssignmentExpression":
-      return ["||=", "&&="].includes(node.operator) && operator === node.operator.slice(0, -1) && isLogicalIdentity(node.right, operator);
+      return [ "||=", "&&=" ].includes(node.operator) && operator === node.operator.slice(0, -1) && isLogicalIdentity(node.right, operator);
    // no default
   }
   return false;
@@ -846,7 +845,7 @@ function isConstant(scope, node, inBooleanPosition) {
       if(node.operator === "=") {
         return isConstant(scope, node.right, inBooleanPosition);
       }
-      if(["||=", "&&="].includes(node.operator) && inBooleanPosition) {
+      if([ "||=", "&&=" ].includes(node.operator) && inBooleanPosition) {
         return isLogicalIdentity(node.right, node.operator.slice(0, -1));
       }
       return false;
@@ -918,11 +917,11 @@ function isStartOfExpressionStatement(node) {
  */
 let needsPrecedingSemicolon;
 {
-  const BREAK_OR_CONTINUE = new Set(["BreakStatement", "ContinueStatement"]);
+  const BREAK_OR_CONTINUE = new Set([ "BreakStatement", "ContinueStatement" ]);
 
   // Declaration types that must contain a string Literal node at the end.
-  const DECLARATIONS = new Set(["ExportAllDeclaration", "ExportNamedDeclaration", "ImportDeclaration"]);
-  const IDENTIFIER_OR_KEYWORD = new Set(["Identifier", "Keyword"]);
+  const DECLARATIONS = new Set([ "ExportAllDeclaration", "ExportNamedDeclaration", "ImportDeclaration" ]);
+  const IDENTIFIER_OR_KEYWORD = new Set([ "Identifier", "Keyword" ]);
 
   // Keywords that can immediately precede an ExpressionStatement node, mapped to the their node types.
   const NODE_TYPES_BY_KEYWORD = {
@@ -940,7 +939,7 @@ let needsPrecedingSemicolon;
    * Before an opening parenthesis, postfix `++` and `--` always trigger ASI;
    * the tokens `:`, `;`, `{` and `=>` don't expect a semicolon, as that would count as an empty statement.
    */
-  const PUNCTUATORS = new Set([":", ";", "{", "=>", "++", "--"]);
+  const PUNCTUATORS = new Set([ ":", ";", "{", "=>", "++", "--" ]);
 
   /*
    * Statements that can contain an `ExpressionStatement` after a closing parenthesis.
@@ -1766,8 +1765,8 @@ module.exports = {
       case "ChainExpression":
         return true; // possibly an error object.
       case "AssignmentExpression":
-        if(["=", "&&="].includes(node.operator)) return module.exports.couldBeError(node.right);
-        if(["||=", "??="].includes(node.operator)) return module.exports.couldBeError(node.left) || module.exports.couldBeError(node.right);
+        if([ "=", "&&=" ].includes(node.operator)) return module.exports.couldBeError(node.right);
+        if([ "||=", "??=" ].includes(node.operator)) return module.exports.couldBeError(node.left) || module.exports.couldBeError(node.right);
         /**
          * All other assignment operators are mathematical assignment operators (arithmetic or bitwise).
          * An assignment expression with a mathematical operator can either evaluate to a primitive value,
@@ -1817,7 +1816,7 @@ module.exports = {
 
     if(typeof leftValue === "string") {
       let tokens;
-      try { tokens = espree.tokenize(leftValue, espreeOptions); } 
+      try { tokens = espree.tokenize(leftValue, espreeOptions); }
       catch { return false; }
       const comments = tokens.comments;
       leftToken = tokens.at(-1);
@@ -1837,7 +1836,7 @@ module.exports = {
     let rightToken;
     if(typeof rightValue === "string") {
       let tokens;
-      try { tokens = espree.tokenize(rightValue, espreeOptions); } 
+      try { tokens = espree.tokenize(rightValue, espreeOptions); }
       catch { return false; }
       const comments = tokens.comments;
       rightToken = tokens[0];
@@ -1849,14 +1848,14 @@ module.exports = {
 
     if(leftToken.type === "Punctuator" || rightToken.type === "Punctuator") {
       if(leftToken.type === "Punctuator" && rightToken.type === "Punctuator") {
-        const PLUS_TOKENS = new Set(["+", "++"]);
-        const MINUS_TOKENS = new Set(["-", "--"]);
+        const PLUS_TOKENS = new Set([ "+", "++" ]);
+        const MINUS_TOKENS = new Set([ "-", "--" ]);
         return !(
           PLUS_TOKENS.has(leftToken.value) && PLUS_TOKENS.has(rightToken.value) ||
           MINUS_TOKENS.has(leftToken.value) && MINUS_TOKENS.has(rightToken.value)
         );
       }
-      if(leftToken.type === "Punctuator" && leftToken.value === "/") return !["Block", "Line", "RegularExpression"].includes(rightToken.type);
+      if(leftToken.type === "Punctuator" && leftToken.value === "/") return ![ "Block", "Line", "RegularExpression" ].includes(rightToken.type);
       return true;
     }
     if(
