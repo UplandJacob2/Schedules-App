@@ -27,38 +27,34 @@ module.exports = {
     fixable: "whitespace",
     schema: [
       {
-        oneOf: [
-          {
-            enum: ["always", "never", "consistent"]
+        enum: ["always", "never", "consistent"]
+      },
+      {
+        type: "object",
+        properties: {
+          multiline: {
+            type: "boolean"
           },
-          {
-            type: "object",
-            properties: {
-              multiline: {
-                type: "boolean"
-              },
-              multiNotRequired: [
-                {
-                  type: "object",
-                  properties: {
-                    oneMultiLineItem: {
-                      type: "boolean"
-                    }
-                  }
-                },
-                {
-                  type: ["integer", "null"],
-                  minimum: 0
+          multiNotRequired: [
+            {
+              type: "object",
+              properties: {
+                oneMultiLineItem: {
+                  type: "boolean"
                 }
-              ],
-              minItems: {
-                type: ["integer", "null"],
-                minimum: 0
               }
             },
-            additionalProperties: false
+            {
+              type: ["integer", "null"],
+              minimum: 0
+            }
+          ],
+          minItems: {
+            type: ["integer", "null"],
+            minimum: 0
           }
-        ]
+        },
+        additionalProperties: false
       }
     ],
 
