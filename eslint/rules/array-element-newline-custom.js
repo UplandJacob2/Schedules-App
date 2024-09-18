@@ -205,6 +205,7 @@ module.exports = {
       const last = sourceCode.getTokenBefore(closeBracket);
 
       let needsLinebreaks;
+      console.log(JSON.stringify(options.multiNotRequired))
       if(options.multiNotRquired.oneMultiLineItem && elements.length <= options.multiNotRequired.maxItems) {
         needsLineBreaks = (
           elements.length >= options.minItems ||
