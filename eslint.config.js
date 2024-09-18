@@ -1,6 +1,7 @@
 //import js from "@eslint/js";
 
 const js = require("@eslint/js");
+const globals = require("globals");
 const htmlLint = require("@html-eslint/eslint-plugin");
 const htmlParser = require("@html-eslint/parser");
 
@@ -36,7 +37,7 @@ module.exports = [
     files: ["src/**/*.js.html.js"],
     ignores: ["**/Date.js.html.js", "**/Datejs.js.html.js", "**/underscore-observe.js.html.js"],
     plugins: customPlugin.configs.recommended.plugins,
-    languageOptions : {
+    languageOptions: {
       globals: {
         ...customPlugin.globals.client
       },
@@ -73,6 +74,11 @@ module.exports = [
   {
     files: ["eslint/**/*.js", "scripts/**/*.js"],
     plugins: customPlugin.configs.recommended.plugins,
+    languageOptions: {
+      globals: {
+        ...globals.node
+      }
+    },
     rules: {
       ...js.configs.recommended.rules,
       ...customPlugin.configs.recommended.rules,
