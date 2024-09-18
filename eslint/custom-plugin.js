@@ -85,7 +85,8 @@ Object.assign(plugin.configs, {
           "if": { "after": false },
           "for": { "after": false },
           "while": { "after": false },
-          "function": { "after": false }
+          "function": { "after": false },
+          "switch": { "after": false }
         } 
       }],
       "no-trailing-spaces": "warn",
