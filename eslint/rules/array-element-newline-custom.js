@@ -204,7 +204,7 @@ module.exports = {
       const first = sourceCode.getTokenAfter(openBracket);
       const last = sourceCode.getTokenBefore(closeBracket);
 
-      let needsLinebreaks;
+      let needsLineBreaks;
 
       if(context.options[0].multiNotRequired[0].oneMultiLineItem && elements.length <= context.options[0].multiNotRequired[1]) {
         needsLineBreaks = (
