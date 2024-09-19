@@ -216,11 +216,9 @@ module.exports = {
 
       if(oneObjectExeption && !needsLinebreaks) {
         if(arrayContains1Object && elements.length <= maxItemsBefore1Object) { // if there is ONE object and not too many other elements
-          console.log("1 object")
           if(!begBracketOfObjectOnSameLine) reportNoBeginningLinebreak(node, openBracket)
           if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket)
         } else {
-          console.log("NOT - one object and not too many other elements")
           needsLinebreaks = (
             ( // if first and last elements are on different lines
               options.multiline &&
@@ -272,20 +270,17 @@ module.exports = {
        *         'a'
        *     ]
        */
-      if(needsLinebreaks) {
+      if(needsLinebreaks && !(arrayContains1Object && elements.length <= maxItemsBefore1Object)) {
         if(astUtils.isTokenOnSameLine(openBracket, first)) reportRequiredBeginningLinebreak(node, openBracket);
         if(astUtils.isTokenOnSameLine(last, closeBracket)) reportRequiredEndingLinebreak(node, closeBracket);
       } else if(!(arrayContains1Object && elements.length <= maxItemsBefore1Object)) {
-        console.log("report linebreaks not allowed: ", openBracket.loc.start.line, closeBracket.loc.end.line)
         if(!astUtils.isTokenOnSameLine(openBracket, first)) reportNoBeginningLinebreak(node, openBracket);
         if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
       }
     }
-
     //----------------------------------------------------------------------
     // Public
-    //----------------------------------------------------------------------
-
+    //----------------------------------------------------------------------\
     return {
       ArrayPattern: check,
       ArrayExpression: check
