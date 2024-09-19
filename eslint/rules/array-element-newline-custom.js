@@ -218,11 +218,11 @@ module.exports = {
 
       if(oneObjectExeption && !needsLinebreaks) {
         if(arrayContains1Object && elements.length <= maxItemsBefore1Object) { // if there is ONE object and not too many other elements
-          console.log("1 element")
+          console.log("1 object")
           if(!begBracketOfObjectOnSameLine) {
             reportNoBeginningLinebreak(node, openBracket)
           }
-          if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
+          if(astUtils.isTokenOnSameLine(last, closeBracket)) reportRequiredEndingLinebreak(node, closeBracket);
         } else {
           needsLinebreaks = (
             (
