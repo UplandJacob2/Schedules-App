@@ -26,7 +26,7 @@ module.exports = {
     fixable: "whitespace",
     schema: [
       {
-        enum: ["always", "never"]
+        enum: [ "always", "never" ]
       },
       {
         type: "object",
@@ -97,7 +97,7 @@ module.exports = {
           tokenValue: token.value
         },
         fix(fixer) {
-          return fixer.removeRange([token.range[1], nextToken.range[0]]);
+          return fixer.removeRange([ token.range[1], nextToken.range[0] ]);
         }
       });
     }
@@ -118,7 +118,7 @@ module.exports = {
           tokenValue: token.value
         },
         fix(fixer) {
-          return fixer.removeRange([previousToken.range[1], token.range[0]]);
+          return fixer.removeRange([ previousToken.range[1], token.range[0] ]);
         }
       });
     }
