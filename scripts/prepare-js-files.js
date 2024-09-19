@@ -10,7 +10,11 @@ fs.readdirSync(sourceDir).forEach(file => {
     const destPath = path.join(destinationDir, `${file}.js`);
 
     let content = fs.readFileSync(sourcePath, "utf8");
-    content = content.replace(/<\/?[sS][cC][rR][iI][pP][tT][^>]*>?/g, "")
+    let previousContent;
+    do {
+      previousContent = content;
+      content = content.replace(/<\/?[sS][cC][rR][iI][pP][tT][^>]*>?/g, "");
+    } while (content !== previousContent);
     // ESLint should already do this:
     content = content.replace(/(?<=\/\/ ?eslint-disable-next-line\n)(.)+(?=\n)/g, "// LINE REMOVED");
     content = content.replace(/(?<=\n)(.)+(?=\/\/ ?eslint-disable-line\n)/g, "// LINE REMOVED");
