@@ -222,7 +222,7 @@ module.exports = {
           if(!begBracketOfObjectOnSameLine) {
             reportNoBeginningLinebreak(node, openBracket)
           }
-          if(astUtils.isTokenOnSameLine(last, closeBracket)) reportRequiredEndingLinebreak(node, closeBracket);
+          if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
         } else {
           needsLinebreaks = (
             (
