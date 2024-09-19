@@ -213,11 +213,13 @@ module.exports = {
         console.warn(e.message, " - no elements")
       }
       const maxItemsBefore1Object = context.options[0].multiNotRequired[1]
+      let requireBreakOverride = false;
 
       if(oneObjectExeption && !needsLinebreaks) {
         if(arrayContains1Object && elements.length <= maxItemsBefore1Object) { // if there is ONE object and not too many other elements
           if(!begBracketOfObjectOnSameLine) reportNoBeginningLinebreak(node, openBracket)
           if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket)
+          requireBreakOverride = true
         } else {
           needsLinebreaks = (
             ( // if first and last elements are on different lines
@@ -269,11 +271,11 @@ module.exports = {
        *         'a'
        *     ]
        */
-      if(needsLinebreaks && !(arrayContains1Object && elements.length <= maxItemsBefore1Object && !begBracketOfObjectOnSameLine) ) {
+      if(needsLinebreaks && requireBreakOverride) {
         console.log("possible report required line breaks: ", openBracket.loc, closeBracket.loc)
         if(astUtils.isTokenOnSameLine(openBracket, first)) reportRequiredBeginningLinebreak(node, openBracket);
         if(astUtils.isTokenOnSameLine(last, closeBracket)) reportRequiredEndingLinebreak(node, closeBracket);
-      } else if(!(arrayContains1Object && elements.length <= maxItemsBefore1Object)) {
+      } else if(!requireBreakOverride) {
         if(!astUtils.isTokenOnSameLine(openBracket, first)) reportNoBeginningLinebreak(node, openBracket);
         if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
       }
