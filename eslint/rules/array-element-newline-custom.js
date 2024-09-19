@@ -276,6 +276,7 @@ module.exports = {
         if(astUtils.isTokenOnSameLine(openBracket, first)) reportRequiredBeginningLinebreak(node, openBracket);
         if(astUtils.isTokenOnSameLine(last, closeBracket)) reportRequiredEndingLinebreak(node, closeBracket);
       } else if(!(arrayContains1Object && elements.length <= maxItemsBefore1Object)) {
+        console.log("report linebreaks not allowed: ", openBracket.loc.start.line, closeBracket.loc.end.line)
         if(!astUtils.isTokenOnSameLine(openBracket, first)) reportNoBeginningLinebreak(node, openBracket);
         if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
       }
