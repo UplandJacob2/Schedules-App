@@ -269,7 +269,7 @@ module.exports = {
        *         'a'
        *     ]
        */
-      if(needsLinebreaks && !(arrayContains1Object && elements.length <= maxItemsBefore1Object)) {
+      if(needsLinebreaks && !(arrayContains1Object && elements.length <= maxItemsBefore1Object && !begBracketOfObjectOnSameLine) ) {
         console.log("possible report required line breaks: ", openBracket.loc, closeBracket.loc)
         if(astUtils.isTokenOnSameLine(openBracket, first)) reportRequiredBeginningLinebreak(node, openBracket);
         if(astUtils.isTokenOnSameLine(last, closeBracket)) reportRequiredEndingLinebreak(node, closeBracket);
