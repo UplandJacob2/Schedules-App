@@ -220,6 +220,7 @@ module.exports = {
           if(!begBracketOfObjectOnSameLine) reportNoBeginningLinebreak(node, openBracket)
           if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket)
         } else {
+          console.log("NOT - one object and not too many other elements")
           needsLinebreaks = (
             ( // if first and last elements are on different lines
               options.multiline &&
@@ -241,6 +242,7 @@ module.exports = {
               !begBracketOfObjectOnSameLine
             )
           );
+          console.log(needsLinebreaks)
         }
       } else if(!needsLinebreaks) {
         needsLinebreaks = (
