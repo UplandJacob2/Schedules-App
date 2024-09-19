@@ -25,42 +25,40 @@ module.exports = {
       url: "https://eslint.org/docs/latest/rules/array-bracket-newline"
     },
     fixable: "whitespace",
-    schema: [
-      {
-        oneOf: [
-          {
-            enum: [ "always", "never", "consistent" ]
-          },
-          {
-            type: "object",
-            properties: {
-              multiline: {
-                type: "boolean"
-              },
-              multiNotRequired: [
-                {
-                  type: "object",
-                  properties: {
-                    oneMultiLineItem: {
-                      type: "boolean"
-                    }
+    schema: [{
+      oneOf: [
+        {
+          enum: [ "always", "never", "consistent" ]
+        },
+        {
+          type: "object",
+          properties: {
+            multiline: {
+              type: "boolean"
+            },
+            multiNotRequired: [
+              {
+                type: "object",
+                properties: {
+                  oneMultiLineItem: {
+                    type: "boolean"
                   }
-                },
-                {
-                  type: [ "integer", "null" ],
-                  minimum: 0
                 }
-              ],
-              minItems: {
+              },
+              {
                 type: [ "integer", "null" ],
                 minimum: 0
               }
-            },
-            additionalProperties: false
-          }
-        ]
-      }
-    ],
+            ],
+            minItems: {
+              type: [ "integer", "null" ],
+              minimum: 0
+            }
+          },
+          additionalProperties: false
+        }
+      ]
+    }],
 
     messages: {
       unexpectedOpeningLinebreak: "There should be no linebreak after '['.",
