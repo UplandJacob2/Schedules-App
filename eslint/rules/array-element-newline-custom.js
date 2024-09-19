@@ -215,7 +215,7 @@ module.exports = {
         console.warn(e.message, ' - no elements')
       }
       const maxItemsBefore1Object = context.options[0].multiNotRequired[1]
-      
+
       if(oneObjectExeption && !needsLinebreaks) {
         if(arrayContains1Object && elements.length <= maxItemsBefore1Object) { // if there is ONE object and not too many other elements
           if(!begBracketOfObjectOnSameLine) {
@@ -227,7 +227,7 @@ module.exports = {
             (
               options.multiline &&
               elements.length > 0 &&
-              firstIncComment.loc.start.line !== lastIncComment.loc.end.line 
+              firstIncComment.loc.start.line !== lastIncComment.loc.end.line
             ) ||
             (
               elements.length === 0 &&
