@@ -207,13 +207,12 @@ module.exports = {
       let needsLinebreaks = elements.length >= options.minItems; // needs linebreaks no matter what if length>=minItems
       const oneObjectExeption = context.options[0].multiNotRequired[0].oneMultiLineItem && elements.length <= context.options[0].multiNotRequired[1]
       const arrayContains1Object = elements.filter(item => item.type === "ObjectExpression").length === 1
-      console.log(elements[elements.length-1])
       let begBracketOfObjectOnSameLine;
       try {
         begBracketOfObjectOnSameLine = astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1]))
       } catch (e) {
         begBracketOfObjectOnSameLine = false
-        console.warn(e, 'no elements')
+        console.warn(e.message, ' - no elements')
       }
       const maxItemsBefore1Object = context.options[0].multiNotRequired[1]
       
