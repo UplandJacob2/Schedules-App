@@ -80,7 +80,7 @@ module.exports = {
     //--------------------------------------------------------------------------
     // Helpers
     //--------------------------------------------------------------------------
-  
+
     /**
      * Reports that there shouldn't be a space after the first token
      * @param {ASTNode} node The node to report in the event of an error.
