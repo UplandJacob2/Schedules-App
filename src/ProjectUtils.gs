@@ -89,7 +89,7 @@ function getScriptSourceCode_(fileid) {
     let name = json.files[file].name
     let type = json.files[file].type
     let fullName
-    switch (type) {
+    switch(type) {
       case 'server_js':
         fullName = `${name}.gs`; break;
       case 'json':
