@@ -273,9 +273,9 @@ module.exports = {
       if(needsLinebreaks) {
         if(astUtils.isTokenOnSameLine(openBracket, first)) reportRequiredBeginningLinebreak(node, openBracket);
         if(astUtils.isTokenOnSameLine(last, closeBracket)) reportRequiredEndingLinebreak(node, closeBracket);
-      } else {
-        if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
+      } else if(!(arrayContains1Object && elements.length <= maxItemsBefore1Object)) {
         if(!astUtils.isTokenOnSameLine(openBracket, first)) reportNoBeginningLinebreak(node, openBracket);
+        if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
       }
     }
 
