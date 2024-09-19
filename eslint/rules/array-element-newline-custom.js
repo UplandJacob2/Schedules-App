@@ -217,26 +217,27 @@ module.exports = {
       if(oneObjectExeption && !needsLinebreaks) {
         if(arrayContains1Object && elements.length <= maxItemsBefore1Object) { // if there is ONE object and not too many other elements
           console.log("1 object")
-          if(!begBracketOfObjectOnSameLine) {
-            reportNoBeginningLinebreak(node, openBracket)
-          }
-          if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
+          if(!begBracketOfObjectOnSameLine) reportNoBeginningLinebreak(node, openBracket)
+          if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket)
         } else {
           needsLinebreaks = (
-            (
+            ( // if first and last elements are on different lines
               options.multiline &&
               elements.length > 0 &&
-              firstIncComment.loc.start.line !== lastIncComment.loc.end.line
+              firstIncComment.loc.start.line !== lastIncComment.loc.end.line &&
+              !(arrayContains1Object && elements.length <= maxItemsBefore1Object) &&
+              !begBracketOfObjectOnSameLine
             ) ||
-            (
+            ( // one block comment
               elements.length === 0 &&
               firstIncComment.type === "Block" &&
               firstIncComment.loc.start.line !== lastIncComment.loc.end.line &&
               firstIncComment === lastIncComment
             ) ||
-            (
+            ( // with consistant style: if first element is on new line, all others also need newlines
               options.consistent &&
               openBracket.loc.end.line !== first.loc.start.line &&
+              !(arrayContains1Object && elements.length <= maxItemsBefore1Object) &&
               !begBracketOfObjectOnSameLine
             )
           );
@@ -244,18 +245,18 @@ module.exports = {
       } else if(!needsLinebreaks) {
         needsLinebreaks = (
           elements.length >= options.minItems ||
-          (
+          ( // if first and last elements are on different lines
             options.multiline &&
             elements.length > 0 &&
             firstIncComment.loc.start.line !== lastIncComment.loc.end.line
           ) ||
-          (
+          ( // one block comment
             elements.length === 0 &&
             firstIncComment.type === "Block" &&
             firstIncComment.loc.start.line !== lastIncComment.loc.end.line &&
             firstIncComment === lastIncComment
           ) ||
-          (
+          ( // with consistant style, if first element is on new line, all others also need newlines
             options.consistent &&
             openBracket.loc.end.line !== first.loc.start.line
           )
