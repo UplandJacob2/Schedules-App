@@ -208,7 +208,7 @@ module.exports = {
       const oneObjectExeption = context.options[0].multiNotRequired[0].oneMultiLineItem && elements.length <= context.options[0].multiNotRequired[1]
       const arrayContains1Object = elements.filter(item => item.type === "ObjectExpression").length === 1
       console.log(JSON.stringify(elements))
-      const begBracketOfObjectOnSameLine = astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[-1]))
+      const begBracketOfObjectOnSameLine = astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[-1])) || false
       const maxItemsBefore1Object = context.options[0].multiNotRequired[1]
       
       if(oneObjectExeption && !needsLinebreaks) {
