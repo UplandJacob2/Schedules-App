@@ -271,6 +271,7 @@ module.exports = {
        *         'a'
        *     ]
        */
+      console.log("override", requireBreakOverride)
       if(needsLinebreaks && !requireBreakOverride) {
         console.log("possible report required line breaks: ", openBracket.loc, closeBracket.loc)
         if(astUtils.isTokenOnSameLine(openBracket, first)) reportRequiredBeginningLinebreak(node, openBracket);
