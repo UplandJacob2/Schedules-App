@@ -204,32 +204,39 @@ module.exports = {
       const first = sourceCode.getTokenAfter(openBracket);
       const last = sourceCode.getTokenBefore(closeBracket);
 
-      let needsLinebreaks;
-
-      if(context.options[0].multiNotRequired[0].oneMultiLineItem && elements.length <= context.options[0].multiNotRequired[1]) {
-        needsLinebreaks = (
-          elements.length >= options.minItems ||
-          (
-            options.multiline &&
-            elements.length > 0 &&
-            firstIncComment.loc.start.line !== lastIncComment.loc.end.line &&
-            elements.filter(item => item.type === "ObjectExpression").length > 1 &&
-            !astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1]))
-          ) ||
-          (
-            elements.length === 0 &&
-            firstIncComment.type === "Block" &&
-            firstIncComment.loc.start.line !== lastIncComment.loc.end.line &&
-            firstIncComment === lastIncComment
-          ) ||
-          (
-            options.consistent &&
-            openBracket.loc.end.line !== first.loc.start.line &&
-            elements.filter(item => item.type === "ObjectExpression").length > 1 &&
-            !astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1]))
-          )
-        );
-      } else {
+      let needsLinebreaks = elements.length >= options.minItems; // needs linebreaks no matter what if length>=minItems
+      const oneObjectExeption = context.options[0].multiNotRequired[0].oneMultiLineItem && elements.length <= context.options[0].multiNotRequired[1]
+      const arrayContains1Object = elements.filter(item => item.type === "ObjectExpression").length === 1
+      const begBracketOfObjectOnSameLine = astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1]))
+      const maxItemsBefore1Object = context.options[0].multiNotRequired[1]
+      
+      if(oneObjectExeption && !needsLinebreaks) {
+        if(arrayContains1Object && elements.length <= maxItemsBefore1Object) { // if there is ONE object and not too many other elements
+          if(!begBracketOfObjectOnSameLine) {
+            reportNoBeginningLinebreak(node, openBracket)
+          }
+          if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
+        } else {
+          needsLinebreaks = (
+            (
+              options.multiline &&
+              elements.length > 0 &&
+              firstIncComment.loc.start.line !== lastIncComment.loc.end.line 
+            ) ||
+            (
+              elements.length === 0 &&
+              firstIncComment.type === "Block" &&
+              firstIncComment.loc.start.line !== lastIncComment.loc.end.line &&
+              firstIncComment === lastIncComment
+            ) ||
+            (
+              options.consistent &&
+              openBracket.loc.end.line !== first.loc.start.line &&
+              !begBracketOfObjectOnSameLine
+            )
+          );
+        }
+      } else if(!needsLinebreaks) {
         needsLinebreaks = (
           elements.length >= options.minItems ||
           (
@@ -261,14 +268,7 @@ module.exports = {
         if(astUtils.isTokenOnSameLine(openBracket, first)) reportRequiredBeginningLinebreak(node, openBracket);
         if(astUtils.isTokenOnSameLine(last, closeBracket)) reportRequiredEndingLinebreak(node, closeBracket);
       } else {
-        if(!(
-          context.options[0].multiNotRequired[0].oneMultiLineItem &&
-          elements.length <= context.options[0].multiNotRequired[1] &&
-          elements.filter(item => item.type === "ObjectExpression").length > 1 &&
-          !astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1]))
-        )) {
-          if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
-        }
+        if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
         if(!astUtils.isTokenOnSameLine(openBracket, first)) reportNoBeginningLinebreak(node, openBracket);
       }
     }
