@@ -240,7 +240,6 @@ module.exports = {
               !begBracketOfObjectOnSameLine
             )
           );
-          console.log(needsLinebreaks)
         }
       } else if(!needsLinebreaks) {
         needsLinebreaks = (
