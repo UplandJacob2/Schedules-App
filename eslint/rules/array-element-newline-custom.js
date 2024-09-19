@@ -210,7 +210,7 @@ module.exports = {
       console.log(elements[elements.length-1])
       let begBracketOfObjectOnSameLine;
       try {
-        begBracketOfObjectOnSameLine = astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1])
+        begBracketOfObjectOnSameLine = astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1]))
       } catch (e) {
         begBracketOfObjectOnSameLine = false
         console.warn(e, 'no elements')
