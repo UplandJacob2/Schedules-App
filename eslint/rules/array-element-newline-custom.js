@@ -201,10 +201,11 @@ module.exports = {
       const lastIncComment = sourceCode.getTokenBefore(closeBracket, { includeComments: true });
       const first = sourceCode.getTokenAfter(openBracket);
       const last = sourceCode.getTokenBefore(closeBracket);
-
+      console.log("\n")
       let needsLinebreaks = elements.length >= options.minItems; // needs linebreaks no matter what if length>=minItems
       const oneObjectExeption = context.options[0].multiNotRequired[0].oneMultiLineItem && elements.length <= context.options[0].multiNotRequired[1]
       const arrayContains1Object = elements.filter(item => item.type === "ObjectExpression").length === 1
+      console.log("one object:", arrayContains1Object)
       let begBracketOfObjectOnSameLine;
       try {
         begBracketOfObjectOnSameLine = astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1]))
@@ -212,6 +213,7 @@ module.exports = {
         begBracketOfObjectOnSameLine = false
         console.warn(e.message, " - no elements")
       }
+      console.log("breginning bracket is on same line:", begBracketOfObjectOnSameLine)
       const maxItemsBefore1Object = context.options[0].multiNotRequired[1]
       let requireBreakOverride = false;
 
