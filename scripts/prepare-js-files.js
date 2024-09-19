@@ -14,7 +14,7 @@ fs.readdirSync(sourceDir).forEach(file => {
     do {
       previousContent = content;
       content = content.replace(/<\/?[sS][cC][rR][iI][pP][tT][^>]*>?/g, "");
-    } while (content !== previousContent);
+    } while(content !== previousContent);
     // ESLint should already do this:
     content = content.replace(/(?<=\/\/ ?eslint-disable-next-line\n)(.)+(?=\n)/g, "// LINE REMOVED");
     content = content.replace(/(?<=\n)(.)+(?=\/\/ ?eslint-disable-line\n)/g, "// LINE REMOVED");
