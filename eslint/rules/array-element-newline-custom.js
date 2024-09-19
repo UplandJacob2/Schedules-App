@@ -212,12 +212,13 @@ module.exports = {
         begBracketOfObjectOnSameLine = astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1]))
       } catch (e) {
         begBracketOfObjectOnSameLine = false
-        console.warn(e.message, ' - no elements')
+        console.warn(e.message, " - no elements")
       }
       const maxItemsBefore1Object = context.options[0].multiNotRequired[1]
 
       if(oneObjectExeption && !needsLinebreaks) {
         if(arrayContains1Object && elements.length <= maxItemsBefore1Object) { // if there is ONE object and not too many other elements
+          console.log("1 element")
           if(!begBracketOfObjectOnSameLine) {
             reportNoBeginningLinebreak(node, openBracket)
           }
