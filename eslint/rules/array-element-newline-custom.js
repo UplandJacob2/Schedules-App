@@ -201,7 +201,8 @@ module.exports = {
       const lastIncComment = sourceCode.getTokenBefore(closeBracket, { includeComments: true });
       const first = sourceCode.getTokenAfter(openBracket);
       const last = sourceCode.getTokenBefore(closeBracket);
-      console.log("\n")
+      console.log(" ")
+      console.log(" ")
       let needsLinebreaks = elements.length >= options.minItems; // needs linebreaks no matter what if length>=minItems
       const oneObjectExeption = context.options[0].multiNotRequired[0].oneMultiLineItem && elements.length <= context.options[0].multiNotRequired[1]
       const arrayContains1Object = elements.filter(item => item.type === "ObjectExpression").length === 1
