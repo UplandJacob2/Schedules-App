@@ -125,6 +125,7 @@ module.exports = {
      * @returns {void}
      */
     function reportNoBeginningLinebreak(node, token) {
+      console.log("report extra beginning")
       context.report({
         node,
         loc: token.loc,
@@ -144,6 +145,7 @@ module.exports = {
      * @returns {void}
      */
     function reportNoEndingLinebreak(node, token) {
+      console.log("report extra ending")
       context.report({
         node,
         loc: token.loc,
@@ -163,6 +165,7 @@ module.exports = {
      * @returns {void}
      */
     function reportRequiredBeginningLinebreak(node, token) {
+      console.log("report required beginning")
       context.report({
         node,
         loc: token.loc,
@@ -180,6 +183,7 @@ module.exports = {
      * @returns {void}
      */
     function reportRequiredEndingLinebreak(node, token) {
+      console.log("report required ending")
       context.report({
         node,
         loc: token.loc,
@@ -284,6 +288,7 @@ module.exports = {
         if(astUtils.isTokenOnSameLine(openBracket, first)) reportRequiredBeginningLinebreak(node, openBracket);
         if(astUtils.isTokenOnSameLine(last, closeBracket)) reportRequiredEndingLinebreak(node, closeBracket);
       } else if(!requireBreakOverride) {
+        console.log("possible report extra line breaks: ", openBracket.loc, closeBracket.loc)
         if(!astUtils.isTokenOnSameLine(openBracket, first)) reportNoBeginningLinebreak(node, openBracket);
         if(!astUtils.isTokenOnSameLine(last, closeBracket)) reportNoEndingLinebreak(node, closeBracket);
       }
