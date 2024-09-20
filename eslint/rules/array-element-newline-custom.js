@@ -26,6 +26,8 @@ module.exports = {
     },
     fixable: "whitespace",
     schema: [{
+
+      
       oneOf: [
         {
           enum: [ "always", "never", "consistent" ]
@@ -58,6 +60,8 @@ module.exports = {
           additionalProperties: false
         }
       ]
+
+      
     }],
 
     messages: {
@@ -214,7 +218,7 @@ module.exports = {
         begBracketOfObjectOnSameLine = false
         console.warn(e.message, " - no elements")
       }
-      console.log("breginning bracket is on same line:", begBracketOfObjectOnSameLine)
+      console.log("beginning bracket is on same line:", begBracketOfObjectOnSameLine)
       const maxItemsBefore1Object = context.options[0].multiNotRequired[1]
       let requireBreakOverride = false;
 
