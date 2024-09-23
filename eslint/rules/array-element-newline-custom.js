@@ -93,9 +93,9 @@ module.exports = {
       let minItems;
       const option = providedOption || "always";
 
-      if (!option || option === "always" || option.minItems === 0) minItems = 0;
-      else if (option === "never") minItems = Number.POSITIVE_INFINITY;
-      else if (option === "consistent") {
+      if(!option || option === "always" || option.minItems === 0) minItems = 0;
+      else if(option === "never") minItems = Number.POSITIVE_INFINITY;
+      else if(option === "consistent") {
         consistent = true;
         minItems = Number.POSITIVE_INFINITY;
       } else {
@@ -111,10 +111,10 @@ module.exports = {
      * @returns {{ArrayExpression: {multiline: boolean, minItems: number}, ArrayPattern: {multiline: boolean, minItems: number}}} Normalized option object.
      */
     function normalizeOptions(options) {
-      if (options && (options.ArrayExpression || options.ArrayPattern)) {
+      if(options && (options.ArrayExpression || options.ArrayPattern)) {
         let expressionOptions, patternOptions;
-        if (options.ArrayExpression) expressionOptions = normalizeOptionValue(options.ArrayExpression);
-        if (options.ArrayPattern) patternOptions = normalizeOptionValue(options.ArrayPattern);
+        if(options.ArrayExpression) expressionOptions = normalizeOptionValue(options.ArrayExpression);
+        if(options.ArrayPattern) patternOptions = normalizeOptionValue(options.ArrayPattern);
         return { ArrayExpression: expressionOptions, ArrayPattern: patternOptions };
       }
       const value = normalizeOptionValue(options);
@@ -135,8 +135,8 @@ module.exports = {
         },
         messageId: "unexpectedLineBreak",
         fix(fixer) {
-          if (astUtils.isCommentToken(tokenBefore)) return null;
-          if (!astUtils.isTokenOnSameLine(tokenBefore, token)) return fixer.replaceTextRange([tokenBefore.range[1], token.range[0]], " ");
+          if(astUtils.isCommentToken(tokenBefore)) return null;
+          if(!astUtils.isTokenOnSameLine(tokenBefore, token)) return fixer.replaceTextRange([tokenBefore.range[1], token.range[0]], " ");
 
           /*
            * This will check if the comma is on the same line as the next element
@@ -153,7 +153,7 @@ module.exports = {
            * ]
            */
           const twoTokensBefore = sourceCode.getTokenBefore(tokenBefore, { includeComments: true });
-          if (astUtils.isCommentToken(twoTokensBefore)) return null;
+          if(astUtils.isCommentToken(twoTokensBefore)) return null;
           return fixer.replaceTextRange([twoTokensBefore.range[1], tokenBefore.range[0]], "");
         }
       });
@@ -187,7 +187,7 @@ module.exports = {
       const elements = node.elements;
       const normalizedOptions = normalizeOptions(context.options[0]);
       const options = normalizedOptions[node.type];
-      if (!options) return;
+      if(!options) return;
       let elementBreak = false;
 
       /*
@@ -202,7 +202,7 @@ module.exports = {
        *      3
        * ]
        */
-      if (options.multiline) {
+      if(options.multiline) {
         elementBreak = elements
           .filter(element => element !== null)
           .some(element => element.loc.start.line !== element.loc.end.line);
@@ -213,13 +213,13 @@ module.exports = {
       for (let i = 0; i < node.elements.length; i++) {
         const element = node.elements[i];
         const previousElement = elements[i - 1];
-        if (i === 0 || element === null || previousElement === null) continue;
+        if(i === 0 || element === null || previousElement === null) continue;
 
         const commaToken = sourceCode.getFirstTokenBetween(previousElement, element, astUtils.isCommaToken);
         const lastTokenOfPreviousElement = sourceCode.getTokenBefore(commaToken);
         const firstTokenOfCurrentElement = sourceCode.getTokenAfter(commaToken);
 
-        if (!astUtils.isTokenOnSameLine(lastTokenOfPreviousElement, firstTokenOfCurrentElement)) linebreaksCount++;
+        if(!astUtils.isTokenOnSameLine(lastTokenOfPreviousElement, firstTokenOfCurrentElement)) linebreaksCount++;
       }
 
       const needsLinebreaks = (
@@ -238,16 +238,16 @@ module.exports = {
       elements.forEach((element, i) => {
         const previousElement = elements[i - 1];
 
-        if (i === 0 || element === null || previousElement === null) return;
+        if(i === 0 || element === null || previousElement === null) return;
 
         const commaToken = sourceCode.getFirstTokenBetween(previousElement, element, astUtils.isCommaToken);
         const lastTokenOfPreviousElement = sourceCode.getTokenBefore(commaToken);
         const firstTokenOfCurrentElement = sourceCode.getTokenAfter(commaToken);
 
-        if (needsLinebreaks) {
-          if (astUtils.isTokenOnSameLine(lastTokenOfPreviousElement, firstTokenOfCurrentElement)) reportRequiredLineBreak(firstTokenOfCurrentElement);
+        if(needsLinebreaks) {
+          if(astUtils.isTokenOnSameLine(lastTokenOfPreviousElement, firstTokenOfCurrentElement)) reportRequiredLineBreak(firstTokenOfCurrentElement);
         } else {
-          if (!astUtils.isTokenOnSameLine(lastTokenOfPreviousElement, firstTokenOfCurrentElement)) reportNoLineBreak(firstTokenOfCurrentElement);
+          if(!astUtils.isTokenOnSameLine(lastTokenOfPreviousElement, firstTokenOfCurrentElement)) reportNoLineBreak(firstTokenOfCurrentElement);
         }
       });
     }
