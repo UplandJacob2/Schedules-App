@@ -19,9 +19,9 @@ module.exports = {
     replacedBy: [],
     type: "layout",
     docs: {
-        description: "Enforce line breaks after each array element",
-        recommended: false,
-        url: "https://eslint.org/docs/latest/rules/array-element-newline"
+      description: "Enforce line breaks after each array element",
+      recommended: false,
+      url: "https://eslint.org/docs/latest/rules/array-element-newline"
     },
     fixable: "whitespace",
     schema: {
@@ -29,7 +29,7 @@ module.exports = {
         basicConfig: {
           oneOf: [
             {
-              enum: ["always", "never", "consistent"]
+              enum: [ "always", "never", "consistent" ]
             },
             {
               type: "object",
@@ -38,7 +38,7 @@ module.exports = {
                   type: "boolean"
                 },
                 minItems: {
-                  type: ["integer", "null"],
+                  type: [ "integer", "null" ],
                   minimum: 0
                 }
               },
@@ -210,7 +210,7 @@ module.exports = {
 
       let linebreaksCount = 0;
 
-      for (let i = 0; i < node.elements.length; i++) {
+      for(let i = 0; i < node.elements.length; i++) {
         const element = node.elements[i];
         const previousElement = elements[i - 1];
         if(i === 0 || element === null || previousElement === null) continue;
