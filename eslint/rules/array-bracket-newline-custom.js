@@ -25,7 +25,7 @@ module.exports = {
       url: "https://eslint.org/docs/latest/rules/array-bracket-newline"
     },
     fixable: "whitespace",
-    schema: [ {
+    schema: [{
       oneOf: [
         {
           enum: [ "always", "never", "consistent" ]
@@ -58,7 +58,7 @@ module.exports = {
           additionalProperties: false
         }
       ]
-    } ],
+    }],
 
     messages: {
       unexpectedOpeningLinebreak: "There should be no linebreak after '['.",
@@ -70,7 +70,6 @@ module.exports = {
 
   create(context) {
     const sourceCode = context.sourceCode;
-
 
     //----------------------------------------------------------------------
     // Helpers
