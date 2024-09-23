@@ -136,7 +136,7 @@ module.exports = {
         messageId: "unexpectedLineBreak",
         fix(fixer) {
           if(astUtils.isCommentToken(tokenBefore)) return null;
-          if(!astUtils.isTokenOnSameLine(tokenBefore, token)) return fixer.replaceTextRange([tokenBefore.range[1], token.range[0]], " ");
+          if(!astUtils.isTokenOnSameLine(tokenBefore, token)) return fixer.replaceTextRange([ tokenBefore.range[1], token.range[0] ], " ");
 
           /*
            * This will check if the comma is on the same line as the next element
@@ -154,7 +154,7 @@ module.exports = {
            */
           const twoTokensBefore = sourceCode.getTokenBefore(tokenBefore, { includeComments: true });
           if(astUtils.isCommentToken(twoTokensBefore)) return null;
-          return fixer.replaceTextRange([twoTokensBefore.range[1], tokenBefore.range[0]], "");
+          return fixer.replaceTextRange([ twoTokensBefore.range[1], tokenBefore.range[0] ], "");
         }
       });
     }
@@ -173,7 +173,7 @@ module.exports = {
         },
         messageId: "missingLineBreak",
         fix(fixer) {
-          return fixer.replaceTextRange([tokenBefore.range[1], token.range[0]], "\n");
+          return fixer.replaceTextRange([ tokenBefore.range[1], token.range[0] ], "\n");
         }
       });
     }
