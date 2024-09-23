@@ -945,15 +945,7 @@ let needsPrecedingSemicolon;
    * Statements that can contain an `ExpressionStatement` after a closing parenthesis.
    * DoWhileStatement is an exception in that it always triggers ASI after the closing parenthesis.
    */
-  const STATEMENTS = new Set([
-    "DoWhileStatement",
-    "ForInStatement",
-    "ForOfStatement",
-    "ForStatement",
-    "IfStatement",
-    "WhileStatement",
-    "WithStatement"
-  ]);
+  const STATEMENTS = new Set([ "DoWhileStatement", "ForInStatement", "ForOfStatement", "ForStatement", "IfStatement", "WhileStatement", "WithStatement" ]);
 
   needsPrecedingSemicolon = function(sourceCode, node) {
     const prevToken = sourceCode.getTokenBefore(node);
