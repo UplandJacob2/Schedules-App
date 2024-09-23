@@ -1,5 +1,5 @@
 const braceStyleCustom = require("./rules/brace-style-custom")
-const arrayElementNewLineCustom = require("./rules/array-element-newline-custom")
+const arrayBracketNewLineCustom = require("./rules/array-bracket-newline-custom")
 
 
 const globals = require("globals");
@@ -15,7 +15,7 @@ const globalsUsedClient = require("./globalsUsed/gas-client")
 const plugin = {
   rules: {
     "brace-style": braceStyleCustom,
-    "array-element-newline": arrayElementNewLineCustom
+    "array-bracket-newline": arrayBracketNewLineCustom
   },
   globals: {
     server: {
@@ -40,15 +40,15 @@ Object.assign(plugin.configs, {
       custom: plugin
     },
     rules: {
-      "array-bracket-newline": [ "warn", {
-        "multiline": true
+      "custom/array-bracket-newline": [ "warn", {
+        "multiline": true,
+        multiNotRequired: [ { oneMultiLineItem: true }, 7 ]
       } ],
       "array-bracket-spacing": [ "warn", "always", {
         "singleValue": false
       } ],
       "custom/array-element-newline": [ "warn", {
         multiline: true,
-        multiNotRequired: [ { oneMultiLineItem: true }, 7 ]
       } ],
       "arrow-body-style": [ "warn", "as-needed" ],
       "arrow-parens": [ "error", "as-needed" ],
