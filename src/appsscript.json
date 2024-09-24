@@ -13,14 +13,8 @@
     "libraries": [
       {
         "userSymbol": "Underscore",
-        "version": "24",
-        "libraryId": "1I21uLOwDKdyF3_W_hvh6WXiIKWJWno8yG9lB8lf1VBnZFQ6jAAhyNTRG"
-      },
-      {
-        "userSymbol": "UnderscoreJs",
-        "version": "0",
-        "libraryId": "1rPRDXn1kcyAXkZkMc_mwyA8ptNhY7Dt06v89iHiyfQ7P__jtg9tpIHJq",
-        "developmentMode": true
+        "libraryId": "1I21uLOwDKdyF3_W_hvh6WXiIKWJWno8yG9lB8lf1VBnZFQ6jAAhyNTRG",
+        "version": "24"
       }
     ]
   },
