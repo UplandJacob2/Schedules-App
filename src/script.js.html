@@ -129,7 +129,7 @@ function getSchedulesHTML(data, dateTimeStr) {
 
 
 window.onload = function onLoad() {
-  getHomePage(function(url) { BASE_URL = url })
+  getHomePage(function setBaseUrl(url) { BASE_URL = url })
 
   let events = [ 'keypress', 'keydown', 'keyup' ];
 
