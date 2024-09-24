@@ -7,9 +7,11 @@ module.exports = {
   loadSheet: "writable",
   saveSettings: "writable",
   openMenu: "writable",
+  getHomePage: "writable",
 
   SHEET: "writable",
   USER_SETTINGS: "writable",
+  BASE_URL: "writable",
 
   getToken: "writable",
   getEmail: "writable",
