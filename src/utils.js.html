@@ -230,11 +230,18 @@ function signInF(e) {
   toggleDisplay('signInLoad');
   signIn(document.getElementById('emailSignIn').value, document.getElementById('passSignIn').value, document.getElementById('rmSignIn').checked);
 }
+function getHomePage(onDone) { google.script.run.withSuccessHandler(onDone).getScriptURL() }
+function setHome() { window.top.location.href = BASE_URL }
 
+// only gets parameters or query string
+// google.script.url.getLocation(function(location) {
+//   alert(JSON.stringify(location));
+// });
 
 function signOutBtn() {
   deleteSignInCookies()
   window.top.location.href = 'https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec';
+  setHome()
 }
 
 
