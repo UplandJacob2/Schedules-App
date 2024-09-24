@@ -193,6 +193,7 @@ function doGet(q) {
   } else {
     return HtmlService.createHtmlOutput(
       HtmlService.createTemplateFromFile('notSignedIn').evaluate())
+      .setSandboxMode(HtmlService.SandboxMode.EMULATED)
       .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL)
       .setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
   }
@@ -382,67 +383,3 @@ function refreshSchedules_() {
   cacheSheet.getRange(2, 2).setValue(JSON.stringify(schs));
   refreshCache_();
 }
-/**
- * @deprecated
- */
-function getSchedule(email, token) {
-  let file
-  try { if(!SchedulesSecure.verify(email, token)) { err_('invalid token') } } catch (e) { err_(e.message) }
-  try { file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName(`${email}.json`).next() }
-  catch { w(`no file for ${email}`); file = null }
-  if(!file) { return '<center><header style="font-size: 40px; margin: 30px;">We couldn\'t find a schedule for you.</header></center>   <center><a onclick="toggleDisplay(\'editPop\')" class="link" style="font-size: 25px; padding: 10px; margin-top: -30px;">Create Schedule</a></center>' }
-  let data = JSON.parse(file.getBlob().getDataAsString()); let schedule = []; let date = new Date()
-  // get schedule for today
-  for(let i in data) {
-    if(data[i].info === 's') {
-      if(data[i].days.toLowerCase().includes(DateUtils.numDayToStr(date.getDay()))) {
-        let rInfo = data[i].info; let r = i
-        while(rInfo !== 'es') {
-          schedule.push(data[r])
-          r ++
-          try { rInfo = data[r].info } catch { err_('no end \'es\'') }
-        }
-        schedule.push(data[r])
-      }
-    }
-  }
-
-  let schStr = ''; let rab = 'a'
-  schStr += `<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">${DateUtils.getDateAsText()}</td></tr>`
-  schStr += `<tr><th colspan="8">${schedule[0].name}</th></tr>`
-
-  let classNows = []; let minu = String(date.getMinutes())
-  if(minu.length === 1) { minu =`0${minu}` }
-  const nowInt = parseInt(String(date.getHours())+minu)
-  let boldRows = []
-
-  schedule.forEach((row, r) => {
-    let strtTime = row.strt; let sHr = strtTime.split(':')[0]; let sMin = strtTime.split(':')[1]
-    let endTime  = row.end;  let eHr =  endTime.split(':')[0]; let eMin =  endTime.split(':')[1]
-    const sInt = parseInt(sHr+sMin);  const eInt = parseInt(eHr+eMin)
-    if(nowInt >= sInt && nowInt <= eInt) {
-      classNows.push(r);
-    }
-    l(classNows, sInt, eInt, nowInt)
-    //if(!militaryTime) { strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime) }
-    if(row.b) { boldRows.push(r) }
-    schedule[r] = [ row.class, strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1] ]
-  })
-  schedule.forEach((row, r) => {
-    schStr+='<tr>'
-    l(row)
-    row.forEach((cell, c) => {
-      schStr+=`<td class="c${c} r${rab}`
-      if(c === 0) { if(boldRows.includes(r)) { schStr+= ' b' } }
-      if(classNows.includes(r)) { schStr+= ' y' }
-      schStr+= `">${cell}</td>`
-    });
-
-    schStr+='</tr>';
-    if(rab === 'a') { rab = 'b' } else { rab ='a' }
-  });
-  l(schStr)
-  return schStr
-}
-
-
