@@ -5,7 +5,7 @@ const name = 'UplandJacob2'
 const repo = 'Schedules-App'
 const branch = 'main'
 // commit settings
-const message = 'fix ESLint alerts'
+const message = 'clean up, #16 done'
 // release settings
 const version = '2.0.2pre-b'
 const body = 'updates'
