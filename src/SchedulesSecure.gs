@@ -1,3 +1,6 @@
+
+function getScriptURL() { return ScriptApp.getService().getUrl(); }
+
 const SchedulesSecure = {}
 
 
