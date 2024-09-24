@@ -1,5 +1,5 @@
 <script>
-var SHEET, DATA; var USER_SETTINGS = { militaryTime: false, debugMode: false }; var USER_SETTINGS_NOT_SAVED = jsonReparse(USER_SETTINGS)
+var SHEET, DATA, BASE_URL; var USER_SETTINGS = { militaryTime: false, debugMode: false }, USER_SETTINGS_NOT_SAVED = jsonReparse(USER_SETTINGS)
 const SETTINGS_INFO = {
   settingsNames: [ 'militaryTime', 'debugMode' ],
   elIDs: [ 'militaryTimeSwitch', 'debugModeSwitch' ],
@@ -129,9 +129,7 @@ function getSchedulesHTML(data, dateTimeStr) {
 
 
 window.onload = function onLoad() {
-  // google.script.url.getLocation(function(location) {
-  //   alert(location.parameters);
-  // });
+  getHomePage(function(url) { BASE_URL = url })
 
   let events = [ 'keypress', 'keydown', 'keyup' ];
 
