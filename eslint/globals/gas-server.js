@@ -20,4 +20,5 @@ module.exports = {
   gitHubRelease: "writable",
   minifyAll: "writable",
   githubCommit: "writable",
+  commitAll: "writable",
 }
