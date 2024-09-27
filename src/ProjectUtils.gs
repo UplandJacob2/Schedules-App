@@ -6,29 +6,28 @@ const githubRepoOwner = 'UplandJacob2'
 const githubRepo = 'Schedules-App'
 const branch = 'main'
 // commit settings
-const commitMessage = 'improve logging'
+const commitMessage = 'clean code and fix ESLint alerts'
 // release settings
 const version = '2.0.2pre-b'
 const body = 'updates'
 const prerelease = true
 
 function minify_(inp) {
-  let input = inp||'console.log (    1)'
-  let response = UrlFetchApp.fetch('https://www.toptal.com/developers/javascript-minifier/api/raw', { 'muteHttpExceptions': true, 'method': 'POST', 'payload': `input=${encodeURIComponent(input)}` })
+  const input = inp||'console.log (    1)'
+  const response = UrlFetchApp.fetch('https://www.toptal.com/developers/javascript-minifier/api/raw', { 'muteHttpExceptions': true, 'method': 'POST', 'payload': `input=${encodeURIComponent(input)}` })
   l(response.getContentText())
 }
 
-
 function parse_(inp) {
-  let input = inp||'<html></html>'
-  let response = UrlFetchApp.fetch('https://www.toptal.com/developers/html-minifier/api/raw', { 'muteHttpExceptions': true, 'method': 'POST', 'payload': `input=${encodeURIComponent(input)}`})
+  const input = inp||'<html></html>'
+  const response = UrlFetchApp.fetch('https://www.toptal.com/developers/html-minifier/api/raw', { 'muteHttpExceptions': true, 'method': 'POST', 'payload': `input=${encodeURIComponent(input)}`})
   l(response.getContentText())
 }
 
 // release packaging and stuff
 function getAndPutFiles_(folder, url) {
-  let options = { muteHttpExceptions: true, headers: { 'Authorization': `token ${githubToken}`, 'Accept': 'application/vnd.github.v3.raw' } };
-  let files = JSON.parse(UrlFetchApp.fetch(url, options).getContentText())
+  const options = { muteHttpExceptions: true, headers: { 'Authorization': `token ${githubToken}`, 'Accept': 'application/vnd.github.v3.raw' } };
+  const files = JSON.parse(UrlFetchApp.fetch(url, options).getContentText())
 
   files.forEach(function putFile(file) {
     l(file.name, ':', file.type)
@@ -65,14 +64,14 @@ function zipFilesInFolder_(folder, filename) {
   return Utilities.zip(getBlobs(folder, ''), `${filename}.zip`);
 }
 function getGithubFilesAndZip_() {
-  let url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/contents`;
+  const url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/contents`;
 
-  let releaseFolder = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG')
-  let folder = releaseFolder.createFolder(`SchedulesApp-v${version}`)
+  const releaseFolder = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG')
+  const folder = releaseFolder.createFolder(`SchedulesApp-v${version}`)
   l('creating files...')
   getAndPutFiles_(folder, url)
   l('getting from Google Drive and creating a zip...')
-  let file = releaseFolder.createFile(zipFilesInFolder_(folder, `SchedulesApp-v${version}`))
+  const file = releaseFolder.createFile(zipFilesInFolder_(folder, `SchedulesApp-v${version}`))
   l('zip created')
   return file
 }
@@ -82,10 +81,10 @@ function getGithubFilesAndZip_() {
 function getScriptSourceCode(encoded) {
   l('---------- getting code from script...')
   let toReturn = []
-  let params = { headers: { Authorization: `Bearer ${scriptToken}` }, followRedirects: true, muteHttpExceptions: true};
-  let url = `https://script.google.com/feeds/download/export?id=${scriptId}&format=json`;
-  let response = UrlFetchApp.fetch(url, params);
-  let json = JSON.parse(response);
+  const params = { headers: { Authorization: `Bearer ${scriptToken}` }, followRedirects: true, muteHttpExceptions: true};
+  const url = `https://script.google.com/feeds/download/export?id=${scriptId}&format=json`;
+  const response = UrlFetchApp.fetch(url, params);
+  const json = JSON.parse(response);
 
   toReturn = _.map(json.files, function(file) {
     let fullName
@@ -105,8 +104,8 @@ function getScriptSourceCode(encoded) {
   });
 
   // for(let file in json.files) {
-  //   let name = json.files[file].name
-  //   let type = json.files[file].type
+  //   const name = json.files[file].name
+  //   const type = json.files[file].type
   //   let fullName
   //   switch(type) {
   //     case 'server_js':
@@ -125,7 +124,7 @@ function getScriptSourceCode(encoded) {
 }
 function getChangedSourceCode() {
   let arr = []
-  let code = getScriptSourceCode(false)
+  const code = getScriptSourceCode(false)
   l('---------- checking for changes...')
   arr = _.filter(code, function(f) {
     const url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/contents/${f.path}`;
@@ -155,8 +154,8 @@ function getChangedSourceCode() {
 function updateGithubRepo_(filePath, content) {
   const url = `https://api.github.com/githubRepos/${githubRepoOwner}/${githubRepo}/contents/src/${filePath}`;
 
-  let getResponse = JSON.parse(UrlFetchApp.fetch(url, { muteHttpExceptions: true, headers: {authorization: `token ${githubToken}`} }).getContentText())
-  let sha = getResponse.sha
+  const getResponse = JSON.parse(UrlFetchApp.fetch(url, { muteHttpExceptions: true, headers: {authorization: `token ${githubToken}`} }).getContentText())
+  const sha = getResponse.sha
 
   l(githubRepo, branch, filePath, githubRepoOwner, email, githubToken, sha, url, /*
   getResponse
@@ -192,8 +191,8 @@ function updateGithubRepo_(filePath, content) {
 
 function createBlob_(content) {
   l('----- create blob')
-  var url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/git/blobs`;
-  var options = {
+  const url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/git/blobs`;
+  const options = {
     method: 'post',
     muteHttpExceptions: true,
     headers: {
@@ -205,7 +204,7 @@ function createBlob_(content) {
       encoding: 'utf-8'
     })
   };
-  var response = UrlFetchApp.fetch(url, options);
+  const response = UrlFetchApp.fetch(url, options);
   l(response.getContentText())
   l('----- done creating blob')
   return JSON.parse(response.getContentText()).sha;
@@ -228,14 +227,14 @@ function createTree_(blobs, baseTreeSha) {
 }
 function createCommit_(treeSha, parentSha) {
   l('---------- create commit')
-  var url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/git/commits`;
-  var options = {
+  const url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/git/commits`;
+  const options = {
     muteHttpExceptions: true,
     method: 'post',
     headers: { 'Authorization': `token ${githubToken}`, 'Content-Type': 'application/json' },
     payload: JSON.stringify({ message: commitMessage, tree: treeSha, parents: [parentSha] })
   };
-  var response = UrlFetchApp.fetch(url, options);
+  const response = UrlFetchApp.fetch(url, options);
   l(response.getContentText())
   l('---------- done creating commit')
   return JSON.parse(response.getContentText()).sha;
@@ -257,10 +256,10 @@ function getBaseTreeSha_(commitSha) {
 }
 function getLatestCommitSha_() {
   l('---------- get latest commit sha')
-  var url =`https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/commits/${branch}`;
-  var options = { method: 'get', headers: { 'Authorization': `token ${githubToken}` }, muteHttpExceptions: true };
-  var response = UrlFetchApp.fetch(url, options);
-  l(response.getContentText())
+  const url =`https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/commits/${branch}`;
+  const options = { method: 'get', headers: { 'Authorization': `token ${githubToken}` }, muteHttpExceptions: true };
+  const response = UrlFetchApp.fetch(url, options);
+  // l(response.getContentText())
   l('---------- done getting latest commit sha')
   return JSON.parse(response.getContentText()).sha;
 }
@@ -289,27 +288,24 @@ function commitAll() {
       type: 'blob'
     };
   });
-  var parentSha = getLatestCommitSha_();
+  const parentSha = getLatestCommitSha_();
   const baseTreeSha = getBaseTreeSha_(parentSha)
-  var treeSha = createTree_(blobs, baseTreeSha);
-  var commitSha = createCommit_(treeSha, parentSha);
+  const treeSha = createTree_(blobs, baseTreeSha);
+  const commitSha = createCommit_(treeSha, parentSha);
   Logger.log('Commit SHA: ' + commitSha);
   updateReference_(commitSha)
 }
 
 
-
-
-
 function githubCommit() {
-  let contents = getScriptSourceCode(scriptId)
+  const contents = getScriptSourceCode(scriptId)
   for(let dat in contents) {
     updateGithubRepo_(contents[dat].path, contents[dat].contents)
   }
 }
 function gitHubRelease() {
-  //let fileTxt = getGithubFilesAndZip_().getBlob().getDataAsString()
-  let fileTxt = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG').getFilesByName(`SchedulesApp-v${version}.zip`).next().getBlob().getDataAsString()
+  //const fileTxt = getGithubFilesAndZip_().getBlob().getDataAsString()
+  const fileTxt = DriveApp.getFolderById('1CpOEw5b7aVM09-bMFjnzJjBDUactpbHG').getFilesByName(`SchedulesApp-v${version}.zip`).next().getBlob().getDataAsString()
   const data = {
     tag_name: `v${version}`,
     target_commitish: branch,
@@ -322,10 +318,10 @@ function gitHubRelease() {
   const params = { method: 'POST', payload: JSON.stringify(data),
     muteHttpExceptions: true, headers: { authorization: `token ${githubToken}`, }
   };
-  let createResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/releases`, params)
+  const createResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/releases`, params)
   l(createResponse.getContentText())
 
-  let getResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/releases/tags/v${version}`, { method: 'POST',
+  const getResponse = UrlFetchApp.fetch(`https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/releases/tags/v${version}`, { method: 'POST',
     muteHttpExceptions: true, headers: { authorization: `token ${githubToken}`, } } )
   l(getResponse.getContentText())
 
@@ -340,7 +336,7 @@ function gitHubRelease() {
 }
 
 function minifyAll() {
-  let contents = getScriptSourceCode(scriptId)
+  const contents = getScriptSourceCode(scriptId)
   for(let dat in contents) {
     let n = contents[dat].path
     if( !(n === 'Date.js.html' || n === 'Datejs.js.html' || n === 'underscore-observe.js.html') && contents[dat][0].match(/(\.gs)|(\.js\.html)/g) ) {
