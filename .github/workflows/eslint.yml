@@ -48,9 +48,16 @@ jobs:
         
       - name: Run ESLint
         run: npx /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint ./ --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif --debug || exit 0
-      - run: cat eslint-results.sarif
-      - run: /home/runner/.local/bin/sarif summary eslint-results.sarif
-      - run: node scripts/sarif_replace_js_html_names.js
+
+      - name: Replace .js.html.js names back to .js.html
+        run: node scripts/sarif_replace_js_html_names.js
+        
+      #- run: cat eslint-results.sarif
+
+      - name: Sarif Summary
+        run: /home/runner/.local/bin/sarif summary eslint-results.sarif
+      
+      
       #/opt/hostedtoolcache/node/20.16.0/x64/bin/node
       # - name: esLint
       #   uses: sibiraj-s/action-eslint@v3
