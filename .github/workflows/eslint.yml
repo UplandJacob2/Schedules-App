@@ -37,7 +37,8 @@ jobs:
       #- run: npm cache clean --force
       - name: Node and ESLint setup
         run: npm init -y && \ npm install && \
-          npm install eslint @html-eslint/parser @html-eslint/eslint-plugin @microsoft/eslint-formatter-sarif globals eslint-plugin-googleappsscript eslint-output   --save-dev && \
+      - name: Install dependencies
+      - run: npm install eslint @html-eslint/parser @html-eslint/eslint-plugin @microsoft/eslint-formatter-sarif globals eslint-plugin-googleappsscript eslint-output   --save-dev && \
           npm i --package-lock-only
       #- run: npm ci # or yarn install
       #- run: npm install --save esm
