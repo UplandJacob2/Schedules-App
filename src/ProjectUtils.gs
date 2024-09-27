@@ -6,7 +6,7 @@ const githubRepoOwner = 'UplandJacob2'
 const githubRepo = 'Schedules-App'
 const branch = 'main'
 // commit settings
-const commitMessage = 'commit files at once'
+const commitMessage = 'improve logging'
 // release settings
 const version = '2.0.2pre-b'
 const body = 'updates'
@@ -80,7 +80,7 @@ function getGithubFilesAndZip_() {
 
 
 function getScriptSourceCode(encoded) {
-  l('getting code from script...')
+  l('---------- getting code from script...')
   let toReturn = []
   let params = { headers: { Authorization: `Bearer ${scriptToken}` }, followRedirects: true, muteHttpExceptions: true};
   let url = `https://script.google.com/feeds/download/export?id=${scriptId}&format=json`;
@@ -120,13 +120,13 @@ function getScriptSourceCode(encoded) {
   //   toReturn.push([ fullName, json.files[file].source ])
   // }
   // l(JSON.stringify(toReturn))
-  l('done getting code from GAS')
+  l('---------- done getting code from GAS')
   return toReturn
 }
 function getChangedSourceCode() {
   let arr = []
   let code = getScriptSourceCode(false)
-  l('checking for changes...')
+  l('---------- checking for changes...')
   arr = _.filter(code, function(f) {
     const url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/contents/${f.path}`;
     l(url)
@@ -145,7 +145,7 @@ function getChangedSourceCode() {
   //   } else arr.push(code[f])
   // }
   // l(arr)
-  l('done checking for changes files')
+  l('---------- done checking for changes files')
   return arr
 }
 /**
@@ -191,7 +191,7 @@ function updateGithubRepo_(filePath, content) {
 }
 
 function createBlob_(content) {
-  l('create blob')
+  l('----- create blob')
   var url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/git/blobs`;
   var options = {
     method: 'post',
@@ -207,11 +207,11 @@ function createBlob_(content) {
   };
   var response = UrlFetchApp.fetch(url, options);
   l(response.getContentText())
-  l('done creating blob')
+  l('----- done creating blob')
   return JSON.parse(response.getContentText()).sha;
 }
 function createTree_(blobs, baseTreeSha) {
-  l('create tree')
+  l('---------- create tree')
   l(blobs)
   const url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/git/trees`;
   const options = {
@@ -223,11 +223,11 @@ function createTree_(blobs, baseTreeSha) {
   };
   const response = UrlFetchApp.fetch(url, options);
   l(response.getContentText())
-  l('done creating tree')
+  l('---------- done creating tree')
   return JSON.parse(response.getContentText()).sha;
 }
 function createCommit_(treeSha, parentSha) {
-  l('create commit')
+  l('---------- create commit')
   var url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/git/commits`;
   var options = {
     muteHttpExceptions: true,
@@ -237,10 +237,11 @@ function createCommit_(treeSha, parentSha) {
   };
   var response = UrlFetchApp.fetch(url, options);
   l(response.getContentText())
-  l('done creating commit')
+  l('---------- done creating commit')
   return JSON.parse(response.getContentText()).sha;
 }
 function getBaseTreeSha_(commitSha) {
+  l('---------- getting base tree sha')
   const url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/git/commits/${commitSha}`;
   const options = {
     muteHttpExceptions: true,
@@ -251,19 +252,20 @@ function getBaseTreeSha_(commitSha) {
   };
   const response = UrlFetchApp.fetch(url, options);
   const commit = JSON.parse(response.getContentText());
+  l('---------- done getting base tree sha')
   return commit.tree.sha;
 }
 function getLatestCommitSha_() {
-  l('get latest commit sha')
+  l('---------- get latest commit sha')
   var url =`https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/commits/${branch}`;
   var options = { method: 'get', headers: { 'Authorization': `token ${githubToken}` }, muteHttpExceptions: true };
   var response = UrlFetchApp.fetch(url, options);
   l(response.getContentText())
-  l('done getting latest commit sha')
+  l('---------- done getting latest commit sha')
   return JSON.parse(response.getContentText()).sha;
 }
 function updateReference_(commitSha) {
-  l('update reference')
+  l('---------- update reference')
   const url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/git/refs/heads/${branch}`;
   const options = {
     method: 'patch',
@@ -273,7 +275,7 @@ function updateReference_(commitSha) {
     payload: JSON.stringify({ sha: commitSha })
   };
   UrlFetchApp.fetch(url, options);
-  l('done updating reference')
+  l('---------- done updating reference')
 }
 
 function commitAll() {
