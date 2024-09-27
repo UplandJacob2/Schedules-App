@@ -231,7 +231,7 @@ function signInF(e) {
   signIn(document.getElementById('emailSignIn').value, document.getElementById('passSignIn').value, document.getElementById('rmSignIn').checked);
 }
 function getHomePage(onDone) { google.script.run.withSuccessHandler(onDone).getScriptURL() }
-function setHome() { window.top.location.href = BASE_URL }
+function setHome() { window.top.location.href = window.BASE_URL }
 
 // only gets parameters or query string
 // google.script.url.getLocation(function(location) {

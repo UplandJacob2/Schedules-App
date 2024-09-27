@@ -1,5 +1,8 @@
 <script>
-var SHEET, DATA, BASE_URL; var USER_SETTINGS = { militaryTime: false, debugMode: false }, USER_SETTINGS_NOT_SAVED = jsonReparse(USER_SETTINGS)
+window.SHEET = window.DATA = window.BASE_URL = undefined;
+window.USER_SETTINGS = { militaryTime: false, debugMode: false }
+window.USER_SETTINGS_NOT_SAVED = jsonReparse(window.USER_SETTINGS)
+
 const SETTINGS_INFO = {
   settingsNames: [ 'militaryTime', 'debugMode' ],
   elIDs: [ 'militaryTimeSwitch', 'debugModeSwitch' ],
@@ -48,13 +51,13 @@ function getSchedule(query) {
 
   let scheduleName, scheduleIndex, data, date; let schedule = []
   if(query) {
-    data = (typeof query.data !== 'undefined') ? query.data : DATA
+    data = (typeof query.data !== 'undefined') ? query.data : window.DATA
     scheduleName = (typeof query.name !== 'undefined') ? query.name : null
     scheduleIndex = (typeof query.index !== 'undefined') ? query.index : null
     date = (typeof query.dateTime !== 'undefined') ? query.dateTime : new Date()
   } else {
     date = new Date()
-    data = DATA
+    data = window.DATA
   }
   if(JSON.stringify(data) === JSON.stringify([ firstRow, emptyRow, emptyRow ])) {
     return '<header class="center" style="font-size: 40px; margin: 30px;">We couldn\'t find a schedule for you.</header>   <a onclick="toggleDisplay(\'editPop\')" class="link center" style="font-size: 25px; padding: 10px; margin-top: -30px;">Create Schedule</a>'
@@ -76,7 +79,7 @@ function getSchedule(query) {
   }
 
   let schStr = ''; let rab = 'a'
-  schStr += `<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">${DateUtils.getDateAsText({ dateTime: date, militaryTime: USER_SETTINGS.militaryTime })}</td></tr>`
+  schStr += `<tr><td colspan="1">Last Updated:</td><td style="text-align: right;" colspan="7">${DateUtils.getDateAsText({ dateTime: date, militaryTime: window.USER_SETTINGS.militaryTime })}</td></tr>`
   schStr += `<tr><th colspan="8">${schedule[0].name}</th></tr>`
 
   let minu = String(date.getMinutes())
@@ -92,7 +95,7 @@ function getSchedule(query) {
       classNows.push(r);
     }
     l(classNows, sInt, eInt, nowInt)
-    if(!USER_SETTINGS.militaryTime) { strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime) }
+    if(!window.USER_SETTINGS.militaryTime) { strtTime = DateUtils.militaryToStandard(strtTime); endTime = DateUtils.militaryToStandard(endTime) }
     if(row.b) boldRows.push(r)
     schedule[r] = [ row.class, strtTime.split(':')[0], ':', strtTime.split(':')[1], '-', endTime.split(':')[0], ':', endTime.split(':')[1] ]
   })
@@ -129,7 +132,7 @@ function getSchedulesHTML(data, dateTimeStr) {
 
 
 window.onload = function onLoad() {
-  getHomePage(function setBaseUrl(url) { BASE_URL = url })
+  getHomePage(function setBaseUrl(url) { window.BASE_URL = url })
 
   let events = [ 'keypress', 'keydown', 'keyup' ];
 
@@ -170,19 +173,19 @@ function updateSettingsNotSaved() {
   setTimeout(function updateSettingsNotSavedAsync() {
     for(let seti = 0; seti < SETTINGS_INFO.settingsNames.length; seti++) {
       if(SETTINGS_INFO.types[seti] === 'check') {
-        USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
+        window.USER_SETTINGS_NOT_SAVED[SETTINGS_INFO.settingsNames[seti]] = document.getElementById(SETTINGS_INFO.elIDs[seti]).checked
       }
     }
     let sB = document.getElementById('saveSet')
-    if(JSON.stringify(USER_SETTINGS) !== JSON.stringify(USER_SETTINGS_NOT_SAVED)) { sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink') }
+    if(JSON.stringify(window.USER_SETTINGS) !== JSON.stringify(window.USER_SETTINGS_NOT_SAVED)) { sB.disabled = false; sB.classList.add('link'); sB.classList.remove('grayLink') }
     else { sB.disabled = true; sB.classList.add('grayLink'); sB.classList.remove('link') }
   }, 1)
 }
 function updateSettings() {
   updateSettingsNotSaved()
 
-  toggleDisplay('debugPop', USER_SETTINGS.debugMode)
-  SHEET.militaryTime = USER_SETTINGS.militaryTime
+  toggleDisplay('debugPop', window.USER_SETTINGS.debugMode)
+  window.SHEET.militaryTime = window.USER_SETTINGS.militaryTime
 }
 
 function getSettingsSuccess(response) {
@@ -192,14 +195,14 @@ function getSettingsSuccess(response) {
       document.getElementById(SETTINGS_INFO.elIDs[i]).checked = obj[k]
     }
   })
-  USER_SETTINGS = jsonReparse(obj)
+  window.USER_SETTINGS = jsonReparse(obj)
 
   updateSettings()
 }
 function getSettingsFail(err) { error('Error getting user settings', err) }
 function saveSettingsSuccess() {
   addIconToElmForTime('saveSet', 'Save', 'checkmark', 'green', 4000)
-  USER_SETTINGS = jsonReparse(USER_SETTINGS_NOT_SAVED); updateSettings()
+  window.USER_SETTINGS = jsonReparse(window.USER_SETTINGS_NOT_SAVED); updateSettings()
 }
 
 function saveSettingsFail(err) {
@@ -207,14 +210,14 @@ function saveSettingsFail(err) {
   error('Error saving user settings', err)
 }
 function saveSettings() {
-  google.script.run.withSuccessHandler(saveSettingsSuccess).withFailureHandler(saveSettingsFail).api({ email: getEmail(), action: 'edit', token: getToken(), item: 'settings', onfail: 'new', val: JSON.stringify(USER_SETTINGS_NOT_SAVED) })
+  google.script.run.withSuccessHandler(saveSettingsSuccess).withFailureHandler(saveSettingsFail).api({ email: getEmail(), action: 'edit', token: getToken(), item: 'settings', onfail: 'new', val: JSON.stringify(window.USER_SETTINGS_NOT_SAVED) })
   document.getElementById('saveSet').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 
 function updateSaveBtn() {
   const saveBt = document.getElementById('saveSch')
-  //alert('CHANGE\n'+JSON.stringify(DATA)+"\n"+JSON.stringify(SHEET.data))
-  if(JSON.stringify(DATA) !== JSON.stringify(SHEET.data)) {
+  //alert('CHANGE\n'+JSON.stringify(window.DATA)+"\n"+JSON.stringify(window.SHEET.data))
+  if(JSON.stringify(window.DATA) !== JSON.stringify(window.SHEET.data)) {
     saveBt.disabled = false;saveBt.classList.remove('grayLink');  saveBt.classList.add('link'); return true
   } else {
     saveBt.disabled = true; saveBt.classList.remove('link');  saveBt.classList.add('grayLink'); return false
@@ -223,8 +226,8 @@ function updateSaveBtn() {
 function getSchedulesSuccess(response, encoded) {
   setEditorButtonsEnabled(true)
   if(encoded) response = Base64.decode(response)
-  try { SHEET.resetData(response) } catch (e) { error('Error handling response', DebugLog.getStacktraceFromErr(e)) }
-  DATA = jsonReparse(SHEET.data); updateSaveBtn()
+  try { window.SHEET.resetData(response) } catch (e) { error('Error handling response', DebugLog.getStacktraceFromErr(e)) }
+  window.DATA = jsonReparse(window.SHEET.data); updateSaveBtn()
 }
 function firstGetSchedulesSuccess(response) {
   getSchedulesSuccess(response)
@@ -240,11 +243,11 @@ function firstGetSchedulesSuccess(response) {
   }, 1000);
 
 }
-function getSchedulesFail(err) { error('Error getting schedule for editing', err); DATA = []; SHEET.render('none') }
+function getSchedulesFail(err) { error('Error getting schedule for editing', err); window.DATA = []; window.SHEET.render('none') }
 
 function saveSchedulesSuccess() {
   addIconToElmForTime('saveSch', 'Save', 'checkmark', 'green', 4000)
-  DATA = jsonReparse(SHEET.data)
+  window.DATA = jsonReparse(window.SHEET.data)
   updateSaveBtn()
   firstGetSchedulesSuccess()
 }
@@ -254,7 +257,7 @@ function saveSchedulesFail(err) {
 }
 function deleteSchedulesSuccess() {
   addIconToElmForTime('deleteSch', 'Delete', 'checkmark', 'green', 4000)
-  DATA = []; SHEET.data = []; SHEET.render('none'); updateSaveBtn()
+  window.DATA = []; window.SHEET.data = []; window.SHEET.render('none'); updateSaveBtn()
 }
 function deleteSchedulesFail(err) {
   addIconToElmForTime('deleteSch', 'Delete', 'alert', 'red', 4000)
@@ -270,8 +273,8 @@ function recoverSchedulesSuccess(response) {
     for(let i = 0; i < options.length; i++) {
       html += `<div><button onclick="recoverSpecificSchedule('${Base64.encode(options[i][1])}', '${options[i][2]}');" class="link" style="padding: 10px; margin: 5px;" >Option ${i+1}</button> <a style="margin: 5px; margin-bottom: 20px;">${getSchedulesHTML(options[i][1], options[i][0])}</a></div>`
     }
-    DATA = []
-    SHEET.el.innerHTML = html
+    window.DATA = []
+    window.SHEET.el.innerHTML = html
   }
 
 }
@@ -282,8 +285,8 @@ function recoverSchedulesFail(err) {
 function recoverSpecificSchedule(data, recoverID) {
   google.script.run.withSuccessHandler(recoverSchedulesSuccess).withFailureHandler(recoverSchedulesFail).api(
     { email: getEmail(), action: 'get', token: getToken(), item: 'sch', onfail: 'recover', fileId: recoverID })
-  DATA = []
-  SHEET.render('load')
+  window.DATA = []
+  window.SHEET.render('load')
 }
 
 function newSchedulesFail(err) {
@@ -296,15 +299,15 @@ function newSchedulesFail(err) {
 
 function reloadEdit() {
   setEditorButtonsEnabled(false)
-  DATA = []
-  SHEET.render('load')
+  window.DATA = []
+  window.SHEET.render('load')
   google.script.run.withSuccessHandler(firstGetSchedulesSuccess).withFailureHandler(getSchedulesFail).api({ email: getEmail(), action: 'get', token: getToken(), item: 'sch' })
 }
 
 
 function saveSch() {
   google.script.run.withSuccessHandler(saveSchedulesSuccess).withFailureHandler(saveSchedulesFail).api(
-    { email: getEmail(), action: 'edit', token: getToken(), item: 'sch', val: JSON.stringify(SHEET.data) })
+    { email: getEmail(), action: 'edit', token: getToken(), item: 'sch', val: JSON.stringify(window.SHEET.data) })
   document.getElementById('saveSch').innerHTML = '<img id="img" style="width: 25px; top: 0px;" src="https://shortpixel.com/img/spinner2.gif"/>'
 }
 function deleteSch() {
@@ -358,7 +361,7 @@ tui.usageStatistics = false
 
 
 function loadSheet() {
-  SHEET = new Editor({
+  window.SHEET = new Editor({
     el: document.getElementById('testEditor'),
     columns: [
       { header: 'Info',       name: 'info',  width: 50,  editor: { type: 'text', options: { attrs: { maxlength: '2' }, style: { width: '30px' } } } },
@@ -369,14 +372,14 @@ function loadSheet() {
       { header: 'Days',       name: 'days',  width: 200, editor: { type: 'checklist', options: { listItems: [ { text: 'Sun', value: 'Sun' }, { text: 'Mon', value: 'Mon' }, { text: 'Tue', value: 'Tue' }, { text: 'Wed', value: 'Wed' }, { text: 'Thu', value: 'Thu' }, { text: 'Fri', value: 'Fri' }, { text: 'Sat', value: 'Sat' } ] }, active: { type: 'col', if: 'info', equalTo: 's' } } },
       { header: 'Name',       name: 'name',  width: 200, editor: { type: 'text', options: { style: { width: '200px' } }, active: { type: 'col', if: 'info', equalTo: 's' } } }
     ],
-    militaryTime: USER_SETTINGS.militaryTime,
+    militaryTime: window.USER_SETTINGS.militaryTime,
     data: [ firstRow, emptyRow, emptyRow ],
     onDataChange: updateSaveBtn
   })
-  //_.observe(SHEET.data, updateSaveBtn)
+  //_.observe(window.SHEET.data, updateSaveBtn)
 
-  document.getElementById('addRow').addEventListener('click', function addRow() { SHEET.data.push(emptyRow); SHEET.resetData() })
-  document.getElementById('removeRow').addEventListener('click', function removeRow() { SHEET.data.pop(); SHEET.resetData() })
+  document.getElementById('addRow').addEventListener('click', function addRow() { window.SHEET.data.push(emptyRow); window.SHEET.resetData() })
+  document.getElementById('removeRow').addEventListener('click', function removeRow() { window.SHEET.data.pop(); window.SHEET.resetData() })
 
   document.getElementById('saveSch').addEventListener('click', saveSch)
   document.getElementById('deleteSch').addEventListener('click', function deleteSchOnClick() {

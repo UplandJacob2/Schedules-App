@@ -109,7 +109,7 @@ class Editor {
     else if(type === 'checklist') {
       //el.classList.add('dropdown-check-list')
       let a = document.createElement('span')
-      a.setAttribute('onclick', 'SHEET.onCellClick(this.parentElement.parentElement, "close")')
+      a.setAttribute('onclick', 'window.SHEET.onCellClick(this.parentElement.parentElement, "close")')
       a.style.setProperties({'min-width': '30px', 'min-height': '20px', margin: '-1px'})
       a.innerHTML = this.data[row][col]
       el.append(a)
@@ -137,9 +137,9 @@ class Editor {
     } else if(type === 'time') {
       let container = document.createElement('div')
       let a = document.createElement('a')
-      a.setAttribute('onclick', 'SHEET.onCellClick(this.parentElement.parentElement, "close")')
+      a.setAttribute('onclick', 'window.SHEET.onCellClick(this.parentElement.parentElement, "close")')
       a.style.setProperties({'min-width': '30px', 'min-height': '20px', margin: '-1px'})
-      if(!USER_SETTINGS.militaryTime) { a.innerHTML = DateUtils.militaryToStandard(this.data[row][col], true) }
+      if(!this.militaryTime) { a.innerHTML = DateUtils.militaryToStandard(this.data[row][col], true) }
       else { a.innerHTML = this.data[row][col] }
       container.style.setProperty('position', 'absolute')
       el.append(a)
@@ -207,12 +207,12 @@ class Editor {
             }
           }
           if(tru) {
-            colEl.setAttribute('onclick', 'SHEET.onCellClick(this)')
+            colEl.setAttribute('onclick', 'window.SHEET.onCellClick(this)')
           } else {
             colEl.style.setProperty('background', this.disabledBack)
             this.setDataRowCol(row, col, '')
           }
-        } else { colEl.setAttribute('onclick', 'SHEET.onCellClick(this)') }
+        } else { colEl.setAttribute('onclick', 'window.SHEET.onCellClick(this)') }
         if(this.columns[coli].name === 'class') {
           if(this.data[row].b) { colEl.style.setProperty('font-weight', 'bold') }
           else { colEl.style.setProperty('font-weight', 'normal') }
@@ -300,8 +300,8 @@ class Editor {
             ev.preventDefault()
             let row = this.parentElement.getAttribute('row')
             let col = this.parentElement.getAttribute('col')
-            SHEET.data[row][col] = this.value
-            SHEET.render()
+            window.SHEET.data[row][col] = this.value
+            window.SHEET.render()
           })
         }
       }
