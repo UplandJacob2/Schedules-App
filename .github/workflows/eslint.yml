@@ -36,9 +36,10 @@ jobs:
 
       #- run: npm cache clean --force
       - name: Node and ESLint setup
-        run: npm init -y && npm install
-      - run: npm install eslint @html-eslint/parser @html-eslint/eslint-plugin @microsoft/eslint-formatter-sarif globals eslint-plugin-googleappsscript eslint-output --save-dev
-      - run: npm i --package-lock-only
+        run: npm init -y && /
+          npm install && / 
+          npm install eslint @html-eslint/parser @html-eslint/eslint-plugin @microsoft/eslint-formatter-sarif globals eslint-plugin-googleappsscript eslint-output   --save-dev && /
+          npm i --package-lock-only
       #- run: npm ci # or yarn install
       #- run: npm install --save esm
       #- run: node -r esm eslint.config.js
@@ -49,6 +50,7 @@ jobs:
         run: npx /home/runner/work/Schedules-App/Schedules-App/node_modules/.bin/eslint ./ --format @microsoft/eslint-formatter-sarif --output-file eslint-results.sarif --debug || exit 0
       - run: cat eslint-results.sarif
       - run: /home/runner/.local/bin/sarif summary eslint-results.sarif
+      - run: node scripts/sarif_replace_js_html_names.js
       #/opt/hostedtoolcache/node/20.16.0/x64/bin/node
       # - name: esLint
       #   uses: sibiraj-s/action-eslint@v3
