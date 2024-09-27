@@ -31,8 +31,8 @@ jobs:
         with:
           node-version: 20
 
-      - name: Python and sarif-tools Setup
-        run: sudo apt-get install python3 python3-pip && python3 -m pip install sarif-tools
+      - name: sarif-tools Setup
+        run: python3 -m pip install sarif-tools
 
       #- run: npm cache clean --force
       - name: Node and ESLint setup
