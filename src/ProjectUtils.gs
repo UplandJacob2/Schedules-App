@@ -6,7 +6,7 @@ const githubRepoOwner = 'UplandJacob2'
 const githubRepo = 'Schedules-App'
 const branch = 'main'
 // commit settings
-const commitMessage = 'clean code and fix ESLint alerts'
+const commitMessage = 'fix ESLint alerts'
 // release settings
 const version = '2.0.2pre-b'
 const body = 'updates'
@@ -86,7 +86,7 @@ function getScriptSourceCode(encoded) {
   const response = UrlFetchApp.fetch(url, params);
   const json = JSON.parse(response);
 
-  toReturn = _.map(json.files, function(file) {
+  toReturn = _.map(json.files, function mapFiles(file) {
     let fullName
     switch(file.type) {
       case 'server_js':
@@ -126,7 +126,7 @@ function getChangedSourceCode() {
   let arr = []
   const code = getScriptSourceCode(false)
   l('---------- checking for changes...')
-  arr = _.filter(code, function(f) {
+  arr = _.filter(code, function filterFiles(f) {
     const url = `https://api.github.com/repos/${githubRepoOwner}/${githubRepo}/contents/${f.path}`;
     l(url)
     let getResponse = JSON.parse(UrlFetchApp.fetch(url, { muteHttpExceptions: true, headers: {authorization: `token ${githubToken}`} }).getContentText())
@@ -148,8 +148,8 @@ function getChangedSourceCode() {
   return arr
 }
 /**
- * updates one file at a time 
- * 
+ * updates one file at a time
+ *
  **/
 function updateGithubRepo_(filePath, content) {
   const url = `https://api.github.com/githubRepos/${githubRepoOwner}/${githubRepo}/contents/src/${filePath}`;
@@ -279,7 +279,7 @@ function updateReference_(commitSha) {
 
 function commitAll() {
   const files = getChangedSourceCode();
-  const blobs = _.map(files, function(file) {
+  const blobs = _.map(files, function mapBlobs(file) {
     l(file.path)
     return {
       path: file.path,
