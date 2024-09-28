@@ -37,6 +37,20 @@ module.exports = {
                 multiline: {
                   type: "boolean"
                 },
+                multiNotRequired: [
+                  {
+                    type: "object",
+                    properties: {
+                      oneMultiLineItem: {
+                        type: "boolean"
+                      }
+                    }
+                  },
+                  {
+                    type: [ "integer", "null" ],
+                    minimum: 0
+                  }
+                ],
                 minItems: {
                   type: [ "integer", "null" ],
                   minimum: 0
