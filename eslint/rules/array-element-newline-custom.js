@@ -203,7 +203,10 @@ module.exports = {
       const options = normalizedOptions[node.type];
       if(!options) return;
       let elementBreak = false;
-
+      
+      const oneObjectExeption = context.options[0].multiNotRequired[0].oneMultiLineItem && elements.length <= context.options[0].multiNotRequired[1]
+      
+      
       /*
        * MULTILINE: true
        * loop through every element and check
