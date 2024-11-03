@@ -7,7 +7,7 @@ Report any bugs you find and tell me what you want to see on the [issues](https:
 
 ** **
 
-The app is available at:
+**The app is available at:**
 https://script.google.com/a/macros/stu.evsck12.com/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec
 
 The newest code here is not available at this link. Only the latest stable(ish) release is public.
@@ -29,6 +29,6 @@ Bugs are bound to be plentiful, so report them.
 
 Create a Google Apps Script project and copy the files from the `src` folder.
 
-> You will also need to change the folder IDs to ones in your Google Drive
+> You will also need to create folders in your Google Drive and change the folder IDs in the code yours.
 
 **Feel free to make pull requests.**
