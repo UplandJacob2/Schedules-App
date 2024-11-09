@@ -63,7 +63,7 @@ const DebugLog = {
 
       let debugDiv = window.DEBUG_WINDOW.document.createElement('div')
       debugDiv.style = 'overflow-y: scroll; width: 100%; height: calc(100% - 30px); display: block;'
-      
+
       window.DEBUG_WINDOW.document.body.appendChild(switchDiv)
       window.DEBUG_WINDOW.document.body.appendChild(debugDiv)
 
@@ -93,7 +93,7 @@ const DebugLog = {
       if(DebugLog.autoscroll) div.scrollTop = div.scrollHeight;
     } catch (e) { alert(DebugLog.getStkFrErr(e)) }
   },
-  
+
   log: function(inp) {
     l(inp); DebugLog.logCustom(inp, 'l', 'LOG')
   },
@@ -257,9 +257,9 @@ function checkSignUpButton(setBt) {
   let butt
   if(typeof setBt === 'undefined') setBt = false
   if(setBt) butt = document.getElementById('signUpButt');
-  
+
   if(checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
-    if (setBt) butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
+    if(setBt) butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
     return true
   } else {
     if(setBt) butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true;
