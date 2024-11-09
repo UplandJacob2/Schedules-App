@@ -127,11 +127,11 @@ function getSchedulesHTML(data, dateTimeStr) {
 window.onload = function onLoad() {
   getHomePage(function setBaseUrl(url) { window.BASE_URL = url })
 
-  _.each([ 'keypress', 'keydown', 'keyup' ], function(e) {
+  _.each([ 'keypress', 'keydown', 'keyup' ], function applyListeners(e) {
     $('#signInC').on(e, checkSignInButton);
     $('#passSignIn').on(e, function updateSignInBox() { checkPassBox('passSignIn'); checkSignInButton(); });
     $('#signUpC').on(e, function updateSignUpBox() { checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); });
-    _.each(['emailSignUp', 'emailSignIn'], function(str) {
+    _.each([ 'emailSignUp', 'emailSignIn' ], function applyEmailBoxListeners(str) {
       $(`#${str}`).on(e, function checkEmailBoxStuff() { checkEmailBox(str); });
     });
   });
