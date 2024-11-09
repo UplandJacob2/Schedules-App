@@ -124,19 +124,54 @@
     </div>
   </a>
   <span class="center tmid" style="font-size: 30px; position: relative; top: -45px; color: white;">Settings</span>
-  <div class="tab new-line" style="font-size: 25;">
+  <div class="tab new-line" style="font-size: 25; height: calc(83% - 10px); top: -40px; overflow: auto;">
 
     <h3 class="new-line">Military time</h3>
     <input type="checkbox" id="militaryTimeSwitch" class="checkbox"/>
     <label for="militaryTimeSwitch" class="toggle" onclick="updateSettingsNotSaved()">   <p>&nbsp;On&nbsp;&nbsp;Off</p>   </label>
 
-    <h3 class="new-line">Debug mode (Partialy implemented)</h3>
+    <h3 class="new-line">Debug mode</h3>
     <input type="checkbox" id="debugModeSwitch" class="checkbox"/>
     <label for="debugModeSwitch" class="toggle" onclick="updateSettingsNotSaved()">   <p>&nbsp;On&nbsp;&nbsp;Off</p>   </label>
+
+    <h3 class="new-line">Dark mode (not yet implemented)</h3>
+    <input type="checkbox" id="darkModeSwitch" class="checkbox"/>
+    <label for="darkModeSwitch" class="toggle" onclick="updateSettingsNotSaved()">   <p>&nbsp;On&nbsp;&nbsp;Off</p>   </label>
+
 
     <a class="new-line">&nbsp;</a>
     <a class="new-line"></a>
     <a style="width: auto; height: 25px; display: inline-block; padding: 10px; font-weight: bold; margin: 2px;" class="grayLink new-line" id="saveSet" onclick="saveSettings()">Save</a>
+
+    <a class="new-line">&nbsp;</a>
+
+    <form>
+      <h2 class="new-line">Change Password</h2>
+      
+      <a><input id="changePassCheck" type="checkbox" onclick="showPassword('changePassCheck', 'oldPassChange'); showPassword('changePassCheck', 'passSignUp'); showPassword('changePassCheck', 'passSignUpR')"/>Show Passwords</a>
+
+      <a class="new-line"></a>
+
+      <input style="width: 200px;" type="password" placeholder="Old Password" name="oldPass" autocomplete="current-password" maxlength="320" id="oldPassChange" required/>
+
+      <a class="new-line"></a>
+
+      <input style="width: 200px;" type="password" placeholder="New Password" name="newPass" autocomplete="new-password" maxlength="320" id="passSignUp" required/>
+
+      <a class="new-line"></a>
+      <div style="">
+        <a>Password must have </a><a id="lowR">1 lowercase letter</a><a>, </a><a id="upR">1 uppercase letter</a><a>, </a><a id="numR">1 number</a><a>, </a><a id="chR">1 special character</a><a>, and must be </a><a id="lR">at least 8 characters long</a><a>.</a>
+      </div>
+      <a class="new-line"></a>
+
+      <input style="width: 200px;" type="password" placeholder="Confirm New Password" name="newPass" autocomplete="new-password" maxlength="320" id="passSignUpR" required/>
+
+      <a class="new-line"></a>
+      <a style="" id="passRTxt"></a> 
+      <a class="new-line"></a>
+
+      <button type="submit" disabled class="small-link grayLink font-20" id="changePassBt">Submit</button>
+    </form>
 
   </div>
 </div>

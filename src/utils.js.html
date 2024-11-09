@@ -8,28 +8,109 @@ const w = console.warn
 const e = console.error
 
 const DebugLog = {
+  autoscroll: true,
+  open: function() {
+    // try {window.DEBUG_WINDOW.close()} catch(e) {w(e)}
+    window.DEBUG_WINDOW = window.open("about:blank", "newWindow", "width=500,height=300")
+
+    let timer = setInterval(function() {
+      if (window.DEBUG_WINDOW.closed) {
+        clearInterval(timer);
+        window.DEBUG_WINDOW = null
+      }
+    }, 1000);
+
+
+    let style = window.DEBUG_WINDOW.document.createElement('style');
+    style.innerHTML = `
+      html, body { width: 100%; height: 100%; margin: 0; padding: 0; overflow: none }
+      body { font-family: 'Courier New', monospace; }
+      div { width: 100%; top: 0px; padding: 0; margin: none; left: 0px; width: 100%; display: block; }
+
+      a { display: block; width: calc(100% - 10px); padding: 5px; border-top: 1px black; margin: none; }
+      .l { color: #000; background-color: #eee }
+      .w { color: #660; background-color: #ffa }
+      .e { color: #500; background-color: #faa }
+    `
+    window.DEBUG_WINDOW.document.head.appendChild(style)
+
+    let script = window.DEBUG_WINDOW.document.createElement('script')
+    script.innerHTML = `
+      let mainWindow = window.opener;
+      let checkMainWindowInterval = setInterval(function(){
+        if (mainWindow && mainWindow.closed) { clearInterval(checkMainWindowInterval); window.close(); }
+      }, 1000);
+      window.onunload = function() { clearInterval(checkMainWindowInterval); };
+    `
+    window.DEBUG_WINDOW.document.body.appendChild(script)
+    
+    try {
+      let switchDiv = window.DEBUG_WINDOW.document.createElement('div')
+
+      let check = window.DEBUG_WINDOW.document.createElement('input')
+      check.type = "checkbox"
+      check.style = 'display: inline-block'
+      check.checked = DebugLog.autoscroll
+      check.addEventListener('click', function(){ check.checked = !check.checked; })
+ 
+      let a = window.DEBUG_WINDOW.document.createElement('span')
+      a.innerHTML = "&nbsp;Autoscroll"
+      a.addEventListener('click', function(){ check.checked = !check.checked; setTimeout(function(){DebugLog.autoscroll = check.checked }, 5)  })
+      a.style = 'display: inline-block; user-select:none; height: 30px;'
+
+      a.appendChild(check)
+      switchDiv.appendChild(a)
+
+      let debugDiv = window.DEBUG_WINDOW.document.createElement('div')
+      debugDiv.style = 'overflow-y: scroll; width: 100%; height: calc(100% - 30px); display: block;'
+      
+      window.DEBUG_WINDOW.document.body.appendChild(switchDiv)
+      window.DEBUG_WINDOW.document.body.appendChild(debugDiv)
+
+    } catch(e) {alert(DebugLog.getStkFrErr(e))}
+  },
+  close: function() {
+    window.DEBUG_WINDOW.close()
+    window.DEBUG_WINDOW = null
+  },
+  tryOpen: function() {
+    if(!window.DEBUG_WINDOW){
+      if(window.USER_SETTINGS.debugMode) DebugLog.open()
+    } else {
+      if(!window.USER_SETTINGS.debugMode) DebugLog.close()
+    }
+    return (window.DEBUG_WINDOW) ? true : false
+  },
+
+  logCustom: function(inp, clas, txt) {
+    try {
+      if(!DebugLog.tryOpen()) return
+      let a = window.DEBUG_WINDOW.document.createElement('a')
+      a.classList.add(clas); a.innerHTML = `${txt}: ${inp}`
+
+      let div = window.DEBUG_WINDOW.document.getElementsByTagName('div')[1]
+      div.appendChild(a)
+      if(DebugLog.autoscroll) div.scrollTop = div.scrollHeight;
+    } catch(e) { alert(DebugLog.getStkFrErr(e)) }
+  },
+  
   log: function(inp) {
-    l(inp)
-    let txtArea = document.getElementById('debugTxt')
-    txtArea.text = `${txtArea.text}\nLOG: ${inp}`
+    l(inp); DebugLog.logCustom(inp, 'l', 'LOG')
   },
   warn: function(inp) {
-    w(inp)
-    let txtArea = document.getElementById('debugTxt')
-    txtArea.text = `${txtArea.text}\nWARN: ${inp}`
+    w(inp); DebugLog.logCustom(inp, 'w', 'WARN')
   },
   error: function(inp) {
-    e(inp)
-    let txtArea = document.getElementById('debugTxt')
-    txtArea.text = `${txtArea.text}\nERROR: ${inp}`
+    e(inp); DebugLog.logCustom(inp, 'e', 'ERROR')
   },
-  getStacktraceFromErr: function(err) {
+  getStkFrErr: function(err) {
     return err.stack.split('\n').join('\n"')
   },
 }
 
 // eslint-disable-next-line
 const Base64={_keyStr:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',encode:function(e){let t='';let n,r,i,s,o,u,a;let f=0;e=Base64._utf8_encode(e);while(f<e.length){n=e.charCodeAt(f++);r=e.charCodeAt(f++);i=e.charCodeAt(f++);s=n>>2;o=(n&3)<<4|r>>4;u=(r&15)<<2|i>>6;a=i&63;if(isNaN(r)){u=a=64}else if(isNaN(i)){a=64}t=t+this._keyStr.charAt(s)+this._keyStr.charAt(o)+this._keyStr.charAt(u)+this._keyStr.charAt(a)}return t},decode:function(e){let t='';let n,r,i;let s,o,u,a;let f=0;e=e.replace(/[^A-Za-z0-9\+\/\=]/g,'');while(f<e.length){s=this._keyStr.indexOf(e.charAt(f++));o=this._keyStr.indexOf(e.charAt(f++));u=this._keyStr.indexOf(e.charAt(f++));a=this._keyStr.indexOf(e.charAt(f++));n=s<<2|o>>4;r=(o&15)<<4|u>>2;i=(u&3)<<6|a;t=t+String.fromCharCode(n);if(u!==64){t=t+String.fromCharCode(r)}if(a!==64){t=t+String.fromCharCode(i)}}t=Base64._utf8_decode(t);return t},_utf8_encode:function(e){e=e.replace(/\r\n/g,'\n');let t='';for(let n=0;n<e.length;n++){let r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r)}else if(r>127&&r<2048){t+=String.fromCharCode(r>>6|192);t+=String.fromCharCode(r&63|128)}else{t+=String.fromCharCode(r>>12|224);t+=String.fromCharCode(r>>6&63|128);t+=String.fromCharCode(r&63|128)}}return t},_utf8_decode:function(e){let t='';let n=0;let r=c1=c2=0;while(n<e.length){r=e.charCodeAt(n);if(r<128){t+=String.fromCharCode(r);n++}else if(r>191&&r<224){c2=e.charCodeAt(n+1);t+=String.fromCharCode((r&31)<<6|c2&63);n+=2}else{c2=e.charCodeAt(n+1);c3=e.charCodeAt(n+2);t+=String.fromCharCode((r&15)<<12|(c2&63)<<6|c3&63);n+=3}}return t}}
+
 function jsonReparse (arr) { return JSON.parse(JSON.stringify(arr)) }
 
 function error(title, txt) {
@@ -37,6 +118,16 @@ function error(title, txt) {
   document.getElementById('errorWhen').innerHTML = title
   document.getElementById('errorTxt').innerHTML = txt
 }
+
+function toggleDisplay(elmStrIn, toState) {
+  let elm = $(`#${elmStrIn}`)
+  if(typeof toState !== 'undefined') { // if toState is specified
+    if(toState) { elm.css('display', 'block') } else elm.css('display', 'none')
+  } else { // otherwise, toggle
+    if(elm.css('display') === 'none') { elm.css('display', 'block') } else elm.css('display', 'none')
+  }
+}
+
 /**
  * Opens a popup to confirm
  *
@@ -92,11 +183,11 @@ function isValidEmail(email) {
 }
 function isValidPassword(pass) {
   return (
-    ((pass.match(/[0-9]/g) || []).length >= 1) &&   //must have #
-    ((pass.match(/[a-z]/g) || []).length >= 1) &&   //must have lowercase letter
-    ((pass.match(/[A-Z]/g) || []).length >= 1) &&   //must have uppercase letter
-    ((pass.match(/[^A-Za-z0-9]/g) || []).length >= 1) && //must have symbol
-    (pass.match(/(.){8,}/g))  // must be at least 8 characters
+    /[0-9]/g.test(pass) && // must have #
+    /[a-z]/g.test(pass) && // must have lowercase letter
+    /[A-Z]/g.test(pass) && // must have uppercase letter
+    /[^A-Za-z0-9]/g.test(pass) && // must have symbol
+    _.size(pass) >= 8 // must be at least 8 characters
   )
 }
 
@@ -155,21 +246,43 @@ function checkPassBoxI(inpStr) {
       inp.style.setProperty('background-color', 'lightpink');
       x.style.setProperty('display', 'block'); c.style.setProperty('display', 'none');
     }
+  } else if(inpStr === 'oldPassChange') {
+    if(good) inp.style.setProperty('background-color', 'palegreen');
+    else inp.style.setProperty('background-color', 'lightpink');
   }
   return good
 }
 function checkPassBox(inpStr) { setTimeout(function checkPassBoxAfterTimeout() { checkPassBoxI(inpStr); }, 10); }
-function checkSignUpButton() {
-  let butt = document.getElementById('signUpButt');
+function checkSignUpButton(setBt) {
+  let butt
+  if(typeof setBt === 'undefined') setBt = false
+  if(setBt) butt = document.getElementById('signUpButt');
+  
   if(checkEmailBoxI('emailSignUp') && checkPassBoxI('passSignUp') && checkPassBoxI('passSignUpR')) {
-    butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
-  } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
+    if (setBt) butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
+    return true
+  } else {
+    if (setBt) butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true;
+    return false
+  }
 }
-function checkSignInButton() {
+function checkSignInButton(setBt) {
   let butt = document.getElementById('signInButt');
   if(checkEmailBoxI('emailSignIn') && checkPassBoxI('passSignIn')) {
+    if (setBt) butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
+    return true
+  } else {
+    if (setBt) butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true;
+    return false
+  }
+}
+function checkChangePassButton() {
+  let butt = document.getElementById('changePassBt')
+  if (checkSignUpButton(false) && checkPassBoxI('changePassCheck')) {
     butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
-  } else { butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true; }
+  } else {
+    butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true;
+  }
 }
 
 function showPassword(check, boxN) {
@@ -206,17 +319,16 @@ function signInSuccess(inp) {
     document.cookie = `signin={"token":"${inp[1]}", "email":"${getEmail()}"}; SameSite=none; secure`;
   }
   document.getElementById('things').innerHTML = inp[0];
-  ////      INDEX ONLOAD
-  //toggleDisplay('grid')
+  ////      INDEX ONLOAD //////////////////////////////////
 
-  //google.script.run.withSuccessHandler(function (schedule) { $('.schedule').html(schedule); $('#img').css('display', 'none'); }).getSchedule(getEmail(), getToken());
-
-  // setInterval(function () {
-  //   google.script.run.withSuccessHandler(function (schedule) { $('.schedule').html(schedule); $('#img').css('display', 'none'); }).getSchedule(getEmail(), getToken());
-  // }, 8000);
+  _.each([ 'keypress', 'keydown', 'keyup' ], function indexEventListeners(e) {
+    $('#oldPassChange').on(e, function updateSignInBox() { checkPassBox('oldPassChange'); checkChangePassButton(); });
+    $('#passSignUp').on(e, function updateSignUpBox() { checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkChangePassButton(); });
+    $('#passSignUpR').on(e, function updateSignUpBox() { checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkChangePassButton(); })
+  });
 
   //google.script.run.test(document.body.parentElement.innerHTML)
-  try { loadSheet() } catch (e) { alert(DebugLog.getStacktraceFromErr(e)) }
+  try { loadSheet() } catch (e) { alert(DebugLog.getStkFrErr(e)) }
 }
 function signIn(email, pass, rm) {
   google.script.run.withSuccessHandler(signInSuccess).withFailureHandler(function signInFalierHandler(err) {

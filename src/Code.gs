@@ -187,10 +187,10 @@ function doGet(q) {
   console.log(q);
 
   let doit;
+  try {doit = q.parameter.do} catch {doit = undefined}
+  l(doit)
 
-  if(String(q.parameter.do) !== 'undefined') {
-    doit = q.parameter.do;
-  } else {
+  if(doit === undefined) {
     return HtmlService.createHtmlOutput(
       HtmlService.createTemplateFromFile('notSignedIn').evaluate())
       .setSandboxMode(HtmlService.SandboxMode.EMULATED)
@@ -218,7 +218,21 @@ function doGet(q) {
     return HtmlService.createHtmlOutput(HtmlService.createTemplateFromFile('confirmSignUp').evaluate()).setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL).setTitle('Schedules').setFaviconUrl('https://i.imgur.com/hmLYiKm.png');
   } else if(doit === 'api') {
     return ContentService.createTextOutput(api(q.parameter)).setMimeType(ContentService.MimeType.JSON)
+  } else if (doit === 'commit') {
+    // TODO
   }
+}
+
+function test() {
+  let str = 'jehdbfjhdsbfkgfbdskjfbg'
+  let htmlBody = HtmlService.createTemplateFromFile('confirmSignUpEmail');
+  const link = `https://script.google.com/macros/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec?do=confirmSignUp&key=${str}`;
+  htmlBody.url = link
+  // htmlBody = htmlBody.replace(/LINK/g, link);
+  l(htmlBody.evaluate().getContent())
+}
+function test() {
+  signUp('asdfasdf', 'sdfgsdfg', 'jacob.feil@stu.evsck12.com')
 }
 
 function signUp (pass, passR, email) {
@@ -226,9 +240,12 @@ function signUp (pass, passR, email) {
   if(!SchedulesSecure.isValidEmail(email)) { err_('Invalid email. How do you get around client side checks?') }
   const file = DriveApp.getFolderById('1_0tcWv6HmqFdN7sHeYAfM-gPkjE5btKc').getFilesByName('accounts.json').next()
   const acctJson = JSON.parse(file.getBlob().getDataAsString())
+  l(acctJson)
 
-  let i = acctJson.findIndex(em => em.email[0].toLowerCase() === email.toLowerCase());
-  if(i >= 0) { err_('Already an account with that email.') }
+  if (_.find(acctJson, function(acc) {return acc.email.toLowerCase() === email.toLowerCase()})) {err_('Already an account with that email.')}
+
+  // let i = acctJson.findIndex(em => em.email.toLowerCase() === email.toLowerCase());
+  // if(i >= 0) { err_('Already an account with that email.') }
 
   const sc = CacheService.getScriptCache()
 
@@ -241,9 +258,11 @@ function signUp (pass, passR, email) {
   console.log(str);
   sc.put(str, JSON.stringify({ pass: pass, email: email, passR: passR }));
 
-  let htmlBody = HtmlService.createHtmlOutputFromFile('confirmSignUpEmail').getContent();
+  let htmlTemplate = HtmlService.createTemplateFromFile('confirmSignUpEmail');
   const link = `https://script.google.com/macros/s/AKfycbzw5nZW2BHmdvVJk0Ru3iRNBVS1Ku9K-NDX5Ncf2gkxyy0OF2ethzaeVwETLMZhrIVl2A/exec?do=confirmSignUp&key=${str}`;
-  htmlBody = htmlBody.replace(/LINK/g, link);
+  htmlTemplate.url = link
+  htmlBody = htmlTemplate.evaluate().getContent()
+  l(htmlBody)
 
   MailApp.sendEmail({
     to: email,

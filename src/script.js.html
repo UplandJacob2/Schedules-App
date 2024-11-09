@@ -2,11 +2,13 @@
 window.SHEET = window.DATA = window.BASE_URL = undefined;
 window.USER_SETTINGS = { militaryTime: false, debugMode: false }
 window.USER_SETTINGS_NOT_SAVED = jsonReparse(window.USER_SETTINGS)
+window.DEBUG_WINDOW = null
 
 const SETTINGS_INFO = {
-  settingsNames: [ 'militaryTime', 'debugMode' ],
-  elIDs: [ 'militaryTimeSwitch', 'debugModeSwitch' ],
-  types: [ 'check', 'check' ]
+  settingsNames: [ 'militaryTime', 'debugMode', 'darkMode' ],
+  //readableNames: ['Military Time', 'Debug Mode (Partialy implemented)', 'Dark Mode'],
+  elIDs: [ 'militaryTimeSwitch', 'debugModeSwitch', 'darkModeSwitch' ],
+  types: [ 'check', 'check', 'check' ]
 }
 const firstRow = { info: 's', class: 'Some Class', strt: '8:00', end: '9:00', b: false, days: 'Mon, Wed, Fri', name: 'Schedule Name' }
 const emptyRow = { info: '',  class: 'Some Class', strt: '8:00', end: '9:00', b: false, days: '', name: '' }
@@ -21,15 +23,6 @@ function openMenu() {
       document.getElementById('main').style.setProperty('width', 'calc(100% - 130px)')
     }
   } else { document.getElementById('main').style.setProperty('width', '100%') }
-}
-
-function toggleDisplay(elmStrIn, toState) {
-  let elm = $(`#${elmStrIn}`)
-  if(typeof toState !== 'undefined') { // if toState is specified
-    if(toState) { elm.css('display', 'block') } else { elm.css('display', 'none') }
-  } else { // otherwise, toggle
-    if(elm.css('display') === 'none') { elm.css('display', 'block') } else { elm.css('display', 'none') }
-  }
 }
 
 
@@ -134,12 +127,14 @@ function getSchedulesHTML(data, dateTimeStr) {
 window.onload = function onLoad() {
   getHomePage(function setBaseUrl(url) { window.BASE_URL = url })
 
-  let events = [ 'keypress', 'keydown', 'keyup' ];
-
-  events.forEach(e => { document.getElementById('signInC').addEventListener(e, checkSignInButton); });
-  events.forEach(e => { document.getElementById('passSignIn').addEventListener(e, function updateSignInBox(){ checkPassBox('passSignIn'); checkSignInButton(); }); });
-  events.forEach(e => { document.getElementById('signUpC').addEventListener(e, function updateSignUpBox(){ checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); }); });
-  [ 'emailSignUp', 'emailSignIn' ].forEach(str => { let elm = document.getElementById(str); events.forEach(e => { elm.addEventListener(e, function checkEmailBoxStuff() { checkEmailBox(str); }); }); });
+  _.each([ 'keypress', 'keydown', 'keyup' ], function(e) {
+    $('#signInC').on(e, checkSignInButton);
+    $('#passSignIn').on(e, function updateSignInBox() { checkPassBox('passSignIn'); checkSignInButton(); });
+    $('#signUpC').on(e, function updateSignUpBox() { checkPassBox('passSignUp'); checkPassBox('passSignUpR'); checkSignUpButton(); });
+    _.each(['emailSignUp', 'emailSignIn'], function(str) {
+      $(`#${str}`).on(e, function checkEmailBoxStuff() { checkEmailBox(str); });
+    });
+  });
 
   if(getToken()) {
     toggleDisplay('signInLoad');
@@ -184,7 +179,11 @@ function updateSettingsNotSaved() {
 function updateSettings() {
   updateSettingsNotSaved()
 
-  toggleDisplay('debugPop', window.USER_SETTINGS.debugMode)
+  // toggleDisplay('debugPop', window.USER_SETTINGS.debugMode)
+
+  try {
+    DebugLog.tryOpen()
+  } catch(e) {alert(DebugLog.getStkFrErr(e))}
   window.SHEET.militaryTime = window.USER_SETTINGS.militaryTime
 }
 
@@ -226,19 +225,21 @@ function updateSaveBtn() {
 function getSchedulesSuccess(response, encoded) {
   setEditorButtonsEnabled(true)
   if(encoded) response = Base64.decode(response)
-  try { window.SHEET.resetData(response) } catch (e) { error('Error handling response', DebugLog.getStacktraceFromErr(e)) }
+  try { window.SHEET.resetData(response) } catch (e) { error('Error handling response', DebugLog.getStkFrErr(e)) }
   window.DATA = jsonReparse(window.SHEET.data); updateSaveBtn()
+  DebugLog.log('schedule gotten')
 }
 function firstGetSchedulesSuccess(response) {
   getSchedulesSuccess(response)
 
   try { $('.schedule').html(getSchedule()); $('#img').css('display', 'none'); }
-  catch (err) { alert(DebugLog.getStacktraceFromErr(err)/*.splice(0, 2)*/.join('\n"')) }
+  catch (err) { alert(DebugLog.getStkFrErr(err)/*.splice(0, 2)*/.join('\n"')) }
 
   setInterval(function tickSecond() {
     //google.script.run.withSuccessHandler(function (schedule) { $('.schedule').html(schedule); $('#img').css('display', 'none'); }).getSchedule(getEmail(), getToken());
     try {
       $('.schedule').html(getSchedule()); $('#img').css('display', 'none');
+      DebugLog.log('Set schedule')
     } catch (e) { console.error(e) }
   }, 1000);
 
