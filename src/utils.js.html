@@ -64,7 +64,7 @@ const DebugLog = {
       window.DEBUG_WINDOW.document.body.appendChild(debugDiv)
     } catch (e) { alert(DebugLog.getStkFrErr(e)) }
   },
-  close: function() { window.DEBUG_WINDOW.close() window.DEBUG_WINDOW = null },
+  close: function() { window.DEBUG_WINDOW.close(); window.DEBUG_WINDOW = null },
   tryOpen: function() {
     if(!window.DEBUG_WINDOW){
       if(window.USER_SETTINGS.debugMode) DebugLog.open()

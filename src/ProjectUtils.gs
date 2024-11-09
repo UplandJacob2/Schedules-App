@@ -6,7 +6,7 @@ const githubRepoOwner = 'UplandJacob2'
 const githubRepo = 'Schedules-App'
 const branch = 'main'
 // commit settings
-const commitMessage = 'code clean up and fix ESLint alerts'
+const commitMessage = 'fix parse error'
 // release settings
 const version = '2.0.2pre-b'
 const body = 'updates'
