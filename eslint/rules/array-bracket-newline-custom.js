@@ -213,7 +213,7 @@ module.exports = {
       
       let begBracketOfObjectOnSameLine;
       try { begBracketOfObjectOnSameLine = astUtils.isTokenOnSameLine(openBracket, sourceCode.getFirstToken(elements[elements.length-1])) } 
-      catch (e) { begBracketOfObjectOnSameLine = false }
+      catch { begBracketOfObjectOnSameLine = false }
       
       const maxItemsBefore1Object = context.options[0].multiNotRequired[1]
       let requireBreakOverride = false;
