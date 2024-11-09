@@ -24,12 +24,12 @@ function parse_(inp) {
   const response = UrlFetchApp.fetch('https://www.toptal.com/developers/html-minifier/api/raw', { 'muteHttpExceptions': true, 'method': 'POST', 'payload': `input=${encodeURIComponent(input)}`})
   l(response.getContentText())
 }
-function testParse() {
-  const files = getScriptSourceCode(false)
-  _.each(files, function(f) {
-    if (/\.js/.test(f.path)) parse_(f.content)
-  })
-}
+// function testParse() {
+//   const files = getScriptSourceCode(false)
+//   _.each(files, function(f) {
+//     if(/\.js/.test(f.path)) parse_(f.content)
+//   })
+// }
 
 // release packaging and stuff
 function getAndPutFiles_(folder, url) {

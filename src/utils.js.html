@@ -11,7 +11,7 @@ const DebugLog = {
   autoscroll: true,
   open: function() {
     // try {window.DEBUG_WINDOW.close()} catch(e) {w(e)}
-    window.DEBUG_WINDOW = window.open("about:blank", "newWindow", "width=500,height=300")
+    window.DEBUG_WINDOW = window.open('about:blank', 'newWindow', 'width=500,height=300')
 
     let timer = setInterval(function checkDebugWindowStatus() {
       if(window.DEBUG_WINDOW.closed) {
@@ -48,13 +48,13 @@ const DebugLog = {
       let switchDiv = window.DEBUG_WINDOW.document.createElement('div')
 
       let check = window.DEBUG_WINDOW.document.createElement('input')
-      check.type = "checkbox"
+      check.type = 'checkbox'
       check.style = 'display: inline-block'
       check.checked = DebugLog.autoscroll
       check.addEventListener('click', function checkOnClick(){ check.checked = !check.checked; })
  
       let a = window.DEBUG_WINDOW.document.createElement('span')
-      a.innerHTML = "&nbsp;Autoscroll"
+      a.innerHTML = '&nbsp;Autoscroll'
       a.addEventListener('click', function chkTxt(){ check.checked = !check.checked; setTimeout(function chkTxtLat(){ DebugLog.autoscroll = check.checked }, 5)  })
       a.style = 'display: inline-block; user-select:none; height: 30px;'
 
