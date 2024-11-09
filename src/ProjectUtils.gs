@@ -6,7 +6,7 @@ const githubRepoOwner = 'UplandJacob2'
 const githubRepo = 'Schedules-App'
 const branch = 'main'
 // commit settings
-const commitMessage = 'code clean up - previous commit: finish debug log and work on change pass '
+const commitMessage = 'code clean up, fis ESLint alerts, rm depug popup div'
 // release settings
 const version = '2.0.2pre-b'
 const body = 'updates'

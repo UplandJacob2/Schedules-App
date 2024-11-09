@@ -13,8 +13,8 @@ const DebugLog = {
     // try {window.DEBUG_WINDOW.close()} catch(e) {w(e)}
     window.DEBUG_WINDOW = window.open("about:blank", "newWindow", "width=500,height=300")
 
-    let timer = setInterval(function() {
-      if (window.DEBUG_WINDOW.closed) {
+    let timer = setInterval(function checkDebugWindowStatus() {
+      if(window.DEBUG_WINDOW.closed) {
         clearInterval(timer);
         window.DEBUG_WINDOW = null
       }
@@ -51,11 +51,11 @@ const DebugLog = {
       check.type = "checkbox"
       check.style = 'display: inline-block'
       check.checked = DebugLog.autoscroll
-      check.addEventListener('click', function(){ check.checked = !check.checked; })
+      check.addEventListener('click', function checkOnClick(){ check.checked = !check.checked; })
  
       let a = window.DEBUG_WINDOW.document.createElement('span')
       a.innerHTML = "&nbsp;Autoscroll"
-      a.addEventListener('click', function(){ check.checked = !check.checked; setTimeout(function(){DebugLog.autoscroll = check.checked }, 5)  })
+      a.addEventListener('click', function chkTxt(){ check.checked = !check.checked; setTimeout(function chkTxtLat(){ DebugLog.autoscroll = check.checked }, 5)  })
       a.style = 'display: inline-block; user-select:none; height: 30px;'
 
       a.appendChild(check)
@@ -67,7 +67,7 @@ const DebugLog = {
       window.DEBUG_WINDOW.document.body.appendChild(switchDiv)
       window.DEBUG_WINDOW.document.body.appendChild(debugDiv)
 
-    } catch(e) {alert(DebugLog.getStkFrErr(e))}
+    } catch (e) { alert(DebugLog.getStkFrErr(e)) }
   },
   close: function() {
     window.DEBUG_WINDOW.close()
@@ -91,7 +91,7 @@ const DebugLog = {
       let div = window.DEBUG_WINDOW.document.getElementsByTagName('div')[1]
       div.appendChild(a)
       if(DebugLog.autoscroll) div.scrollTop = div.scrollHeight;
-    } catch(e) { alert(DebugLog.getStkFrErr(e)) }
+    } catch (e) { alert(DebugLog.getStkFrErr(e)) }
   },
   
   log: function(inp) {
@@ -113,12 +113,6 @@ const Base64={_keyStr:'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234
 
 function jsonReparse (arr) { return JSON.parse(JSON.stringify(arr)) }
 
-function error(title, txt) {
-  toggleDisplay('error')
-  document.getElementById('errorWhen').innerHTML = title
-  document.getElementById('errorTxt').innerHTML = txt
-}
-
 function toggleDisplay(elmStrIn, toState) {
   let elm = $(`#${elmStrIn}`)
   if(typeof toState !== 'undefined') { // if toState is specified
@@ -126,6 +120,12 @@ function toggleDisplay(elmStrIn, toState) {
   } else { // otherwise, toggle
     if(elm.css('display') === 'none') { elm.css('display', 'block') } else elm.css('display', 'none')
   }
+}
+
+function error(title, txt) {
+  toggleDisplay('error')
+  document.getElementById('errorWhen').innerHTML = title
+  document.getElementById('errorTxt').innerHTML = txt
 }
 
 /**
@@ -262,23 +262,23 @@ function checkSignUpButton(setBt) {
     if (setBt) butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
     return true
   } else {
-    if (setBt) butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true;
+    if(setBt) butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true;
     return false
   }
 }
 function checkSignInButton(setBt) {
   let butt = document.getElementById('signInButt');
   if(checkEmailBoxI('emailSignIn') && checkPassBoxI('passSignIn')) {
-    if (setBt) butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
+    if(setBt) butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
     return true
   } else {
-    if (setBt) butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true;
+    if(setBt) butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true;
     return false
   }
 }
 function checkChangePassButton() {
   let butt = document.getElementById('changePassBt')
-  if (checkSignUpButton(false) && checkPassBoxI('changePassCheck')) {
+  if(checkSignUpButton(false) && checkPassBoxI('changePassCheck')) {
     butt.classList.add('link'); butt.classList.remove('grayLink'); butt.disabled = false;
   } else {
     butt.classList.add('grayLink'); butt.classList.remove('link'); butt.disabled = true;
