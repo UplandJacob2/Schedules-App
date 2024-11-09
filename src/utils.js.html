@@ -20,7 +20,6 @@ const DebugLog = {
       }
     }, 1000);
 
-
     let style = window.DEBUG_WINDOW.document.createElement('style');
     style.innerHTML = `
       html, body { width: 100%; height: 100%; margin: 0; padding: 0; overflow: none }
@@ -55,7 +54,6 @@ const DebugLog = {
       a.innerHTML = '&nbsp;Autoscroll'
       a.addEventListener('click', function chkTxt(){ check.checked = !check.checked; setTimeout(function chkTxtLat(){ DebugLog.autoscroll = check.checked }, 5)  })
       a.style = 'display: inline-block; user-select:none; height: 30px;'
-
       a.appendChild(check)
       switchDiv.appendChild(a)
 
@@ -66,10 +64,7 @@ const DebugLog = {
       window.DEBUG_WINDOW.document.body.appendChild(debugDiv)
     } catch (e) { alert(DebugLog.getStkFrErr(e)) }
   },
-  close: function() {
-    window.DEBUG_WINDOW.close()
-    window.DEBUG_WINDOW = null
-  },
+  close: function() { window.DEBUG_WINDOW.close() window.DEBUG_WINDOW = null },
   tryOpen: function() {
     if(!window.DEBUG_WINDOW){
       if(window.USER_SETTINGS.debugMode) DebugLog.open()
@@ -91,18 +86,10 @@ const DebugLog = {
     } catch (e) { alert(DebugLog.getStkFrErr(e)) }
   },
 
-  log: function(inp) {
-    l(inp); DebugLog.logCustom(inp, 'l', 'LOG')
-  },
-  warn: function(inp) {
-    w(inp); DebugLog.logCustom(inp, 'w', 'WARN')
-  },
-  error: function(inp) {
-    e(inp); DebugLog.logCustom(inp, 'e', 'ERROR')
-  },
-  getStkFrErr: function(err) {
-    return err.stack.split('\n').join('\n"')
-  },
+  log: function(inp) { l(inp); DebugLog.logCustom(inp, 'l', 'LOG') },
+  warn: function(inp) { w(inp); DebugLog.logCustom(inp, 'w', 'WARN') },
+  error: function(inp) { e(inp); DebugLog.logCustom(inp, 'e', 'ERROR') },
+  getStkFrErr: function(err) { return err.stack.split('\n').join('\n"') },
 }
 
 // eslint-disable-next-line
