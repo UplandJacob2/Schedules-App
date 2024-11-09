@@ -43,16 +43,14 @@ const DebugLog = {
       window.onunload = function() { clearInterval(checkMainWindowInterval); };
     `
     window.DEBUG_WINDOW.document.body.appendChild(script)
-    
     try {
       let switchDiv = window.DEBUG_WINDOW.document.createElement('div')
-
       let check = window.DEBUG_WINDOW.document.createElement('input')
       check.type = 'checkbox'
       check.style = 'display: inline-block'
       check.checked = DebugLog.autoscroll
       check.addEventListener('click', function checkOnClick(){ check.checked = !check.checked; })
- 
+
       let a = window.DEBUG_WINDOW.document.createElement('span')
       a.innerHTML = '&nbsp;Autoscroll'
       a.addEventListener('click', function chkTxt(){ check.checked = !check.checked; setTimeout(function chkTxtLat(){ DebugLog.autoscroll = check.checked }, 5)  })
@@ -66,7 +64,6 @@ const DebugLog = {
 
       window.DEBUG_WINDOW.document.body.appendChild(switchDiv)
       window.DEBUG_WINDOW.document.body.appendChild(debugDiv)
-
     } catch (e) { alert(DebugLog.getStkFrErr(e)) }
   },
   close: function() {
