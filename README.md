@@ -1,5 +1,5 @@
 # Schedules App
-**Project under active development**
+**Project currently stalled due to other projects.**
 
 Create and view schedules in a web app. 
 
